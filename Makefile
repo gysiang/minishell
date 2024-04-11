@@ -11,7 +11,10 @@ SRC_DIR			= srcs
 LIBS			= -L$(LIBFT_PATH) -lft -lreadline
 
 SRC_FILES		= $(addprefix $(SRC_DIR)/, \
-					main.c)
+					main.c \
+					utils.c \
+					history.c \
+					signals.c)
 
 NAME			= minishell
 

@@ -3,12 +3,12 @@ LIBFT		= $(LIBFT_PATH)/libft.a
 
 # Compiler and Flags
 CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -I/usr/include/readline
 
 INCLUDES_DIR	= includes
 SRC_DIR			= srcs
 
-LIBS			= -L$(LIBFT_PATH) -lft
+LIBS			= -L$(LIBFT_PATH) -lft -lreadline
 
 SRC_FILES		= $(addprefix $(SRC_DIR)/, \
 					main.c)

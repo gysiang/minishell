@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/12 15:19:20 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/12 16:42:48 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char **av_string(char *s)
 {
 	char **av;
 
-	av = ft_split(s, ' ');
+	av = ft_dqsplit(s, ' ');
 	return (av);
 }
 

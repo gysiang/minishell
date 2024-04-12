@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/11 20:57:12 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/12 12:25:55 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 // utils
 void	put_string_fd(int fd, const char *s);
+int	ft_strcmp(const char *s1, const char *s2);
 
 // signals
 void	sigint_handler(int signal);

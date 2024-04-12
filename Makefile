@@ -6,7 +6,7 @@ CC			= gcc
 CFLAGS		= -Wall -Wextra -Werror -I/usr/include/readline
 
 INCLUDES_DIR	= includes
-SRC_DIR			= srcs
+SRC_DIR			= src
 
 LIBS			= -L$(LIBFT_PATH) -lft -lreadline
 

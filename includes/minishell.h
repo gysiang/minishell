@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/12 10:41:25 by axlee            ###   ########.fr       */
+/*   Updated: 2024/04/12 12:25:06 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # include <readline/history.h>
 # include <errno.h>
 # include <signal.h>
+# include <stdlib.h>
+# include <limits.h>
 
 // Struct for commands
 

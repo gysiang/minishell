@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/11 20:57:12 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/12 10:41:25 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,53 @@
 # include <unistd.h>
 # include <sys/wait.h>
 # include <fcntl.h>
-# include <errno.h>
+# include <unistd.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <dirent.h>
 # include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <setjmp.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <errno.h>
+# include <signal.h>
+
+// Struct for commands
+
+typedef struct s_cmd
+{
+	t_uchar	type;
+	int	argc;
+	char	**argv;
+	t_list	*input;
+	t_list	*output;
+	int	return_value;
+}		t_cmd;
+
+/*
+ * Struct for Minishell
+*/
+
+typedef struct s_shell
+{
+	int	env_size;
+	char	**env;
+	char	**pwd;
+	char	*prompt;
+	char	*home;
+	t_list	*cmd_list;
+	int	data_fd[2];
+	int	ret_fd[2];
+	int	last_return;
+	t_bool	end;
+}		t_shell;
+
+
+/* 
+ * Builtin C Functions
+* */
+
+int	minishell_echo(t_shell *minishell, t_cmd *cmd);
 
 // utils
 void	put_string_fd(int fd, const char *s);

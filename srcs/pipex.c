@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/12 13:24:42 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/12 15:37:35 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	child(char **argv, int *p_fd, char **env)
 	}
 	close(fd);
 	close(p_fd[0]);
-	exec_cmd(argv[2], env);
+	exec_cmd(argv[1], env);
 }
 
 /* Setup a command to run with its output going to a file and input
@@ -110,5 +110,5 @@ void	parent(char **argv, int *p_fd, char **env)
 	}
 	close(fd);
 	close(p_fd[1]);
-	exec_cmd(argv[3], env);
+	exec_cmd(argv[2], env);
 }

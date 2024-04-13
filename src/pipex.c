@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/13 14:04:26 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/13 14:19:44 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	exec_cmd(char *cmd, char **env)
 		exit(EXIT_FAILURE);
 	}
 	path = get_path(s_cmd[0], env);
+	//printf("path: %s\n", path);
 	if (execve(path, s_cmd, env) == -1)
 	{
 		ft_putstr_fd("pipex: Error executing command\n", 2);

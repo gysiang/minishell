@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/13 14:05:04 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/13 14:07:37 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 
 typedef struct s_cmd
 {
-	t_uchar	type;
+	//t_uchar	type;
 	int	argc;
 	char	**argv;
 	t_list	*input;
@@ -60,7 +60,7 @@ typedef struct s_shell
 	int	data_fd[2];
 	int	ret_fd[2];
 	int	last_return;
-	t_bool	end;
+	//t_bool	end;
 }		t_shell;
 
 

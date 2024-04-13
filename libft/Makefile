@@ -6,7 +6,7 @@
 #    By: axlee <axlee@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/13 15:19:53 by axlee             #+#    #+#              #
-#    Updated: 2024/04/03 11:40:02 by axlee            ###   ########.fr        #
+#    Updated: 2024/04/12 12:59:20 by axlee            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -123,6 +123,7 @@ STR_FILES =		str/ft_split.c \
 				str/ft_strlcpy.c \
 				str/ft_strlen.c \
 				str/ft_strmapi.c \
+				str/ft_strcmp.c \
 				str/ft_strncmp.c \
 				str/ft_strnstr.c \
 				str/ft_strrchr.c \

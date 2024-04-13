@@ -2,7 +2,7 @@ LIBFT_PATH	= ./libft
 LIBFT		= $(LIBFT_PATH)/libft.a
 
 INCLUDES_DIR	= includes
-SRC_DIR			= srcs
+SRC_DIR			= src
 
 # Compiler and Flags
 CC			= gcc

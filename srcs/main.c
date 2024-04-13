@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/12 16:42:48 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/13 13:53:55 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,11 @@ int	main(int ac, char **av, char **env)
 		printf("This is user input: %s\n", input);
 		hist_feature(input);
 		av_str = av_string(input);
-		// Print all environment variables
+		// Print all av string
+		/***
 		for (int i = 0; av_str[i] != NULL; i++) {
 			printf("av[%d]: %s\n", i, av_str[i]);
-		}
+		} **/
 		pipex_feature(av_str, env);
 		free(input);
 	}

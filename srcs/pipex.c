@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/12 15:37:35 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/13 13:53:19 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,16 @@ void	exec_cmd(char *cmd, char **env)
 	char	**s_cmd;
 	char	*path;
 
+	//printf("cmd: %s\n", cmd);
 	if (!cmd || !env)
 	{
 		ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
 	s_cmd = ft_split(cmd, ' ');
+	//for (int i = 0; s_cmd[i] != NULL; i++) {
+	//	printf("s_cmd[%d]: %s\n", i, s_cmd[i]);
+	//}
 	if (!s_cmd)
 	{
 		ft_putstr_fd("Failed to split command\n", STDERR_FILENO);
@@ -74,6 +78,7 @@ void	child(char **argv, int *p_fd, char **env)
 	}
 	close(fd);
 	close(p_fd[0]);
+	//printf("child cmd: %s\n", argv[1]);
 	exec_cmd(argv[1], env);
 }
 
@@ -110,5 +115,6 @@ void	parent(char **argv, int *p_fd, char **env)
 	}
 	close(fd);
 	close(p_fd[1]);
+	//printf("parent cmd: %s\n", argv[1]);
 	exec_cmd(argv[2], env);
 }

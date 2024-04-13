@@ -3,92 +3,89 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:35:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/12 16:54:01 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/13 12:14:25 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static size_t	count_words(char const *s, char c)
+static int	ft_wcount(char const *s, char c)
 {
-	size_t	count;
-	size_t	i;
+	int		n;
 
-	count = 0;
-	i = 0;
-	while (s[i])
+	n = 0;
+	while (*s && *s == c)
+		s++;
+	while (*s)
 	{
-		if (s[i] != c)
-		{
-			count++;
-			while (s[i] && s[i] != c)
-				i++;
-		}
-		else if (s[i] == c)
-			i++;
+		while (*s && *s != c)
+			s++;
+		n++;
+		while (*s && *s == c)
+			s++;
 	}
-	return (count);
+	return (n);
 }
 
-static	size_t	get_word_len(char const *s, char c)
+static size_t	ft_wordlen(const char *s, char c)
 {
 	size_t	i;
 
 	i = 0;
-	while (s[i] && s[i] != c)
+	while (*s && *s != c)
+	{
 		i++;
+		s++;
+	}
 	return (i);
 }
 
-static void	free_array(size_t i, char **array)
+char **ft_dqsplit(char const *s, char c)
 {
-	while (i > 0)
-	{
-		i--;
-		free(array[i]);
-	}
-	free(array);
-}
+	int n;
+	char **ret;
+	int i;
+	char *end_quote;
 
-static	char	**split(char const *s, char c, char **array, size_t words_count)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	while (i < words_count)
-	{
-		while (s[j] && (s[j] == c))
-			j++;
-		array[i] = ft_substr(s, j, get_word_len(&s[j], c));
-		if (!array[i])
-		{
-			free_array(i, array);
-			return (NULL);
-		}
-		while (s[j] && s[j] != c)
-			j++;
-		i++;
-	}
-	array[i] = NULL;
-	return (array);
-}
-
-char	**ft_dqsplit(char const *s, char c)
-{
-	char	**array;
-	size_t	words;
-
+	i = -1;
 	if (!s)
 		return (NULL);
-	words = count_words(s, c);
-	array = (char **)malloc(sizeof(char *) * (words + 1));
-	if (!array)
-		return (NULL);
-	array = split(s, c, array, words);
-	return (array);
+	n = ft_wcount(s, c);
+	ret = malloc((n + 1) * sizeof(char *));
+	n = 0;
+	if (ret)
+	{
+		while (s[++i])
+		{
+			if (s[i] && s[i] != c)
+			{
+				while (s[i] == ' ')
+					i++;
+				if (s[i] == '"')
+				{
+					ret[n] = ft_strdup(&s[++i]);
+					end_quote = ft_strchr(ret[n], '"');
+					if (end_quote)
+					{
+						*end_quote = '\0';
+						i += end_quote - ret[n] + 1;
+					}
+				}
+				else
+				{
+					ret[n] = malloc(ft_wordlen(&s[i], c) + 1);
+					strncpy(ret[n], &s[i], ft_wordlen(&s[i], c));
+					ret[n][ft_wordlen(&s[i], c)] = '\0';
+					i = i + ft_wordlen(&s[i], c) - 1;
+				}
+				i = i + ft_wordlen(&s[i], c) - 1;
+				n++;
+			}
+		}
+		ret[n] = NULL;
+	}
+	return (ret);
 }

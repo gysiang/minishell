@@ -3,21 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/13 14:20:09 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/14 16:19:28 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 #include "../includes/minishell.h"
 
-void	pipex_feature(char **s, char **env)
+void	pipex_feature(char *input, char **env)
 {
 	int		p_fd[2];
 	pid_t	pid;
+	char	**s;
 
+	s = ft_dqsplit(input, ' ');
 	if (pipe(p_fd) == -1)
 	{
 		ft_putstr_fd("Error creating pipe\n", STDERR_FILENO);
@@ -37,20 +39,11 @@ void	pipex_feature(char **s, char **env)
 	close(p_fd[1]);
 }
 
-char **av_string(char *s)
-{
-	char **av;
-
-	av = ft_dqsplit(s, ' ');
-	return (av);
-}
-
 int	main(int ac, char **av, char **env)
 {
 	(void)ac;
 	(void)av;
 	char	*input;
-	char	**av_str;
 
 	using_history();
 	setup_signal_handler();
@@ -65,19 +58,17 @@ int	main(int ac, char **av, char **env)
 			break;
 		}
 		if (*input == '\0')
-		{
-			free(input);
+			//free(input);
 			continue;
-		}
 		printf("This is user input: %s\n", input);
-		hist_feature(input);
-		av_str = av_string(input);
+		if (hist_feature(input) == 1)
+			return (1);
 		// Print all av string
 		/**
 		for (int i = 0; av_str[i] != NULL; i++) {
 			printf("av[%d]: %s\n", i, av_str[i]);
 		} **/
-		pipex_feature(av_str, env);
+		pipex_feature(input, env);
 		free(input);
 	}
 	return (0);

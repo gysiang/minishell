@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:49:27 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/12 13:00:01 by axlee            ###   ########.fr       */
+/*   Updated: 2024/04/14 16:04:36 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	prompt()
 {
 	printf("minishell$");
-	fflush(stdout);
+	//fflush(stdout);
 	usleep(5000);
 }
 
@@ -40,11 +40,18 @@ void	print_history()
 	}
 }
 
-void	hist_feature(const char *s)
+int	hist_feature(const char *s)
 {
 	add_history(s);
 	if (ft_strcmp(s, "history") == 0)
+	{
 		print_history();
+		return (1);
+	}
 	if (ft_strcmp(s, "history -c") == 0)
+	{
 		clear_history();
+		return (1);
+	}
+	return (0);
 }

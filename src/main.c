@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/14 16:19:28 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/14 17:56:11 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	pipex_feature(char *input, char **env)
 	}
 	close(p_fd[0]);
 	close(p_fd[1]);
+	//return (1);
 }
 
 int	main(int ac, char **av, char **env)
@@ -47,7 +48,6 @@ int	main(int ac, char **av, char **env)
 
 	using_history();
 	setup_signal_handler();
-
 	while (1)
 	{
 		prompt();

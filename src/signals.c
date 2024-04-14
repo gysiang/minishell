@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:33:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/14 16:31:29 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/14 16:32:34 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@ void	sigint_handler(int signal)
 		prompt();
 		printf(" ");
 	}
-}
-
-void	sigquit_handler(int signal)
-{
-	(void)signal;
 }
 
 void	setup_signal_handler()

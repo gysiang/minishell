@@ -1,12 +1,12 @@
 LIBFT_PATH	= ./libft
 LIBFT		= $(LIBFT_PATH)/libft.a
 
-# Compiler and Flags
-CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror -I/usr/include/readline
-
 INCLUDES_DIR	= includes
 SRC_DIR			= src
+
+# Compiler and Flags
+CC			= gcc
+CFLAGS		= -Wall -Wextra -Werror -I/usr/include/readline -I$(INCLUDES_DIR)
 
 LIBS			= -L$(LIBFT_PATH) -lft -lreadline
 
@@ -14,6 +14,8 @@ SRC_FILES		= $(addprefix $(SRC_DIR)/, \
 					main.c \
 					utils.c \
 					history.c \
+					pipex.c \
+					pipex_utils.c \
 					signals.c)
 
 NAME			= minishell

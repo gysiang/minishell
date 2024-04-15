@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:35:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/13 12:14:25 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/15 14:52:00 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,8 @@ char **ft_dqsplit(char const *s, char c)
 				}
 				else
 				{
-					ret[n] = malloc(ft_wordlen(&s[i], c) + 1);
-					strncpy(ret[n], &s[i], ft_wordlen(&s[i], c));
-					ret[n][ft_wordlen(&s[i], c)] = '\0';
-					i = i + ft_wordlen(&s[i], c) - 1;
+					int len = ft_wordlen(&s[i], c);
+					ret[n] = ft_substr(s, i, len);
 				}
 				i = i + ft_wordlen(&s[i], c) - 1;
 				n++;
@@ -89,3 +87,45 @@ char **ft_dqsplit(char const *s, char c)
 	}
 	return (ret);
 }
+
+void convert_cmd(char **av)
+{
+    int i = 0;
+    while (av[i] != NULL)
+    {
+        if (!strcmp(av[i], "|") && av[i + 1] != NULL && av[i + 2] != NULL)
+        {
+            // Concatenate av[i + 1] and av[i + 2]
+            char *combined = ft_strjoin(av[i + 1], " ");
+            combined = ft_strjoin(combined, av[i + 2]);
+            // Shift the remaining elements in the array to the left
+            int j = i + 3;
+            while (av[j] != NULL)
+            {
+                av[j - 2] = av[j];
+                j++;
+            }
+            // Update av[i] and av[i + 1]
+            av[i] = strdup(combined);
+            av[i + 1] = NULL;
+            // Free the memory allocated for combined
+            free(combined);
+        }
+        else
+        {
+            i++;
+        }
+    }
+}
+
+
+
+/***
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+
+ret[n] = malloc(ft_wordlen(&s[i], c) + 1);
+strncpy(ret[n], &s[i], ft_wordlen(&s[i], c));
+ret[n][ft_wordlen(&s[i], c)] = '\0';
+i = i + ft_wordlen(&s[i], c) - 1;
+
+**/

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:35:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/15 14:52:00 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:34:27 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,57 @@ static size_t	ft_wordlen(const char *s, char c)
 	return (i);
 }
 
+static void	split(char **s, char **ret, char c, char n, int i)
+{
+	int	len;
+	char	*end_quote;
+
+	while (s[++i])
+	{
+		if (s[i] && s[i] != c)
+		{
+			while (s[i] != c)
+				i++;
+			if (s[i] == '"')
+			{
+				ret[n] = ft_strdup(&s[++i]);
+				end_quote = ft_strchr(ret[n], '"');
+				if (end_quote)
+				{
+					*end_quote = '\0';
+					i += end_quote - ret[n] + 1;
+				}
+			}
+			else
+				ret[n] = ft_substr(s, i, len);
+			i = i + ft_wordlen(&s[i], c) - 1;
+			n++;
+		}
+	}
+}
+char **ft_dqsplit(char const *s, char c)
+{
+	int n;
+	char **ret;
+	int i;
+	char *end_quote;
+
+	i = -1;
+	if (!s)
+		return (NULL);
+	n = ft_wcount(s, c);
+	ret = malloc((n + 1) * sizeof(char *));
+	n = 0;
+	if (ret)
+	{
+		split(s, ret, c, n, i);
+		ret[n] = NULL;
+	}
+	return (ret);
+}
+
+
+/***
 char **ft_dqsplit(char const *s, char c)
 {
 	int n;
@@ -86,36 +137,35 @@ char **ft_dqsplit(char const *s, char c)
 		ret[n] = NULL;
 	}
 	return (ret);
-}
+} **/
 
 void convert_cmd(char **av)
 {
-    int i = 0;
-    while (av[i] != NULL)
-    {
-        if (!strcmp(av[i], "|") && av[i + 1] != NULL && av[i + 2] != NULL)
-        {
-            // Concatenate av[i + 1] and av[i + 2]
-            char *combined = ft_strjoin(av[i + 1], " ");
-            combined = ft_strjoin(combined, av[i + 2]);
-            // Shift the remaining elements in the array to the left
-            int j = i + 3;
-            while (av[j] != NULL)
-            {
-                av[j - 2] = av[j];
-                j++;
-            }
-            // Update av[i] and av[i + 1]
-            av[i] = strdup(combined);
-            av[i + 1] = NULL;
-            // Free the memory allocated for combined
-            free(combined);
-        }
-        else
-        {
-            i++;
-        }
-    }
+	int i;
+	int j;
+	char	*combined;
+	char	*tmp;
+
+	i = 0;
+	while (av[i] != NULL)
+	{
+		if (!strcmp(av[i], "|") && av[i + 1] != NULL && av[i + 2] != NULL)
+		{
+			tmp = ft_strjoin(av[i + 1], " ");
+			combined = ft_strjoin(tmp, av[i + 2]);
+			j = i + 3;
+			while (av[j] != NULL)
+			{
+				av[j - 2] = av[j];
+				j++;
+			}
+			av[i] = ft_strdup(combined);
+			av[i + 1] = NULL;
+			free(combined);
+		}
+		else
+			i++;
+	}
 }
 
 
@@ -129,3 +179,6 @@ ret[n][ft_wordlen(&s[i], c)] = '\0';
 i = i + ft_wordlen(&s[i], c) - 1;
 
 **/
+
+
+

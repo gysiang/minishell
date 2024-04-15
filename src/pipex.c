@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/14 17:37:34 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/15 14:50:38 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,5 +146,5 @@ void parent(char **argv, int *p_fd, char **env)
     }
     close(p_fd[0]);
     close(p_fd[1]);
-    exec_cmd(argv[2], env);
+    exec_cmd(argv[1], env);
 }

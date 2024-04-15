@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/14 17:56:11 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/15 14:52:18 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ void	pipex_feature(char *input, char **env)
 	char	**s;
 
 	s = ft_dqsplit(input, ' ');
+	convert_cmd(s);
+	/***
+	for (int i = 0; s[i] != NULL; i++) {
+		printf("av[%d]: %s\n", i, s[i]);
+	}; **/
 	if (pipe(p_fd) == -1)
 	{
 		ft_putstr_fd("Error creating pipe\n", STDERR_FILENO);
@@ -58,12 +63,10 @@ int	main(int ac, char **av, char **env)
 			break;
 		}
 		if (*input == '\0')
-			//free(input);
 			continue;
 		printf("This is user input: %s\n", input);
 		if (hist_feature(input) == 1)
 			return (1);
-		// Print all av string
 		/**
 		for (int i = 0; av_str[i] != NULL; i++) {
 			printf("av[%d]: %s\n", i, av_str[i]);

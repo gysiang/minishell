@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:35:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/15 16:34:27 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/17 12:07:49 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,40 +43,35 @@ static size_t	ft_wordlen(const char *s, char c)
 	return (i);
 }
 
-static void	split(char **s, char **ret, char c, char n, int i)
+static void	handle_split(char ***ret, const char *s, int *i, int *n)
 {
-	int	len;
-	char	*end_quote;
+	int len;
+	char *end_quote;
 
-	while (s[++i])
+	len = 0;
+	while (s[*i] == ' ')
+		(*i)++;
+	if (s[*i] == '"')
 	{
-		if (s[i] && s[i] != c)
-		{
-			while (s[i] != c)
-				i++;
-			if (s[i] == '"')
-			{
-				ret[n] = ft_strdup(&s[++i]);
-				end_quote = ft_strchr(ret[n], '"');
-				if (end_quote)
-				{
-					*end_quote = '\0';
-					i += end_quote - ret[n] + 1;
-				}
-			}
-			else
-				ret[n] = ft_substr(s, i, len);
-			i = i + ft_wordlen(&s[i], c) - 1;
-			n++;
-		}
+		(*ret)[*n] = ft_strdup(&s[++(*i)]);
+		end_quote = ft_strchr((*ret)[*n], '"');
+		if (end_quote)
+			(*i) += end_quote - (*ret)[*n] + 1;
 	}
+	else
+	{
+		len = ft_wordlen(&s[*i], ' ');
+		(*ret)[*n] = ft_substr(s, *i, len);
+	}
+	(*i) += ft_wordlen(&s[*i], ' ') - 1;
+	(*n)++;
 }
-char **ft_dqsplit(char const *s, char c)
+
+char	**ft_dqsplit(char const *s, char c)
 {
 	int n;
 	char **ret;
 	int i;
-	char *end_quote;
 
 	i = -1;
 	if (!s)
@@ -86,12 +81,17 @@ char **ft_dqsplit(char const *s, char c)
 	n = 0;
 	if (ret)
 	{
-		split(s, ret, c, n, i);
+		while (s[++i])
+		{
+			if (s[i] != c)
+			{
+				handle_split(&ret, s, &i, &n);
+			}
+		}
 		ret[n] = NULL;
 	}
 	return (ret);
 }
-
 
 /***
 char **ft_dqsplit(char const *s, char c)
@@ -111,7 +111,7 @@ char **ft_dqsplit(char const *s, char c)
 	{
 		while (s[++i])
 		{
-			if (s[i] && s[i] != c)
+			if (s[i] != c)
 			{
 				while (s[i] == ' ')
 					i++;
@@ -120,10 +120,7 @@ char **ft_dqsplit(char const *s, char c)
 					ret[n] = ft_strdup(&s[++i]);
 					end_quote = ft_strchr(ret[n], '"');
 					if (end_quote)
-					{
-						*end_quote = '\0';
 						i += end_quote - ret[n] + 1;
-					}
 				}
 				else
 				{
@@ -139,7 +136,7 @@ char **ft_dqsplit(char const *s, char c)
 	return (ret);
 } **/
 
-void convert_cmd(char **av)
+void	convert_cmd(char **av)
 {
 	int i;
 	int j;
@@ -167,18 +164,3 @@ void convert_cmd(char **av)
 			i++;
 	}
 }
-
-
-
-/***
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-
-ret[n] = malloc(ft_wordlen(&s[i], c) + 1);
-strncpy(ret[n], &s[i], ft_wordlen(&s[i], c));
-ret[n][ft_wordlen(&s[i], c)] = '\0';
-i = i + ft_wordlen(&s[i], c) - 1;
-
-**/
-
-
-

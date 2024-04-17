@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/15 15:33:41 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/17 12:36:41 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,9 @@ int	main(int ac, char **av, char **env)
 		}
 		if (*input == '\0')
 			continue;
-		printf("This is user input: %s\n", input);
+		//printf("This is user input: %s\n", input);
 		if (hist_feature(input) == 1)
 			continue ;
-		/**
-		for (int i = 0; av_str[i] != NULL; i++) {
-			printf("av[%d]: %s\n", i, av_str[i]);
-		} **/
 		pipex_feature(input, env);
 		free(input);
 	}

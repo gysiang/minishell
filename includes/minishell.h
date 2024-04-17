@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/15 14:42:38 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/17 15:14:25 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,20 @@ typedef struct s_shell
 	//t_bool	end;
 }		t_shell;
 
+// token types
+typedef enum token_type
+{
+	A_CMD,
+	A_PIPE
+}	t_token_type;
+
+// token structure
+typedef struct	s_node
+{
+	char			*token;
+	t_token_type	type;
+	struct Node		*next;
+}	t_node;
 
 /*
  * Builtin C Functions

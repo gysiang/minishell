@@ -11,7 +11,7 @@ LIBS			= -L$(LIBFT_PATH) -lft -lreadline
 
 SRC_FILES		= $(addprefix $(SRC_DIR)/, \
 					main.c \
-					utils.c \
+					sutils.c \
 					history.c \
 					pipex.c \
 					pipex_utils.c \

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   sutils.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:35:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/19 11:03:08 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/19 16:16:27 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,57 @@ static size_t	ft_wordlen(const char *s, char c)
 	return (i);
 }
 
+static void	handle_split(char ***ret, const char *s, int *i, int *n)
+{
+	int len;
+	char *end_quote;
+
+	len = 0;
+	while (s[*i] == ' ')
+		(*i)++;
+	if (s[*i] == '"')
+	{
+		(*ret)[*n] = ft_strdup(&s[++(*i)]);
+		end_quote = ft_strchr((*ret)[*n], '"');
+		if (end_quote)
+			(*i) += end_quote - (*ret)[*n] + 1;
+	}
+	else
+	{
+		len = ft_wordlen(&s[*i], ' ');
+		(*ret)[*n] = ft_substr(s, *i, len);
+	}
+	(*i) += ft_wordlen(&s[*i], ' ') - 1;
+	(*n)++;
+}
+
+char	**ft_dqsplit(char const *s, char c)
+{
+	int n;
+	char **ret;
+	int i;
+
+	i = -1;
+	if (!s)
+		return (NULL);
+	n = ft_wcount(s, c);
+	ret = malloc((n + 1) * sizeof(char *));
+	n = 0;
+	if (ret)
+	{
+		while (s[++i])
+		{
+			if (s[i] != c)
+			{
+				handle_split(&ret, s, &i, &n);
+			}
+		}
+		ret[n] = NULL;
+	}
+	return (ret);
+}
+
+/***
 char **ft_dqsplit(char const *s, char c)
 {
 	int n;
@@ -60,7 +111,7 @@ char **ft_dqsplit(char const *s, char c)
 	{
 		while (s[++i])
 		{
-			if (s[i] && s[i] != c)
+			if (s[i] != c)
 			{
 				while (s[i] == ' ')
 					i++;
@@ -69,10 +120,7 @@ char **ft_dqsplit(char const *s, char c)
 					ret[n] = ft_strdup(&s[++i]);
 					end_quote = ft_strchr(ret[n], '"');
 					if (end_quote)
-					{
-						*end_quote = '\0';
 						i += end_quote - ret[n] + 1;
-					}
 				}
 				else
 				{
@@ -86,46 +134,33 @@ char **ft_dqsplit(char const *s, char c)
 		ret[n] = NULL;
 	}
 	return (ret);
-}
+} **/
 
-void convert_cmd(char **av)
+void	convert_cmd(char **av)
 {
-    int i = 0;
-    while (av[i] != NULL)
-    {
-        if (!strcmp(av[i], "|") && av[i + 1] != NULL && av[i + 2] != NULL)
-        {
-            // Concatenate av[i + 1] and av[i + 2]
-            char *combined = ft_strjoin(av[i + 1], " ");
-            combined = ft_strjoin(combined, av[i + 2]);
-            // Shift the remaining elements in the array to the left
-            int j = i + 3;
-            while (av[j] != NULL)
-            {
-                av[j - 2] = av[j];
-                j++;
-            }
-            // Update av[i] and av[i + 1]
-            av[i] = strdup(combined);
-            av[i + 1] = NULL;
-            // Free the memory allocated for combined
-            free(combined);
-        }
-        else
-        {
-            i++;
-        }
-    }
+	int i;
+	int j;
+	char	*combined;
+	char	*tmp;
+
+	i = 0;
+	while (av[i] != NULL)
+	{
+		if (!strcmp(av[i], "|") && av[i + 1] != NULL && av[i + 2] != NULL)
+		{
+			tmp = ft_strjoin(av[i + 1], " ");
+			combined = ft_strjoin(tmp, av[i + 2]);
+			j = i + 3;
+			while (av[j] != NULL)
+			{
+				av[j - 2] = av[j];
+				j++;
+			}
+			av[i] = ft_strdup(combined);
+			av[i + 1] = NULL;
+			free(combined);
+		}
+		else
+			i++;
+	}
 }
-
-
-
-/***
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-
-ret[n] = malloc(ft_wordlen(&s[i], c) + 1);
-strncpy(ret[n], &s[i], ft_wordlen(&s[i], c));
-ret[n][ft_wordlen(&s[i], c)] = '\0';
-i = i + ft_wordlen(&s[i], c) - 1;
-
-**/

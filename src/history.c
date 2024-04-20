@@ -6,11 +6,11 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:49:27 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/14 16:04:36 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:02:27 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 void	prompt()
 {

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/15 14:42:38 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:30:49 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,12 @@
 # include <signal.h>
 # include <stdlib.h>
 # include <limits.h>
+# include "pipex.h"
+# include "tokenizer.h"
+
+# define PROMPT "minishell$ "
 
 // Struct for commands
-
 typedef struct s_cmd
 {
 	//t_uchar	type;
@@ -62,7 +65,6 @@ typedef struct s_shell
 	int	last_return;
 	//t_bool	end;
 }		t_shell;
-
 
 /*
  * Builtin C Functions

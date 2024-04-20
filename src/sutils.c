@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   sutils.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:35:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/17 12:07:49 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/20 19:38:44 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 static int	ft_wcount(char const *s, char c)
 {
@@ -28,19 +28,6 @@ static int	ft_wcount(char const *s, char c)
 			s++;
 	}
 	return (n);
-}
-
-static size_t	ft_wordlen(const char *s, char c)
-{
-	size_t	i;
-
-	i = 0;
-	while (*s && *s != c)
-	{
-		i++;
-		s++;
-	}
-	return (i);
 }
 
 static void	handle_split(char ***ret, const char *s, int *i, int *n)

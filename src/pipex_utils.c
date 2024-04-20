@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:23:30 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/13 14:04:22 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:02:45 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
-#include "../includes/minishell.h"
+#include "pipex.h"
+#include "minishell.h"
 
 /* Returns the message directed to stderror and then exits out*/
 void	exit_handler(int exit_code)

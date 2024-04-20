@@ -6,12 +6,12 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/15 14:50:38 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:02:53 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
-#include "../includes/minishell.h"
+#include "pipex.h"
+#include "minishell.h"
 
 /* Split the command string into parts based on spaces, then find the full path
 of the command to be exxecuted. If the command fails to execute, will print the

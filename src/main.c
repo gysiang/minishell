@@ -6,12 +6,12 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/17 12:36:41 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/19 16:17:18 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
-#include "../includes/minishell.h"
+#include "pipex.h"
+#include "minishell.h"
 
 void	pipex_feature(char *input, char **env)
 {
@@ -49,26 +49,33 @@ int	main(int ac, char **av, char **env)
 {
 	(void)ac;
 	(void)av;
-	char	*input;
+	char	*line;
+	t_token *token_lst;
 
 	using_history();
 	setup_signal_handler();
 	while (1)
 	{
-		prompt();
-		input = readline(" ");
-		if (input == NULL)
+		//prompt();
+		line = readline(PROMPT);
+		if (line == NULL)
 		{
 			printf("exit\n");
 			break;
 		}
-		if (*input == '\0')
+		if (*line == '\0')
 			continue;
-		//printf("This is user input: %s\n", input);
-		if (hist_feature(input) == 1)
-			continue ;
-		pipex_feature(input, env);
-		free(input);
+		printf("This is user input: %s\n", line);
+		token_lst = token_processor(line);
+		print_tokenlst(token_lst);
+		if (hist_feature(line) == 1)
+			return (1);
+		/**
+		for (int i = 0; av_str[i] != NULL; i++) {
+			printf("av[%d]: %s\n", i, av_str[i]);
+		} **/
+		pipex_feature(line, env);
+		free(line);
 	}
 	return (0);
 }

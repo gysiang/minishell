@@ -3,30 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:16:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/19 15:29:35 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/20 19:38:15 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
-{
-	t_token	*new_token;
-
-	new_token = create_token(NULL, type);
-	if (!new_token)
-		return (0);
-	// add the token to back of the token_lst
-	token_add_back(token_lst, *line, type);
-	// move to next char
-	(*line)++;
-	return (1);
-}
-
-static size_t	ft_wordlen(const char *s, char c)
+size_t	ft_wordlen(const char *s, char c)
 {
 	size_t	i;
 
@@ -39,21 +25,95 @@ static size_t	ft_wordlen(const char *s, char c)
 	return (i);
 }
 
+int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
+{
+	t_token	*new_token;
+	int	word_len;
+	char	*symbol;
+
+	//printf("entered into add_symbol\n");
+	word_len = ft_wordlen(*line, ' ');
+	symbol = (char *)malloc(sizeof(char) + 1);
+	if (!symbol)
+		return (0);
+	ft_copy(symbol, *line, word_len);
+	//printf("print symbol %s\n", symbol);
+	new_token = create_token(symbol, type);
+	if (!new_token)
+		return (0);
+	token_add_back(token_lst, symbol, type);
+	(*line)++;
+	return (1);
+}
+
 int	add_command_lst(char **line, t_token **token_lst)
 {
 	t_token	*new_token;
-	char	cmd[1000];
+	int	word_len;
+	char	*cmd;
 
-	//get the command
-	ft_strlcat(cmd, *line, ft_wordlen(*line, ' '));
-	printf("print cmd %s\n", cmd);
-	// get from start of word to
+	word_len = ft_wordlen(*line, ' ');
+	cmd = (char *)malloc(sizeof(char) + 1);
+	if (!cmd)
+		return (0);
+	ft_copy(cmd, *line, word_len);
+	//printf("entered into add_command\n");
+	//printf("print wordlen %d\n", word_len);
+	//printf("print cmd %s\n", cmd);
 	new_token = create_token(cmd, T_COMMAND);
 	if (!new_token)
 		return (0);
 	token_add_back(token_lst, cmd, T_COMMAND);
-	(*line) += ft_wordlen(*line, ' ');
+	(*line) += word_len;
 	return (1);
+}
+
+static	char 	*concat_token(const char *token1, const char *token2)
+{
+	size_t	len1;
+	size_t	len2;
+	size_t	total_len;
+	char	*joined_str;
+
+	len1 = ft_strlen(token1);
+	len2 = ft_strlen(token2);
+	total_len = len1 + len2 + 2;
+	joined_str = (char *)malloc(total_len);
+	if (!joined_str)
+		return (NULL);
+	ft_copy(joined_str, token1, len1);
+	ft_strcat(joined_str, " ");
+	ft_strcat(joined_str, token2);
+	return (joined_str);
+}
+
+// join two nodes with commands together wc, -l
+t_token *reprocess_tokenlst(t_token *lst)
+{
+	//size_t t_len;
+	char *joined;
+	t_token *curr;
+	t_token *next;
+
+	curr = lst;
+	while (curr != NULL && curr->next != NULL)
+	{
+		if (curr->type == T_COMMAND && curr->next->type == T_COMMAND)
+		{
+			joined = concat_token(curr->token, curr->next->token);
+			if (joined != NULL)
+			{
+				free(curr->token);
+				free(curr->next->token);
+				curr->token = joined;
+				next = curr->next;
+				curr->next = next->next;
+				free(next);
+			}
+		}
+		curr = curr->next;
+	}
+	return (lst);
 }
 
 t_token	*token_processor(char *line)
@@ -64,74 +124,11 @@ t_token	*token_processor(char *line)
 	{
 		if (ft_iswhitespace(line))
 			line++;
-		else if (!ft_strcmp(line, "|"))
+		else if (*line == '|')
 			add_symbol_lst(&line, T_PIPE, &token_lst);
 		else
 			add_command_lst(&line, &token_lst);
 	}
+	token_lst = reprocess_tokenlst(token_lst);
 	return (token_lst);
-}
-
-// print the linked list that holds the tokens;
-void	print_tokenlst(t_token *token_lst)
-{
-	t_token *curr;
-
-	curr = token_lst;
-	while (curr != NULL)
-	{
-		printf("token: %s\n", curr->token);
-		printf("token type: %d\n", curr->type);
-		curr = curr->next;
-	}
-}
-
-// create a new node
-t_token *create_token(char *token, t_token_type type)
-{
-	t_token *new_node;
-
-	new_node = malloc(sizeof(t_token));
-	if (!new_node)
-		return (NULL);
-	new_node->token = token;
-	new_node->type = type;
-	new_node->next = NULL;
-	return (new_node);
-}
-
-// add a node to end of token list
-void	token_add_back(t_token **head, char *token, t_token_type type)
-{
-	t_token *new_node;
-	t_token *current_node;
-
-	new_node = create_token(token, type);
-	if (*head == NULL)
-		*head = new_node;
-	else
-	{
-		current_node = *head;
-		while (current_node->next != NULL)
-		{
-			current_node = current_node->next;
-		}
-		current_node->next = new_node;
-	}
-}
-
-// free the memory for linked list
-void	free_tokenlst(t_token *head)
-{
-	t_token *current_node;
-	t_token *tmp;
-
-	current_node = head;
-	while (current_node != NULL)
-	{
-		tmp = current_node;
-		current_node = current_node->next;
-		free (tmp->token);
-		free(tmp);
-	}
 }

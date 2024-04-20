@@ -16,6 +16,7 @@ SRC_FILES		= $(addprefix $(SRC_DIR)/, \
 					pipex.c \
 					pipex_utils.c \
 					signals.c \
+					tokenizer/create_token.c \
 					tokenizer/tokenizer.c \
 					tokenizer/tokenizer_utils.c)
 

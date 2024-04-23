@@ -3,46 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/19 16:17:18 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/23 13:20:35 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
 #include "minishell.h"
+
+/***
+for (int i = 0; s[i] != NULL; i++) {
+	printf("av[%d]: %s\n", i, s[i]);
+}; **/
 
 void	pipex_feature(char *input, char **env)
 {
 	int		p_fd[2];
-	pid_t	pid;
-	char	**s;
+	int		num_of_commands;
+	int		i;
+	char	**command;
 
-	s = ft_dqsplit(input, ' ');
-	convert_cmd(s);
-	/***
-	for (int i = 0; s[i] != NULL; i++) {
-		printf("av[%d]: %s\n", i, s[i]);
-	}; **/
 	if (pipe(p_fd) == -1)
-	{
-		ft_putstr_fd("Error creating pipe\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
-	}
-	pid = fork();
-	//printf("entered in child process\n");
-	if (pid == 0)
-		child(s, p_fd, env);
-	else if (pid > 0)
+	command = ft_dqsplit(input, ' ');
+	convert_cmd(command);
+	i = 0;
+	num_of_commands = 0;
+	while (command[num_of_commands] != NULL)
+		num_of_commands++;
+	while (i < num_of_commands - 1)
 	{
-		waitpid(pid, NULL, WNOHANG);
-		//printf("entered in parent process\n");
-		parent(s, p_fd, env);
+		do_pipe(command[i], p_fd, env);
+		i++;
 	}
-	close(p_fd[0]);
-	close(p_fd[1]);
-	//return (1);
+	exec_cmd(command[i], env);
 }
 
 int	main(int ac, char **av, char **env)
@@ -56,7 +51,6 @@ int	main(int ac, char **av, char **env)
 	setup_signal_handler();
 	while (1)
 	{
-		//prompt();
 		line = readline(PROMPT);
 		if (line == NULL)
 		{

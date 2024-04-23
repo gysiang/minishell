@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:22:41 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/23 13:23:01 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:52:38 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ void	ft_free_tab(char **tab);
 void	exit_handler(int exit_code);
 void	child(char *command, int *p_fd, char **env);
 void 	parent(int *p_fd);
-void	do_pipe(char *command, int	*p_fd, char **env);
+void	do_pipe(char *command, char **env);
 
 #endif

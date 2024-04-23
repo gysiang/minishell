@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/23 13:21:29 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:56:47 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	exec_cmd(char *cmd, char **env)
 	char	**s_cmd;
 	char	*path;
 
-	//printf("cmd: %s\n", cmd);
 	if (!cmd || !env)
 	{
 		ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);
@@ -38,7 +37,6 @@ void	exec_cmd(char *cmd, char **env)
 		exit(EXIT_FAILURE);
 	}
 	path = get_path(s_cmd[0], env);
-	//printf("path: %s\n", path);
 	if (execve(path, s_cmd, env) == -1)
 	{
 		ft_putstr_fd("pipex: Error executing command\n", 2);
@@ -72,8 +70,9 @@ void parent(int *p_fd)
 	//exec_cmd(command, env);
 }
 
-void	do_pipe(char *command, int	*p_fd, char **env)
+void	do_pipe(char *command, char **env)
 {
+	int		p_fd[2];
 	pid_t	pid;
 
 	if (pipe(p_fd) == -1)

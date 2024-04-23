@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:16:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/20 19:38:15 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:13:43 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,11 @@ int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
 	int	word_len;
 	char	*symbol;
 
-	//printf("entered into add_symbol\n");
 	word_len = ft_wordlen(*line, ' ');
 	symbol = (char *)malloc(sizeof(char) + 1);
 	if (!symbol)
 		return (0);
 	ft_copy(symbol, *line, word_len);
-	//printf("print symbol %s\n", symbol);
 	new_token = create_token(symbol, type);
 	if (!new_token)
 		return (0);
@@ -57,13 +55,10 @@ int	add_command_lst(char **line, t_token **token_lst)
 	if (!cmd)
 		return (0);
 	ft_copy(cmd, *line, word_len);
-	//printf("entered into add_command\n");
-	//printf("print wordlen %d\n", word_len);
-	//printf("print cmd %s\n", cmd);
-	new_token = create_token(cmd, T_COMMAND);
+	new_token = create_token(cmd, T_IDENTIFIER);
 	if (!new_token)
 		return (0);
-	token_add_back(token_lst, cmd, T_COMMAND);
+	token_add_back(token_lst, cmd, T_IDENTIFIER);
 	(*line) += word_len;
 	return (1);
 }
@@ -87,10 +82,8 @@ static	char 	*concat_token(const char *token1, const char *token2)
 	return (joined_str);
 }
 
-// join two nodes with commands together wc, -l
-t_token *reprocess_tokenlst(t_token *lst)
+t_token *token_parser(t_token *lst)
 {
-	//size_t t_len;
 	char *joined;
 	t_token *curr;
 	t_token *next;
@@ -98,7 +91,7 @@ t_token *reprocess_tokenlst(t_token *lst)
 	curr = lst;
 	while (curr != NULL && curr->next != NULL)
 	{
-		if (curr->type == T_COMMAND && curr->next->type == T_COMMAND)
+		if (curr->type == T_IDENTIFIER && curr->next->type == T_IDENTIFIER)
 		{
 			joined = concat_token(curr->token, curr->next->token);
 			if (joined != NULL)
@@ -129,6 +122,6 @@ t_token	*token_processor(char *line)
 		else
 			add_command_lst(&line, &token_lst);
 	}
-	token_lst = reprocess_tokenlst(token_lst);
+	token_lst = token_parser(token_lst);
 	return (token_lst);
 }

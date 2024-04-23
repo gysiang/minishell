@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:33:25 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/20 19:37:31 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:10:41 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_iswhitespace(char *line)
 	return (0);
 }
 
-char *	ft_copy(char *dest, const char *src, size_t n)
+char *ft_copy(char *dest, const char *src, size_t n)
 {
 	size_t	i;
 

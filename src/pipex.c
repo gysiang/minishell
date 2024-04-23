@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/23 14:56:47 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:42:04 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 /* Split the command string into parts based on spaces, then find the full path
 of the command to be exxecuted. If the command fails to execute, will print the
 eroor messages, free the allocated memmory and then exits the program */
+
+//for (int i = 0; s_cmd[i] != NULL; i++) {
+//	printf("s_cmd[%d]: %s\n", i, s_cmd[i]);
+//}
 
 void	exec_cmd(char *cmd, char **env)
 {
@@ -28,9 +32,6 @@ void	exec_cmd(char *cmd, char **env)
 		exit(EXIT_FAILURE);
 	}
 	s_cmd = ft_split(cmd, ' ');
-	//for (int i = 0; s_cmd[i] != NULL; i++) {
-	//	printf("s_cmd[%d]: %s\n", i, s_cmd[i]);
-	//}
 	if (!s_cmd)
 	{
 		ft_putstr_fd("Failed to split command\n", STDERR_FILENO);

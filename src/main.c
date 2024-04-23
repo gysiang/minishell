@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/23 14:57:56 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:38:49 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	main(int ac, char **av, char **env)
 		}
 		if (*line == '\0')
 			continue;
-		printf("This is user input: %s\n", line);
+		//printf("This is user input: %s\n", line);
 		token_lst = token_processor(line);
 		print_tokenlst(token_lst);
 		if (hist_feature(line) == 1)

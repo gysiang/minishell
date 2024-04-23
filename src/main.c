@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/23 14:51:36 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:57:56 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	pipex(char *input, char **env)
 		n++;
 	while (i < n - 1)
 	{
-		do_pipe(command[i++], p_fd, env);
+		do_pipe(command[i++], env);
 	}
 	exec_cmd(command[i], env);
 }

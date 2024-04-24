@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:16:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/23 22:13:43 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/24 13:19:24 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,12 +113,17 @@ t_token	*token_processor(char *line)
 {
 	t_token *token_lst;
 
+	token_lst = NULL;
 	while (*line != '\0')
 	{
 		if (ft_iswhitespace(line))
 			line++;
-		else if (*line == '|')
+		else if (!ft_strncmp(line, "|", 1))
 			add_symbol_lst(&line, T_PIPE, &token_lst);
+		else if (!ft_strncmp(line, "||", 2))
+			add_symbol_lst(&line, T_OR, &token_lst);
+		else if (!ft_strncmp(line, "&&", 2))
+			add_symbol_lst(&line, T_AND, &token_lst);
 		else
 			add_command_lst(&line, &token_lst);
 	}

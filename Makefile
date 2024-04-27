@@ -14,6 +14,7 @@ SRC_FILES		= $(addprefix $(SRC_DIR)/, \
 					main.c \
 					utils.c \
 					history.c \
+					error_msg \
 					signals.c)
 
 NAME			= minishell

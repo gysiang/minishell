@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/27 18:06:41 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/27 20:35:14 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int ac, char **av, char **env)
 		add_history(line);
 		//printf("This is user input: %s\n", line);
 		token_lst = token_processor(line);
-		print_tokenlst(token_lst);
+		//print_tokenlst(token_lst);
 		// make and print ast_tree
 		ast_tree = make_ast_tree(token_lst);
 		print_ast_tree(ast_tree);

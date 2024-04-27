@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 19:36:29 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/27 18:41:18 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/27 20:01:16 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	token_add_back(t_token **head, char *token, t_token_type type)
 	new_node = create_token(token, type);
 	if (!new_node)
 		return ;
-	current_node = head;
+	current_node = *head;
 	prev_node = NULL;
 	// iterate through list
 	while (current_node != NULL)

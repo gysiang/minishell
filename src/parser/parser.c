@@ -47,9 +47,9 @@ t_token	*find_highest_op(t_token *token_lst)
 	highest_op = NULL;
 	while (token_lst)
 	{
-		if (ft_curr_token_is_operator(token_lst->token))
+		if (ft_curr_token_is_operator(token_lst))
 		{
-			prec = ft_precedence(token_lst->token);
+			prec = ft_precedence(token_lst);
 			if (prec > highest_prec)
 			{
 				highest_prec = prec;
@@ -74,30 +74,34 @@ t_ast_node	*make_ast_tree(t_token *token_lst)
 		return (new_node);
 	op_token = find_highest_op(token_lst);
 	if (!op_token)
-		return (node);
+		return (NULL);
 	op_node = create_ast_node(op_token);
 	if (!op_node)
 		return (NULL);
 	op_node->left_node = make_ast_tree(token_lst->prev);
 	op_node->right_node = make_ast_tree(op_token->next);
 	if (op_token->prev)
-		op_token->prev->next = op_node;
-	else
-		token_lst = op_node;
+	{
+		op_token->prev->next = NULL;
+		op_node->left_node = create_ast_node(op_token->prev);
+	}
 	if (op_token->next)
-		op_token->next->prev = op_node;
+	{
+		op_token->next->prev = NULL;
+		op_node->right_node = create_ast_node(op_token->next);
+	}
 	free(op_token);
-	return (token_lst)
+	return (new_node);
 }
 
-void print_ast_node(t_ast_node *node, int level)
+void	print_ast_node(t_ast_node *node, int level)
 {
     if (node == NULL)
         return;
 
     // Print the current node at the given indentation level
     printf("%*s", level * 4, ""); // Adjust the spacing for indentation
-    printf("Node: %s\n", node->token);
+    printf("Node: %s\n", node->value);
 
     // Recursively print the left and right nodes
     if (node->left_node != NULL)
@@ -115,7 +119,7 @@ void print_ast_node(t_ast_node *node, int level)
     }
 }
 
-void print_ast_tree(t_ast_node *root)
+void	print_ast_tree(t_ast_node *root)
 {
     // Start printing from the root node with an initial indentation level of 0
     print_ast_node(root, 0);

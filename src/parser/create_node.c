@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 14:34:48 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/27 18:43:26 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/27 19:57:59 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // create a new ast node
 t_ast_node *create_ast_node(t_token *token)
 {
-	t_token *new_node;
+	t_ast_node *new_node;
 
 	new_node = malloc(sizeof(t_ast_node));
 	if (!new_node)

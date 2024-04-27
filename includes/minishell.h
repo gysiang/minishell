@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/12 12:25:06 by axlee            ###   ########.fr       */
+/*   Updated: 2024/04/19 11:30:49 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,24 @@
 # include <sys/types.h>
 # include <dirent.h>
 # include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <stdbool.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
 # include <signal.h>
 # include <stdlib.h>
 # include <limits.h>
+# include "pipex.h"
+# include "tokenizer.h"
+
+# define PROMPT "minishell$ "
 
 // Struct for commands
-
 typedef struct s_cmd
 {
-	t_uchar	type;
+	//t_uchar	type;
 	int	argc;
 	char	**argv;
 	t_list	*input;
@@ -57,11 +63,10 @@ typedef struct s_shell
 	int	data_fd[2];
 	int	ret_fd[2];
 	int	last_return;
-	t_bool	end;
+	//t_bool	end;
 }		t_shell;
 
-
-/* 
+/*
  * Builtin C Functions
 * */
 
@@ -71,7 +76,9 @@ int minishell_error_msg(char *cmd, int error_no);
 int	minishell_echo(t_shell *minishell, t_cmd *cmd);
 
 // utils
-void	put_string_fd(int fd, const char *s);
+int	ft_strcmp(const char *s1, const char *s2);
+char	**ft_dqsplit(char const *s, char c);
+void	convert_cmd(char **s);
 
 // signals
 void	sigint_handler(int signal);
@@ -80,6 +87,6 @@ void	setup_signal_handler();
 //history
 void	print_history();
 void	prompt();
-void	hist_feature(const char *s);
+int	hist_feature(const char *s);
 
 #endif

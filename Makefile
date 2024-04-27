@@ -20,7 +20,6 @@ SRC_FILES		= $(addprefix $(SRC_DIR)/, \
 					tokenizer/create_token.c \
 					tokenizer/tokenizer.c \
 					tokenizer/tokenizer_utils.c)
->>>>>>> main
 
 NAME			= minishell
 

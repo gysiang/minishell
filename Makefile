@@ -13,6 +13,7 @@ SRC_FILES		= $(addprefix $(SRC_DIR)/, \
 					main.c \
 					sutils.c \
 					history.c \
+					error_msg \
 					signals.c \
 					pipex/pipex.c \
 					pipex/pipex_utils.c \

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axlee <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,18 +12,11 @@
 
 #include "libft.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
+void    ft_strdel(char **str)
 {
-	int	i;
-
-	i = 0;
-	if (!s1[i] && !s2[i])
-		return (0);
-	while (s1[i] && s2[i])
-	{
-		if (s1[i] != s2[i])
-			return (s1[i] - s2[i]);
-		i++;
-	}
-	return (1);
+    if (str && *str)
+    {
+        free(*str);
+        *str = NULL;
+    }
 }

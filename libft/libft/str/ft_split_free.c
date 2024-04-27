@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_split_free.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axlee <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,18 +12,16 @@
 
 #include "libft.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
+void	ft_split_free(char ***str_array)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	if (!s1[i] && !s2[i])
-		return (0);
-	while (s1[i] && s2[i])
+	while ((*str_array)[i])
 	{
-		if (s1[i] != s2[i])
-			return (s1[i] - s2[i]);
+		ft_strdel(&((*str_array)[i]));
 		i++;
 	}
-	return (1);
+	free(*str_array);
+	*str_array = NULL;
 }

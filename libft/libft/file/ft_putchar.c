@@ -1,29 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_putchar   .c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/12 12:57:04 by axlee             #+#    #+#             */
-/*   Updated: 2024/04/12 12:57:29 by axlee            ###   ########.fr       */
+/*   Created: 2024/03/13 17:41:36 by axlee             #+#    #+#             */
+/*   Updated: 2024/03/13 17:45:36 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
+void	ft_putchar(char c)
 {
-	int	i;
-
-	i = 0;
-	if (!s1[i] && !s2[i])
-		return (0);
-	while (s1[i] && s2[i])
-	{
-		if (s1[i] != s2[i])
-			return (s1[i] - s2[i]);
-		i++;
-	}
-	return (1);
+	write(1, &c, 1);
 }

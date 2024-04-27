@@ -70,6 +70,9 @@ typedef struct s_shell
  * Builtin C Functions
 * */
 
+// Error Message
+int minishell_error_msg(char *cmd, int error_no);
+
 int	minishell_echo(t_shell *minishell, t_cmd *cmd);
 
 // utils

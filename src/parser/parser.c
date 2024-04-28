@@ -63,7 +63,7 @@ t_token	*find_highest_op(t_token *token_lst)
 
 t_ast_node 	*make_ast_tree(t_token *token_lst)
 {
-	t_ast_node	*new_node;
+	//t_ast_node	*new_node;
 	t_ast_node	*op_node;
 	t_token		*op_token;
 
@@ -72,9 +72,13 @@ t_ast_node 	*make_ast_tree(t_token *token_lst)
 	op_token = find_highest_op(token_lst);
 	if (!op_token)
 		return (create_ast_node(token_lst));
+	op_node = create_ast_node(op_token);
+	if (!op_node)
+		return (NULL);
+	op_token->prev->next = NULL;
+	op_token->next->prev = NULL;
 	op_node->left_node = make_ast_tree(token_lst);
 	op_node->right_node = make_ast_tree(op_token->next);
-
 	free(op_token);
 	return (op_node);
 }

@@ -86,28 +86,28 @@ t_ast_node 	*make_ast_tree(t_token *token_lst)
 
 void	print_ast_node(t_ast_node *node, int level)
 {
-    if (node == NULL)
-        return;
+	if (node == NULL)
+		return;
     // Print the current node at the given indentation level
-    printf("%*s", level * 4, ""); // Adjust the spacing for indentation
-    printf("Node: %s\n", node->value);
+	printf("%*s", level * 4, ""); // Adjust the spacing for indentation
+	printf("Node: %s\n", node->value);
     // Recursively print the left and right nodes
-    if (node->left_node != NULL)
-    {
-        printf("%*s", (level + 1) * 4, ""); // Adjust the spacing for indentation
-        printf("Left:\n");
-        print_ast_node(node->left_node, level + 1);
-    }
-    if (node->right_node != NULL)
-    {
-        printf("%*s", (level + 1) * 4, ""); // Adjust the spacing for indentation
-        printf("Right:\n");
-        print_ast_node(node->right_node, level + 1);
-    }
+	if (node->left_node != NULL)
+	{
+		printf("%*s", (level + 1) * 4, ""); // Adjust the spacing for indentation
+		printf("Left:\n");
+		print_ast_node(node->left_node, level + 1);
+	}
+	if (node->right_node != NULL)
+	{
+		printf("%*s", (level + 1) * 4, ""); // Adjust the spacing for indentation
+		printf("Right:\n");
+		print_ast_node(node->right_node, level + 1);
+	}
 }
 
 void	print_ast_tree(t_ast_node *root)
 {
     // Start printing from the root node with an initial indentation level of 0
-    print_ast_node(root, 0);
+	print_ast_node(root, 0);
 }

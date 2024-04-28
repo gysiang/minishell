@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:23:30 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/23 22:50:44 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/28 16:40:41 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,26 +66,22 @@ return NULL*/
 char	*my_getenv(char *name, char **env)
 {
 	int		i;
-	int		j;
-	char	*sub;
+	size_t	name_len;
 
+	if (env == NULL || name == NULL)
+		return NULL;
+
+	name_len = ft_strlen(name);
 	i = 0;
 	while (env[i])
 	{
-		j = 0;
-		while (env[i][j] && env[i][j] != '=')
-			j++;
-		sub = ft_substr(env[i], 0, j);
-		if (ft_strcmp(sub, name) == 0)
-		{
-			free(sub);
-			return (env[i] + j + 1);
-		}
-		free(sub);
+		if (ft_strncmp(env[i], name, name_len) == 0 && env[i][name_len] == '=')
+			return (env[i] + name_len + 1);
 		i++;
 	}
-	return (NULL);
+	return NULL;
 }
+
 /* Searches system's PATH where commands can be found, the split this into
 individual paths. Then seperates the commands into different paths
 
@@ -109,10 +105,16 @@ char	*get_path(char *cmd, char **env)
 	i = -1;
 	all_path = ft_split(my_getenv("PATH", env), ':');
 	s_cmd = ft_split(cmd, ' ');
+	/***
+	for (int i = 0; all_path[i] != NULL; i++) {
+		printf("all_path[%d]: %s\n", i, all_path[i]);
+	}; **/
 	while (all_path[++i])
 	{
 		path_part = ft_strjoin(all_path[i], "/");
+		//printf("path_part: %s\n", path_part);
 		exec = ft_strjoin(path_part, s_cmd[0]);
+		//printf("exec: %s\n", exec);
 		free(path_part);
 		if (access(exec, F_OK | X_OK) == 0)
 		{

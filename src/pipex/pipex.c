@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/24 13:51:41 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/28 16:42:23 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,10 @@ void	pipex(t_token *token_lst, char **env)
 		curr_token = curr_token->next;
 	}
 	command = init_command(token_lst, num_of_command);
+	/***
+	for (int i = 0; command[i] != NULL; i++) {
+		printf("p_command[%d]: %s\n", i, command[i]);
+	} **/
 	i = 0;
 	while (i < num_of_command - 1)
 	{
@@ -99,13 +103,19 @@ void	exec_cmd(char *cmd, char **env)
 		ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
+	//printf("exec_cmd is called\n");
 	s_cmd = ft_split(cmd, ' ');
 	if (!s_cmd)
 	{
 		ft_putstr_fd("Failed to split command\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	path = get_path(s_cmd[0], env);
+	path = get_path(cmd, env);
+	//printf("path: %s\n", path);
+	if (!path) {
+		printf("get_path returned NULL\n");
+		exit(EXIT_FAILURE);
+	}
 	if (execve(path, s_cmd, env) == -1)
 	{
 		ft_putstr_fd("pipex: Error executing command\n", 2);
@@ -124,6 +134,7 @@ void child(char *command, int *p_fd, char **env)
 	}
 	close(p_fd[0]);
 	close(p_fd[1]);
+	printf("child command%s\n",command);
 	exec_cmd(command, env);
 }
 

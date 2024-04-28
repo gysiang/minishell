@@ -21,7 +21,6 @@ static void error_EOF(char *end_of_file)
     ft_putendl_fd(")", 2); // Print closing parenthesis and newline
 }
 
-
 static void here_doc_read(t_shell * minishell, int *pipe_fds, char *delimiter)
 {
     char *str;
@@ -63,7 +62,7 @@ int here_doc(t_shell *minishell, char *delimiter)
     pid = fork(); // Fork a child process
     if (pid == 0)// If in the child process (pid is 0)
     {
-        here_doc_read(minishell, pipe_des, delimiter); // Call here_doc_read function with minshell, pipe_des and dleimiter 
+        here_doc_read(minishell, pipe_des, delimiter); // Call here_doc_read function with minshell, pipe_des and dleimiter
         exit(0);
     }
     waitpid(pid, &status, WUNTRACED); // Wait for the child process to finish and sotre the status

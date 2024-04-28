@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/28 09:55:54 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/28 13:41:35 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@
 # define PROMPT "minishell$ "
 
 // Struct for commands
-/**
 typedef struct s_cmd
 {
 	//t_uchar	type;
@@ -49,12 +48,11 @@ typedef struct s_cmd
 	t_list	*output;
 	int	return_value;
 }		t_cmd;
-**/
 
 /*
  * Struct for Minishell
 */
-/***
+
 typedef struct s_shell
 {
 	int	env_size;
@@ -68,7 +66,7 @@ typedef struct s_shell
 	int	last_return;
 	//t_bool	end;
 }		t_shell;
-**/
+
 
 /*
  * Builtin C Functions
@@ -92,5 +90,11 @@ void	setup_signal_handler();
 void	print_history();
 void	prompt();
 int	hist_feature(const char *s);
+
+void    delete_command(void *elem);
+void    free_and_exit(t_shell *minishell, int return_value);
+char *ft_strjoin_free(char **s1, char const *s2);
+int minishell_error_msg(char *cmd, int error_no);
+
 
 #endif

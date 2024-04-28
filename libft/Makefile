@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: axlee <axlee@student.42.fr>                +#+  +:+       +#+         #
+#    By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/13 15:19:53 by axlee             #+#    #+#              #
-#    Updated: 2024/04/12 12:59:20 by axlee            ###   ########.fr        #
+#    Updated: 2024/04/28 13:55:21 by gyong-si         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ FILE_FILES =	file/ft_lstnew.c \
 				file/ft_putendl_fd.c \
 				file/ft_putnbr_fd.c \
 				file/ft_putstr_fd.c \
-		
+
 FILE_OBJS =		$(addprefix $(OBJS_DIR)/,$(notdir $(FILE_FILES:.c=.o)))
 
 # **************************************************************************** #
@@ -64,7 +64,7 @@ LIST_FILES =	list/ft_lstadd_back.c \
 				list/ft_lstdelone.c \
 				list/ft_lstlast.c \
 				list/ft_lstmap.c \
-		
+
 LIST_OBJS =		$(addprefix $(OBJS_DIR)/,$(notdir $(LIST_FILES:.c=.o)))
 
 
@@ -131,6 +131,8 @@ STR_FILES =		str/ft_split.c \
 				str/ft_substr.c \
 				str/ft_tolower.c \
 				str/ft_toupper.c \
+				str/ft_strdel.c \
+				str/ft_split_free.c
 
 STR_OBJS =		$(addprefix $(OBJS_DIR)/,$(notdir $(STR_FILES:.c=.o)))
 
@@ -166,7 +168,7 @@ $(OBJS_DIR):
 $(OBJS_DIR)/%.o: %.c $(INCLUDES)
 	@$(CC) $(CFLAGS) -I$(INCLUDES_DIR) -c $< -o $@
 
-	
+
 .PHONY:			all bonus printf
 
 # **************************************************************************** #

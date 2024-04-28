@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 11:29:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/23 22:02:15 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/27 20:00:30 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct	s_token
 	char			*token;
 	t_token_type	type;
 	struct s_token	*next;
+	struct s_token	*prev;
 }	t_token;
 
 void	token_add_back(t_token **head, char *token, t_token_type type);

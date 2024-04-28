@@ -19,7 +19,9 @@ SRC_FILES		= $(addprefix $(SRC_DIR)/, \
 					pipex/pipex_utils.c \
 					tokenizer/create_token.c \
 					tokenizer/tokenizer.c \
-					tokenizer/tokenizer_utils.c)
+					tokenizer/tokenizer_utils.c\
+					parser/create_node.c\
+					parser/parser.c)
 
 NAME			= minishell
 

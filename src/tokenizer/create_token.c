@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 19:36:29 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/20 19:38:19 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/27 20:01:16 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,12 @@ t_token *create_token(char *token, t_token_type type)
 	new_node->token = token;
 	new_node->type = type;
 	new_node->next = NULL;
+	new_node->prev = NULL;
 	return (new_node);
 }
 
 // add a node to end of token list
+/***
 void	token_add_back(t_token **head, char *token, t_token_type type)
 {
 	t_token *new_node;
@@ -43,6 +45,32 @@ void	token_add_back(t_token **head, char *token, t_token_type type)
 			current_node = current_node->next;
 		}
 		current_node->next = new_node;
+	}
+} **/
+
+void	token_add_back(t_token **head, char *token, t_token_type type)
+{
+	t_token *current_node;
+	t_token *prev_node;
+	t_token *new_node;
+
+	new_node = create_token(token, type);
+	if (!new_node)
+		return ;
+	current_node = *head;
+	prev_node = NULL;
+	// iterate through list
+	while (current_node != NULL)
+	{
+		prev_node = current_node;
+		current_node = current_node->next;
+	}
+	if (prev_node == NULL)
+		*head = new_node;
+	else
+	{
+		new_node->prev = prev_node;
+		prev_node->next = new_node;
 	}
 }
 

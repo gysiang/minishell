@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/29 14:43:37 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/29 21:42:20 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_shell
 	char	*pwd;
 	char	*home;
 	char	*prompt;
-	char	**cmd_list;
+	t_token	*cmd_list;
 	int		data_fd[2];
 	int		ret_fd[2];
 	int		last_return;
@@ -76,7 +76,9 @@ typedef struct s_shell
 int minishell_error_msg(char *cmd, int error_no);
 
 // builtins
-int	minishell_echo(t_shell *minishell, t_cmd *cmd);
+int	minishell_echo(t_shell *minishell);
+int	minishell_env(t_shell *minishell);
+int	minishell_pwd(t_shell *minishell);
 
 // utils
 int	ft_strcmp(const char *s1, const char *s2);

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/29 15:15:57 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/29 21:41:32 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 for (int i = 0; s[i] != NULL; i++) {
 	printf("av[%d]: %s\n", i, s[i]);
 }; **/
-
 
 t_shell	*init_shell(char **envp)
 {
@@ -53,15 +52,53 @@ for (int i = 0; envp[i] != NULL; i++)
 {
     printf("%s\n", envp[i]);
 } **/
+int execute_builtin(t_shell *minishell)
+{
+	char	*s;
+
+	s = minishell->cmd_list->token;
+	if (ft_strcmp(s, "history") == 0)
+	{
+		print_history();
+		return (1);
+	}
+	if (ft_strcmp(s, "history -c") == 0)
+	{
+		clear_history();
+		return (1);
+	}
+	if (ft_strcmp(s, "echo") == 0)
+	{
+		printf("echo");
+		return (1);
+	}
+	if (ft_strcmp(s, "env") == 0)
+	{
+		minishell_env(minishell);
+		return (1);
+	}
+	if (ft_strcmp(s, "pwd") == 0)
+	{
+		minishell_pwd(minishell);
+		return (1);
+	}
+	return 0;
+}
+
+	//t_ast_node	*ast_tree;
+	/**
+	for (int i = 0; envp[i] != NULL; i++)
+    {
+        printf("%s\n", envp[i]);
+    } **/
 
 int	main(int ac, char **av, char **envp)
 {
 	(void)ac;
 	(void)av;
 	char		*line;
-	t_shell		g_shell;
 	t_token		*token_lst;
-	//t_ast_node	*ast_tree;
+	t_shell		*g_shell;
 
 	g_shell = init_shell(envp);
 	using_history();
@@ -76,15 +113,17 @@ int	main(int ac, char **av, char **envp)
 		}
 		if (*line == '\0')
 			continue;
+		printf("This is user input: %s\n", line);
 		add_history(line);
-		//printf("This is user input: %s\n", line);
 		token_lst = token_processor(line);
+		if (token_lst != NULL)
+			g_shell->cmd_list = token_lst;
+		if (execute_builtin(g_shell) == 1)
+			return (1);
 		// make and print ast_tree
 		//ast_tree = make_ast_tree(token_lst);
 		//print_tokenlst(token_lst);
 		//print_ast_tree(ast_tree);
-		if (hist_feature(line) == 1)
-			return (1);
 		pipex(token_lst, envp);
 		free_tokenlst(token_lst);
 		//free_ast_tree(ast_tree);

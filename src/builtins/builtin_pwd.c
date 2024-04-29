@@ -3,28 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 12:13:16 by axlee             #+#    #+#             */
-/*   Updated: 2024/04/12 12:25:43 by axlee            ###   ########.fr       */
+/*   Updated: 2024/04/29 21:42:46 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	minishell_pwd(t_shell *minishell, t_cmd *cmd)
+int	minishell_pwd(t_shell *minishell)
 {
-	char	pwd[PATH_MAX];
-
-	if (getcwd(pwd, sizeof(pwd)) == NULL)
-	{
-		perror("Error retrieving current directory");
-		cmd->return_value = 1;
-	}
+	if (minishell->pwd == NULL)
+		return (1);
 	else
 	{
-		printf("%s\n", pwd);
-		cmd->return_value = 0;
+		printf("%s\n", minishell->pwd);
+		return (0);
 	}
-	return (cmd->return_value);
 }

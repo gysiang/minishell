@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/04/12 12:28:30 by axlee            ###   ########.fr       */
+/*   Updated: 2024/04/29 11:46:17 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	minishell_echo(t_shell *minishell, t_cmd *cmd)
 	(void)minishell;
 	i = 1;
 	print_newline = TRUE;
-	if (cmd->argv[1] && cmd->argv[1][0] == '-' && cmd->argv[1][1] == 'n' && cmd->argv[1][2] == '\0')
+	if (cmd->argv[1] && cmd->argv[1][0] == '-' && cmd->argv[1][1] == 'n'
+			&& cmd->argv[1][2] == '\0')
 	{
 		print_newline = FALSE;
 		i++;

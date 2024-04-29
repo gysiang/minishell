@@ -6,17 +6,12 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/04/29 21:40:20 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/29 23:25:15 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	minishell_echo(t_shell *minishell)
-{
-	return (0);
-}
-/***
 int	minishell_echo(t_shell *minishell, t_cmd *cmd)
 {
 	t_bool	print_newline;
@@ -43,4 +38,4 @@ int	minishell_echo(t_shell *minishell, t_cmd *cmd)
 	if (print_newline)
 		ft_putchar('\n');
 	return (0);
-} **/
+}

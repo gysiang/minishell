@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/29 21:42:20 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/29 23:18:16 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ int minishell_error_msg(char *cmd, int error_no);
 
 // builtins
 int	minishell_echo(t_shell *minishell);
-int	minishell_env(t_shell *minishell);
-int	minishell_pwd(t_shell *minishell);
+void	minishell_pwd(t_shell *minishell);
+void	minishell_env(t_shell *minishell);
 
 // utils
 int	ft_strcmp(const char *s1, const char *s2);

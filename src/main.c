@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/29 21:41:32 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/29 23:26:00 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,8 @@ for (int i = 0; envp[i] != NULL; i++)
 {
     printf("%s\n", envp[i]);
 } **/
-int execute_builtin(t_shell *minishell)
-{
-	char	*s;
 
-	s = minishell->cmd_list->token;
+	/**
 	if (ft_strcmp(s, "history") == 0)
 	{
 		print_history();
@@ -81,9 +78,46 @@ int execute_builtin(t_shell *minishell)
 	{
 		minishell_pwd(minishell);
 		return (1);
+	} **/
+
+typedef struct {
+	const char *cmd;
+	void (*func)(void);
+} t_builtin_cmd;
+
+int execute_builtin(t_shell *minishell)
+{
+	char 					*s;
+
+	s = minishell->cmd_list->token;
+	if (ft_strcmp(s, "history") == 0)
+	{
+		print_history();
+		return (1);
 	}
-	return 0;
+	if (ft_strcmp(s, "history -c") == 0)
+	{
+		clear_history();
+		return (1);
+	}
+	if (ft_strcmp(s, "echo") == 0)
+	{
+		printf("echo\n");
+		return (1);
+	}
+	if (ft_strcmp(s, "env") == 0)
+	{
+		minishell_env(minishell);
+		return (1);
+	}
+	if (ft_strcmp(s, "pwd") == 0)
+	{
+		minishell_pwd(minishell);
+		return (1);
+	}
+	return (0);
 }
+
 
 	//t_ast_node	*ast_tree;
 	/**
@@ -113,16 +147,16 @@ int	main(int ac, char **av, char **envp)
 		}
 		if (*line == '\0')
 			continue;
-		printf("This is user input: %s\n", line);
+		//printf("This is user input: %s\n", line);
 		add_history(line);
 		token_lst = token_processor(line);
+		//print_tokenlst(token_lst);
 		if (token_lst != NULL)
 			g_shell->cmd_list = token_lst;
 		if (execute_builtin(g_shell) == 1)
 			return (1);
 		// make and print ast_tree
 		//ast_tree = make_ast_tree(token_lst);
-		//print_tokenlst(token_lst);
 		//print_ast_tree(ast_tree);
 		pipex(token_lst, envp);
 		free_tokenlst(token_lst);

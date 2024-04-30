@@ -28,7 +28,7 @@ void    delete_command(void *elem)
     ft_lstclear(&cmd->output, free);
     free(cmd);
 }
-
+/***
 void    free_and_exit(t_shell *minishell, int return_value)
 {
     rl_clear_history();
@@ -38,7 +38,7 @@ void    free_and_exit(t_shell *minishell, int return_value)
     free(minishell->pwd);
     free(minishell->prompt);
     exit(return_value);
-}
+} **/
 
 int minishell_error_msg(char *cmd, int error_no)
 {

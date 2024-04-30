@@ -21,7 +21,9 @@ SRC_FILES		= $(addprefix $(SRC_DIR)/, \
 					tokenizer/tokenizer.c \
 					tokenizer/tokenizer_utils.c\
 					parser/create_node.c\
-					parser/parser.c)
+					parser/parser.c \
+					builtins/builtin_env.c \
+					builtins/builtin_pwd.c)
 
 NAME			= minishell
 

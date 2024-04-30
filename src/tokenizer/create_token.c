@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 19:36:29 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/27 20:01:16 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/04/29 19:15:53 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_token *create_token(char *token, t_token_type type)
 	new_node = malloc(sizeof(t_token));
 	if (!new_node)
 		return (NULL);
-	new_node->token = token;
+	new_node->token = ft_strdup(token);
 	new_node->type = type;
 	new_node->next = NULL;
 	new_node->prev = NULL;

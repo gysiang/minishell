@@ -19,7 +19,7 @@ static int  save_var(t_shell *minishell, char *content)
     {
         ft_putstr_fd("minishell: export: '", 2);
         ft_putstr_fd(content, 2);
-        ft_putstr_fd("': not a valid parameter", 2);
+        ft_putstr_fd("': not a valid parameter\n", 2);
         return (1);
     }
     var_name = get_var_name(content);
@@ -58,7 +58,7 @@ void    env_realloc(t_shell *minishell)
     if (new_env == NULL)
     {
         ft_putendl_fd("minishell: memory allocation failed", 2);
-        //free_and_exit(minishell, 1);
+        free_and_exit(minishell, 1);
     }
     minishell->env = new_env;
 }
@@ -68,7 +68,7 @@ int minishell_export(t_shell *minishell, t_cmd *cmd)
     int i;
 
     i = 1;
-    if (cmd->argc > 1)
+    if (cmd->argc == 1)
         print_vars(minishell);
     while (cmd->argv[i])
     {

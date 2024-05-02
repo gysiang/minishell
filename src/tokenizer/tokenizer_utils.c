@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:33:25 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/23 22:10:41 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:02:01 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,24 @@
 // check if character is space
 int	ft_iswhitespace(char *line)
 {
-	if (*line == ' ' || *line == '"')
+	if (*line == ' ')
 		return (1);
+	return (0);
+}
+
+int	ft_isbackslash(char *line)
+{
+	if (*line == '\\')
+		return (1);
+	return (0);
+}
+
+int	ft_issemicolon(char *line)
+{
+	if (*line == ';')
+	{
+		return (1);
+	}
 	return (0);
 }
 
@@ -55,6 +71,7 @@ void	print_tokenlst(t_token *token_lst)
 	t_token *curr;
 
 	curr = token_lst;
+	printf("entered into print_tokenlst\n");
 	while (curr != NULL)
 	{
 		printf("token: %s\n", curr->token);

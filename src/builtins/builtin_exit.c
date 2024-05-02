@@ -41,7 +41,9 @@ int	minishell_exit(t_shell *minishell, t_cmd *cmd)
     numeric_result = numeric_validation(cmd->argv[1]);
     if (cmd->argv[1] && numeric_result == -1)
     {
-        ft_printf("minishell: exit: %s: numeric arguement required\n", cmd->argv[1]);
+        ft_putstr_fd("minishell: exit: %s: numeric arguement required\n", STDERR_FILENO);
+        ft_putstr_fd(cmd->argv[1], STDERR_FILENO);
+        ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
         cmd->return_value = 2;
     }
     else if (cmd->argc > 2)

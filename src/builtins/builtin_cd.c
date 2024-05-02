@@ -52,10 +52,10 @@ static int  cd_error_messages(int err, char *target_dir, int err_no)
         ft_putstr_fd("minishell: cd: too many arguments\n", 2);
     else
     {
-        msg_len = ft_strlen("minishell: cd: ") + ft_strlen(target_dir) + ft_strlen(" ");
-        error_msg = malloc(msg_len);
-        if (error_msg)
-            return NULL;
+        msg_len = ft_strlen("minishell: cd: ") + ft_strlen(target_dir) + ft_strlen(" ") + ft_strlen(strerror(err_no)) + 2;
+        error_msg = malloc(msg_len + 1);
+        if (!error_msg)
+            return (1);
         ft_strcpy(error_msg, "minishell: cd: ");
         ft_strcat(error_msg, target_dir);
         ft_strcat(error_msg, ": ");
@@ -78,15 +78,17 @@ int minishell_cd(t_shell *minishell, t_cmd *cmd)
     }
     if (!cmd->argv[1])
         target_dir = get_env(minishell, "HOME");
-    else if (cmd->argv[1][0] == '=')
+    else if (ft_strcmp(cmd->argv[1],"-") == 0)
         target_dir = get_env(minishell, "OLDPWD");
     else
         target_dir = cmd->argv[1];
     if (chdir(target_dir))
         cmd->return_value = cd_error_messages(0, target_dir, errno);
     else
+    {
         update_env_pwd(minishell);
-    if (target_dir != cmd->argv[1])
-        free(target_dir);
+        if (target_dir != cmd->argv[1])
+            free(target_dir);
+    }
     return (cmd->return_value);
 }

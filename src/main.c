@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/02 13:12:25 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/02 14:48:20 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int execute_builtin(t_shell *minishell)
 	}
 	if (ft_strcmp(s, "echo") == 0)
 	{
-		//minishell_echo(minishell);
+		minishell_echo(minishell);
 		return (1);
 	}
 	if (ft_strcmp(s, "env") == 0)
@@ -84,15 +84,15 @@ int execute_builtin(t_shell *minishell)
         printf("%s\n", envp[i]);
     } **/
 
-int	main(int ac, char **av, char **envp)
+int	main(int ac, char **av)
 {
 	(void)ac;
 	(void)av;
 	char		*line;
 	t_token		*token_lst;
-	t_shell		*g_shell;
+	//t_shell		*g_shell;
 
-	g_shell = init_shell(envp);
+	//g_shell = init_shell(envp);
 	using_history();
 	setup_signal_handler();
 	while (1)
@@ -108,7 +108,8 @@ int	main(int ac, char **av, char **envp)
 		//printf("This is user input: %s\n", line);
 		add_history(line);
 		token_lst = token_processor(line);
-		//print_tokenlst(token_lst);
+		print_tokenlst(token_lst);
+		/***
 		if (token_lst != NULL)
 			g_shell->cmd_list = token_lst;
 		if (execute_builtin(g_shell) == 1)
@@ -119,6 +120,7 @@ int	main(int ac, char **av, char **envp)
 		pipex(token_lst, envp);
 		free_tokenlst(token_lst);
 		//free_ast_tree(ast_tree);
+		**/
 	}
 	return (0);
 }

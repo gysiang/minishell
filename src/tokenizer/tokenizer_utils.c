@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:33:25 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/02 12:58:54 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:02:01 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@ int	ft_isbackslash(char *line)
 {
 	if (*line == '\\')
 		return (1);
+	return (0);
+}
+
+int	ft_issemicolon(char *line)
+{
+	if (*line == ';')
+	{
+		return (1);
+	}
 	return (0);
 }
 

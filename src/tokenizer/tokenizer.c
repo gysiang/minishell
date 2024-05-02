@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:16:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/02 13:11:56 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:31:51 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,17 @@ int	add_command_lst(char **line, t_token **token_lst)
 {
 	t_token	*new_token;
 	int	word_len;
+	//int	semi_len;
+	//int final_len;
 	char	*cmd;
 
 	word_len = ft_wordlen(*line, ' ');
-	cmd = (char *)malloc(sizeof(char) + 1);
+	//semi_len = ft_wordlen(*line, ';');
+	//printf("wordlen %d\n", word_len);
+	//printf("semi_len %d\n", semi_len);
+	//final_len = (semi_len < word_len) ? semi_len : word_len;
+	//printf("final_len %d\n", final_len);
+	cmd = (char *)malloc(word_len + 1);
 	if (!cmd)
 		return (0);
 	ft_copy(cmd, *line, word_len);
@@ -90,24 +97,32 @@ t_token *token_parser(t_token *lst)
 	char *joined;
 	t_token *curr;
 	t_token *next;
+	int	merged;
 
-	curr = lst;
-	while (curr != NULL && curr->next != NULL)
+	merged = 1;
+	while (merged)
 	{
-		if (curr->type == T_IDENTIFIER && curr->next->type == T_IDENTIFIER)
+		merged = 0;
+		curr = lst;
+		while (curr != NULL && curr->next != NULL)
 		{
-			joined = concat_token(curr->token, curr->next->token);
-			if (joined != NULL)
+			if (curr->type == T_IDENTIFIER && curr->next->type == T_IDENTIFIER)
 			{
-				free(curr->token);
-				free(curr->next->token);
-				curr->token = joined;
-				next = curr->next;
-				curr->next = next->next;
-				free(next);
+				joined = concat_token(curr->token, curr->next->token);
+				if (joined != NULL)
+				{
+					free(curr->token);
+					free(curr->next->token);
+					curr->token = joined;
+					next = curr->next;
+					curr->next = next->next;
+					free(next);
+				}
+				merged = 1;
+				break ;
 			}
+			curr = curr->next;
 		}
-		curr = curr->next;
 	}
 	return (lst);
 }

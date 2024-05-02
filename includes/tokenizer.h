@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 11:29:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/02 12:32:15 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/02 13:52:06 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	free_tokenlst(t_token *head);
 void	print_tokenlst(t_token *token_lst);
 int	ft_iswhitespace(char *line);
 int	ft_isbackslash(char *line);
+int	ft_issemicolon(char *line);
 int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst);
 int	add_command_lst(char **line, t_token **token_lst);
 char	*ft_copy(char *dest, const char *src, size_t n);

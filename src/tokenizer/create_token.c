@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 19:36:29 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/29 19:15:53 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/02 12:29:17 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,6 @@ t_token *create_token(char *token, t_token_type type)
 	new_node->prev = NULL;
 	return (new_node);
 }
-
-// add a node to end of token list
-/***
-void	token_add_back(t_token **head, char *token, t_token_type type)
-{
-	t_token *new_node;
-	t_token *current_node;
-
-	new_node = create_token(token, type);
-	if (*head == NULL)
-		*head = new_node;
-	else
-	{
-		current_node = *head;
-		while (current_node->next != NULL)
-		{
-			current_node = current_node->next;
-		}
-		current_node->next = new_node;
-	}
-} **/
 
 void	token_add_back(t_token **head, char *token, t_token_type type)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/29 23:24:39 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/02 12:40:27 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,11 @@ static char	**init_command(t_token *token_lst, int num_of_command)
 	return (command);
 }
 
+/***
+for (int i = 0; command[i] != NULL; i++) {
+	printf("p_command[%d]: %s\n", i, command[i]);
+} **/
+
 void	pipex(t_token *token_lst, char **env)
 {
 	int		i;
@@ -80,10 +85,6 @@ void	pipex(t_token *token_lst, char **env)
 		curr_token = curr_token->next;
 	}
 	command = init_command(token_lst, num_of_command);
-	/***
-	for (int i = 0; command[i] != NULL; i++) {
-		printf("p_command[%d]: %s\n", i, command[i]);
-	} **/
 	i = 0;
 	while (i < num_of_command - 1)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:16:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/27 21:08:26 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/02 13:11:56 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
 	if (!new_token)
 		return (0);
 	token_add_back(token_lst, symbol, type);
-	(*line)++;
+	if (type == T_LEFT_SHIFT || type == T_RIGHT_SHIFT)
+		(*line) += 2;
+	else
+		(*line)++;
 	return (1);
 }
 
@@ -116,7 +119,7 @@ t_token	*token_processor(char *line)
 	token_lst = NULL;
 	while (*line != '\0')
 	{
-		if (ft_iswhitespace(line))
+		if (ft_iswhitespace(line) || ft_isbackslash(line))
 			line++;
 		else if (!ft_strncmp(line, "|", 1))
 			add_symbol_lst(&line, T_PIPE, &token_lst);
@@ -124,6 +127,14 @@ t_token	*token_processor(char *line)
 			add_symbol_lst(&line, T_OR, &token_lst);
 		else if (!ft_strncmp(line, "&&", 2))
 			add_symbol_lst(&line, T_AND, &token_lst);
+		else if (!ft_strncmp(line, "<<", 2))
+			add_symbol_lst(&line, T_LEFT_SHIFT, &token_lst);
+		else if (!ft_strncmp(line, "<", 1))
+			add_symbol_lst(&line, T_LESSER_THAN, &token_lst);
+		else if (!ft_strncmp(line, ">>", 2))
+			add_symbol_lst(&line, T_RIGHT_SHIFT, &token_lst);
+		else if (!ft_strncmp(line, ">", 1))
+			add_symbol_lst(&line, T_GREATER_THAN, &token_lst);
 		else
 			add_command_lst(&line, &token_lst);
 	}

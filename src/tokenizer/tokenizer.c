@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:16:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/02 15:31:51 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/02 16:16:24 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,21 @@ int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
 int	add_command_lst(char **line, t_token **token_lst)
 {
 	t_token	*new_token;
-	int	word_len;
-	//int	semi_len;
-	//int final_len;
+	size_t	word_len;
+	size_t	semi_index;
+	int		flag;
+	char 	*semicolon_pos;
 	char	*cmd;
 
+	flag = 0;
+	semicolon_pos = ft_strchr(*line, ';');
+	semi_index = (semicolon_pos - *line);
 	word_len = ft_wordlen(*line, ' ');
-	//semi_len = ft_wordlen(*line, ';');
-	//printf("wordlen %d\n", word_len);
-	//printf("semi_len %d\n", semi_len);
-	//final_len = (semi_len < word_len) ? semi_len : word_len;
-	//printf("final_len %d\n", final_len);
+	if (semi_index < word_len)
+	{
+		flag = 1;
+		word_len = semi_index;
+	}
 	cmd = (char *)malloc(word_len + 1);
 	if (!cmd)
 		return (0);
@@ -69,6 +73,11 @@ int	add_command_lst(char **line, t_token **token_lst)
 	if (!new_token)
 		return (0);
 	token_add_back(token_lst, cmd, T_IDENTIFIER);
+	if (flag)
+	{
+		while (*line != NULL && **line != '\0')
+			(*line)++;
+	}
 	(*line) += word_len;
 	return (1);
 }

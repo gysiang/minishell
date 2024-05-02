@@ -116,6 +116,8 @@ OTHERS_OBJS =		$(addprefix $(OBJS_DIR)/,$(notdir $(OTHERS_FILES:.c=.o)))
 
 STR_FILES =		str/ft_split.c \
 				str/ft_strchr.c \
+				str/ft_strcat.c \
+				str/ft_strcpy.c \
 				str/ft_strdup.c \
 				str/ft_striteri.c \
 				str/ft_strjoin.c \
@@ -124,10 +126,12 @@ STR_FILES =		str/ft_split.c \
 				str/ft_strlen.c \
 				str/ft_strmapi.c \
 				str/ft_strcmp.c \
+				str/ft_strccmp.c \
 				str/ft_strncmp.c \
 				str/ft_strnstr.c \
 				str/ft_strrchr.c \
 				str/ft_strtrim.c \
+				str/ft_strswap.c \
 				str/ft_substr.c \
 				str/ft_tolower.c \
 				str/ft_toupper.c \

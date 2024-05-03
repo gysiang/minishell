@@ -12,26 +12,35 @@
 
 #include "minishell.h"
 
-void	sigint_handler(int signal)
+void sigint_handler(int signal)
 {
-	if (signal == SIGINT)
-	{
-		printf("\n");
-		prompt();
-		printf(" ");
-	}
+    if (signal == SIGINT)
+    {
+        printf("\n");
+        prompt();
+        printf(" ");
+    }
 }
 
-void	setup_signal_handler()
+void sigquit_handler(int signal)
 {
-	if (signal(SIGINT, sigint_handler) == SIG_ERR)
-	{
-		ft_putstr_fd("signal", 2);
-		exit(1);
-	}
-	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
-	{
-		ft_putstr_fd("signal", 2);
-		exit(1);
-	}
+    if (signal == SIGQUIT)
+    {
+        // Handle the SIGQUIT signal (e.g., cleanup, exit the program)
+        exit(0);
+    }
+}
+
+void setup_signal_handler(void)
+{
+    if (signal(SIGINT, sigint_handler) == SIG_ERR)
+    {
+        ft_putstr_fd("signal", 2);
+        exit(1);
+    }
+    if (signal(SIGQUIT, sigquit_handler) == SIG_ERR)
+    {
+        ft_putstr_fd("signal", 2);
+        exit(1);
+    }
 }

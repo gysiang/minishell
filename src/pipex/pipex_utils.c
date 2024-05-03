@@ -63,7 +63,7 @@ start of the value).
 If not, iterate to the next substr in the array. If no match is found,
 return NULL*/
 
-char	*my_getenv(char *name, char **env)
+/*char	*my_getenv(char *name, char **env)
 {
 	int		i;
 	size_t	name_len;
@@ -80,7 +80,7 @@ char	*my_getenv(char *name, char **env)
 		i++;
 	}
 	return NULL;
-}
+}*/
 
 /* Searches system's PATH where commands can be found, the split this into
 individual paths. Then seperates the commands into different paths
@@ -94,7 +94,7 @@ address of the command.
 If doesn't moves to the next location. If all locations does not contain the
 command, frees the memory and gives back the original command.*/
 
-char	*get_path(char *cmd, char **env)
+/*char	*get_path(char *cmd, char **env)
 {
 	int		i;
 	char	*exec;
@@ -105,10 +105,6 @@ char	*get_path(char *cmd, char **env)
 	i = -1;
 	all_path = ft_split(my_getenv("PATH", env), ':');
 	s_cmd = ft_split(cmd, ' ');
-	/***
-	for (int i = 0; all_path[i] != NULL; i++) {
-		printf("all_path[%d]: %s\n", i, all_path[i]);
-	}; **/
 	while (all_path[++i])
 	{
 		path_part = ft_strjoin(all_path[i], "/");
@@ -127,4 +123,4 @@ char	*get_path(char *cmd, char **env)
 	ft_free_tab(all_path);
 	ft_free_tab(s_cmd);
 	return (cmd);
-}
+}*/

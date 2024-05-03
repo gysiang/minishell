@@ -1,7 +1,10 @@
 {
     "files.associations": {
         "libft.h": "c",
-        "minishell.h": "c"
+        "minishell.h": "c",
+        "tokenizer.h": "c",
+        "types.h": "c",
+        "string.h": "c"
     }
 }
 

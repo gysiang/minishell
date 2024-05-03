@@ -28,17 +28,20 @@ void    delete_command(void *elem)
     ft_lstclear(&cmd->output, free);
     free(cmd);
 }
-/***
-void    free_and_exit(t_shell *minishell, int return_value)
+
+void free_and_exit(t_shell *minishell, int return_value)
 {
     rl_clear_history();
     ft_split_free(&minishell->env);
-    ft_lstclear(&minishell->cmd_list,delete_command);
+
+    // Convert t_token ** to t_list **
+    t_list **lst_ptr = (t_list **)&(minishell->cmd_list);
+    ft_lstclear(lst_ptr, delete_command);  // Pass the modified t_list ** argument
     free(minishell->home);
     free(minishell->pwd);
     free(minishell->prompt);
     exit(return_value);
-} **/
+}
 
 int minishell_error_msg(char *cmd, int error_no)
 {

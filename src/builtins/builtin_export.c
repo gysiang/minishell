@@ -10,6 +10,48 @@ static char *get_var_name(char *cmd)
     return (NULL);
 }
 
+static char *export_home_expand(t_shell *minishell, char *content)
+{
+    char *expanded_content;
+    char *home_value;
+    int expanded_size;
+    int i;
+    int j;
+    int k;
+
+    expanded_content = NULL;
+    home_value = get_env(minishell, "HOME");
+    if (home_value != NULL)
+    {
+        expanded_size = strlen(content) + strlen(home_value) + 1;
+        expanded_content = (char *)malloc(expanded_size * sizeof(char));
+        i = 0;
+        j = 0;
+        while (content[i] != '\0')
+        {
+            if (content[i] == '~')
+            {
+                k = 0;
+                while (home_value[k] != '\0')
+                {
+                    expanded_content[j] = home_value[k];
+                    j++;
+                    k++;
+                }
+            }
+            else
+            {
+                expanded_content[j] = content[i];
+                j++;
+            }
+            i++;
+        }
+        expanded_content[j] = '\0';
+    }
+    free(home_value);
+    return expanded_content;
+}
+
 static int  save_var(t_shell *minishell, char *content)
 {
     char    *var_name;

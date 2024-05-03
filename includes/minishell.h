@@ -38,6 +38,8 @@
 
 # define PROMPT "minishell$ "
 # define BASE_ENV_SIZE 64
+# define TRUE			0
+# define FALSE			1
 // Struct for commands
 typedef struct s_cmd
 {

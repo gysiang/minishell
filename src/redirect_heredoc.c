@@ -9,7 +9,7 @@ static void signal_free(t_shell *minishell)
 static void signal_exit(int signal_number)
 {
     (void)signal_number; // Cast signal_number to void suppress unused parameter warning
-    ft_putchar('\n'); // Print a newline character
+    printf("\n"); // Print a newline character
     signal_free(NULL); // Call signal_free function with NULL pointer
 }
 
@@ -66,7 +66,7 @@ int here_doc(t_shell *minishell, char *delimiter)
         exit(0);
     }
     waitpid(pid, &status, WUNTRACED); // Wait for the child process to finish and sotre the status
-    if (WEXISTATUS(status) == 130) // If the child status is 130
+    if (WEXITSTATUS(status) == 130) // If the child status is 130
     {
         close(pipe_des[0]); // Close the read end of the pipe
         pipe_des[0] = -1; // Set read end to -1 , indicating an error

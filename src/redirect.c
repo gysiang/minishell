@@ -58,6 +58,7 @@ static int open_output(char *file_name, int type)
     struct stat buffer;
     int fd;
 
+    fd = 0;
     if (stat(file_name, &buffer) == 0 && S_ISDIR(buffer.st_mode))
     {
         minishell_error_msg(file_name, 2);

@@ -31,16 +31,17 @@ t_shell	*init_shell(char **envp)
 		return (NULL);
 	}
 	shell->env_size = 0;
-	shell->env = envp;
-	shell->user = my_getenv("USER", envp);
-	shell->pwd = my_getenv("PWD", envp);
-	shell->home = my_getenv("HOME", envp);
+	shell->env = NULL;
+	shell->user = get_env(shell, "USER");
+	shell->pwd = get_env(shell, "PWD");
+	shell->home = get_env(shell, "HOME");
 	shell->prompt = PROMPT;
 	shell->cmd_list = NULL;
 	shell->data_fd[0] = p_fd[0];
 	shell->data_fd[1] = p_fd[1];
 	shell->last_return = 0;
 	shell->end = false;
+	init_env(shell, (const char **)envp);
 	return (shell);
 }
 

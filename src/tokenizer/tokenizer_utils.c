@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:33:25 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/02 15:02:01 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/03 16:11:56 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,27 @@ void	print_tokenlst(t_token *token_lst)
 		printf("token type: %d\n", curr->type);
 		curr = curr->next;
 	}
+}
+
+char	*remove_sq_dq(char **line)
+{
+	char	*result;
+	char	*str;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	str = *line;
+	result = (char *)malloc(ft_strlen(*line) + 1);
+	if (!result)
+		return (NULL);
+	while (str[i] != '\0')
+	{
+		if (str[i] !=  '\'')
+			result[j++] = str[i];
+		i++;
+	}
+	result[j] = '\0';
+	return (result);
 }

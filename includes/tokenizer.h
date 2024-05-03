@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 11:29:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/03 12:27:51 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/03 16:15:11 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ typedef enum s_token_type
 {
 	T_IDENTIFIER,
 	T_PIPE,
-	T_OR,
-	T_AND,
 	T_LESSER_THAN,
 	T_GREATER_THAN,
 	T_LEFT_SHIFT,
@@ -44,16 +42,13 @@ int	ft_iswhitespace(char *line);
 int	ft_isbackslash(char *line);
 int	ft_issemicolon(char *line);
 int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst);
-int	add_command(char **line, t_token **token_lst);
 int	add_command_lst(char **line, t_token **token_lst);
-int	add_command_semicolon(char **line, t_token **token_lst);
-int	add_command_singlequotes(char **line, t_token **token_lst);
 char	*ft_copy(char *dest, const char *src, size_t n);
 char	*ft_strcat(char *dest, const char *src);
+char	*remove_sq_dq(char **line);
 size_t	ft_wordlen(const char *s, char c);
 t_token *create_token(char *token, t_token_type type);
 t_token	*token_processor(char *line);
 t_token	*token_parser(t_token *lst);
-
 
 #endif

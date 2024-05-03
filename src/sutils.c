@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sutils.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:35:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/20 19:38:44 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/03 14:13:47 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,49 +79,6 @@ char	**ft_dqsplit(char const *s, char c)
 	}
 	return (ret);
 }
-
-/***
-char **ft_dqsplit(char const *s, char c)
-{
-	int n;
-	char **ret;
-	int i;
-	char *end_quote;
-
-	i = -1;
-	if (!s)
-		return (NULL);
-	n = ft_wcount(s, c);
-	ret = malloc((n + 1) * sizeof(char *));
-	n = 0;
-	if (ret)
-	{
-		while (s[++i])
-		{
-			if (s[i] != c)
-			{
-				while (s[i] == ' ')
-					i++;
-				if (s[i] == '"')
-				{
-					ret[n] = ft_strdup(&s[++i]);
-					end_quote = ft_strchr(ret[n], '"');
-					if (end_quote)
-						i += end_quote - ret[n] + 1;
-				}
-				else
-				{
-					int len = ft_wordlen(&s[i], c);
-					ret[n] = ft_substr(s, i, len);
-				}
-				i = i + ft_wordlen(&s[i], c) - 1;
-				n++;
-			}
-		}
-		ret[n] = NULL;
-	}
-	return (ret);
-} **/
 
 void	convert_cmd(char **av)
 {

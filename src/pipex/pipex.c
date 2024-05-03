@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/02 12:40:27 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/03 14:52:59 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,6 @@ eroor messages, free the allocated memmory and then exits the program */
 //for (int i = 0; s_cmd[i] != NULL; i++) {
 //	printf("s_cmd[%d]: %s\n", i, s_cmd[i]);
 //}
-
-/***
-void	pipex(char *input, char **env)
-{
-	int		n;
-	int		i;
-	char	**command;
-
-	command = ft_dqsplit(input, ' ');
-	convert_cmd(command);
-	i = 0;
-	n = 0;
-	while (command[n] != NULL)
-		n++;
-	while (i < n - 1)
-	{
-		do_pipe(command[i++], env);
-	}
-	exec_cmd(command[i], env);
-} **/
 
 static char	**init_command(t_token *token_lst, int num_of_command)
 {

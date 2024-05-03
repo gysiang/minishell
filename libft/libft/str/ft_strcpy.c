@@ -15,12 +15,12 @@
 char    *ft_strcpy(char *dst, const char *src)
 {
     int i;
+    int j;
 
     i = 0;
+    j = 0;
     while (dst[i])
-    {
-        dst[i++] = src[i++];
-    }
+        dst[i++] = src[j++];
     dst[i] = '\0';
     return (dst);
 }

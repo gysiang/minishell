@@ -8,7 +8,7 @@ char    *ft_strcat(char *dst, const char *src)
     i = 0;
     j = 0;
     while(dst[i])
-       ++i;
+        i++;
     while(src[j])
         dst[i++] = src[j++];
     dst[i] = '\0';

@@ -93,7 +93,7 @@ void	convert_cmd(char **s);
 // ENV_Manager
 char    *get_env(t_shell *minishell, const char *var);
 int env_len(t_shell *minishell);
-int search_env(t_shell *minishell, const char *var);
+int search_env_by_var(t_shell *minishell, const char *var);
 void  sort_env(t_shell *minishell);
 void    init_env(t_shell *minishell, const char **envp);
 

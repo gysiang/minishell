@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 11:29:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/02 13:52:06 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:27:51 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ typedef enum s_token_type
 	T_GREATER_THAN,
 	T_LEFT_SHIFT,
 	T_RIGHT_SHIFT,
-	T_OPENQUOTES,
-	T_CLOSEQUOTES
+	T_SINGLEQUOTE,
+	T_DOUBLEQUOTE
 }	t_token_type;
 
 // token structure
@@ -44,7 +44,10 @@ int	ft_iswhitespace(char *line);
 int	ft_isbackslash(char *line);
 int	ft_issemicolon(char *line);
 int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst);
+int	add_command(char **line, t_token **token_lst);
 int	add_command_lst(char **line, t_token **token_lst);
+int	add_command_semicolon(char **line, t_token **token_lst);
+int	add_command_singlequotes(char **line, t_token **token_lst);
 char	*ft_copy(char *dest, const char *src, size_t n);
 char	*ft_strcat(char *dest, const char *src);
 size_t	ft_wordlen(const char *s, char c);

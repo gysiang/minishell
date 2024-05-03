@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:16:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/02 16:16:24 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:26:39 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,43 @@ int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
 	return (1);
 }
 
+// one function to handle pure command
+// one function to handle with semicolon
+// one function to handle singlequote
+// one function to handle doublequote
+
+// pure command
 int	add_command_lst(char **line, t_token **token_lst)
+{
+	t_token	*new_token;
+	int	word_len;
+	char	*cmd;
+
+	word_len = ft_wordlen(*line, ' ');
+	cmd = (char *)malloc(word_len + 1);
+	if (!cmd)
+		return (0);
+	ft_copy(cmd, *line, word_len);
+	new_token = create_token(cmd, T_IDENTIFIER);
+	if (!new_token)
+		return (0);
+	token_add_back(token_lst, cmd, T_IDENTIFIER);
+	(*line) += word_len;
+	return (1);
+}
+
+// command with ;
+
+int	add_command_semicolon(char **line, t_token **token_lst)
 {
 	t_token	*new_token;
 	size_t	word_len;
 	size_t	semi_index;
 	int		flag;
-	char 	*semicolon_pos;
 	char	*cmd;
 
 	flag = 0;
-	semicolon_pos = ft_strchr(*line, ';');
-	semi_index = (semicolon_pos - *line);
+	semi_index = (ft_strchr(*line, ';') - *line);
 	word_len = ft_wordlen(*line, ' ');
 	if (semi_index < word_len)
 	{
@@ -81,6 +106,48 @@ int	add_command_lst(char **line, t_token **token_lst)
 	(*line) += word_len;
 	return (1);
 }
+
+int	add_command_singlequotes(char **line, t_token **token_lst)
+{
+	t_token	*new_token;
+	size_t	word_len;
+	int index;
+	char	*cmd;
+	char	*start;
+
+	start = *line;
+	word_len = 0;
+	while (**line != '\0')
+	{
+		if (**line == '\'')
+		{
+			(*line)++;
+			word_len = ft_wordlen(*line, '\'');
+			break ;
+		}
+		(*line)++;
+	}
+	cmd = (char *)malloc(word_len + 1);
+	if (!cmd)
+		return (0);
+	ft_copy(cmd, start, word_len);
+	new_token = create_token(cmd, T_IDENTIFIER);
+	if (!new_token)
+		return (0);
+	token_add_back(token_lst, new_token, T_IDENTIFIER);
+	(*line) += word_len;
+}
+
+int	add_command(char **line, t_token **token_lst)
+{
+	if (ft_strchr(*line, '\'') != NULL)
+		add_command_singlequotes(line, token_lst);
+	else if (ft_strchr(*line, ';') != NULL)
+		add_command_semicolon(line, token_lst);
+	else
+		add_command_lst(line, token_lst);
+}
+
 
 static	char 	*concat_token(const char *token1, const char *token2)
 {
@@ -160,7 +227,7 @@ t_token	*token_processor(char *line)
 		else if (!ft_strncmp(line, ">", 1))
 			add_symbol_lst(&line, T_GREATER_THAN, &token_lst);
 		else
-			add_command_lst(&line, &token_lst);
+			add_command(&line, &token_lst);
 	}
 	token_lst = token_parser(token_lst);
 	return (token_lst);

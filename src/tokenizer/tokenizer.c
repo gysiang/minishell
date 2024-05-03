@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:16:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/03 12:26:39 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/03 13:40:22 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ size_t	ft_wordlen(const char *s, char c)
 
 int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
 {
-	t_token	*new_token;
 	int	word_len;
 	char	*symbol;
 
@@ -36,15 +35,12 @@ int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
 	if (!symbol)
 		return (0);
 	ft_copy(symbol, *line, word_len);
-	new_token = create_token(symbol, type);
-	if (!new_token)
-		return (0);
 	token_add_back(token_lst, symbol, type);
 	if (type == T_LEFT_SHIFT || type == T_RIGHT_SHIFT)
 		(*line) += 2;
 	else
 		(*line)++;
-	return (1);
+	return (0);
 }
 
 // one function to handle pure command
@@ -52,31 +48,49 @@ int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
 // one function to handle singlequote
 // one function to handle doublequote
 
+char	*remove_singlequotes(char **line)
+{
+	char	*result;
+	char	*str;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	str = *line;
+	result = (char *)malloc(ft_strlen(*line) + 1);
+	if (!result)
+		return (NULL);
+	while (str[i] != '\0')
+	{
+		if (str[i] !=  '\'')
+			result[j++] = str[i];
+		i++;
+	}
+	result[j] = '\0';
+	return (result);
+}
+
 // pure command
 int	add_command_lst(char **line, t_token **token_lst)
 {
-	t_token	*new_token;
 	int	word_len;
 	char	*cmd;
 
+	*line = remove_singlequotes(line);
 	word_len = ft_wordlen(*line, ' ');
 	cmd = (char *)malloc(word_len + 1);
 	if (!cmd)
 		return (0);
 	ft_copy(cmd, *line, word_len);
-	new_token = create_token(cmd, T_IDENTIFIER);
-	if (!new_token)
-		return (0);
 	token_add_back(token_lst, cmd, T_IDENTIFIER);
 	(*line) += word_len;
-	return (1);
+	return (0);
 }
 
 // command with ;
-
 int	add_command_semicolon(char **line, t_token **token_lst)
 {
-	t_token	*new_token;
 	size_t	word_len;
 	size_t	semi_index;
 	int		flag;
@@ -94,9 +108,6 @@ int	add_command_semicolon(char **line, t_token **token_lst)
 	if (!cmd)
 		return (0);
 	ft_copy(cmd, *line, word_len);
-	new_token = create_token(cmd, T_IDENTIFIER);
-	if (!new_token)
-		return (0);
 	token_add_back(token_lst, cmd, T_IDENTIFIER);
 	if (flag)
 	{
@@ -104,50 +115,17 @@ int	add_command_semicolon(char **line, t_token **token_lst)
 			(*line)++;
 	}
 	(*line) += word_len;
-	return (1);
-}
-
-int	add_command_singlequotes(char **line, t_token **token_lst)
-{
-	t_token	*new_token;
-	size_t	word_len;
-	int index;
-	char	*cmd;
-	char	*start;
-
-	start = *line;
-	word_len = 0;
-	while (**line != '\0')
-	{
-		if (**line == '\'')
-		{
-			(*line)++;
-			word_len = ft_wordlen(*line, '\'');
-			break ;
-		}
-		(*line)++;
-	}
-	cmd = (char *)malloc(word_len + 1);
-	if (!cmd)
-		return (0);
-	ft_copy(cmd, start, word_len);
-	new_token = create_token(cmd, T_IDENTIFIER);
-	if (!new_token)
-		return (0);
-	token_add_back(token_lst, new_token, T_IDENTIFIER);
-	(*line) += word_len;
+	return (0);
 }
 
 int	add_command(char **line, t_token **token_lst)
 {
-	if (ft_strchr(*line, '\'') != NULL)
-		add_command_singlequotes(line, token_lst);
-	else if (ft_strchr(*line, ';') != NULL)
+	if (ft_strchr(*line, ';') != NULL)
 		add_command_semicolon(line, token_lst);
 	else
 		add_command_lst(line, token_lst);
+	return (0);
 }
-
 
 static	char 	*concat_token(const char *token1, const char *token2)
 {

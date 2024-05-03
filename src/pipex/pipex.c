@@ -12,34 +12,6 @@
 
 #include "minishell.h"
 
-/* Split the command string into parts based on spaces, then find the full path
-of the command to be exxecuted. If the command fails to execute, will print the
-eroor messages, free the allocated memmory and then exits the program */
-
-//for (int i = 0; s_cmd[i] != NULL; i++) {
-//	printf("s_cmd[%d]: %s\n", i, s_cmd[i]);
-//}
-
-/***
-void	pipex(char *input, char **env)
-{
-	int		n;
-	int		i;
-	char	**command;
-
-	command = ft_dqsplit(input, ' ');
-	convert_cmd(command);
-	i = 0;
-	n = 0;
-	while (command[n] != NULL)
-		n++;
-	while (i < n - 1)
-	{
-		do_pipe(command[i++], env);
-	}
-	exec_cmd(command[i], env);
-} **/
-
 static char	**init_command(t_token *token_lst, int num_of_command)
 {
 	t_token	*curr_token;
@@ -64,12 +36,7 @@ static char	**init_command(t_token *token_lst, int num_of_command)
 	return (command);
 }
 
-/***
-for (int i = 0; command[i] != NULL; i++) {
-	printf("p_command[%d]: %s\n", i, command[i]);
-} **/
-
-void	pipex(t_token *token_lst, char **env)
+void	pipex(t_token *token_lst, t_shell *minishell)
 {
 	int		i;
 	int		num_of_command;
@@ -88,45 +55,39 @@ void	pipex(t_token *token_lst, char **env)
 	i = 0;
 	while (i < num_of_command - 1)
 	{
-		do_pipe(command[i++], env);
+		do_pipe(command[i++], minishell);
 	}
-	exec_cmd(command[num_of_command - 1], env);
+	exec_cmd(command[num_of_command - 1], minishell);
 	free(command);
 }
 
-void	exec_cmd(char *cmd, char **env)
-{
-	char	**s_cmd;
-	char	*path;
+void exec_cmd(char *cmd, t_shell *minishell) {
+    char **s_cmd;
+    char *path;
 
-	if (!cmd || !env)
-	{
-		ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
-	//printf("exec_cmd is called\n");
-	s_cmd = ft_split(cmd, ' ');
-	if (!s_cmd)
-	{
-		ft_putstr_fd("Failed to split command\n", STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
-	path = get_path(cmd, env);
-	//printf("path: %s\n", path);
-	if (!path) {
-		printf("get_path returned NULL\n");
-		exit(EXIT_FAILURE);
-	}
-	if (execve(path, s_cmd, env) == -1)
-	{
-		ft_putstr_fd("pipex: Error executing command\n", 2);
-		ft_putendl_fd(s_cmd[0], 2);
-		ft_free_tab(s_cmd);
-		exit(EXIT_FAILURE);
-	}
+    if (!cmd || !minishell) {
+        ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);
+        exit(EXIT_FAILURE);
+    }
+    s_cmd = ft_split(cmd, ' ');
+    if (!s_cmd) {
+        ft_putstr_fd("Failed to split command\n", STDERR_FILENO);
+        exit(EXIT_FAILURE);
+    }
+    path = get_env(minishell, s_cmd[0]);
+    if (!path) {
+        printf("get_env returned NULL for command: %s\n", s_cmd[0]);
+        exit(EXIT_FAILURE);
+    }
+    if (execve(path, s_cmd, minishell->env) == -1) {
+        ft_putstr_fd("pipex: Error executing command\n", 2);
+        ft_putendl_fd(s_cmd[0], 2);
+        ft_free_tab(s_cmd);
+        exit(EXIT_FAILURE);
+    }
 }
 
-void child(char *command, int *p_fd, char **env)
+void child(int *p_fd, t_shell *minishell, char *command)
 {
 	if (dup2(p_fd[1], STDOUT_FILENO) == -1)
 	{
@@ -135,11 +96,11 @@ void child(char *command, int *p_fd, char **env)
 	}
 	close(p_fd[0]);
 	close(p_fd[1]);
-	printf("child command%s\n",command);
-	exec_cmd(command, env);
+	printf("child command %s\n", command);
+	exec_cmd(command, minishell);
 }
 
-void parent(int *p_fd)
+void parent(int *p_fd, t_shell *minishell, char *command)
 {
 	if (dup2(p_fd[0], STDIN_FILENO) == -1)
 	{
@@ -148,10 +109,11 @@ void parent(int *p_fd)
 	}
 	close(p_fd[0]);
 	close(p_fd[1]);
-	//exec_cmd(command, env);
+	printf("parent command %s\n", command);
+	exec_cmd(command, minishell);
 }
 
-void	do_pipe(char *command, char **env)
+void	do_pipe(char *command, t_shell *minishell)
 {
 	int		p_fd[2];
 	pid_t	pid;
@@ -162,7 +124,7 @@ void	do_pipe(char *command, char **env)
 	if (pid == -1)
 		exit(EXIT_FAILURE);
 	if (!pid)
-		child(command, p_fd, env);
+		child(p_fd, minishell, command);
 	else
-		parent(p_fd);
+		parent(p_fd, minishell, command);
 }

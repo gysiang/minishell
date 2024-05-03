@@ -31,7 +31,7 @@ t_shell	*init_shell(char **envp)
 		return (NULL);
 	}
 	shell->env_size = 0;
-	shell->env = NULL;
+	shell->env = envp;
 	shell->user = get_env(shell, "USER");
 	shell->pwd = get_env(shell, "PWD");
 	shell->home = get_env(shell, "HOME");
@@ -41,7 +41,6 @@ t_shell	*init_shell(char **envp)
 	shell->data_fd[1] = p_fd[1];
 	shell->last_return = 0;
 	shell->end = false;
-	init_env(shell, (const char **)envp);
 	return (shell);
 }
 
@@ -67,6 +66,7 @@ int execute_builtin(t_shell *minishell)
 	}
 	if (ft_strcmp(s, "env") == 0)
 	{
+		//printf("triggered env");
 		minishell_env(minishell);
 		return (1);
 	}
@@ -75,6 +75,11 @@ int execute_builtin(t_shell *minishell)
 		minishell_pwd(minishell);
 		return (1);
 	}
+    if (ft_strcmp(s, "exit") == 0)
+    {
+        minishell_exit();
+        return (1);
+    }
 	return (0);
 }
 
@@ -85,15 +90,15 @@ int execute_builtin(t_shell *minishell)
         printf("%s\n", envp[i]);
     } **/
 
-int	main(int ac, char **av)
+int	main(int argc, char **argv)
 {
-	(void)ac;
-	(void)av;
+	(void)argc;
+	(void)argv;
 	char		*line;
 	t_token		*token_lst;
-	//t_shell		*g_shell;
+	t_shell		*g_shell;
 
-	//g_shell = init_shell(envp);
+	g_shell = init_shell(argv);
 	using_history();
 	setup_signal_handler();
 	while (1)
@@ -109,19 +114,23 @@ int	main(int ac, char **av)
 		//printf("This is user input: %s\n", line);
 		add_history(line);
 		token_lst = token_processor(line);
-		print_tokenlst(token_lst);
-		/***
-		if (token_lst != NULL)
+		//print_tokenlst(token_lst);
+		if (token_lst != NULL) {
 			g_shell->cmd_list = token_lst;
-		if (execute_builtin(g_shell) == 1)
-			continue ;
+			printf("Token list is not empty\n");
+		} else {
+			printf("Token list is empty\n");
+		}
+		if (execute_builtin(g_shell) == 1) {
+			printf("Built-in command executed\n");
+			continue;
+		}
 		// make and print ast_tree
 		//ast_tree = make_ast_tree(token_lst);
 		//print_ast_tree(ast_tree);
-		pipex(token_lst, envp);
-		free_tokenlst(token_lst);
+		//pipex(token_lst, g_shell);
+		//free_tokenlst(token_lst);
 		//free_ast_tree(ast_tree);
-		**/
 	}
 	return (0);
 }

@@ -12,16 +12,17 @@
 
 #include "minishell.h"
 
-void	minishell_env(t_shell *minishell)
+void minishell_env(t_shell *minishell)
 {
-	int	i;
+    int i;
 
-	i = 0;
-	if (!minishell->env[i])
-		return ;
-	while (minishell->env[i])
-	{
-		ft_putendl_fd(minishell->env[i], 1);
-		i++;
-	}
+    i = 0;
+    printf("inside minishell env %s\n", minishell->env[0]);
+    if (!minishell->env || !minishell->env[0])
+        return;
+    while (minishell->env[i])
+    {
+        ft_putendl_fd(minishell->env[i], 1);
+        i++;
+    }
 }

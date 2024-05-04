@@ -6,16 +6,11 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/04 22:31:19 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/04 22:49:44 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/***
-for (int i = 0; s[i] != NULL; i++) {
-	printf("av[%d]: %s\n", i, s[i]);
-}; **/
 
 t_shell	*init_shell(char **envp)
 {
@@ -32,9 +27,9 @@ t_shell	*init_shell(char **envp)
 	}
 	shell->env_size = 0;
 	shell->env = envp;
-	shell->user = my_getenv("USER", envp);
-	shell->pwd = my_getenv("PWD", envp);
-	shell->home = my_getenv("HOME", envp);
+	shell->user = get_env(shell, "USER");
+	shell->pwd = get_env(shell, "PWD");
+	shell->home = get_env(shell, "HOME");
 	shell->prompt = PROMPT;
 	shell->cmd_list = NULL;
 	shell->data_fd[0] = p_fd[0];
@@ -74,13 +69,18 @@ int execute_builtin(t_shell *minishell)
 		minishell_pwd(minishell);
 		return (1);
 	}
+    if (ft_strcmp(s, "exit") == 0)
+    {
+        minishell_exit();
+        return (1);
+    }
 	return (0);
 }
 
-int	main(int ac, char **av, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
-	(void)ac;
-	(void)av;
+	(void)argc;
+	(void)argv;
 	char		*line;
 	t_token		*token_lst;
 	t_shell		*g_shell;

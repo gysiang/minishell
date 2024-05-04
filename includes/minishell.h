@@ -32,6 +32,11 @@
 # include <signal.h>
 # include <stdlib.h>
 # include <limits.h>
+<<<<<<< HEAD
+=======
+# include "tokenizer.h"
+# include "parser.h"
+>>>>>>> main
 
 # define PROMPT "minishell$ "
 # define BASE_ENV_SIZE 64
@@ -96,14 +101,19 @@ void    free_and_exit(t_shell *minishell, int return_value);
 int minishell_error_msg(char *cmd, int error_no);
 
 // builtins
+<<<<<<< HEAD
 int	minishell_echo(t_shell *minishell, t_cmd *cmd);
 int	minishell_exit(t_shell *minishell, t_cmd *cmd);
+=======
+int	minishell_echo(t_shell *minishell);
+void minishell_exit(void);
+>>>>>>> main
 int minishell_export(t_shell *minishell, t_cmd *cmd);
 int	minishell_unset(t_shell *minishell, t_cmd *cmd);
-int minishell_cd(t_shell *minishell, t_cmd *cmd);
+void	minishell_env(t_shell *minishell);
 int	search_env(t_shell *minishell, char *var);
 void    env_realloc(t_shell *minishell);
-void	minishell_pwd(t_shell *minishell);
+void	minishell_pwd();
 void	minishell_env(t_shell *minishell);
 
 // utils
@@ -123,8 +133,9 @@ void    redirect(t_shell *minishell, t_cmd *cmd, int *redir);
 int here_doc(t_shell *minishell, char *delimiter);
 
 // signals
-void	sigint_handler(int signal);
-void	setup_signal_handler();
+void 	sigquit_handler(int signal);
+void 	sigint_handler(int signal);
+void 	setup_signal_handler(void);
 
 //history
 void	print_history();
@@ -135,6 +146,18 @@ void    delete_command(void *elem);
 void    free_and_exit(t_shell *minishell, int return_value);
 char *ft_strjoin_free(char **s1, char const *s2);
 int minishell_error_msg(char *cmd, int error_no);
+
+//pipex
+int		open_file(char *file, int n);
+char	*my_getenv(char *name, char **env);
+char	*get_path(char *cmd, char **env);
+void	exec_cmd(char *cmd, t_shell *minishell);
+void	ft_free_tab(char **tab);
+void	exit_handler(int exit_code);
+void	pipex(t_token *token_lst, t_shell *minishell);
+void    child(int *p_fd, t_shell *minishell, char *command);
+void    parent(int *p_fd, t_shell *minishell, char *command);
+void	do_pipe(char *command, t_shell *minishell);
 
 
 // tokenizer

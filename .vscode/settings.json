@@ -2,7 +2,13 @@
     "files.associations": {
         "libft.h": "c",
         "minishell.h": "c",
+<<<<<<< HEAD
         "tokenizer.h": "c"
+=======
+        "tokenizer.h": "c",
+        "types.h": "c",
+        "string.h": "c"
+>>>>>>> main
     }
 }
 

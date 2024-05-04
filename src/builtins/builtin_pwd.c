@@ -12,10 +12,11 @@
 
 #include "minishell.h"
 
-void	minishell_pwd(t_shell *minishell)
+void	minishell_pwd()
 {
-	if (minishell->pwd == NULL)
-		return ;
-	else
-		printf("%s\n", minishell->pwd);
+	char cwd[1024];
+    if (getcwd(cwd, sizeof(cwd)) != NULL)
+        printf("%s\n", cwd);
+    else
+        perror("getcwd() error");
 }

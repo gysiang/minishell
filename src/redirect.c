@@ -1,4 +1,5 @@
 #include "../includes/minishell.h"
+/**
 
 static int open_input(char *file_name)
 {
@@ -17,16 +18,15 @@ static int open_input(char *file_name)
     }
     fd = open(file_name,O_RDONLY);
     printf("Trying to open file: %s\n", file_name);
-    printf("Open returned: %d\n", fd);  
+    printf("Open returned: %d\n", fd);
     if (fd == -1)
     {
         perror("open");
         return (fd);
     }
     return (fd);
-    
-}
 
+}
 static int redirect_input(t_shell *minishell, t_list *input)
 {
     t_list *tracker;
@@ -107,4 +107,4 @@ void    redirect(t_shell *minishell, t_cmd *cmd, int *redir)
     if (redir[0] == -1)
         return ;
     redir[1] = redirect_output(cmd->output);
-}
+} **/

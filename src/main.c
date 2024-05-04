@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/02 14:48:20 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/04 22:57:29 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/***
-for (int i = 0; s[i] != NULL; i++) {
-	printf("av[%d]: %s\n", i, s[i]);
-}; **/
 
 t_shell	*init_shell(char **envp)
 {
@@ -61,12 +56,11 @@ int execute_builtin(t_shell *minishell)
 	}
 	if (ft_strcmp(s, "echo") == 0)
 	{
-		minishell_echo(minishell);
+		//minishell_echo(minishell);
 		return (1);
 	}
 	if (ft_strcmp(s, "env") == 0)
 	{
-		//printf("triggered env");
 		minishell_env(minishell);
 		return (1);
 	}
@@ -83,14 +77,7 @@ int execute_builtin(t_shell *minishell)
 	return (0);
 }
 
-	//t_ast_node	*ast_tree;
-	/**
-	for (int i = 0; envp[i] != NULL; i++)
-    {
-        printf("%s\n", envp[i]);
-    } **/
-
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
 	(void)argv;
@@ -98,7 +85,7 @@ int	main(int argc, char **argv)
 	t_token		*token_lst;
 	t_shell		*g_shell;
 
-	g_shell = init_shell(argv);
+	g_shell = init_shell(envp);
 	using_history();
 	setup_signal_handler();
 	while (1)
@@ -111,26 +98,15 @@ int	main(int argc, char **argv)
 		}
 		if (*line == '\0')
 			continue;
-		//printf("This is user input: %s\n", line);
 		add_history(line);
-		token_lst = token_processor(line);
-		//print_tokenlst(token_lst);
-		if (token_lst != NULL) {
+		token_lst = token_processor(line, g_shell);
+		print_tokenlst(token_lst);
+		if (token_lst != NULL)
 			g_shell->cmd_list = token_lst;
-			printf("Token list is not empty\n");
-		} else {
-			printf("Token list is empty\n");
-		}
-		if (execute_builtin(g_shell) == 1) {
-			printf("Built-in command executed\n");
-			continue;
-		}
-		// make and print ast_tree
-		//ast_tree = make_ast_tree(token_lst);
-		//print_ast_tree(ast_tree);
-		//pipex(token_lst, g_shell);
+		if (execute_builtin(g_shell) == 1)
+			continue ;
+		//pipex(token_lst, envp);
 		//free_tokenlst(token_lst);
-		//free_ast_tree(ast_tree);
 	}
 	return (0);
 }

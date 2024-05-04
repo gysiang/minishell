@@ -1,5 +1,7 @@
 #include "../includes/minishell.h"
 
+/***
+
 static void signal_free(t_shell *minishell)
 {
     if (minishell) // Check if minishell pointer is not NULL
@@ -12,7 +14,6 @@ static void signal_exit(int signal_number)
     printf("\n"); // Print a newline character
     signal_free(NULL); // Call signal_free function with NULL pointer
 }
-
 static void error_EOF(char *end_of_file)
 {
     // Print error message indicating here-doc was dleimited byt end-of -file
@@ -20,6 +21,7 @@ static void error_EOF(char *end_of_file)
     ft_putstr_fd(end_of_file, 2); // Print the expected delimiter
     ft_putendl_fd(")", 2); // Print closing parenthesis and newline
 }
+
 
 static void here_doc_read(t_shell * minishell, int *pipe_fds, char *delimiter)
 {
@@ -74,3 +76,4 @@ int here_doc(t_shell *minishell, char *delimiter)
     close(pipe_des[1]); // Close the write end of the pipe
     return (pipe_des[0]); // Return the read end of the pipe
 }
+**/

@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/02 12:40:27 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/04 22:59:18 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/* Split the command string into parts based on spaces, then find the full path
+of the command to be exxecuted. If the command fails to execute, will print the
+eroor messages, free the allocated memmory and then exits the program */
+
+//for (int i = 0; s_cmd[i] != NULL; i++) {
+//	printf("s_cmd[%d]: %s\n", i, s_cmd[i]);
+//}
 
 static char	**init_command(t_token *token_lst, int num_of_command)
 {
@@ -61,7 +69,8 @@ void	pipex(t_token *token_lst, t_shell *minishell)
 	free(command);
 }
 
-void exec_cmd(char *cmd, t_shell *minishell) {
+void exec_cmd(char *cmd, t_shell *minishell)
+{
     char **s_cmd;
     char *path;
 

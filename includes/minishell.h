@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/04 22:22:59 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/04 22:58:06 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,6 @@
 # include <signal.h>
 # include <stdlib.h>
 # include <limits.h>
-<<<<<<< HEAD
-=======
-# include "tokenizer.h"
-# include "parser.h"
->>>>>>> main
 
 # define PROMPT "minishell$ "
 # define BASE_ENV_SIZE 64
@@ -101,13 +96,8 @@ void    free_and_exit(t_shell *minishell, int return_value);
 int minishell_error_msg(char *cmd, int error_no);
 
 // builtins
-<<<<<<< HEAD
 int	minishell_echo(t_shell *minishell, t_cmd *cmd);
-int	minishell_exit(t_shell *minishell, t_cmd *cmd);
-=======
-int	minishell_echo(t_shell *minishell);
 void minishell_exit(void);
->>>>>>> main
 int minishell_export(t_shell *minishell, t_cmd *cmd);
 int	minishell_unset(t_shell *minishell, t_cmd *cmd);
 void	minishell_env(t_shell *minishell);
@@ -183,13 +173,13 @@ t_token *token_parser(t_token *token_lst, t_shell *minishell);
 int		open_file(char *file, int n);
 char	*my_getenv(char *name, char **env);
 char	*get_path(char *cmd, char **env);
-void	exec_cmd(char *cmd, char **env);
+void	exec_cmd(char *cmd, t_shell *minishell);
 void	ft_free_tab(char **tab);
 void	exit_handler(int exit_code);
-void	pipex(t_token *token_lst, char **env);
-void	child(char *command, int *p_fd, char **env);
-void 	parent(int *p_fd);
-void	do_pipe(char *command, char **env);
+void	pipex(t_token *token_lst, t_shell *minishell);
+void	child(int *p_fd, t_shell *minishell, char *command);
+void	parent(int *p_fd, t_shell *minishell, char *command);
+void	do_pipe(char *command, t_shell *minishell);
 
 
 #endif

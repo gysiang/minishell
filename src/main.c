@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/04 22:49:44 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/04 22:57:29 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	main(int argc, char **argv, char **envp)
 			break;
 		}
 		if (*line == '\0')
-			continue;./
+			continue;
 		add_history(line);
 		token_lst = token_processor(line, g_shell);
 		print_tokenlst(token_lst);

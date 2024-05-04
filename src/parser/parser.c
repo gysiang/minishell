@@ -91,7 +91,7 @@ static void parse_value(t_token *token_lst, t_shell *minishell)
 	result = ft_substr(token, 1, ft_strlen(token) - 1);
 	if (!result)
 		return ;
-	env_value = my_getenv(result, minishell->env);
+	env_value = get_env(minishell, result);
 	free(result);
 	if (!env_value)
 		return;

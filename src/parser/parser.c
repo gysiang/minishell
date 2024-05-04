@@ -12,6 +12,112 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+/***
+char	*remove_singlequote(char **line)
+{
+	char	*result;
+	char	*str;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	str = *line;
+	result = (char *)malloc(ft_strlen(*line) + 1);
+	if (!result)
+		return (NULL);
+	while (str[i] != '\0')
+	{
+		if (str[i] !=  '\'')
+			result[j++] = str[i];
+		i++;
+	}
+	result[j] = '\0';
+	return (result);
+} **/
+
+static void parse_singlequote(t_token *t)
+{
+	char	*result;
+	char	*str;
+	int	i;
+	int j;
+
+	i = 0;
+	j = 0;
+	str = t->token;
+	result = (char *)malloc(ft_strlen(str) + 1);
+	if (!result)
+		return ;
+	while (str[i] != '\0')
+	{
+		if (str[i] !=  '\'')
+			result[j++] = str[i];
+		i++;
+	}
+	result[j] = '\0';
+	free(t->token);
+	t->token = result;
+	return ;
+}
+
+static void parse_semicolon(t_token *token)
+{
+	t_token *curr;
+	char *result;
+	size_t len;
+
+	curr = token;
+	len = ft_wordlen(curr->token, ';');
+	result = (char *)malloc(len + 1);
+	if (!result)
+		return;
+	ft_copy(result, curr->token, len);
+	free(curr->token);
+	curr->token = result;
+}
+
+static void parse_value(t_token *token_lst, t_shell *minishell)
+{
+	t_token *curr;
+	char *token;
+	char *result;
+	char *env_value;
+
+	curr = token_lst;
+	token = curr->token;
+	if (token == NULL || token[0] != '$')
+		return;
+	result = ft_substr(token, 1, ft_strlen(token) - 1);
+	if (!result)
+		return ;
+	env_value = my_getenv(result, minishell->env);
+	free(result);
+	if (!env_value)
+		return;
+	free(curr->token);
+	curr->token = env_value;
+}
+
+
+t_token *token_parser(t_token *token_lst, t_shell *minishell)
+{
+	t_token *curr;
+
+	curr = token_lst;
+	while (curr != NULL)
+	{
+		if (ft_strchr(curr->token, '\''))
+			parse_singlequote(curr);
+		else if (ft_strchr(curr->token, ';'))
+			parse_semicolon(curr);
+		else if (ft_strchr(curr->token, '$'))
+			parse_value(curr, minishell);
+		curr = curr -> next;
+	}
+	join_identifier_tokens(token_lst);
+	return (token_lst);
+}
 
 /**
 1. check if curr token is an operator, returns 1 if true
@@ -117,92 +223,3 @@ void	print_ast_tree(t_ast_node *root)
 	print_ast_node(root, 0);
 }
 **/
-
-static	char 	*concat_token(const char *token1, const char *token2)
-{
-	size_t	len1;
-	size_t	len2;
-	size_t	total_len;
-	char	*joined_str;
-
-	len1 = ft_strlen(token1);
-	len2 = ft_strlen(token2);
-	total_len = len1 + len2 + 2;
-	joined_str = (char *)malloc(total_len);
-	if (!joined_str)
-		return (NULL);
-	ft_copy(joined_str, token1, len1);
-	ft_strcat(joined_str, " ");
-	ft_strcat(joined_str, token2);
-	return (joined_str);
-}
-
-t_token *join_identifier_tokens(t_token *lst)
-{
-	char *joined;
-	t_token *curr;
-	t_token *next;
-	int	merged;
-
-	merged = 1;
-	while (merged)
-	{
-		merged = 0;
-		curr = lst;
-		while (curr != NULL && curr->next != NULL)
-		{
-			if (curr->type == T_IDENTIFIER && curr->next->type == T_IDENTIFIER)
-			{
-				joined = concat_token(curr->token, curr->next->token);
-				if (joined != NULL)
-				{
-					free(curr->token);
-					free(curr->next->token);
-					curr->token = joined;
-					next = curr->next;
-					curr->next = next->next;
-					free(next);
-				}
-				merged = 1;
-				break ;
-			}
-			curr = curr->next;
-		}
-	}
-	return (lst);
-}
-
-int	parse_cmd_semicolon(t_token *token_lst)
-{
-	t_token *curr;
-	char	*result;
-	size_t	len;
-
-	curr = token_lst;
-	if (ft_strchr(curr->token, ';') != NULL)
-	{
-		len = ft_wordlen(curr->token, ';');
-		result = (char *)malloc(len + 1);
-		if (!result)
-			return (-1);
-		ft_strlcpy(result, curr->token, len);
-		free(curr->token);
-		curr->token = result;
-		return (1);
-	}
-	return (0);
-}
-
-t_token *parse_tokens(t_token *token_lst)
-{
-	t_token *curr;
-
-	curr = token_lst;
-	//iterate through token_lst
-	while (curr != NULL)
-	{
-		// call parse cmd semicolon
-		// call parse $ value
-	}
-	join_identifier_tokens(token_lst);
-}

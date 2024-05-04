@@ -37,13 +37,13 @@ SRC_FILES := main.c \
              builtins/builtin_exit.c \
              builtins/builtin_pwd.c \
              builtins/builtin_unset.c \
-             parser/create_node.c \
-             parser/parser.c \
              pipex/pipex_utils.c \
              pipex/pipex.c \
-             tokenizer/create_token.c \
+			 tokenizer/create_token.c \
              tokenizer/tokenizer_utils.c \
-             tokenizer/tokenizer.c
+             tokenizer/tokenizer.c \
+			 parser/join_tokens.c \
+			 parser/parser.c
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:16:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/03 16:14:27 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/04 19:55:34 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	add_command_lst(char **line, t_token **token_lst)
 	int	word_len;
 	char	*cmd;
 
-	*line = remove_sq_dq(line);
 	word_len = ft_wordlen(*line, ' ');
 	cmd = (char *)malloc(word_len + 1);
 	if (!cmd)
@@ -60,7 +59,7 @@ int	add_command_lst(char **line, t_token **token_lst)
 	return (0);
 }
 
-t_token	*token_processor(char *line)
+t_token	*token_processor(char *line, t_shell *minishell)
 {
 	t_token *token_lst;
 
@@ -82,6 +81,6 @@ t_token	*token_processor(char *line)
 		else
 			add_command_lst(&line, &token_lst);
 	}
-	//token_lst = token_parser(token_lst);
+	token_lst = token_parser(token_lst, minishell);
 	return (token_lst);
 }

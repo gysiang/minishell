@@ -94,7 +94,7 @@ static void parse_value(t_token *token_lst, t_shell *minishell)
 	env_value = get_env(minishell, result);
 	free(result);
 	if (!env_value)
-		return;
+		env_value = " ";
 	free(curr->token);
 	curr->token = env_value;
 }

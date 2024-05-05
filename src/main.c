@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/04 22:57:29 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/05 10:43:22 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ int	main(int argc, char **argv, char **envp)
 			g_shell->cmd_list = token_lst;
 		if (execute_builtin(g_shell) == 1)
 			continue ;
-		//pipex(token_lst, envp);
-		//free_tokenlst(token_lst);
+		pipex(token_lst, g_shell);
+		free_tokenlst(token_lst);
 	}
 	return (0);
 }

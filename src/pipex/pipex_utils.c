@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:23:30 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/04 23:01:10 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/05 10:53:16 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ address of the command.
 If doesn't moves to the next location. If all locations does not contain the
 command, frees the memory and gives back the original command.*/
 
-/*char	*get_path(char *cmd, char **env)
+char	*get_path(char *cmd, char **env)
 {
 	int		i;
 	char	*exec;
@@ -123,4 +123,4 @@ command, frees the memory and gives back the original command.*/
 	ft_free_tab(all_path);
 	ft_free_tab(s_cmd);
 	return (cmd);
-}*/
+}

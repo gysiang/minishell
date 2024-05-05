@@ -46,7 +46,9 @@ If so, execute the corresponding function directly within the shell.
 - [ ] Reset and Cleanup
 
 After each command execution or on exit, free allocated resources and prepare for the next input or shutdown.
+
 **Simplified Explanation**
+
 The minishell starts by setting up its environment and handling signals.
 It then enters a loop where it displays a prompt, awaits user input, and processes that input.
 Input processing involves breaking the input into parts (lexer), organizing these parts into commands and their parameters (parser), and then executing these commands (executor).

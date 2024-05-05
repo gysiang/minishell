@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/04 22:59:18 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/05 11:00:39 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
 /* Split the command string into parts based on spaces, then find the full path
 of the command to be exxecuted. If the command fails to execute, will print the
 eroor messages, free the allocated memmory and then exits the program */
-
-//for (int i = 0; s_cmd[i] != NULL; i++) {
-//	printf("s_cmd[%d]: %s\n", i, s_cmd[i]);
-//}
 
 static char	**init_command(t_token *token_lst, int num_of_command)
 {
@@ -83,7 +79,8 @@ void exec_cmd(char *cmd, t_shell *minishell)
         ft_putstr_fd("Failed to split command\n", STDERR_FILENO);
         exit(EXIT_FAILURE);
     }
-    path = get_env(minishell, s_cmd[0]);
+    path = get_path(s_cmd[0], minishell->env);
+	//printf("%s\n", s_cmd[0]);
     if (!path) {
         printf("get_env returned NULL for command: %s\n", s_cmd[0]);
         exit(EXIT_FAILURE);
@@ -111,6 +108,9 @@ void child(int *p_fd, t_shell *minishell, char *command)
 
 void parent(int *p_fd, t_shell *minishell, char *command)
 {
+	(void)minishell;
+	(void)command;
+
 	if (dup2(p_fd[0], STDIN_FILENO) == -1)
 	{
 		ft_putstr_fd("Error Parent dup2 pipe\n", STDERR_FILENO);
@@ -118,8 +118,8 @@ void parent(int *p_fd, t_shell *minishell, char *command)
 	}
 	close(p_fd[0]);
 	close(p_fd[1]);
-	printf("parent command %s\n", command);
-	exec_cmd(command, minishell);
+	//printf("parent command %s\n", command);
+	//exec_cmd(command, minishell);
 }
 
 void	do_pipe(char *command, t_shell *minishell)

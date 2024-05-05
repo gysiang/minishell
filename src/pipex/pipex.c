@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/05 11:00:39 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/05 12:16:10 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	pipex(t_token *token_lst, t_shell *minishell)
 		do_pipe(command[i++], minishell);
 	}
 	exec_cmd(command[num_of_command - 1], minishell);
-	free(command);
+	ft_free_tab(command);
 }
 
 void exec_cmd(char *cmd, t_shell *minishell)

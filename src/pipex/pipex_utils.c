@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:23:30 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/05 10:53:16 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/06 09:51:44 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ char	*my_getenv(char *name, char **env)
 	size_t	name_len;
 
 	if (env == NULL || name == NULL)
-		return NULL;
-
+		return (NULL);
 	name_len = ft_strlen(name);
 	i = 0;
 	while (env[i])
@@ -79,7 +78,7 @@ char	*my_getenv(char *name, char **env)
 			return (env[i] + name_len + 1);
 		i++;
 	}
-	return NULL;
+	return (NULL);
 }
 
 /* Searches system's PATH where commands can be found, the split this into
@@ -108,9 +107,7 @@ char	*get_path(char *cmd, char **env)
 	while (all_path[++i])
 	{
 		path_part = ft_strjoin(all_path[i], "/");
-		//printf("path_part: %s\n", path_part);
 		exec = ft_strjoin(path_part, s_cmd[0]);
-		//printf("exec: %s\n", exec);
 		free(path_part);
 		if (access(exec, F_OK | X_OK) == 0)
 		{

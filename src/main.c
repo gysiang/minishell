@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/05 10:43:22 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/06 10:01:45 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,11 @@ int execute_builtin(t_shell *minishell)
 		minishell_pwd(minishell);
 		return (1);
 	}
-    if (ft_strcmp(s, "exit") == 0)
-    {
-        minishell_exit();
-        return (1);
-    }
+	if (ft_strcmp(s, "exit") == 0)
+	{
+		minishell_exit();
+		return (1);
+	}
 	return (0);
 }
 

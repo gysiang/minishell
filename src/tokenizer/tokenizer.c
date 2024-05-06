@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:16:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/04 19:55:34 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/06 10:01:02 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ size_t	ft_wordlen(const char *s, char c)
 
 int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
 {
-	int	word_len;
+	int		word_len;
 	char	*symbol;
 
 	word_len = ft_wordlen(*line, ' ');
@@ -46,7 +46,7 @@ int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
 // pure command
 int	add_command_lst(char **line, t_token **token_lst)
 {
-	int	word_len;
+	int		word_len;
 	char	*cmd;
 
 	word_len = ft_wordlen(*line, ' ');
@@ -61,7 +61,7 @@ int	add_command_lst(char **line, t_token **token_lst)
 
 t_token	*token_processor(char *line, t_shell *minishell)
 {
-	t_token *token_lst;
+	t_token	*token_lst;
 
 	token_lst = NULL;
 	while (*line != '\0')

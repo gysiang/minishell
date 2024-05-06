@@ -17,7 +17,7 @@ Functionalities: Command prompt display, command history, executables handling, 
 - [ ] Check and handle input errors.
 - [x] Parse and route the command.
 - [ ]Clear up command list for next input.
-- [ ] Repeat unless an exit condition is met (e.g., "exit" command or ctrl-D).
+- [x] Repeat unless an exit condition is met (e.g., "exit" command or ctrl-D).
 
 ### Command Parsing and Execution
 

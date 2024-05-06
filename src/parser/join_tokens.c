@@ -6,13 +6,13 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 15:31:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/04 22:30:27 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/06 09:47:56 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static	char 	*concat_token(const char *token1, const char *token2)
+static char	*concat_token(const char *token1, const char *token2)
 {
 	size_t	len1;
 	size_t	len2;
@@ -31,12 +31,26 @@ static	char 	*concat_token(const char *token1, const char *token2)
 	return (joined_str);
 }
 
+static void	merge_identifier_tokens(t_token *curr)
+{
+	char	*joined;
+	t_token	*next;
+
+	joined = concat_token(curr->token, curr->next->token);
+	if (joined)
+	{
+		free(curr->token);
+		curr->token = joined;
+		next = curr->next;
+		curr->next = next->next;
+		free(next);
+	}
+}
+
 void	join_identifier_tokens(t_token *lst)
 {
-	char *joined;
-	t_token *curr;
-	t_token *next;
-	int	merged;
+	t_token	*curr;
+	int		merged;
 
 	merged = 1;
 	while (merged)
@@ -45,18 +59,10 @@ void	join_identifier_tokens(t_token *lst)
 		curr = lst;
 		while (curr != NULL && curr->next != NULL)
 		{
-			if (curr->type == T_IDENTIFIER && curr->next->type == T_IDENTIFIER)
+			if (curr->type == T_IDENTIFIER
+				&& curr->next->type == T_IDENTIFIER)
 			{
-				joined = concat_token(curr->token, curr->next->token);
-				if (joined != NULL)
-				{
-					free(curr->token);
-					curr->token = joined;
-					next = curr->next;
-					curr->next = next->next;
-					free(next);
-					merged = 1;
-				}
+				merge_identifier_tokens(curr);
 				merged = 1;
 				break ;
 			}

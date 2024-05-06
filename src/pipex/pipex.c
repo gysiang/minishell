@@ -58,10 +58,9 @@ void	pipex(t_token *token_lst, t_shell *minishell)
 	command = init_command(token_lst, num_of_command);
 	i = 0;
 	while (i < num_of_command - 1)
-	{
 		do_pipe(command[i++], minishell);
-	}
-	exec_cmd(command[num_of_command - 1], minishell);
+	exec_cmd(command[num_of_command - 1], minishell); // this go with the child process
+	//this needs waitpid WUNTRACED
 	ft_free_tab(command);
 }
 
@@ -79,12 +78,13 @@ void	exec_cmd(char *cmd, t_shell *minishell)
 		ft_putstr_fd("Failed to split command\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	path = get_path(s_cmd[0], minishell->env);
+	path = get_path(s_cmd[0], minishell);
 	if (!path) {
 		printf("get_env returned NULL for command: %s\n", s_cmd[0]);
 		exit(EXIT_FAILURE);
 	}
-	if (execve(path, s_cmd, minishell->env) == -1) {
+	if (execve(path, s_cmd, minishell->env) == -1)
+	{
 		ft_putstr_fd("pipex: Error executing command\n", 2);
 		ft_putendl_fd(s_cmd[0], 2);
 		ft_free_tab(s_cmd);
@@ -116,8 +116,6 @@ void	parent(int *p_fd, t_shell *minishell, char *command)
 	}
 	close(p_fd[0]);
 	close(p_fd[1]);
-	//printf("parent command %s\n", command);
-	//exec_cmd(command, minishell);
 }
 
 void	do_pipe(char *command, t_shell *minishell)

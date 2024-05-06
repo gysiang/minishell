@@ -112,7 +112,7 @@ char	**ft_dqsplit(char const *s, char c);
 void	convert_cmd(char **s);
 
 // ENV_Manager
-char    *get_env(t_shell *minishell, const char *var);
+char    *get_env_value(t_shell *minishell, const char *var);
 int env_len(t_shell *minishell);
 int search_env_by_var(t_shell *minishell, const char *var);
 void  sort_env(t_shell *minishell);
@@ -138,9 +138,8 @@ char *ft_strjoin_free(char **s1, char const *s2);
 int minishell_error_msg(char *cmd, int error_no);
 
 //pipex
-int		open_file(char *file, int n);
-char	*my_getenv(char *name, char **env);
-char	*get_path(char *cmd, char **env);
+int		open_file(const char *file, int mode);
+char	*get_path(char *cmd, t_shell *minishell);
 void	exec_cmd(char *cmd, t_shell *minishell);
 void	ft_free_tab(char **tab);
 void	exit_handler(int exit_code);
@@ -168,18 +167,9 @@ t_token	*token_processor(char *line, t_shell *minishell);
 void	join_identifier_tokens(t_token *lst);
 t_token *token_parser(t_token *token_lst, t_shell *minishell);
 
-//pipex
-
-int		open_file(char *file, int n);
-char	*my_getenv(char *name, char **env);
-char	*get_path(char *cmd, char **env);
-void	exec_cmd(char *cmd, t_shell *minishell);
-void	ft_free_tab(char **tab);
-void	exit_handler(int exit_code);
-void	pipex(t_token *token_lst, t_shell *minishell);
-void	child(int *p_fd, t_shell *minishell, char *command);
-void	parent(int *p_fd, t_shell *minishell, char *command);
-void	do_pipe(char *command, t_shell *minishell);
-
+//main.c
+t_shell	*init_shell(char **envp);
+void	free_shell(t_shell *minishell);
+int execute_builtin(t_shell *minishell);
 
 #endif

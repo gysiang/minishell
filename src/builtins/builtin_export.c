@@ -20,7 +20,7 @@ static char *export_home_expand(t_shell *minishell, char *content)
     int k;
 
     expanded_content = NULL;
-    home_value = get_env(minishell, "HOME");
+    home_value = get_env_value(minishell, "HOME");
     if (home_value != NULL)
     {
         expanded_size = strlen(content) + strlen(home_value) + 1;

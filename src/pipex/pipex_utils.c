@@ -26,7 +26,7 @@ void	exit_handler(int exit_code)
     0777 = Owners, Group of File and Others permission to read, write and
     execute
 */
-int	open_file(char *file, int mode)
+int	open_file(const char *file, int mode)
 {
 	int	return_fd;
 
@@ -54,32 +54,6 @@ void	ft_free_tab(char **tab)
 	}
 	free(tab);
 }
-/* Looks for an environment variable which is stored in format NAME=VALUE.
-Scans all the environment value one by one and when it finds the variable, free
-the sub str and return a pointer to the value by adding j+1 to the current env
-pointer (skips over the name and the equal sign, and points directly to the
-start of the value).
-
-If not, iterate to the next substr in the array. If no match is found,
-return NULL*/
-
-char	*my_getenv(char *name, char **env)
-{
-	int		i;
-	size_t	name_len;
-
-	if (env == NULL || name == NULL)
-		return (NULL);
-	name_len = ft_strlen(name);
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], name, name_len) == 0 && env[i][name_len] == '=')
-			return (env[i] + name_len + 1);
-		i++;
-	}
-	return (NULL);
-}
 
 /* Searches system's PATH where commands can be found, the split this into
 individual paths. Then seperates the commands into different paths
@@ -93,7 +67,7 @@ address of the command.
 If doesn't moves to the next location. If all locations does not contain the
 command, frees the memory and gives back the original command.*/
 
-char	*get_path(char *cmd, char **env)
+char	*get_path(char *cmd, t_shell *minishell)
 {
 	int		i;
 	char	*exec;
@@ -102,7 +76,7 @@ char	*get_path(char *cmd, char **env)
 	char	**s_cmd;
 
 	i = -1;
-	all_path = ft_split(my_getenv("PATH", env), ':');
+	all_path = ft_split(get_env_value(minishell, "PATH"), ':');
 	s_cmd = ft_split(cmd, ' ');
 	while (all_path[++i])
 	{

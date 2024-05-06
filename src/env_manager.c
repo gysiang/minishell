@@ -1,20 +1,21 @@
 #include "minishell.h"
 
-char    *get_env(t_shell *minishell, const char *var)
+char *get_env_value(t_shell *minishell, const char *var)
 {
     int i;
-    size_t  var_len;
+    size_t var_len;
 
     i = 0;
     var_len = ft_strlen(var);
     while (minishell->env[i])
     {
         if (ft_strncmp(minishell->env[i], var, var_len) == 0 && minishell->env[i][var_len] == '=')
-           return (ft_strdup(&minishell->env[i][var_len+1]));
-        i++;   
+            return ft_strdup(&minishell->env[i][var_len + 1]);
+        i++;
     }
     return (NULL);
 }
+
 int env_len(t_shell *minishell)
 {
     int i;

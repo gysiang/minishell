@@ -27,8 +27,9 @@ void sigquit_handler(int signal)
 {
     if (signal == SIGQUIT)
     {
-        // Handle the SIGQUIT signal (e.g., cleanup, exit the program)
-        exit(0);
+        (void)signal;
+        rl_on_new_line();
+        rl_redisplay();
     }
 }
 
@@ -39,7 +40,7 @@ void setup_signal_handler(void)
         ft_putstr_fd("signal", 2);
         exit(1);
     }
-    if (signal(SIGQUIT, sigquit_handler) == SIG_ERR)
+    if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
     {
         ft_putstr_fd("signal", 2);
         exit(1);

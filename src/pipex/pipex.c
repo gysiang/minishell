@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/06 09:57:52 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/07 09:35:45 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	**init_command(t_token *token_lst, int num_of_command)
 		if (curr_token->type == T_IDENTIFIER)
 		{
 			command[i++] = curr_token->token;
-			printf("command[%d]: %s\n", i, curr_token->token);
+			//printf("command[%d]: %s\n", i, curr_token->token);
 		}
 		curr_token = curr_token->next;
 	}
@@ -40,28 +40,98 @@ static char	**init_command(t_token *token_lst, int num_of_command)
 	return (command);
 }
 
-void	pipex(t_token *token_lst, t_shell *minishell)
+static int	num_of_commands(t_shell *minishell)
 {
 	int		i;
-	int		num_of_command;
 	t_token	*curr_token;
-	char	**command;
 
-	curr_token = token_lst;
-	num_of_command = 0;
+	i = 0;
+	curr_token = minishell->cmd_list;
+	i = 0;
 	while (curr_token != NULL)
 	{
 		if (curr_token->type == T_IDENTIFIER)
-			num_of_command++;
+			i++;
 		curr_token = curr_token->next;
 	}
-	command = init_command(token_lst, num_of_command);
+	return (i);
+}
+
+void pipex(t_shell *minishell)
+{
+	int i;
+	int num_of_command;
+	char **command;
+	int pid;
+	pid_t *child_pids;
+	int prev_pipe[2];
+	int curr_pipe[2];
+
 	i = 0;
-	while (i < num_of_command - 1)
-		do_pipe(command[i++], minishell);
-	exec_cmd(command[num_of_command - 1], minishell); // this go with the child process
-	//this needs waitpid WUNTRACED
-	ft_free_tab(command);
+	num_of_command = num_of_commands(minishell);
+	child_pids = (pid_t *)malloc(sizeof(pid_t) * num_of_command);
+	if (child_pids == NULL) {
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
+	command = init_command(minishell->cmd_list, num_of_command);
+	while (num_of_command > i)
+	{
+		if (i != 0)
+		{
+			prev_pipe[0] = curr_pipe[0];
+			prev_pipe[1] = curr_pipe[1];
+		}
+		if (i != num_of_command - 1)
+		{
+			if (pipe(curr_pipe) == -1)
+			{
+				perror("pipe");
+				exit(EXIT_FAILURE);
+				}
+			}
+			pid = fork();
+			if (pid == -1)
+			{
+				perror("fork");
+				exit(EXIT_FAILURE);
+			}
+			if (!pid)
+			{
+				if (i != 0)
+				{
+					dup2(prev_pipe[0], STDIN_FILENO);
+					close(prev_pipe[0]);
+					close(prev_pipe[1]);
+				}
+
+				if (i != num_of_command - 1)
+				{
+					dup2(curr_pipe[1], STDOUT_FILENO);
+					close(curr_pipe[0]);
+					close(curr_pipe[1]);
+				}
+				exec_cmd(command[i], minishell);
+			}
+			else
+			{
+				child_pids[i] = pid;
+				if (i != 0)
+				{
+					close(prev_pipe[0]);
+					close(prev_pipe[1]);
+				}
+			}
+			i++;
+	}
+	i = 0;
+	while (i < num_of_command)
+	{
+		waitpid(child_pids[i], NULL, 0);
+		i++;
+	}
+	free(command);
+	free(child_pids);
 }
 
 void	exec_cmd(char *cmd, t_shell *minishell)

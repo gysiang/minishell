@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/04 22:58:06 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/07 09:34:33 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ char	*get_path(char *cmd, t_shell *minishell);
 void	exec_cmd(char *cmd, t_shell *minishell);
 void	ft_free_tab(char **tab);
 void	exit_handler(int exit_code);
-void	pipex(t_token *token_lst, t_shell *minishell);
+void	pipex(t_shell *minishell);
 void    child(int *p_fd, t_shell *minishell, char *command);
 void    parent(int *p_fd, t_shell *minishell, char *command);
 void	do_pipe(char *command, t_shell *minishell);

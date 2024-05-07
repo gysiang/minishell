@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/07 09:35:45 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/07 18:59:23 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,18 @@ static int	num_of_commands(t_shell *minishell)
 	return (i);
 }
 
+void	wait_for_children(pid_t *child_pids, int num_of_command)
+{
+	int	i;
+
+	i = 0;
+	while (num_of_command > i)
+	{
+		waitpid(child_pids[i], NULL, 0);
+		i++;
+	}
+}
+
 void pipex(t_shell *minishell)
 {
 	int i;
@@ -69,12 +81,10 @@ void pipex(t_shell *minishell)
 
 	i = 0;
 	num_of_command = num_of_commands(minishell);
-	child_pids = (pid_t *)malloc(sizeof(pid_t) * num_of_command);
-	if (child_pids == NULL) {
-		perror("malloc");
-		exit(EXIT_FAILURE);
-	}
 	command = init_command(minishell->cmd_list, num_of_command);
+	child_pids = (pid_t *)malloc(sizeof(pid_t) * num_of_command);
+	if (child_pids == NULL)
+		exit(EXIT_FAILURE);
 	while (num_of_command > i)
 	{
 		if (i != 0)
@@ -85,54 +95,43 @@ void pipex(t_shell *minishell)
 		if (i != num_of_command - 1)
 		{
 			if (pipe(curr_pipe) == -1)
-			{
-				perror("pipe");
 				exit(EXIT_FAILURE);
-				}
-			}
-			pid = fork();
-			if (pid == -1)
+		}
+		pid = fork();
+		if (pid == -1)
+			exit(EXIT_FAILURE);
+		if (!pid)
+		{
+			if (i != 0)
 			{
-				perror("fork");
-				exit(EXIT_FAILURE);
+				dup2(prev_pipe[0], STDIN_FILENO);
+				close(prev_pipe[0]);
+				close(prev_pipe[1]);
 			}
-			if (!pid)
+			if (i != num_of_command - 1)
 			{
-				if (i != 0)
-				{
-					dup2(prev_pipe[0], STDIN_FILENO);
-					close(prev_pipe[0]);
-					close(prev_pipe[1]);
-				}
-
-				if (i != num_of_command - 1)
-				{
-					dup2(curr_pipe[1], STDOUT_FILENO);
-					close(curr_pipe[0]);
-					close(curr_pipe[1]);
-				}
-				exec_cmd(command[i], minishell);
+				dup2(curr_pipe[1], STDOUT_FILENO);
+				close(curr_pipe[0]);
+				close(curr_pipe[1]);
 			}
-			else
+			exec_cmd(command[i], minishell);
+		}
+		else
+		{
+			child_pids[i] = pid;
+			if (i != 0)
 			{
-				child_pids[i] = pid;
-				if (i != 0)
-				{
-					close(prev_pipe[0]);
-					close(prev_pipe[1]);
-				}
+				close(prev_pipe[0]);
+				close(prev_pipe[1]);
 			}
-			i++;
-	}
-	i = 0;
-	while (i < num_of_command)
-	{
-		waitpid(child_pids[i], NULL, 0);
+		}
 		i++;
 	}
+	wait_for_children(child_pids, num_of_command);
 	free(command);
 	free(child_pids);
 }
+
 
 void	exec_cmd(char *cmd, t_shell *minishell)
 {

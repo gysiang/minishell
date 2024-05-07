@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/05/06 16:55:56 by gyong-si         ###   ########.fr       */
-=======
-/*   Updated: 2024/05/06 20:14:10 by gyong-si         ###   ########.fr       */
->>>>>>> e364b9f (will not exit out of minishell for ls | wc -l)
+/*   Updated: 2024/05/06 10:01:45 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,12 +129,12 @@ int main(int argc, char **argv, char **envp)
             continue;
         add_history(line);
         token_lst = token_processor(line, g_shell);
-        //print_tokenlst(token_lst);
+        print_tokenlst(token_lst);
         if (token_lst != NULL)
             g_shell->cmd_list = token_lst;
         if (execute_builtin(g_shell) == 1)
             continue;
-        pipex(g_shell);
+        pipex(token_lst, g_shell);
         free_tokenlst(token_lst);
     }
     free_shell(g_shell);

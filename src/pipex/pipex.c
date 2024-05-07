@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/07 19:32:03 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/07 20:07:06 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,31 @@ void	wait_for_children(pid_t *child_pids, int num_of_command)
 	}
 }
 
+void	child(int *curr_pipe, int i, int num_of_command)
+{
+	if (i != 0)
+	{
+		dup2(curr_pipe[0], STDIN_FILENO);
+		close(curr_pipe[0]);
+		close(curr_pipe[1]);
+	}
+	if (i != num_of_command - 1)
+	{
+		dup2(curr_pipe[1], STDOUT_FILENO);
+		close(curr_pipe[0]);
+		close(curr_pipe[1]);
+	}
+}
+
+void	parent(int *curr_pipe, int i)
+{
+	if (i != 0)
+	{
+		close(curr_pipe[0]);
+		close(curr_pipe[1]);
+	}
+}
+
 void pipex(t_shell *minishell)
 {
 	int i;
@@ -76,7 +101,6 @@ void pipex(t_shell *minishell)
 	char **command;
 	int pid;
 	pid_t *child_pids;
-	//int prev_pipe[2];
 	int curr_pipe[2];
 
 	i = 0;
@@ -87,12 +111,6 @@ void pipex(t_shell *minishell)
 		exit(EXIT_FAILURE);
 	while (num_of_command > i)
 	{
-		/***
-		if (i != 0)
-		{
-			prev_pipe[0] = curr_pipe[0];
-			prev_pipe[1] = curr_pipe[1];
-		} **/
 		if (i != num_of_command - 1)
 		{
 			if (pipe(curr_pipe) == -1)
@@ -103,42 +121,13 @@ void pipex(t_shell *minishell)
 			exit(EXIT_FAILURE);
 		if (!pid)
 		{
-			if (i != 0)
-			{
-				/***
-				dup2(prev_pipe[0], STDIN_FILENO);
-				close(prev_pipe[0]);
-				close(prev_pipe[1]);
-				**/
-				dup2(curr_pipe[0], STDIN_FILENO);
-				close(curr_pipe[0]);
-				close(curr_pipe[1]);
-			}
-			if (i != num_of_command - 1)
-			{
-				/**
-				dup2(curr_pipe[1], STDOUT_FILENO);
-				close(curr_pipe[0]);
-				close(curr_pipe[1]);
-				**/
-				dup2(curr_pipe[1], STDOUT_FILENO);
-				close(curr_pipe[0]);
-				close(curr_pipe[1]);
-			}
+			child(curr_pipe, i, num_of_command);
 			exec_cmd(command[i], minishell);
 		}
 		else
 		{
 			child_pids[i] = pid;
-			if (i != 0)
-			{
-				/**
-				close(prev_pipe[0]);
-				close(prev_pipe[1]);
-				**/
-				close(curr_pipe[0]);
-				close(curr_pipe[1]);
-			}
+			parent(curr_pipe, i);
 		}
 		i++;
 	}
@@ -176,19 +165,7 @@ void	exec_cmd(char *cmd, t_shell *minishell)
 	}
 }
 
-void	child(int *p_fd, t_shell *minishell, char *command)
-{
-	if (dup2(p_fd[1], STDOUT_FILENO) == -1)
-	{
-		ft_putstr_fd("Error Child dup2 pipe\n", STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
-	close(p_fd[0]);
-	close(p_fd[1]);
-	printf("child command %s\n", command);
-	exec_cmd(command, minishell);
-}
-
+/**
 void	parent(int *p_fd, t_shell *minishell, char *command)
 {
 	(void)minishell;
@@ -216,4 +193,4 @@ void	do_pipe(char *command, t_shell *minishell)
 		child(p_fd, minishell, command);
 	else
 		parent(p_fd, minishell, command);
-}
+} **/

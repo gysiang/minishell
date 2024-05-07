@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/07 20:07:06 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/07 21:15:41 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,14 +94,39 @@ void	parent(int *curr_pipe, int i)
 	}
 }
 
+void	do_pipe(int i, pid_t *child_pids, char *command, t_shell *minishell)
+{
+	int		curr_pipe[2];
+	int		num_of_command;
+	pid_t	pid;
+
+	num_of_command = num_of_commands(minishell);
+	if (i != num_of_command - 1)
+	{
+		if (pipe(curr_pipe) == -1)
+			exit(EXIT_FAILURE);
+	}
+	pid = fork();
+	if (pid == -1)
+		exit(EXIT_FAILURE);
+	if (!pid)
+	{
+		child(curr_pipe, i, num_of_command);
+		exec_cmd(command, minishell);
+	}
+	else
+	{
+		child_pids[i] = pid;
+		parent(curr_pipe, i);
+	}
+}
+
 void pipex(t_shell *minishell)
 {
 	int i;
 	int num_of_command;
 	char **command;
-	int pid;
 	pid_t *child_pids;
-	int curr_pipe[2];
 
 	i = 0;
 	num_of_command = num_of_commands(minishell);
@@ -111,31 +136,13 @@ void pipex(t_shell *minishell)
 		exit(EXIT_FAILURE);
 	while (num_of_command > i)
 	{
-		if (i != num_of_command - 1)
-		{
-			if (pipe(curr_pipe) == -1)
-				exit(EXIT_FAILURE);
-		}
-		pid = fork();
-		if (pid == -1)
-			exit(EXIT_FAILURE);
-		if (!pid)
-		{
-			child(curr_pipe, i, num_of_command);
-			exec_cmd(command[i], minishell);
-		}
-		else
-		{
-			child_pids[i] = pid;
-			parent(curr_pipe, i);
-		}
+		do_pipe(i, child_pids, command[i], minishell);
 		i++;
 	}
 	wait_for_children(child_pids, num_of_command);
 	free(command);
 	free(child_pids);
 }
-
 
 void	exec_cmd(char *cmd, t_shell *minishell)
 {
@@ -164,33 +171,3 @@ void	exec_cmd(char *cmd, t_shell *minishell)
 		exit(EXIT_FAILURE);
 	}
 }
-
-/**
-void	parent(int *p_fd, t_shell *minishell, char *command)
-{
-	(void)minishell;
-	(void)command;
-	if (dup2(p_fd[0], STDIN_FILENO) == -1)
-	{
-		ft_putstr_fd("Error Parent dup2 pipe\n", STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
-	close(p_fd[0]);
-	close(p_fd[1]);
-}
-
-void	do_pipe(char *command, t_shell *minishell)
-{
-	int		p_fd[2];
-	pid_t	pid;
-
-	if (pipe(p_fd) == -1)
-		exit(EXIT_FAILURE);
-	pid = fork();
-	if (pid == -1)
-		exit(EXIT_FAILURE);
-	if (!pid)
-		child(p_fd, minishell, command);
-	else
-		parent(p_fd, minishell, command);
-} **/

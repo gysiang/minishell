@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:33:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/19 11:02:59 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/07 10:10:44 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@ void sigint_handler(int signal)
     if (signal == SIGINT)
     {
         printf("\n");
-        prompt();
-        printf(" ");
+        rl_on_new_line();
+        rl_replace_line("", 0);
+        rl_redisplay();
     }
 }
 

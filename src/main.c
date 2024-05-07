@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/07 09:26:15 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/07 10:02:14 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ t_shell	*init_shell(char **envp)
 
 	shell = (t_shell *)malloc(sizeof(t_shell));
 	if (!shell)
+	{
+		perror("malloc");
 		return (NULL);
+	}
 	if (pipe(p_fd) == -1)
 	{
 		free(shell);
@@ -41,6 +44,8 @@ t_shell	*init_shell(char **envp)
 
 int execute_builtin(t_shell *minishell)
 {
+	if (minishell->cmd_list == NULL)
+        return (0);
 	char	*s;
 
 	s = minishell->cmd_list->token;
@@ -77,32 +82,16 @@ int execute_builtin(t_shell *minishell)
 	return (0);
 }
 
-void	free_shell(t_shell *minishell)
+void free_shell(t_shell *minishell)
 {
-	int	i;
-
-	i = 0;
-	if (minishell == NULL)
-		return ;
-	if (minishell->env != NULL)
-	{
-		while (minishell->env[i] != NULL)
-		{
-			free (minishell->env[i]);
-			i++;
-		}
-		free(minishell->env);
-	}
-	if (minishell->user != NULL)
-		free(minishell->user);
-	if (minishell->pwd != NULL)
-		free(minishell->pwd);
-	if (minishell->home != NULL)
-		free(minishell->home);
-	if (minishell->prompt != NULL)
-		free(minishell->prompt);
-	free_tokenlst(minishell->cmd_list);
-	free(minishell);
+    if (minishell == NULL)
+        return;
+    if (minishell->cmd_list != NULL)
+        free_tokenlst(minishell->cmd_list);
+    free(minishell->user);
+    free(minishell->pwd);
+    free(minishell->home);
+    free(minishell);
 }
 
 

@@ -87,13 +87,28 @@ void free_shell(t_shell *minishell)
     if (minishell == NULL)
         return;
     if (minishell->cmd_list != NULL)
+    {
         free_tokenlst(minishell->cmd_list);
-    free(minishell->user);
-    free(minishell->pwd);
-    free(minishell->home);
+        minishell->cmd_list = NULL;
+    }
+    if (minishell->user != NULL)
+    {
+        free(minishell->user);
+        minishell->user = NULL;
+    }
+    if (minishell->pwd != NULL)
+    {
+        free(minishell->pwd);
+        minishell->pwd = NULL;
+    }
+    if (minishell->home != NULL)
+    {
+        free(minishell->home);
+        minishell->home = NULL;
+    }
     free(minishell);
 }
-
+// Need to check if the value is not null, then free
 
 int main(int argc, char **argv, char **envp)
 {
@@ -107,24 +122,35 @@ int main(int argc, char **argv, char **envp)
     using_history();
     setup_signal_handler();
     while (!g_shell->end)
-	{
+    {
         line = readline(PROMPT);
         if (line == NULL)
-		{
+        {
             printf("exit\n");
             break;
         }
         if (*line == '\0')
+        {
+            free(line);
             continue;
+        }
         add_history(line);
         token_lst = token_processor(line, g_shell);
+        free(line);
         //print_tokenlst(token_lst);
         if (token_lst != NULL)
             g_shell->cmd_list = token_lst;
         if (execute_builtin(g_shell) == 1)
+        {
+            free_tokenlst(token_lst);
+            token_lst = NULL;
+			g_shell->cmd_list = NULL;
             continue;
+        }
         pipex(g_shell);
         free_tokenlst(token_lst);
+        token_lst = NULL;
+		g_shell->cmd_list = NULL;
     }
     free_shell(g_shell);
     clear_history();

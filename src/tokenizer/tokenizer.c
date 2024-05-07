@@ -25,38 +25,40 @@ size_t	ft_wordlen(const char *s, char c)
 	return (i);
 }
 
-int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
+int add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
 {
-	int		word_len;
-	char	*symbol;
+    int word_len;
+    char *symbol;
 
-	word_len = ft_wordlen(*line, ' ');
-	symbol = (char *)malloc(sizeof(char) + 1);
-	if (!symbol)
-		return (0);
-	ft_copy(symbol, *line, word_len);
-	token_add_back(token_lst, symbol, type);
-	if (type == T_LEFT_SHIFT || type == T_RIGHT_SHIFT)
-		(*line) += 2;
-	else
-		(*line)++;
-	return (0);
+    word_len = ft_wordlen(*line, ' ');
+    symbol = (char *)malloc(word_len + 1);
+    if (!symbol)
+        return (0);
+    ft_copy(symbol, *line, word_len);
+    token_add_back(token_lst, symbol, type);
+    free(symbol);
+    if (type == T_LEFT_SHIFT || type == T_RIGHT_SHIFT)
+        (*line) += 2;
+    else
+        (*line)++;
+    return (0);
 }
 
 // pure command
-int	add_command_lst(char **line, t_token **token_lst)
+int add_command_lst(char **line, t_token **token_lst)
 {
-	int		word_len;
-	char	*cmd;
+    int word_len;
+    char *cmd;
 
-	word_len = ft_wordlen(*line, ' ');
-	cmd = (char *)malloc(word_len + 1);
-	if (!cmd)
-		return (0);
-	ft_copy(cmd, *line, word_len);
-	token_add_back(token_lst, cmd, T_IDENTIFIER);
-	(*line) += word_len;
-	return (0);
+    word_len = ft_wordlen(*line, ' ');
+    cmd = (char *)malloc(word_len + 1);
+    if (!cmd)
+        return (0);
+    ft_copy(cmd, *line, word_len);
+    token_add_back(token_lst, cmd, T_IDENTIFIER);
+    free(cmd);
+    (*line) += word_len;
+    return (0);
 }
 
 t_token	*token_processor(char *line, t_shell *minishell)

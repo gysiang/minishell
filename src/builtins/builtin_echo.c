@@ -39,3 +39,5 @@ int	minishell_echo(t_shell *minishell, t_cmd *cmd)
 		ft_putchar_fd('\n', 1);
 	return (0);
 }
+//echo '' test  
+//  test

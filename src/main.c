@@ -6,7 +6,11 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/05/06 16:55:56 by gyong-si         ###   ########.fr       */
+=======
+/*   Updated: 2024/05/06 20:14:10 by gyong-si         ###   ########.fr       */
+>>>>>>> e364b9f (will not exit out of minishell for ls | wc -l)
 /*                                                                            */
 /* ************************************************************************** */
 

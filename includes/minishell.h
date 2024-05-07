@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/06 17:41:16 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/07 08:58:23 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,8 @@ void	ft_free_tab(char **tab);
 void	exit_handler(int exit_code);
 void	pipex(t_shell *minishell);
 void	child(t_shell *minishell, char *command);
-//void    parent(int *p_fd, t_shell *minishell, char *command);
-//void	do_pipe(char *command, t_shell *minishell);
+void 	parent(pid_t child_pid, int *p_fd);
+void	do_pipe(char *command, int *p_fd, t_shell *minishell);
 
 
 // tokenizer

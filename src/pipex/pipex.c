@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:24:38 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/07 18:59:23 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/07 19:32:03 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void pipex(t_shell *minishell)
 	char **command;
 	int pid;
 	pid_t *child_pids;
-	int prev_pipe[2];
+	//int prev_pipe[2];
 	int curr_pipe[2];
 
 	i = 0;
@@ -87,11 +87,12 @@ void pipex(t_shell *minishell)
 		exit(EXIT_FAILURE);
 	while (num_of_command > i)
 	{
+		/***
 		if (i != 0)
 		{
 			prev_pipe[0] = curr_pipe[0];
 			prev_pipe[1] = curr_pipe[1];
-		}
+		} **/
 		if (i != num_of_command - 1)
 		{
 			if (pipe(curr_pipe) == -1)
@@ -104,12 +105,22 @@ void pipex(t_shell *minishell)
 		{
 			if (i != 0)
 			{
+				/***
 				dup2(prev_pipe[0], STDIN_FILENO);
 				close(prev_pipe[0]);
 				close(prev_pipe[1]);
+				**/
+				dup2(curr_pipe[0], STDIN_FILENO);
+				close(curr_pipe[0]);
+				close(curr_pipe[1]);
 			}
 			if (i != num_of_command - 1)
 			{
+				/**
+				dup2(curr_pipe[1], STDOUT_FILENO);
+				close(curr_pipe[0]);
+				close(curr_pipe[1]);
+				**/
 				dup2(curr_pipe[1], STDOUT_FILENO);
 				close(curr_pipe[0]);
 				close(curr_pipe[1]);
@@ -121,8 +132,12 @@ void pipex(t_shell *minishell)
 			child_pids[i] = pid;
 			if (i != 0)
 			{
+				/**
 				close(prev_pipe[0]);
 				close(prev_pipe[1]);
+				**/
+				close(curr_pipe[0]);
+				close(curr_pipe[1]);
 			}
 		}
 		i++;

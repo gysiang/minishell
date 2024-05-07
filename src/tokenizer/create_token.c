@@ -21,6 +21,11 @@ t_token	*create_token(char *token, t_token_type type)
 	if (!new_node)
 		return (NULL);
 	new_node->token = ft_strdup(token);
+	if (!new_node->token)
+	{
+		free(new_node);
+		return (NULL);
+	}
 	new_node->type = type;
 	new_node->next = NULL;
 	new_node->prev = NULL;
@@ -53,17 +58,22 @@ void	token_add_back(t_token **head, char *token, t_token_type type)
 }
 
 // free the memory for linked list
-void	free_tokenlst(t_token *head)
+void free_tokenlst(t_token *head)
 {
-	t_token	*current_node;
-	t_token	*tmp;
+    t_token *current_node;
+    t_token *tmp;
 
-	current_node = head;
-	while (current_node != NULL)
-	{
-		tmp = current_node;
-		current_node = current_node->next;
-		free (tmp->token);
-		free(tmp);
-	}
+    current_node = head;
+    while (current_node != NULL)
+    {
+        tmp = current_node;
+        current_node = current_node->next;
+        if (tmp->token != NULL)
+        {
+            free(tmp->token);
+            tmp->token = NULL;
+        }
+        free(tmp);
+    }
+    head = NULL;
 }

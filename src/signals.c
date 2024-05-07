@@ -11,6 +11,26 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+// Need to handle multiple minishell
+
+/*
+sh-5.2$ ./minishell 
+minishell$ ./minishell
+minishell$ ^C
+minishell$ 
+minishell$ 
+minishell$ ^C
+minishell$ ^C
+minishell$ 
+minishell$ 
+^Cminishell$ 
+minishell$ ^C
+
+minishell$ minishell$ ^C
+
+minishell$ minishell$ 
+^Cminishell$ */
+// Most likely did not disable the previous signal and running signal at once
 
 void sigint_handler(int signal)
 {

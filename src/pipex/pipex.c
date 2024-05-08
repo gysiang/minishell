@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -17,7 +18,7 @@
 /* Split the command string into parts based on spaces, then find the full path
 of the command to be exxecuted. If the command fails to execute, will print the
 eroor messages, free the allocated memmory and then exits the program */
-
+/**
 static char	**init_command(t_token *token_lst, int num_of_command)
 {
 	t_token	*curr_token;
@@ -40,7 +41,7 @@ static char	**init_command(t_token *token_lst, int num_of_command)
 	}
 	command[num_of_command] = NULL;
 	return (command);
-}
+} **/
 
 static int	num_of_commands(t_shell *minishell)
 {
@@ -82,8 +83,8 @@ void	child(int *curr_pipe, int i, int num_of_command)
 	if (i != num_of_command - 1)
 	{
 		dup2(curr_pipe[1], STDOUT_FILENO);
-		close(curr_pipe[0]);
-		close(curr_pipe[1]);
+		//close(curr_pipe[0]);
+		//close(curr_pipe[1]);
 	}
 }
 
@@ -123,16 +124,18 @@ void	do_pipe(int i, pid_t *child_pids, char *command, t_shell *minishell)
 	}
 }
 
+/**
 void pipex(t_shell *minishell)
 {
 	int i;
 	int num_of_command;
-	char **command;
+	//char **command;
 	pid_t *child_pids;
+	t_token	*curr;
 
 	i = 0;
 	num_of_command = num_of_commands(minishell);
-	command = init_command(minishell->cmd_list, num_of_command);
+	//command = init_command(minishell->cmd_list, num_of_command);
 	child_pids = (pid_t *)malloc(sizeof(pid_t) * num_of_command);
 	if (child_pids == NULL)
 		exit(EXIT_FAILURE);
@@ -141,8 +144,49 @@ void pipex(t_shell *minishell)
 		do_pipe(i, child_pids, command[i], minishell);
 		i++;
 	}
+	curr = minishell->cmd_list;
+	while (curr != NULL)
+	{
+		if (curr->type == T_IDENTIFIER)
+		{
+			printf("command: %s\n", curr->token);
+			do_pipe(i++, child_pids, curr->token, minishell);
+			curr = curr->next;
+		}
+	}
+
 	wait_for_children(child_pids, num_of_command);
-	free(command);
+	//free(command);
+	free(child_pids);
+} **/
+
+void pipex(t_shell *minishell)
+{
+	int		i;
+	int		pipe_read_fd;
+	pid_t	*child_pids;
+	t_token	*curr;
+
+	i = 0;
+	child_pids = (pid_t *)malloc(sizeof(pid_t) * num_of_commands(minishell));
+	if (child_pids == NULL)
+		exit(EXIT_FAILURE);
+	curr = minishell->cmd_list;
+	while (curr != NULL)
+	{
+		if (curr->type == T_LEFT_SHIFT)
+		{
+			pipe_read_fd = here_doc(minishell, curr->token);
+			if (pipe_read_fd == -1)
+				exit(EXIT_FAILURE);
+			close(pipe_read_fd);
+			curr = curr->next;
+		}
+		else if (curr->type == T_IDENTIFIER)
+			do_pipe(i++, child_pids, curr->token, minishell);
+		curr = curr->next;
+	}
+	wait_for_children(child_pids, i);
 	free(child_pids);
 }
 

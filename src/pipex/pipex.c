@@ -161,6 +161,7 @@ void pipex(t_shell *minishell)
 void pipex(t_shell *minishell)
 {
 	int		i;
+	int		pipe_read_fd;
 	pid_t	*child_pids;
 	t_token	*curr;
 
@@ -173,17 +174,14 @@ void pipex(t_shell *minishell)
 	{
 		if (curr->type == T_LEFT_SHIFT)
 		{
-			int pipe_read_fd = here_doc(minishell, curr->token);
+			pipe_read_fd = here_doc(minishell, curr->token);
 			if (pipe_read_fd == -1)
 				exit(EXIT_FAILURE);
 			close(pipe_read_fd);
 			curr = curr->next;
 		}
 		else if (curr->type == T_IDENTIFIER)
-		{
-			printf("command[%d]: %s\n", i, curr->token);
 			do_pipe(i++, child_pids, curr->token, minishell);
-		}
 		curr = curr->next;
 	}
 	wait_for_children(child_pids, i);

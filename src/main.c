@@ -44,11 +44,11 @@ t_shell	*init_shell(char **envp)
 
 int execute_builtin(t_shell *minishell)
 {
-	if (minishell->cmd_list == NULL)
-        return (0);
 	char	*s;
 
 	s = minishell->cmd_list->token;
+	if (minishell->cmd_list == NULL)
+        return (0);
 	if (ft_strcmp(s, "history") == 0)
 	{
 		print_history();
@@ -59,9 +59,14 @@ int execute_builtin(t_shell *minishell)
 		clear_history();
 		return (1);
 	}
+    if (ft_strncmp(s, "cd",2) == 0)
+    {
+        //minishell_cd(minishell);
+        return (1);
+    }
 	if (ft_strcmp(s, "echo") == 0)
 	{
-		//minishell_echo(minishell);
+		minishell_echo(minishell);
 		return (1);
 	}
 	if (ft_strcmp(s, "env") == 0)
@@ -74,9 +79,9 @@ int execute_builtin(t_shell *minishell)
 		minishell_pwd(minishell);
 		return (1);
 	}
-	if (ft_strcmp(s, "exit") == 0)
+	if (ft_strncmp(s, "exit", 4) == 0)
 	{
-		minishell_exit();
+		minishell_exit(minishell);
 		return (1);
 	}
 	return (0);
@@ -108,9 +113,62 @@ void free_shell(t_shell *minishell)
     }
     free(minishell);
 }
-// Need to check if the value is not null, then free
 
 int main(int argc, char **argv, char **envp)
+{
+    (void)argc;
+    (void)argv;
+    char *line;
+    t_token *token_lst;
+    t_shell *g_shell;
+
+    g_shell = init_shell(envp);
+    using_history();
+    setup_signal_handler();
+    while (!g_shell->end)
+    {
+        line = NULL;
+        while (line == NULL)
+        {
+            line = readline(PROMPT);
+            if (line == NULL)
+            {
+                printf("exit\n");
+                g_shell->end = 1;
+                break;
+            }
+            if (*line == '\0')
+            {
+                free(line);
+                line = NULL;
+            }
+        }
+        if (g_shell->end)
+            break;
+        add_history(line);
+        token_lst = token_processor(line, g_shell);
+        free(line);
+        if (token_lst != NULL)
+            g_shell->cmd_list = token_lst;
+        if (execute_builtin(g_shell) == 1)
+        {
+            free_tokenlst(token_lst);
+            token_lst = NULL;
+            g_shell->cmd_list = NULL;
+            continue;
+        }
+        pipex(g_shell);
+        free_tokenlst(token_lst);
+        token_lst = NULL;
+        g_shell->cmd_list = NULL;
+    }
+
+    free_shell(g_shell);
+    clear_history();
+    return 0;
+}
+
+/*int main(int argc, char **argv, char **envp)
 {
     (void)argc;
     (void)argv;
@@ -155,4 +213,4 @@ int main(int argc, char **argv, char **envp)
     free_shell(g_shell);
     clear_history();
     return 0;
-}
+}*/

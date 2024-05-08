@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+// WRITE A FUNCTION THAT IGNORES THE PARENT PROCESS SIGNAL WHEN WE FORK IT, BY RESETTING THE CHILD PROCESS SIGNAL TO 0 AND IGNORE PARENT. AFTER FINISH, ENABLE PARENT PROCESS SIGNAL AGAIN 
+
 #include "minishell.h"
 
 /* Split the command string into parts based on spaces, then find the full path
@@ -149,17 +151,25 @@ void	exec_cmd(char *cmd, t_shell *minishell)
 	char	**s_cmd;
 	char	*path;
 
-	if (!cmd || !minishell) {
+	if (!cmd || !minishell)
+	{
 		ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
 	s_cmd = ft_split(cmd, ' ');
-	if (!s_cmd) {
+	if (!s_cmd)
+	{
 		ft_putstr_fd("Failed to split command\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
 	path = get_path(s_cmd[0], minishell);
-	if (!path) {
+	if (execute_builtin(minishell))
+	{
+		ft_free_tab(s_cmd);
+		return ;
+	}
+	if (!path)
+	{
 		printf("get_env returned NULL for command: %s\n", s_cmd[0]);
 		exit(EXIT_FAILURE);
 	}

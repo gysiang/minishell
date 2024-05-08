@@ -1,6 +1,4 @@
-#include "../includes/minishell.h"
-
-/***
+#include "minishell.h"
 
 static void signal_free(t_shell *minishell)
 {
@@ -14,6 +12,7 @@ static void signal_exit(int signal_number)
     printf("\n"); // Print a newline character
     signal_free(NULL); // Call signal_free function with NULL pointer
 }
+
 static void error_EOF(char *end_of_file)
 {
     // Print error message indicating here-doc was dleimited byt end-of -file
@@ -45,8 +44,10 @@ static void here_doc_read(t_shell * minishell, int *pipe_fds, char *delimiter)
             free(str); // If the input matches the delimiter, free str and break otu of the loops
             break;
         }
-        write(pipe_fds[1], str, ft_strlen(str)); // Write the input str to thr write end of the pipe
-        write(pipe_fds[1], "\n", 1); // Write a newline character to thr write end of the pipe
+        if (write(pipe_fds[1], str, ft_strlen(str)) == -1)
+            exit(EXIT_FAILURE); // Write the input str to the write end of the pipe
+        if (write(pipe_fds[1], "\n", 1))
+             exit(EXIT_FAILURE);// Write a newline character to the write end of the pipe
         free(str); // Free the str variable
     }
     close(pipe_fds[1]); // Close the write end of the pipe
@@ -60,7 +61,8 @@ int here_doc(t_shell *minishell, char *delimiter)
     int status;
     int pid;
 
-    pipe(pipe_des); // Create a pipe and store the file descriptoer in pipre_des array
+    if (pipe(pipe_des) == -1)
+        exit(EXIT_FAILURE); // Create a pipe and store the file descriptoer in pipre_des array
     pid = fork(); // Fork a child process
     if (pid == 0)// If in the child process (pid is 0)
     {
@@ -76,4 +78,3 @@ int here_doc(t_shell *minishell, char *delimiter)
     close(pipe_des[1]); // Close the write end of the pipe
     return (pipe_des[0]); // Return the read end of the pipe
 }
-**/

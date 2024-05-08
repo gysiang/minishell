@@ -12,32 +12,46 @@
 
 #include "minishell.h"
 
-int	minishell_echo(t_shell *minishell, t_cmd *cmd)
+int minishell_echo(t_shell *minishell)
 {
-	int	print_newline;
-	int	i;
+	
+    t_token *token;
+    int newline = 1;
 
-	(void)minishell;
-	i = 1;
-	print_newline = 1;
-	if (cmd->argv[1] && cmd->argv[1][0] == '-' && cmd->argv[1][1] == 'n' && cmd->argv[1][2] == '\0')
-	{
-		print_newline = 0;
-		i++;
-	}
-	if (cmd->argv[i] != NULL)
-	{
-		while (cmd->argv[i])
-		{
-			ft_putstr_fd(cmd->argv[i], 1);
-			if (cmd->argv[i + 1])
-				ft_putchar_fd(' ', 1);
-			i++;
-		}
-	}
-	if (print_newline == 1)
-		ft_putchar_fd('\n', 1);
-	return (0);
+	newline = 1;
+	token = minishell->cmd_list;
+    token = token->next;
+    if (token && ft_strcmp(token->token, "-n") == 0)
+    {
+        newline = 0;
+        token = token->next;
+    }
+    while (token)
+    {
+        printf("%s", token->token);
+        if (token->next)
+            printf(" ");
+    }
+    if (newline)
+        printf("\n");
+    return (0);
 }
+
+// Test cases that failed
+// echo $?
+// Output:
+// Correct Output: 0
+// echo "hi" | cat | cat | cat | cat | cat | cat | cat
+// Output: Stuck in zombie mode
+// Correct Output: hi
+// echo - "" "  " hello
+// Output: - hello
+// Correct Output: -     hello
+// echo test     \    test
+// Output: test test
+// Correct Output: test   test
+// echo \"test
+// Output: test
+// Correct Output: "test
 //echo '' test  
 //  test

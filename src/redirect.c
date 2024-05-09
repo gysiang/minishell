@@ -1,5 +1,4 @@
 #include "../includes/minishell.h"
-/**
 
 static int open_input(char *file_name)
 {
@@ -27,28 +26,30 @@ static int open_input(char *file_name)
     return (fd);
 
 }
-static int redirect_input(t_shell *minishell, t_list *input)
+
+int redirect_input(t_shell *minishell, t_token *token)
 {
-    t_list *tracker;
-    int type;
+    t_token *tracker;
+    int 	type;
     char    *file_name;
-    int fd;
-    if (!input)
+    int 	fd;
+    if (!token)
         return (0);
-    tracker = input;
+    tracker = token;
     while (tracker)
     {
-        type = ((char *)tracker->content)[0] - 48;
-        file_name = &((char *)tracker->content)[1];
-        if (type == 1)
+        type = tracker->type;
+        file_name = (char *)tracker->next->token;
+		printf("filename: %s\n", file_name);
+        if (type == T_LESSER_THAN)
             fd = open_input(file_name);
         else
             fd = here_doc(minishell, file_name);
         if (fd < 0)
             break;
-        tracker = tracker->next;
-        if (!tracker)
-            close(fd);
+		tracker = token->next->next;
+		//if (tracker)
+        //	close(fd);
     }
     return (fd);
 }
@@ -69,42 +70,45 @@ static int open_output(char *file_name, int type)
         minishell_error_msg(file_name, 3);
         return (-1);
     }
-    if (type == 1)
+    if (type == T_GREATER_THAN)
         fd = open(file_name, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-    else if (type == 2)
+    else if (type == T_RIGHT_SHIFT)
         fd = open(file_name, O_WRONLY | O_APPEND | O_CREAT, 0644);
     return (fd);
 }
 
-static int redirect_output(t_list *output)
+int redirect_output(t_token *token)
 {
-    t_list *tracker;
-    int type;
+    t_token *tracker;
+    int 	type;
     char    *file_name;
-    int fd;
+    int 	fd;
 
     fd = -1;
-    if (!output)
+    if (!token)
         return (0);
-    tracker = output;
+    tracker = token;
     while (tracker)
     {
-        type = ((char *)tracker->content)[0] - 48;
-        file_name = &((char *)tracker->content)[1];
+        type = tracker->type;
+        file_name = (char *)tracker->next->token;
+		printf("%s\n", file_name);
         fd = open_output(file_name, type);
         if (fd < 0)
             break;
-        tracker = tracker->next;
+		/***
+        tracker = tracker->next->next;
         if (tracker)
             close(fd);
+		**/
     }
     return (fd);
 }
-
-void    redirect(t_shell *minishell, t_cmd *cmd, int *redir)
+/***
+void    redirect(t_token *token, int *redir)
 {
-    redir[0] = redirect_input(minishell, cmd->input);
+    redir[0] = redirect_input(minishell);
     if (redir[0] == -1)
         return ;
-    redir[1] = redirect_output(cmd->output);
+    redir[1] = redirect_output(t_token *token);
 } **/

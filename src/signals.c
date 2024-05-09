@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:33:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/07 10:10:44 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/09 17:17:32 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 // Need to handle multiple minishell
 
 /*
-sh-5.2$ ./minishell 
+sh-5.2$ ./minishell
 minishell$ ./minishell
 minishell$ ^C
-minishell$ 
-minishell$ 
+minishell$
+minishell$
 minishell$ ^C
 minishell$ ^C
-minishell$ 
-minishell$ 
-^Cminishell$ 
+minishell$
+minishell$
+^Cminishell$
 minishell$ ^C
 
 minishell$ minishell$ ^C
 
-minishell$ minishell$ 
+minishell$ minishell$
 ^Cminishell$ */
 // Most likely did not disable the previous signal and running signal at once
 
@@ -36,7 +36,8 @@ void sigint_handler(int signal)
 {
     if (signal == SIGINT)
     {
-        write(STDOUT_FILENO, "\n", 1);
+        if (write(STDOUT_FILENO, "\n", 1) == -1)
+			exit(EXIT_FAILURE);
         rl_on_new_line();
         rl_replace_line("", 0);
         rl_redisplay();

@@ -11,7 +11,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// WRITE A FUNCTION THAT IGNORES THE PARENT PROCESS SIGNAL WHEN WE FORK IT, BY RESETTING THE CHILD PROCESS SIGNAL TO 0 AND IGNORE PARENT. AFTER FINISH, ENABLE PARENT PROCESS SIGNAL AGAIN 
+// WRITE A FUNCTION THAT IGNORES THE PARENT PROCESS SIGNAL WHEN WE FORK IT, BY RESETTING THE CHILD PROCESS SIGNAL TO 0 AND IGNORE PARENT. AFTER FINISH, ENABLE PARENT PROCESS SIGNAL AGAIN
 
 #include "minishell.h"
 
@@ -83,7 +83,7 @@ void	child(int *curr_pipe, int i, int num_of_command)
 	if (i != num_of_command - 1)
 	{
 		dup2(curr_pipe[1], STDOUT_FILENO);
-		//close(curr_pipe[0]);
+		close(curr_pipe[0]);
 		//close(curr_pipe[1]);
 	}
 }
@@ -103,6 +103,7 @@ void	do_pipe(int i, pid_t *child_pids, char *command, t_shell *minishell)
 	int		num_of_command;
 	pid_t	pid;
 
+	//printf("entered do pipe :%s\n", command);
 	num_of_command = num_of_commands(minishell);
 	if (i != num_of_command - 1)
 	{
@@ -124,46 +125,12 @@ void	do_pipe(int i, pid_t *child_pids, char *command, t_shell *minishell)
 	}
 }
 
-/**
-void pipex(t_shell *minishell)
-{
-	int i;
-	int num_of_command;
-	//char **command;
-	pid_t *child_pids;
-	t_token	*curr;
-
-	i = 0;
-	num_of_command = num_of_commands(minishell);
-	//command = init_command(minishell->cmd_list, num_of_command);
-	child_pids = (pid_t *)malloc(sizeof(pid_t) * num_of_command);
-	if (child_pids == NULL)
-		exit(EXIT_FAILURE);
-	while (num_of_command > i)
-	{
-		do_pipe(i, child_pids, command[i], minishell);
-		i++;
-	}
-	curr = minishell->cmd_list;
-	while (curr != NULL)
-	{
-		if (curr->type == T_IDENTIFIER)
-		{
-			printf("command: %s\n", curr->token);
-			do_pipe(i++, child_pids, curr->token, minishell);
-			curr = curr->next;
-		}
-	}
-
-	wait_for_children(child_pids, num_of_command);
-	//free(command);
-	free(child_pids);
-} **/
 
 void pipex(t_shell *minishell)
 {
 	int		i;
-	int		pipe_read_fd;
+	int		fd;
+	int		pid;
 	pid_t	*child_pids;
 	t_token	*curr;
 
@@ -176,14 +143,37 @@ void pipex(t_shell *minishell)
 	{
 		if (curr->type == T_LEFT_SHIFT)
 		{
-			pipe_read_fd = here_doc(minishell, curr->token);
-			if (pipe_read_fd == -1)
-				exit(EXIT_FAILURE);
+			int pipe_read_fd = here_doc(minishell, curr->token);
+			dup2(pipe_read_fd, STDIN_FILENO);
 			close(pipe_read_fd);
 			curr = curr->next;
 		}
+		else if (curr->type == T_LESSER_THAN)
+		{
+			fd = redirect_input(minishell, curr);
+			pid = fork();
+			if (!pid)
+			{
+				if (dup2(fd, STDIN_FILENO) == -1)
+				{
+					perror("dup2");
+					exit(EXIT_FAILURE);
+				}
+				close(fd);
+				exec_cmd(curr->prev->token, minishell);
+			}
+			waitpid(pid, NULL, 0);
+			curr = curr->next;
+		}
+		else if (curr->type == T_GREATER_THAN || curr->type == T_RIGHT_SHIFT)
+			redirect_output(curr);
 		else if (curr->type == T_IDENTIFIER)
-			do_pipe(i++, child_pids, curr->token, minishell);
+		{
+			if (!ft_strncmp(curr->token, "cat", 3) == 0)
+			{
+				do_pipe(i++, child_pids, curr->token, minishell);
+			}
+		}
 		curr = curr->next;
 	}
 	wait_for_children(child_pids, i);
@@ -195,6 +185,7 @@ void	exec_cmd(char *cmd, t_shell *minishell)
 	char	**s_cmd;
 	char	*path;
 
+	printf("cmd: %s\n", cmd);
 	if (!cmd || !minishell)
 	{
 		ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);

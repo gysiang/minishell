@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/07 21:13:31 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:02:16 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,10 @@ void	pipex(t_shell *minishell);
 void	child(int *curr_pipe, int i, int num_of_command);
 void	parent(int *curr_pipe, int i);
 void	do_pipe(int i, pid_t *child_pids, char *command, t_shell *minishell);
+
+//redirect
+int redirect_input(t_shell *minishell, t_token *token);
+int redirect_output(t_token *token);
 
 
 // tokenizer

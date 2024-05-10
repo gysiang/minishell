@@ -17,6 +17,7 @@ static char *get_var_name(char *cmd) {
 
 void env_realloc(t_shell *minishell) {
     char **new_env;
+    int old_size = minishell->env_size;
     minishell->env_size *= 2;
     new_env = (char **)realloc(minishell->env, minishell->env_size * sizeof(char *));
     if (new_env == NULL) {
@@ -25,6 +26,11 @@ void env_realloc(t_shell *minishell) {
     }
     minishell->env = new_env;
     printf("Environment reallocated. New size: %d\n", minishell->env_size);
+    int  i = old_size;
+    while (i < minishell->env_size){
+        minishell->env[i] = NULL;
+        i++;
+    }
 }
 
 static int is_valid_identifier(const char *str)

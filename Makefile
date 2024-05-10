@@ -31,6 +31,7 @@ SRC_FILES := main.c \
              redirect.c \
              signals.c \
              sutils.c \
+             builtins/builtin_cd.c \
              builtins/builtin_echo.c \
              builtins/builtin_env.c \
              builtins/builtin_export.c \

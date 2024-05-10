@@ -16,7 +16,7 @@ int minishell_echo(t_shell *minishell)
 {
 	
     t_token *token;
-    int newline = 1;
+    int newline;
 
 	newline = 1;
 	token = minishell->cmd_list;

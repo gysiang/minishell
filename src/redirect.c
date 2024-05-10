@@ -16,8 +16,8 @@ static int open_input(char *file_name)
         return (-1);
     }
     fd = open(file_name,O_RDONLY);
-    printf("Trying to open file: %s\n", file_name);
-    printf("Open returned: %d\n", fd);
+    //printf("Trying to open file: %s\n", file_name);
+   // printf("Open returned: %d\n", fd);
     if (fd == -1)
     {
         perror("open");

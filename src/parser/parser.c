@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:54:35 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/06 09:50:33 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/10 15:29:17 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,31 @@ static void	parse_doublequote(t_token *t)
 	return ;
 }
 
+static void set_token_pointers(t_token *tokens)
+{
+    t_token *prev_token = NULL;
+    t_token *curr_token = tokens;
+
+    while (curr_token != NULL)
+    {
+        // Set the previous pointer of the current token
+        curr_token->prev = prev_token;
+
+        // If there is a previous token, set its next pointer
+        if (prev_token != NULL)
+            prev_token->next = curr_token;
+
+        // Move to the next token
+        prev_token = curr_token;
+        curr_token = curr_token->next;
+    }
+
+    // Set the next pointer of the last token to NULL
+    if (prev_token != NULL)
+        prev_token->next = NULL;
+}
+
+
 t_token	*token_parser(t_token *token_lst, t_shell *minishell)
 {
 	t_token	*curr;
@@ -121,5 +146,6 @@ t_token	*token_parser(t_token *token_lst, t_shell *minishell)
 		curr = curr -> next;
 	}
 	join_identifier_tokens(token_lst);
+	set_token_pointers(token_lst);
 	return (token_lst);
 }

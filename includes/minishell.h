@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/09 17:02:16 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/10 13:01:51 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,10 @@ void  sort_env(t_shell *minishell);
 void    init_env(t_shell *minishell, const char **envp);
 
 // redirect
-void    redirect(t_shell *minishell, t_cmd *cmd, int *redir);
-int here_doc(t_shell *minishell, char *delimiter);
+//void	redirect(t_shell *minishell, t_cmd *cmd, int *redir);
+int	here_doc(t_shell *minishell, char *delimiter);
+int	redirect_input(t_shell *minishell, t_token *token);
+int	redirect_output(t_token *token);
 
 // signals
 void 	sigquit_handler(int signal);
@@ -148,10 +150,6 @@ void	pipex(t_shell *minishell);
 void	child(int *curr_pipe, int i, int num_of_command);
 void	parent(int *curr_pipe, int i);
 void	do_pipe(int i, pid_t *child_pids, char *command, t_shell *minishell);
-
-//redirect
-int redirect_input(t_shell *minishell, t_token *token);
-int redirect_output(t_token *token);
 
 
 // tokenizer

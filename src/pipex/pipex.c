@@ -141,38 +141,44 @@ void pipex(t_shell *minishell)
 	curr = minishell->cmd_list;
 	while (curr != NULL)
 	{
+		printf("token currently processing: %s\n", curr->token);
+		/***
 		if (curr->type == T_LEFT_SHIFT)
 		{
-			int pipe_read_fd = here_doc(minishell, curr->token);
-			dup2(pipe_read_fd, STDIN_FILENO);
-			close(pipe_read_fd);
+			fd = here_doc(minishell, curr->token);
+			if (fd == -1)
+				exit(EXIT_FAILURE);
+			close(fd);
 			curr = curr->next;
+		} **/
+		if (curr->next != NULL && !ft_strncmp(curr->token, "cat", 3) == 0)
+		{
+			(void)printf("skipped cat\n");
 		}
-		else if (curr->type == T_LESSER_THAN)
+		if (curr->type == T_LESSER_THAN || curr->type == T_LEFT_SHIFT)
 		{
 			fd = redirect_input(minishell, curr);
 			pid = fork();
+			printf("pid: %d\n", pid);
 			if (!pid)
 			{
-				if (dup2(fd, STDIN_FILENO) == -1)
-				{
-					perror("dup2");
-					exit(EXIT_FAILURE);
-				}
+				dup2(fd, STDIN_FILENO);
 				close(fd);
 				exec_cmd(curr->prev->token, minishell);
 			}
-			waitpid(pid, NULL, 0);
+			else
+			{
+				printf("df pid: %d\n", pid);
+				close(fd);
+				waitpid(pid, NULL, 0);
+			}
 			curr = curr->next;
 		}
 		else if (curr->type == T_GREATER_THAN || curr->type == T_RIGHT_SHIFT)
 			redirect_output(curr);
 		else if (curr->type == T_IDENTIFIER)
 		{
-			if (!ft_strncmp(curr->token, "cat", 3) == 0)
-			{
-				do_pipe(i++, child_pids, curr->token, minishell);
-			}
+			do_pipe(i++, child_pids, curr->token, minishell);
 		}
 		curr = curr->next;
 	}
@@ -215,4 +221,5 @@ void	exec_cmd(char *cmd, t_shell *minishell)
 		ft_free_tab(s_cmd);
 		exit(EXIT_FAILURE);
 	}
+	exit(EXIT_SUCCESS);
 }

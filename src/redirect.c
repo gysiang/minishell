@@ -48,8 +48,8 @@ int redirect_input(t_shell *minishell, t_token *token)
         if (fd < 0)
             break;
 		tracker = token->next->next;
-		//if (tracker)
-        //	close(fd);
+		if (tracker)
+            close(fd);
     }
     return (fd);
 }

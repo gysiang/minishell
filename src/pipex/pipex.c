@@ -74,6 +74,22 @@ void	wait_for_children(pid_t *child_pids, int num_of_command)
 
 void	child(int *curr_pipe, int i, int num_of_command)
 {
+	/**
+	int	infile;
+	int	outfile;
+
+	if (infile != STDIN_FILENO)
+	{
+		dup2(infile, STDIN_FILENO);
+		close(outfile);
+	}
+	if (outfile != STDOUT_FILENO)
+	{
+		dup2(outfile, STDOUT_FILENO);
+		close(outfile);
+	}
+	infile = curr_pipe[0]; **/
+
 	if (i != 0)
 	{
 		dup2(curr_pipe[0], STDIN_FILENO);
@@ -84,7 +100,7 @@ void	child(int *curr_pipe, int i, int num_of_command)
 	{
 		dup2(curr_pipe[1], STDOUT_FILENO);
 		close(curr_pipe[0]);
-		//close(curr_pipe[1]);
+		close(curr_pipe[1]);
 	}
 }
 
@@ -103,7 +119,7 @@ void	do_pipe(int i, pid_t *child_pids, char *command, t_shell *minishell)
 	int		num_of_command;
 	pid_t	pid;
 
-	//printf("entered do pipe :%s\n", command);
+	printf("entered do pipe :%s\n", command);
 	num_of_command = num_of_commands(minishell);
 	if (i != num_of_command - 1)
 	{
@@ -129,7 +145,7 @@ void	do_pipe(int i, pid_t *child_pids, char *command, t_shell *minishell)
 void pipex(t_shell *minishell)
 {
 	int		i;
-	int		fd;
+	//int		fd;
 	int		pid;
 	pid_t	*child_pids;
 	t_token	*curr;
@@ -151,25 +167,27 @@ void pipex(t_shell *minishell)
 			close(fd);
 			curr = curr->next;
 		} **/
-		if (curr->next != NULL && !ft_strncmp(curr->token, "cat", 3) == 0)
+		if (curr->next != NULL && ft_strncmp(curr->token, "cat", 3) == 0)
 		{
 			(void)printf("skipped cat\n");
 		}
 		if (curr->type == T_LESSER_THAN || curr->type == T_LEFT_SHIFT)
 		{
-			fd = redirect_input(minishell, curr);
+			int c_pipe[2];
+			if (pipe(c_pipe) == -1)
+				exit(EXIT_FAILURE);
+			c_pipe[0] = redirect_input(minishell, curr);
+			close(c_pipe[1]);
 			pid = fork();
-			printf("pid: %d\n", pid);
 			if (!pid)
 			{
-				dup2(fd, STDIN_FILENO);
-				close(fd);
+				dup2(c_pipe[0], STDIN_FILENO);
+				close(c_pipe[0]);
 				exec_cmd(curr->prev->token, minishell);
 			}
 			else
 			{
-				printf("df pid: %d\n", pid);
-				close(fd);
+				close(c_pipe[0]);
 				waitpid(pid, NULL, 0);
 			}
 			curr = curr->next;
@@ -191,24 +209,28 @@ void	exec_cmd(char *cmd, t_shell *minishell)
 	char	**s_cmd;
 	char	*path;
 
-	printf("cmd: %s\n", cmd);
 	if (!cmd || !minishell)
 	{
 		ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
 	s_cmd = ft_split(cmd, ' ');
+	int i = 0;
+	while (s_cmd[i] != NULL)
+		printf("s_cmd: %s\n", s_cmd[i++]);
 	if (!s_cmd)
 	{
 		ft_putstr_fd("Failed to split command\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
 	path = get_path(s_cmd[0], minishell);
+	/***
 	if (execute_builtin(minishell))
 	{
 		ft_free_tab(s_cmd);
 		return ;
-	}
+	} **/
+	//printf("path%s\n", path);
 	if (!path)
 	{
 		printf("get_env returned NULL for command: %s\n", s_cmd[0]);

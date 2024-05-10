@@ -84,6 +84,16 @@ int execute_builtin(t_shell *minishell)
 		minishell_exit(minishell);
 		return (1);
 	}
+    if (ft_strncmp(s, "export", 6) == 0)
+	{
+		minishell_export(minishell);
+		return (1);
+	}
+        if (ft_strncmp(s, "unset", 5) == 0)
+	{
+		minishell_unset(minishell);
+		return (1);
+	}
 	return (0);
 }
 
@@ -168,50 +178,3 @@ int main(int argc, char **argv, char **envp)
     clear_history();
     return 0;
 }
-
-/*int main(int argc, char **argv, char **envp)
-{
-    (void)argc;
-    (void)argv;
-    char *line;
-    t_token *token_lst;
-    t_shell *g_shell;
-
-    g_shell = init_shell(envp);
-    using_history();
-    setup_signal_handler();
-    while (!g_shell->end)
-    {
-        line = readline(PROMPT);
-        if (line == NULL)
-        {
-            printf("exit\n");
-            break;
-        }
-        if (*line == '\0')
-        {
-            free(line);
-            continue;
-        }
-        add_history(line);
-        token_lst = token_processor(line, g_shell);
-        free(line);
-        //print_tokenlst(token_lst);
-        if (token_lst != NULL)
-            g_shell->cmd_list = token_lst;
-        if (execute_builtin(g_shell) == 1)
-        {
-            free_tokenlst(token_lst);
-            token_lst = NULL;
-			g_shell->cmd_list = NULL;
-            continue;
-        }
-        pipex(g_shell);
-        free_tokenlst(token_lst);
-        token_lst = NULL;
-		g_shell->cmd_list = NULL;
-    }
-    free_shell(g_shell);
-    clear_history();
-    return 0;
-}*/

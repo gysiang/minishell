@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/12 00:33:05 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/12 01:47:39 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ typedef enum s_token_type
 	T_LEFT_SHIFT,
 	T_RIGHT_SHIFT,
 	T_SINGLEQUOTE,
-	T_DOUBLEQUOTE
+	T_DOUBLEQUOTE,
+	T_ENV_ASSIGNMENT,
 }	t_token_type;
 
 // token structure
@@ -112,11 +113,12 @@ char	**ft_dqsplit(char const *s, char c);
 void	convert_cmd(char **s);
 
 // ENV_Manager
-char    *get_env_value(t_shell *minishell, const char *var);
+char *get_env_value(t_shell *minishell, const char *var);
 int env_len(t_shell *minishell);
 int search_env_by_var(t_shell *minishell, const char *var);
 void  sort_env(t_shell *minishell);
-void    init_env(t_shell *minishell, const char **envp);
+void init_env(t_shell *minishell, const char **envp);
+void set_env(t_shell *minishell, const char *var, const char *value);
 
 // redirect
 //void	redirect(t_shell *minishell, t_cmd *cmd, int *redir);

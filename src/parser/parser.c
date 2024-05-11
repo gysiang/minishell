@@ -59,20 +59,36 @@ static void	parse_value(t_token *token_lst, t_shell *minishell)
 	char	*token;
 	char	*result;
 	char	*env_value;
+	char	*exit_status_str;
+	int		exit_status;
 
 	curr = token_lst;
 	token = curr->token;
+	exit_status = 0;
 	if (token == NULL || token[0] != '$')
 		return ;
-	result = ft_substr(token, 1, ft_strlen(token) - 1);
-	if (!result)
+	if (ft_strcmp(token, "$")== 0)
 		return ;
-	env_value = get_env_value(minishell, result);
-	free(result);
-	if (!env_value)
-		env_value = " ";
-	free(curr->token);
-	curr->token = env_value;
+	else if (ft_strcmp(token, "$?") == 0)
+	{
+		exit_status = minishell->last_return;
+		exit_status_str = ft_itoa(exit_status);
+		free(curr->token);
+		curr->token = exit_status_str;
+	}
+	else
+	{
+		result = ft_substr(token, 1, ft_strlen(token) - 1);
+		if (!result)
+			return ;
+		env_value = get_env_value(minishell, result);
+		
+		free(result);
+		if (!env_value)
+			env_value = " ";
+		free(curr->token);
+		curr->token = env_value;
+	}
 }
 
 static void	parse_doublequote(t_token *t)

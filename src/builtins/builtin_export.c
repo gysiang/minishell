@@ -15,7 +15,8 @@ static char *get_var_name(char *cmd) {
     return NULL;
 }
 
-void env_realloc(t_shell *minishell) {
+void env_realloc(t_shell *minishell)
+{
     char **new_env;
     int old_size = minishell->env_size;
     minishell->env_size *= 2;
@@ -31,6 +32,7 @@ void env_realloc(t_shell *minishell) {
         minishell->env[i] = NULL;
         i++;
     }
+    printf("Environment initialization complete \n");
 }
 
 static int is_valid_identifier(const char *str)
@@ -101,6 +103,7 @@ int minishell_export(t_shell *minishell) {
         if (token->type == T_ENV_ASSIGNMENT) {
             printf("Processing token: %s\n", token->token);
             if (save_var(minishell, token->token)) {
+                printf("Failed to save the variable %s\n", token->token);
                 return 1; // Set error code if any variable save fails
             }
         }

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/11 22:42:38 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/12 00:36:05 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,12 @@ int execute_builtin(t_shell *minishell)
 	{
 		printf("calling export\n");
 		minishell_export(minishell);
+		return (1);
+	}
+	if (ft_strncmp(s, "unset", 5) == 0)
+	{
+		printf("calling unset\n");
+		minishell_unset(minishell);
 		return (1);
 	}
 	return (0);

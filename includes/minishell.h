@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/11 22:26:14 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/12 00:33:05 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int minishell_error_msg(char *cmd, int error_no);
 int	minishell_echo(t_shell *minishell);
 void minishell_exit(t_shell *minishell);
 int minishell_export(t_shell *minishell);
-int	minishell_unset(t_shell *minishell, t_cmd *cmd);
+int	minishell_unset(t_shell *minishell);
 int		search_env(t_shell *minishell, char *var);
 void	minishell_env(t_shell *minishell);
 void    env_realloc(t_shell *minishell);

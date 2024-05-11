@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/09 21:05:24 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/11 22:42:38 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int execute_builtin(t_shell *minishell)
 		minishell_echo(minishell);
 		return (1);
 	}
-	if (ft_strcmp(s, "env") == 0)
+	if (ft_strncmp(s, "env", 3) == 0)
 	{
 		minishell_env(minishell);
 		return (1);
@@ -82,6 +82,12 @@ int execute_builtin(t_shell *minishell)
 	if (ft_strncmp(s, "exit", 4) == 0)
 	{
 		minishell_exit(minishell);
+		return (1);
+	}
+	if (ft_strncmp(s, "export", 6) == 0)
+	{
+		printf("calling export\n");
+		minishell_export(minishell);
 		return (1);
 	}
 	return (0);

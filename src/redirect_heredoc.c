@@ -62,7 +62,8 @@ int here_doc(t_shell *minishell, char *delimiter)
     int pid;
 
     if (pipe(pipe_des) == -1)
-        exit(EXIT_FAILURE); // Create a pipe and store the file descriptoer in pipre_des array
+        exit(EXIT_FAILURE);
+	// Create a pipe and store the file descriptoer in pipre_des array
     pid = fork(); // Fork a child process
     if (pid == 0)// If in the child process (pid is 0)
     {

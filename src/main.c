@@ -6,13 +6,13 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/12 01:45:51 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/12 13:05:11 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_shell	*init_shell(char **envp)
+t_shell	*init_shell(void)
 {
 	t_shell	*shell;
 	int		p_fd[2];
@@ -28,11 +28,7 @@ t_shell	*init_shell(char **envp)
 		free(shell);
 		return (NULL);
 	}
-	shell->env_size = 0;
-	shell->env = envp;
-	shell->user = get_env_value(shell, "USER");
-	shell->pwd = get_env_value(shell, "PWD");
-	shell->home = get_env_value(shell, "HOME");
+	shell->env_size = BASE_ENV_SIZE;
 	shell->prompt = PROMPT;
 	shell->cmd_list = NULL;
 	shell->data_fd[0] = p_fd[0];
@@ -108,21 +104,6 @@ void free_shell(t_shell *minishell)
         free_tokenlst(minishell->cmd_list);
         minishell->cmd_list = NULL;
     }
-    if (minishell->user != NULL)
-    {
-        free(minishell->user);
-        minishell->user = NULL;
-    }
-    if (minishell->pwd != NULL)
-    {
-        free(minishell->pwd);
-        minishell->pwd = NULL;
-    }
-    if (minishell->home != NULL)
-    {
-        free(minishell->home);
-        minishell->home = NULL;
-    }
     free(minishell);
 }
 
@@ -134,7 +115,8 @@ int main(int argc, char **argv, char **envp)
     t_token *token_lst;
     t_shell *g_shell;
 
-    g_shell = init_shell(envp);
+    g_shell = init_shell();
+	init_env(g_shell, envp);
     using_history();
     setup_signal_handler();
     while (!g_shell->end)
@@ -175,7 +157,6 @@ int main(int argc, char **argv, char **envp)
         token_lst = NULL;
         g_shell->cmd_list = NULL;
     }
-
     free_shell(g_shell);
     clear_history();
     return 0;

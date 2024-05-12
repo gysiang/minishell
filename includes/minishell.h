@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/12 01:47:39 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/12 12:35:11 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,6 @@ typedef struct s_shell
 	int		env_size;
 	int		exit;
 	char	**env;
-	char	*user;
-	char	*pwd;
-	char	*home;
 	char	*prompt;
 	t_token	*cmd_list;
 	int		data_fd[2];
@@ -117,7 +114,7 @@ char *get_env_value(t_shell *minishell, const char *var);
 int env_len(t_shell *minishell);
 int search_env_by_var(t_shell *minishell, const char *var);
 void  sort_env(t_shell *minishell);
-void init_env(t_shell *minishell, const char **envp);
+void init_env(t_shell *minishell, char **envp);
 void set_env(t_shell *minishell, const char *var, const char *value);
 
 // redirect
@@ -172,7 +169,7 @@ void	join_identifier_tokens(t_token *lst);
 t_token *token_parser(t_token *token_lst, t_shell *minishell);
 
 //main.c
-t_shell	*init_shell(char **envp);
+t_shell	*init_shell(void);
 void	free_shell(t_shell *minishell);
 int execute_builtin(t_shell *minishell);
 

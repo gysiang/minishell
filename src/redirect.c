@@ -16,8 +16,8 @@ static int open_input(char *file_name)
         return (-1);
     }
     fd = open(file_name,O_RDONLY);
-    printf("Trying to open file: %s\n", file_name);
-    printf("Open returned: %d\n", fd);
+    //printf("Trying to open file: %s\n", file_name);
+   // printf("Open returned: %d\n", fd);
     if (fd == -1)
     {
         perror("open");
@@ -48,8 +48,8 @@ int redirect_input(t_shell *minishell, t_token *token)
         if (fd < 0)
             break;
 		tracker = token->next->next;
-		//if (tracker)
-        //	close(fd);
+		if (tracker)
+            close(fd);
     }
     return (fd);
 }

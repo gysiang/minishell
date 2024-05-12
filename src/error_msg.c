@@ -37,8 +37,6 @@ void free_and_exit(t_shell *minishell, int return_value)
     // Convert t_token ** to t_list **
     t_list **lst_ptr = (t_list **)&(minishell->cmd_list);
     ft_lstclear(lst_ptr, delete_command);  // Pass the modified t_list ** argument
-    free(minishell->home);
-    free(minishell->pwd);
     free(minishell->prompt);
     exit(return_value);
 }

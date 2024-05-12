@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/09 17:02:16 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/12 12:35:11 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,6 @@ typedef struct s_shell
 	int		env_size;
 	int		exit;
 	char	**env;
-	char	*user;
-	char	*pwd;
-	char	*home;
 	char	*prompt;
 	t_token	*cmd_list;
 	int		data_fd[2];
@@ -102,12 +99,10 @@ int	minishell_echo(t_shell *minishell);
 void minishell_exit(t_shell *minishell);
 int minishell_export(t_shell *minishell);
 int	minishell_unset(t_shell *minishell);
-int minishell_cd(t_shell *minishell);
+int		search_env(t_shell *minishell, char *var);
 void	minishell_env(t_shell *minishell);
-int	search_env(t_shell *minishell, char *var);
 void    env_realloc(t_shell *minishell);
 void	minishell_pwd();
-void	minishell_env(t_shell *minishell);
 
 // utils
 int	ft_strcmp(const char *s1, const char *s2);
@@ -115,16 +110,18 @@ char	**ft_dqsplit(char const *s, char c);
 void	convert_cmd(char **s);
 
 // ENV_Manager
-char    *get_env_value(t_shell *minishell, const char *var);
+char *get_env_value(t_shell *minishell, const char *var);
 int env_len(t_shell *minishell);
 int search_env_by_var(t_shell *minishell, const char *var);
 void  sort_env(t_shell *minishell);
-void    init_env(t_shell *minishell, const char **envp);
+void init_env(t_shell *minishell, char **envp);
 void set_env(t_shell *minishell, const char *var, const char *value);
 
 // redirect
-void    redirect(t_shell *minishell, t_cmd *cmd, int *redir);
-int here_doc(t_shell *minishell, char *delimiter);
+//void	redirect(t_shell *minishell, t_cmd *cmd, int *redir);
+int	here_doc(t_shell *minishell, char *delimiter);
+int	redirect_input(t_shell *minishell, t_token *token);
+int	redirect_output(t_token *token);
 
 // signals
 void 	sigquit_handler(int signal);
@@ -152,10 +149,6 @@ void	child(int *curr_pipe, int i, int num_of_command);
 void	parent(int *curr_pipe, int i);
 void	do_pipe(int i, pid_t *child_pids, char *command, t_shell *minishell);
 
-//redirect
-int redirect_input(t_shell *minishell, t_token *token);
-int redirect_output(t_token *token);
-
 
 // tokenizer
 void	token_add_back(t_token **head, char *token, t_token_type type);
@@ -176,7 +169,7 @@ void	join_identifier_tokens(t_token *lst);
 t_token *token_parser(t_token *token_lst, t_shell *minishell);
 
 //main.c
-t_shell	*init_shell(char **envp);
+t_shell	*init_shell(void);
 void	free_shell(t_shell *minishell);
 int execute_builtin(t_shell *minishell);
 

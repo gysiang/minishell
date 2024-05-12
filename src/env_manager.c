@@ -41,8 +41,6 @@ int search_env_by_var(t_shell *minishell, const char *var) {
     return (-1);
 }
 
-
-
 void  sort_env(t_shell *minishell)
 {
     int i;
@@ -67,7 +65,8 @@ void  sort_env(t_shell *minishell)
 // Issue here where is ts being fed unitialized data
 
 // Memory issues when doing minishell cd
-void set_env(t_shell *minishell, const char *var, const char *value) {
+void set_env(t_shell *minishell, const char *var, const char *value)
+{
     printf("Debug: Setting environment variable '%s' to '%s'\n", var, value);
     int idx = search_env_by_var(minishell, var);
     size_t var_len = ft_strlen(var);
@@ -95,24 +94,29 @@ void set_env(t_shell *minishell, const char *var, const char *value) {
     }
 }
 
+void init_env(t_shell *minishell, char **envp)
+{
+	printf("Debug: Initializing environment from envp\n");
+	int i;
+	int j;
+	char *equal_sign;
 
-void init_env(t_shell *minishell, const char **envp) {
-    printf("Debug: Initializing environment from envp\n");
-    int i = 0, j = 0;
-    minishell->env = (char **)ft_calloc(BASE_ENV_SIZE, sizeof(char *));
-    minishell->env_size = BASE_ENV_SIZE;
-    while (envp[i]) {
-        printf("Debug: Processing envp[%d]: %s\n", i, envp[i]);
-        char *equal_sign = ft_strchr(envp[i], '=');
-        if (equal_sign && !ft_strnstr(envp[i], "_WORKSPACE_", equal_sign - &envp[i][0])) {
-            if (j == minishell->env_size - 1) {
-                env_realloc(minishell);
-            }
-            minishell->env[j] = ft_strdup(envp[i]);
-            j++;
-        }
-        i++;
-    }
-    printf("Debug: Environment initialized with %d variables\n", j);
+	i = 0;
+	j = 0;
+	minishell->env = (char **)ft_calloc(BASE_ENV_SIZE, sizeof(char *));
+	minishell->env_size = BASE_ENV_SIZE;
+	while (envp[i])
+	{
+		printf("Debug: Processing envp[%d]: %s\n", i, envp[i]);
+		equal_sign = ft_strchr(envp[i], '=');
+		if (equal_sign && !ft_strnstr(envp[i], "_WORKSPACE_", equal_sign - &envp[i][0]))
+		{
+			if (j == minishell->env_size - 1)
+				env_realloc(minishell);
+			minishell->env[j] = ft_strdup(envp[i]);
+			j++;
+		}
+		i++;
+	}
+	printf("Debug: Environment initialized with %d variables\n", j);
 }
-

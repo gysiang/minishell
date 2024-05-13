@@ -197,29 +197,30 @@ void	do_pipe(int i, pid_t *child_pids, char *command, t_shell *minishell)
 void pipex(t_shell *minishell)
 {
 	int		i;
-	int		fd[2];
-	//int		pid;
-	pid_t	*child_pids;
+	//int		fd[2];
+	int		is_last_command;
+	//pid_t	*child_pids;
 	t_token	*curr;
-	//int p_fd;
-	int is_last_command = 0;
+
 	i = 0;
-	if (pipe(fd) == -1)
-		return ;
-	child_pids = (pid_t *)malloc(sizeof(pid_t) * num_of_commands(minishell));
-	if (child_pids == NULL)
-		exit(EXIT_FAILURE);
+	is_last_command = 0;
 	curr = minishell->cmd_list;
 	while (curr != NULL)
 	{
-		/***
+
 		if (curr->type == T_LEFT_SHIFT)
 		{
-			p_fd = here_doc(minishell, curr->next->token);
-			dup2(p_fd, STDIN_FILENO);
-			close(p_fd);
-			curr = curr->next->next;
+			// deliminator is EOF
+			printf("EOF: %s\n", curr->next->token);
+			int p_fd = here_doc(minishell, curr->next->token);
+			if (p_fd != -1)
+			{
+				dup2(p_fd, STDOUT_FILENO);
+				close(p_fd);
+			}
+			break ;
 		}
+		/**
 		else if (curr->type == T_LESSER_THAN)
 		{
 			p_fd = redirect_input(minishell, curr);
@@ -242,15 +243,11 @@ void pipex(t_shell *minishell)
 		**/
 		if (curr->type == T_IDENTIFIER)
 		{
-			//do_pipe(i++, child_pids, curr->token, minishell);
 			is_last_command = (curr->next == NULL);
-			//printf("Executing command: %s, Last command: %d\n", curr->token, is_last_command);
 			execute_command(i++, curr->token, minishell, is_last_command);
 		}
 		curr = curr->next;
 	}
-	wait_for_children(child_pids, i);
-	free(child_pids);
 }
 
 void	exec_cmd(char *cmd, t_shell *minishell)
@@ -258,7 +255,6 @@ void	exec_cmd(char *cmd, t_shell *minishell)
 	char	**s_cmd;
 	char	*path;
 
-	printf("cmd: %s\n", cmd);
 	if (!cmd || !minishell)
 	{
 		ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);

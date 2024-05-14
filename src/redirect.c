@@ -16,8 +16,6 @@ static int open_input(char *file_name)
         return (-1);
     }
     fd = open(file_name,O_RDONLY);
-    //printf("Trying to open file: %s\n", file_name);
-   // printf("Open returned: %d\n", fd);
     if (fd == -1)
     {
         perror("open");
@@ -40,7 +38,6 @@ int redirect_input(t_shell *minishell, t_token *token)
     {
         type = tracker->type;
         file_name = (char *)tracker->next->token;
-		printf("filename: %s\n", file_name);
         if (type == T_LESSER_THAN)
             fd = open_input(file_name);
         else

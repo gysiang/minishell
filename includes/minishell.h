@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/13 04:07:50 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/14 13:10:40 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_shell
 	t_token	*cmd_list;
 	int		data_fd[2];
 	int		ret_fd[2];
+	int		heredoc_fd;
 	int		last_return;
 	bool	end;
 }	t_shell;
@@ -119,7 +120,7 @@ void set_env(t_shell *minishell, const char *var, const char *value);
 
 // redirect
 //void	redirect(t_shell *minishell, t_cmd *cmd, int *redir);
-int	here_doc(t_shell *minishell, char *delimiter);
+int here_doc(t_shell *minishell, char *delimiter);
 int	redirect_input(t_shell *minishell, t_token *token);
 int	redirect_output(t_token *token);
 
@@ -147,8 +148,7 @@ void	exit_handler(int exit_code);
 void	pipex(t_shell *minishell);
 void	child(int *curr_pipe, int i, int num_of_command);
 void	parent(int *curr_pipe, int i);
-void	do_pipe(int i, pid_t *child_pids, char *command, t_shell *minishell);
-void	execute_command(int i, char *command, t_shell *minishell, int last_command);
+void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command);
 
 
 // tokenizer

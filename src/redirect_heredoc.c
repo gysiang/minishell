@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirect_heredoc.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/13 21:03:37 by gyong-si          #+#    #+#             */
+/*   Updated: 2024/05/14 13:20:40 by gyong-si         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void signal_free(t_shell *minishell)
@@ -21,39 +33,40 @@ static void error_EOF(char *end_of_file)
     ft_putendl_fd(")", 2); // Print closing parenthesis and newline
 }
 
-static void here_doc_read(t_shell * minishell, int *pipe_fds, char *delimiter)
+
+static void here_doc_read(t_shell *minishell, int *pipe_fds, char *delimiter)
 {
     char *str;
-    size_t  delimiter_len;
+    size_t delimiter_len;
 
-    printf("in heredoc read\n");
     delimiter_len = ft_strlen(delimiter);
-    close(pipe_fds[0]);
-    signal_free(minishell);
+    //printf("Delimiter: %s\n", delimiter);
+    //signal_free(minishell);
     signal(SIGINT, signal_exit);
     while (1)
     {
-        printf("bfore triggered readline\n");
         str = readline("> ");
-        printf("triggered readline\n");
         if (!str)
         {
+            printf("End of file reached\n");
             error_EOF(delimiter);
+            break;
         }
+        //printf("Read line: %s\n", str);
         if (!ft_strncmp(str, delimiter, delimiter_len + 1))
         {
-            free(str);
+           // printf("Delimiter found\n");
+			//close(pipe_fds[0]);
+			//close(pipe_fds[1]);
+            break;
         }
-        if (write(pipe_fds[1], str, ft_strlen(str)) == -1)
-            exit(EXIT_FAILURE);
-        if (write(pipe_fds[1], "\n", 1))
-             exit(EXIT_FAILURE);
+        write(pipe_fds[1], str, ft_strlen(str));
+        write(pipe_fds[1], "\n", 1);
         free(str);
     }
     close(pipe_fds[1]);
     free_and_exit(minishell, 0);
 }
-
 
 int here_doc(t_shell *minishell, char *delimiter)
 {
@@ -61,21 +74,28 @@ int here_doc(t_shell *minishell, char *delimiter)
     int status;
     int pid;
 
+	//printf("entered into heredoc\n");
     if (pipe(pipe_des) == -1)
-        exit(EXIT_FAILURE);
-    pid = fork();
-    printf("forked heredoc\n");
-    if (pid == 0)
+        exit(EXIT_FAILURE); // Create a pipe and store the file descriptoer in pipre_des array
+    pid = fork(); // Fork a child process
+	if (pid == -1)
+		return (-1);
+    if (pid == 0)// If in the child process (pid is 0)
     {
-        here_doc_read(minishell, pipe_des, delimiter);
+        here_doc_read(minishell, pipe_des, delimiter); // Call here_doc_read function with minshell, pipe_des and dleimiter
         exit(0);
     }
-    waitpid(pid, &status, WUNTRACED);
-    if (WEXITSTATUS(status) == 130)
+    waitpid(pid, &status, WUNTRACED); // Wait for the child process to finish and sotre the status
+    //printf("executed heredoc read\n");
+	if (WEXITSTATUS(status) == 130) // If the child status is 130
     {
+        close(pipe_des[0]); // Close the read end of the pipe
         close(pipe_des[0]);
-        pipe_des[0] = -1;
+		return (-1); // Set read end to -1 , indicating an error
     }
-    close(pipe_des[1]);
-    return (pipe_des[0]);
+	//printf("save the read end to heredoc_fd\n");
+    close(pipe_des[1]); // Close the write end of the pipe
+    minishell->heredoc_fd = pipe_des[0]; // Return the read end of the pipe
+	//close(pipe_des[0]);
+	return (0);
 }

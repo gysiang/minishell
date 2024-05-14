@@ -42,6 +42,44 @@ static char	**init_command(t_token *token_lst, int num_of_command)
 	command[num_of_command] = NULL;
 	return (command);
 } **/
+/***
+void	child_process(char *command, t_shell *minishell, int *fd)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == -1)
+		return ;
+	if (!pid)
+	{
+		close(fd[0]);
+		dup2(fd[1], STDOUT_FILENO);
+		exec_cmd(command, minishell);
+	}
+	else
+	{
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
+		waitpid(pid, &status, 0);
+	}
+}
+
+void	last_child_process(char *command, t_shell *minishell)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == -1)
+		return ;
+	if (!pid)
+		exec_cmd(command, minishell);
+	else
+	{
+		waitpid(pid, &status, 0);
+	}
+} **/
 
 static int	num_of_commands(t_shell *minishell)
 {
@@ -60,106 +98,114 @@ static int	num_of_commands(t_shell *minishell)
 	return (i);
 }
 
-void	wait_for_children(pid_t *child_pids, int num_of_command)
+static int	assign_last(t_token *c)
 {
-	int	i;
-
-	i = 0;
-	while (num_of_command > i)
-	{
-		waitpid(child_pids[i], NULL, 0);
-		i++;
-	}
+	if (c->next != NULL)
+		return (0);
+	else
+		return (1);
 }
+/***
+static void print_fd_contents(int fd) {
+    char buffer[1024];  // Buffer to hold the read data
+    ssize_t bytes_read; // Number of bytes read by read()
 
-void	child(int *curr_pipe, int i, int num_of_command)
+    // Read from the file descriptor until there's no more data
+    while ((bytes_read = read(fd, buffer, sizeof(buffer))) > 0) {
+        // Print the data read from the file descriptor
+        write(STDOUT_FILENO, buffer, bytes_read);
+    }
+
+    // Check for read errors
+    if (bytes_read == -1) {
+        perror("read");
+    }
+} **/
+
+
+void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
 {
-	if (i != 0)
-	{
-		dup2(curr_pipe[0], STDIN_FILENO);
-		close(curr_pipe[0]);
-		close(curr_pipe[1]);
-	}
-	if (i != num_of_command - 1)
-	{
-		dup2(curr_pipe[1], STDOUT_FILENO);
-		close(curr_pipe[0]);
-		//close(curr_pipe[1]);
-	}
-}
+	int	pipe_fd[2];
+	int pid;
+	int num_of_command;
+	int status;
 
-void	parent(int *curr_pipe, int i)
-{
-	if (i != 0)
-	{
-		close(curr_pipe[0]);
-		close(curr_pipe[1]);
-	}
-}
-
-void	do_pipe(int i, pid_t *child_pids, char *command, t_shell *minishell)
-{
-	int		curr_pipe[2];
-	int		num_of_command;
-	pid_t	pid;
-
-	//printf("entered do pipe :%s\n", command);
+	printf("executing %s\n", curr->token);
 	num_of_command = num_of_commands(minishell);
 	if (i != num_of_command - 1)
 	{
-		if (pipe(curr_pipe) == -1)
+		if (pipe(pipe_fd) == -1)
 			exit(EXIT_FAILURE);
 	}
 	pid = fork();
-	if (pid == -1)
-		exit(EXIT_FAILURE);
 	if (!pid)
 	{
-		child(curr_pipe, i, num_of_command);
-		exec_cmd(command, minishell);
+		if (!last_command)
+		{
+			dup2(pipe_fd[1], STDOUT_FILENO);
+			close(pipe_fd[0]);
+		}
+		else
+		{
+			if (curr->next && curr->next->type == T_LEFT_SHIFT)
+			{
+				if (here_doc(minishell, curr->next->next->token) != -1)
+				{
+					dup2(minishell->heredoc_fd, STDIN_FILENO);
+					close(minishell->heredoc_fd);
+				}
+			}
+			else
+			{
+				dup2(pipe_fd[0], STDIN_FILENO);
+				close(pipe_fd[1]);
+			}
+		}
+		exec_cmd(curr->token, minishell);
 	}
 	else
 	{
-		child_pids[i] = pid;
-		parent(curr_pipe, i);
+		if (last_command)
+		{
+			close(pipe_fd[0]);
+			close(pipe_fd[1]);
+		}
+		waitpid(pid, &status, 0);
 	}
 }
+
 
 
 void pipex(t_shell *minishell)
 {
 	int		i;
-	int		fd;
-	int		pid;
-	pid_t	*child_pids;
+	//int		fd;
+	int		is_last_command;
+	//pid_t	*child_pids;
 	t_token	*curr;
 
 	i = 0;
-	child_pids = (pid_t *)malloc(sizeof(pid_t) * num_of_commands(minishell));
-	if (child_pids == NULL)
-		exit(EXIT_FAILURE);
+	is_last_command = 0;
 	curr = minishell->cmd_list;
 	while (curr != NULL)
 	{
 		if (curr->type == T_LEFT_SHIFT)
 		{
-			int pipe_read_fd = here_doc(minishell, curr->token);
-			dup2(pipe_read_fd, STDIN_FILENO);
-			close(pipe_read_fd);
 			curr = curr->next;
 		}
+		/***
 		else if (curr->type == T_LESSER_THAN)
 		{
-			fd = redirect_input(minishell, curr);
+			p_fd = redirect_input(minishell, curr);
 			pid = fork();
 			if (!pid)
 			{
-				if (dup2(fd, STDIN_FILENO) == -1)
+				if (dup2(p_fd, STDIN_FILENO) == -1)
 				{
 					perror("dup2");
 					exit(EXIT_FAILURE);
 				}
-				close(fd);
+				close(p_fd);
 				exec_cmd(curr->prev->token, minishell);
 			}
 			waitpid(pid, NULL, 0);
@@ -167,17 +213,23 @@ void pipex(t_shell *minishell)
 		}
 		else if (curr->type == T_GREATER_THAN || curr->type == T_RIGHT_SHIFT)
 			redirect_output(curr);
+		**/
 		else if (curr->type == T_IDENTIFIER)
 		{
-			if (!ft_strncmp(curr->token, "cat", 3) == 0)
+			is_last_command = assign_last(curr);
+			if (curr->next && curr->next->type == T_LEFT_SHIFT)
 			{
-				do_pipe(i++, child_pids, curr->token, minishell);
+				//here_doc(minishell, curr->next->next->token);
+				//printf("printing from heredoc_fd:\n");
+				//print_fd_contents(minishell->heredoc_fd);
+				//dup2(minishell->heredoc_fd, STDIN_FILENO);
+				//close(minishell->heredoc_fd);
+				is_last_command = 1;
 			}
+			execute_command(i++, curr, minishell, is_last_command);
 		}
 		curr = curr->next;
 	}
-	wait_for_children(child_pids, i);
-	free(child_pids);
 }
 
 void	exec_cmd(char *cmd, t_shell *minishell)
@@ -185,7 +237,6 @@ void	exec_cmd(char *cmd, t_shell *minishell)
 	char	**s_cmd;
 	char	*path;
 
-	printf("cmd: %s\n", cmd);
 	if (!cmd || !minishell)
 	{
 		ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);

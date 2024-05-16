@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-/* Returns the message directed to stderror and then exits out*/
 void	exit_handler(int exit_code)
 {
 	if (exit_code == 1)
@@ -20,12 +19,6 @@ void	exit_handler(int exit_code)
 	exit(EXIT_FAILURE);
 }
 
-/* Returns file_descriptor based on the return value of the open function.
-    Non-negative  = file descriptor
-    -1 = File unable to open -> exit_handler is called
-    0777 = Owners, Group of File and Others permission to read, write and
-    execute
-*/
 int	open_file(const char *file, int mode)
 {
 	int	return_fd;
@@ -39,9 +32,6 @@ int	open_file(const char *file, int mode)
 	return (return_fd);
 }
 
-/* Frees the memory of each element until it reaches the null
-terminator before freeing the memory allocated to the entire array. */
-
 void	ft_free_tab(char **tab)
 {
 	size_t	i;
@@ -54,18 +44,6 @@ void	ft_free_tab(char **tab)
 	}
 	free(tab);
 }
-
-/* Searches system's PATH where commands can be found, the split this into
-individual paths. Then seperates the commands into different paths
-
-Searches through each location in path adding the naem of the command to
-the end to make a full address (/usr/bin/command). Check if command at
-address exists. F_OK = Exsist, X_OK = Executable. If does, cleans up
-the memory used to split path and the command, gives back full
-address of the command.
-
-If doesn't moves to the next location. If all locations does not contain the
-command, frees the memory and gives back the original command.*/
 
 char	*get_path(char *cmd, t_shell *minishell)
 {

@@ -221,7 +221,7 @@ void pipex(t_shell *minishell)
 		else if (curr->type == T_IDENTIFIER)
 		{
 			is_last_command = assign_last(curr);
-		if (curr->next && (curr->next->type == T_LESSER_THAN || curr->next->type == T_LEFT_SHIFT || curr->next->type == T_GREATER_THAN))
+			if (curr->next && (curr->next->type == T_LESSER_THAN || curr->next->type == T_LEFT_SHIFT || curr->next->type == T_GREATER_THAN || curr->next->type == T_RIGHT_SHIFT))
 			{
 				is_last_command = 1;
 			}

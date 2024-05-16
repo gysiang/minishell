@@ -1,28 +1,24 @@
 #include "minishell.h"
 
-char *get_env_value(t_shell *minishell, const char *var) {
+char *get_env_value(t_shell *minishell, const char *var)
+{
     int i = 0;
     size_t var_len = ft_strlen(var);
-   // printf("Debug: Searching for variable '%s'\n", var);
-    while (minishell->env[i]) {
-        //printf("Debug: Checking env[%d]: %s\n", i, minishell->env[i]);
-        if (ft_strncmp(minishell->env[i], var, var_len) == 0 && minishell->env[i][var_len] == '=') {
-            //printf("Debug: Found variable '%s' at index %d\n", var, i);
+    while (minishell->env[i])
+    {
+        if (ft_strncmp(minishell->env[i], var, var_len) == 0 && minishell->env[i][var_len] == '=')
             return ft_strdup(&minishell->env[i][var_len + 1]);
-        }
         i++;
     }
-    //printf("Debug: Variable '%s' not found\n", var);
     return (NULL);
 }
 
 
-int env_len(t_shell *minishell) {
+int env_len(t_shell *minishell)
+{
     int i = 0;
-    while (minishell->env[i]) {
+    while (minishell->env[i])
         i++;
-    }
-    printf("Debug: Total environment variables count: %d\n", i);
     return (i);
 }
 

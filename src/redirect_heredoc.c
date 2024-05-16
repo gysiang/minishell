@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 21:03:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/15 09:25:39 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/16 23:50:27 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int here_doc(t_shell *minishell, char *delimiter)
     int status;
     int pid;
 
-	//printf("entered into heredoc\n");
+	printf("entered into heredoc\n");
     if (pipe(pipe_des) == -1)
         exit(EXIT_FAILURE);
     pid = fork();

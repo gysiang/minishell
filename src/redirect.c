@@ -25,30 +25,27 @@ static int open_input(char *file_name)
 
 }
 
-int redirect_input(t_shell *minishell, t_token *token)
+int redirect_input(t_shell *minishell, t_token *curr)
 {
-    t_token *tracker;
-    int 	type;
-    char    *file_name;
-    int 	fd;
-    if (!token)
-        return (0);
-    tracker = token;
-    while (tracker)
-    {
-        type = tracker->type;
-        file_name = (char *)tracker->next->token;
-        if (type == T_LESSER_THAN)
-            fd = open_input(file_name);
-        else
-            fd = here_doc(minishell, file_name);
-        if (fd < 0)
-            break;
-		tracker = token->next->next;
-		if (tracker)
-            close(fd);
-    }
-    return (fd);
+	int	fd;
+	int	type;
+	//char	*delimiter;
+
+	fd = -1;
+	type = curr->prev->type;
+	printf("inside redirect input\n");
+	printf("filename: %s\n", curr->token);
+	printf("type: %d\n", curr->prev->type);
+	if (type == T_LESSER_THAN)
+		fd = open_input(curr->token);
+	else if (type == T_LEFT_SHIFT)
+	{
+		printf("before heredoc\n");
+		fd = here_doc(minishell, curr->token);
+	}
+	if (fd > 0)
+		minishell->heredoc_fd = fd;
+	return (fd);
 }
 
 static int open_output(char *file_name, int type)
@@ -56,7 +53,7 @@ static int open_output(char *file_name, int type)
     struct stat buffer;
     int fd;
 
-    fd = 0;
+    fd = -1;
     if (stat(file_name, &buffer) == 0 && S_ISDIR(buffer.st_mode))
     {
         minishell_error_msg(file_name, 2);
@@ -74,31 +71,16 @@ static int open_output(char *file_name, int type)
     return (fd);
 }
 
-int redirect_output(t_token *token)
+int redirect_output(t_shell *minishell, t_token *curr)
 {
-    t_token *tracker;
-    int 	type;
-    char    *file_name;
-    int 	fd;
+	int 	fd;
 
-    fd = -1;
-    if (!token)
-        return (0);
-    tracker = token;
-    while (tracker)
-    {
-        type = tracker->type;
-        file_name = (char *)tracker->next->token;
-		printf("%s\n", file_name);
-        fd = open_output(file_name, type);
-        if (fd < 0)
-            break;
-		/***
-        tracker = tracker->next->next;
-        if (tracker)
-            close(fd);
-		**/
-    }
+	printf("inside redirect output\n");
+	printf("filename: %s\n", curr->token);
+	printf("type: %d\n", curr->prev->type);
+	fd = open_output(curr->token, curr->prev->type);
+	if (fd > 0)
+		minishell->heredoc_fd = fd;
     return (fd);
 }
 /***

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 21:03:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/14 13:20:40 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/16 23:50:27 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,28 +74,28 @@ int here_doc(t_shell *minishell, char *delimiter)
     int status;
     int pid;
 
-	//printf("entered into heredoc\n");
+	printf("entered into heredoc\n");
     if (pipe(pipe_des) == -1)
-        exit(EXIT_FAILURE); // Create a pipe and store the file descriptoer in pipre_des array
-    pid = fork(); // Fork a child process
+        exit(EXIT_FAILURE);
+    pid = fork();
 	if (pid == -1)
 		return (-1);
-    if (pid == 0)// If in the child process (pid is 0)
+    if (pid == 0)
     {
-        here_doc_read(minishell, pipe_des, delimiter); // Call here_doc_read function with minshell, pipe_des and dleimiter
+        here_doc_read(minishell, pipe_des, delimiter);
         exit(0);
     }
-    waitpid(pid, &status, WUNTRACED); // Wait for the child process to finish and sotre the status
+    waitpid(pid, &status, WUNTRACED);
     //printf("executed heredoc read\n");
-	if (WEXITSTATUS(status) == 130) // If the child status is 130
+	if (WEXITSTATUS(status) == 130)
     {
-        close(pipe_des[0]); // Close the read end of the pipe
         close(pipe_des[0]);
-		return (-1); // Set read end to -1 , indicating an error
+        close(pipe_des[0]);
+		return (-1);
     }
 	//printf("save the read end to heredoc_fd\n");
-    close(pipe_des[1]); // Close the write end of the pipe
-    minishell->heredoc_fd = pipe_des[0]; // Return the read end of the pipe
+    close(pipe_des[1]);
+    minishell->heredoc_fd = pipe_des[0];
 	//close(pipe_des[0]);
 	return (0);
 }

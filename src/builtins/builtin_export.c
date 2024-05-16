@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 static char *get_var_name(char *cmd)
 {
 	char *equal_pos;
@@ -21,25 +20,12 @@ static char *get_var_name(char *cmd)
 		return ft_substr(cmd, 0, equal_pos - cmd);
 	return (NULL);
 }
-/***
-int	search_env(t_shell *minishell, char *var)
-{
-	int	i;
-
-	i = 0;
-	while (minishell->env[i])
-	{
-		if (ft_strncmp(minishell->env[i], var, ft_strlen(var)) == 0)
-			return (i);
-		i++;
-	}
-	return (-1);
-} **/
 
 void env_realloc(t_shell *minishell)
 {
 	char **new_env;
 	int	old_size;
+	int	i;
 
 	old_size = minishell->env_size;
 	minishell->env_size *= 2;
@@ -50,33 +36,18 @@ void env_realloc(t_shell *minishell)
 		free_and_exit(minishell, 1);
 	}
 	minishell->env = new_env;
-	//printf("Environment reallocated. New size: %d\n", minishell->env_size);
-	int  i = old_size;
+	i = old_size;
 	while (i < minishell->env_size)
 	{
 		minishell->env[i] = NULL;
 		i++;
 	}
-	//printf("Environment initialization complete \n");
 }
 
 static int is_valid_identifier(const char *str)
 {
     if (str == NULL || *str == '\0' || ft_isdigit(*str))
-	{
 		return (0);
-	}
-	/***
-    while (*str)
-    {
-        if (!ft_isalnum(*str))
-		{
-			printf("not alphabet\n");
-            return (0);
-		}
-        str++;
-    }
-	**/
     return (1);
 }
 
@@ -96,23 +67,15 @@ static int save_var(t_shell *minishell, char *content)
 	var_name = get_var_name(content);
 	if (!var_name)
 		return (0);
-	//printf("var name %s\n", var_name);
 	var_index = search_env(minishell, var_name);
-	//printf("var id %d\n", var_index);
-	//free(var_name);
-	// cannot find the variable, adding the varable to end of list
 	if (var_index == -1)
 		var_index = env_len(minishell);
-	//printf("setting new id: %d\n", var_index);
 	if (var_index == minishell->env_size)
 	{
 		printf("Environment size reached. Reallocating...\n");
 		env_realloc(minishell);
 	}
-	//free(minishell->env[var_index]);
 	minishell->env[var_index] = ft_strdup(content);
-	//printf("Variable '%s' saved at index %d\n", content, var_index);
-	//printf("New value: '%s'\n", minishell->env[var_index]);
 	return (0);
 }
 
@@ -177,6 +140,5 @@ int minishell_export(t_shell *minishell)
 		save_var(minishell, joined);
 	}
 	free(joined);
-	//sort_env(minishell);
 	return (0);
 }

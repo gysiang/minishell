@@ -1,6 +1,7 @@
 #include "minishell.h"
 
-static void update_env_pwd(t_shell *minishell) {
+static void update_env_pwd(t_shell *minishell)
+{
     char *old_pwd = get_env_value(minishell, "PWD");
     char *new_pwd = getcwd(NULL, 0);
 
@@ -13,38 +14,36 @@ static void update_env_pwd(t_shell *minishell) {
         free(old_pwd);
 }
 
-static int cd_error_messages(int err, char *target_dir, int err_no) {
+int cd_error_messages(int err, char *target_dir, int err_no) {
     if (err == 1) {
-        ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+        ft_putstr_fd("minishell: cd: too many arguments LOL\n", 2);
+    } else if (err == 2) {
+        ft_putstr_fd("minishell: cd: too few arguments HEHEHE\n", 2);
     } else {
         ft_putstr_fd("minishell: cd: ", 2);
-        ft_putstr_fd(target_dir, 2);
-        ft_putstr_fd(": ", 2);
-        ft_putstr_fd(strerror(err_no), 2);  // Use the strerror function to get a string representation of the error number
+        if (target_dir) {
+            ft_putstr_fd(target_dir, 2);
+            ft_putstr_fd(": ", 2);
+        }
+        ft_putstr_fd(strerror(err_no), 2);
         ft_putstr_fd("\n", 2);
     }
-    return (1);
+    return 1;
 }
 
+int minishell_cd(t_shell *minishell)
+{
+    t_token *cmd_token = minishell->cmd_list;
 
-int minishell_cd(t_shell *minishell) {
-    char *target_dir;
-    t_token *cmd_token = minishell->cmd_list->next; // Skip 'cd' command token
-
-    if (!cmd_token || cmd_token->type != T_IDENTIFIER) { // No argument or improper token
-        target_dir = get_env_value(minishell, "HOME");
-    } else if (cmd_token->next) { // Too many arguments
-        return cd_error_messages(1, NULL, 0);
-    } else if (strcmp(cmd_token->token, "-") == 0) {
-        target_dir = get_env_value(minishell, "OLDPWD");
-    } else {
-        target_dir = cmd_token->token;
-    }
-
-    if (chdir(target_dir) != 0) {
-        return cd_error_messages(0, target_dir, errno);
-    }
-
+    if (!cmd_token || ft_strcmp(cmd_token->token, "cd") != 0)
+        return cd_error_messages(2, NULL, 0);
+    t_token *dir_token = cmd_token->next;
+    if (!dir_token)
+        return cd_error_messages(2, NULL, 0);
+    if (dir_token->next)
+        return cd_error_messages(1, NULL, 0);    
+    if (chdir(dir_token->token) != 0)
+        return cd_error_messages(3, dir_token->token, errno);
     update_env_pwd(minishell);
     return 0;
 }

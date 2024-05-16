@@ -57,7 +57,7 @@ int execute_builtin(t_shell *minishell)
 	}
     if (ft_strncmp(s, "cd", 2) == 0)
     {
-        //minishell_cd(minishell);
+        minishell_cd(minishell);
         return (1);
     }
 	if (ft_strcmp(s, "echo") == 0)

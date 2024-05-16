@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/14 13:10:40 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/16 20:37:11 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void set_env(t_shell *minishell, const char *var, const char *value);
 // redirect
 //void	redirect(t_shell *minishell, t_cmd *cmd, int *redir);
 int here_doc(t_shell *minishell, char *delimiter);
-int	redirect_input(t_shell *minishell, t_token *token);
+int redirect_input(t_shell *minishell, char *filename);
 int	redirect_output(t_token *token);
 
 // signals

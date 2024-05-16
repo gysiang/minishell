@@ -25,29 +25,15 @@ static int open_input(char *file_name)
 
 }
 
-int redirect_input(t_shell *minishell, t_token *token)
+int redirect_input(t_shell *minishell, char *file_name)
 {
-    t_token *tracker;
-    int 	type;
-    char    *file_name;
-    int 	fd;
-    if (!token)
-        return (0);
-    tracker = token;
-    while (tracker)
-    {
-        type = tracker->type;
-        file_name = (char *)tracker->next->token;
-        if (type == T_LESSER_THAN)
-            fd = open_input(file_name);
-        else
-            fd = here_doc(minishell, file_name);
-        if (fd < 0)
-            break;
-		tracker = token->next->next;
-		if (tracker)
-            close(fd);
-    }
+	int 	fd;
+
+	//printf("inside redirect input\n");
+	//printf("filename: %s\n", file_name);
+	fd = open_input(file_name);
+	if (fd > 0)
+		minishell->heredoc_fd = fd;
     return (fd);
 }
 

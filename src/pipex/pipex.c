@@ -120,8 +120,8 @@ static void print_fd_contents(int fd) {
     if (bytes_read == -1) {
         perror("read");
     }
-} **/
-
+}
+**/
 
 void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
 {
@@ -130,7 +130,7 @@ void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
 	int num_of_command;
 	int status;
 
-	printf("executing %s\n", curr->token);
+	//printf("executing %s\n", curr->token);
 	num_of_command = num_of_commands(minishell);
 	if (i != num_of_command - 1)
 	{
@@ -150,6 +150,14 @@ void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
 			if (curr->next && curr->next->type == T_LEFT_SHIFT)
 			{
 				if (here_doc(minishell, curr->next->next->token) != -1)
+				{
+					dup2(minishell->heredoc_fd, STDIN_FILENO);
+					close(minishell->heredoc_fd);
+				}
+			}
+			if (curr->next && (curr->next->type == T_LESSER_THAN || curr->next->type == T_LEFT_SHIFT))
+			{
+				if (redirect_input(minishell,curr->next->next->token) != -1)
 				{
 					dup2(minishell->heredoc_fd, STDIN_FILENO);
 					close(minishell->heredoc_fd);
@@ -189,15 +197,17 @@ void pipex(t_shell *minishell)
 	curr = minishell->cmd_list;
 	while (curr != NULL)
 	{
+		//printf("curr token processing %s\n", curr->token);
 		if (curr->type == T_LEFT_SHIFT)
 		{
 			curr = curr->next;
 		}
-		/***
 		else if (curr->type == T_LESSER_THAN)
 		{
-			p_fd = redirect_input(minishell, curr);
-			pid = fork();
+			//int p_fd = redirect_input(minishell, curr);
+
+			/***
+			int pid = fork();
 			if (!pid)
 			{
 				if (dup2(p_fd, STDIN_FILENO) == -1)
@@ -209,14 +219,20 @@ void pipex(t_shell *minishell)
 				exec_cmd(curr->prev->token, minishell);
 			}
 			waitpid(pid, NULL, 0);
+			**/
 			curr = curr->next;
 		}
+		/***
 		else if (curr->type == T_GREATER_THAN || curr->type == T_RIGHT_SHIFT)
 			redirect_output(curr);
 		**/
 		else if (curr->type == T_IDENTIFIER)
 		{
 			is_last_command = assign_last(curr);
+			if (curr->next && curr->next->type == T_LESSER_THAN)
+			{
+				is_last_command = 1;
+			}
 			if (curr->next && curr->next->type == T_LEFT_SHIFT)
 			{
 				//here_doc(minishell, curr->next->next->token);

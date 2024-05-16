@@ -14,12 +14,14 @@ static void update_env_pwd(t_shell *minishell)
         free(old_pwd);
 }
 
-int cd_error_messages(int err, char *target_dir, int err_no) {
-    if (err == 1) {
+int cd_error_messages(int err, char *target_dir, int err_no)
+{
+    if (err == 1)
         ft_putstr_fd("minishell: cd: too many arguments LOL\n", 2);
-    } else if (err == 2) {
+    else if (err == 2)
         ft_putstr_fd("minishell: cd: too few arguments HEHEHE\n", 2);
-    } else {
+    else
+    {
         ft_putstr_fd("minishell: cd: ", 2);
         if (target_dir) {
             ft_putstr_fd(target_dir, 2);
@@ -33,8 +35,9 @@ int cd_error_messages(int err, char *target_dir, int err_no) {
 
 int minishell_cd(t_shell *minishell)
 {
-    t_token *cmd_token = minishell->cmd_list;
+    t_token *cmd_token;
 
+    cmd_token = minishell->cmd_list;
     if (!cmd_token || ft_strcmp(cmd_token->token, "cd") != 0)
         return cd_error_messages(2, NULL, 0);
     t_token *dir_token = cmd_token->next;

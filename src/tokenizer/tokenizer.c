@@ -82,7 +82,6 @@ t_token	*token_processor(char *line, t_shell *minishell)
 		else
 			add_command_lst(&line, &token_lst);
 	}
-	print_tokenlst(token_lst);
 	token_lst = token_parser(token_lst, minishell);
 	return (token_lst);
 }

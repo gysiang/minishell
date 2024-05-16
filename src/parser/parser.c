@@ -139,22 +139,22 @@ static void handle_cd_command(t_token **curr, t_shell *minishell)
 {
     t_token *next_token = (*curr)->next;
     if (next_token != NULL && next_token->type == T_IDENTIFIER)
-	{
+    {
         char *dir = next_token->token;
         if (chdir(dir) != 0)
-		{
+        {
             perror("minishell: cd");
             minishell->last_return = 1;
         }
-		else
+        else
             minishell->last_return = 0;
-        *curr = next_token->next;
+        *curr = next_token->next; // Move to the token after the directory argument
     }
-	else
-	{
-        fprintf(stderr, "minishell: cd: too few arguments \n");
+    else
+    {
+        fprintf(stderr, "minishell: cd: too few arguments\n");
         minishell->last_return = 1;
-        *curr = (*curr)->next;
+        *curr = (*curr)->next; // Move to the next token
     }
 }
 
@@ -174,7 +174,7 @@ t_token *token_parser(t_token *token_lst, t_shell *minishell)
         }
 		else if (ft_strchr(curr->token, '\"'))
             parse_doublequote(curr);
-        else if (strcmp(curr->token, "cd") == 0)
+        else if (ft_strcmp(curr->token, "cd") == 0)
 		{
             handle_cd_command(&curr, minishell);
             continue;

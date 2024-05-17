@@ -15,7 +15,7 @@
 
 #include "minishell.h"
 
-static int	num_of_commands(t_shell *minishell)
+int	num_of_commands(t_shell *minishell)
 {
 	int		i;
 	t_token	*curr_token;
@@ -40,7 +40,7 @@ static int	assign_last(t_token *c)
 		return (1);
 }
 
-static int	handle_redirection(t_shell *minishell, t_token *curr)
+int	handle_redirection(t_shell *minishell, t_token *curr)
 {
 	if (curr->next && (curr->next->type == T_LESSER_THAN || curr->next->type == T_LEFT_SHIFT))
 	{
@@ -61,50 +61,6 @@ static int	handle_redirection(t_shell *minishell, t_token *curr)
 		}
 	}
 	return (0);
-}
-
-
-void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
-{
-	int	pipe_fd[2];
-	int pid;
-	int num_of_command;
-	int status;
-
-	//printf("executing %s\n", curr->token);
-	num_of_command = num_of_commands(minishell);
-	if (i != num_of_command - 1)
-	{
-		if (pipe(pipe_fd) == -1)
-			exit(EXIT_FAILURE);
-	}
-	pid = fork();
-	if (!pid)
-	{
-		if (!last_command)
-		{
-			dup2(pipe_fd[1], STDOUT_FILENO);
-			close(pipe_fd[0]);
-		}
-		else
-		{
-			if (handle_redirection(minishell, curr) != 1)
-			{
-				dup2(pipe_fd[0], STDIN_FILENO);
-				close(pipe_fd[1]);
-			}
-		}
-		exec_cmd(curr->token, minishell);
-	}
-	else
-	{
-		if (last_command)
-		{
-			close(pipe_fd[0]);
-			close(pipe_fd[1]);
-		}
-		waitpid(pid, &status, 0);
-	}
 }
 
 static	int	check_redirection_type(t_token *curr)
@@ -138,48 +94,12 @@ void pipex(t_shell *minishell)
 		else if (curr->type == T_IDENTIFIER)
 		{
 			is_last_command = assign_last(curr);
-			if (curr->next && (check_redirection_type(curr->next)))
-			{
+			if (num_of_commands(minishell) == 1)
+				is_last_command = 0;
+			else if (curr->next && (check_redirection_type(curr->next)))
 				is_last_command = 1;
-			}
 			execute_command(i++, curr, minishell, is_last_command);
 		}
 		curr = curr->next;
-	}
-}
-
-void	exec_cmd(char *cmd, t_shell *minishell)
-{
-	char	**s_cmd;
-	char	*path;
-
-	if (!cmd || !minishell)
-	{
-		ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
-	s_cmd = ft_split(cmd, ' ');
-	if (!s_cmd)
-	{
-		ft_putstr_fd("Failed to split command\n", STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
-	path = get_path(s_cmd[0], minishell);
-	if (execute_builtin(minishell))
-	{
-		ft_free_tab(s_cmd);
-		return ;
-	}
-	if (!path)
-	{
-		printf("get_env returned NULL for command: %s\n", s_cmd[0]);
-		exit(EXIT_FAILURE);
-	}
-	if (execve(path, s_cmd, minishell->env) == -1)
-	{
-		ft_putstr_fd("pipex: Error executing command\n", 2);
-		ft_putendl_fd(s_cmd[0], 2);
-		ft_free_tab(s_cmd);
-		exit(EXIT_FAILURE);
 	}
 }

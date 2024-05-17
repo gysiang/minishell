@@ -38,22 +38,11 @@ int	search_env(t_shell *minishell, char *var)
 
 int	is_valid_var_name(char *var_name)
 {
-	//int	i;
-
-	//i = 1;
     if (var_name == NULL || *var_name == '\0' || ft_isdigit(*var_name))
 	{
 		printf("n\n");
 		return (0);
 	}
-	/***
-	i = 1;
-	while (var_name[i])
-	{
-		if (!ft_isalnum(var_name[i]) && var_name[i] != '_' )
-			return (0);
-		i++;
-	} **/
 	return (1);
 }
 

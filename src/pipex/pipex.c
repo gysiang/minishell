@@ -40,7 +40,6 @@ static int	assign_last(t_token *c)
 		return (1);
 }
 
-
 static int	handle_redirection(t_shell *minishell, t_token *curr)
 {
 	if (curr->next && (curr->next->type == T_LESSER_THAN || curr->next->type == T_LEFT_SHIFT))
@@ -63,6 +62,7 @@ static int	handle_redirection(t_shell *minishell, t_token *curr)
 	}
 	return (0);
 }
+
 
 void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
 {

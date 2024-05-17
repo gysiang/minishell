@@ -23,7 +23,6 @@ void minishell_env(t_shell *minishell)
 	while (minishell->env[i])
 	{
 		printf("env %d : ",i);
-		//ft_putendl_fd(minishell->env[i], 1);
 		printf("%s\n",minishell->env[i]);
 		i++;
 	}

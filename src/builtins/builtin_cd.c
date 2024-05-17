@@ -1,50 +1,80 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
+/*   Updated: 2024/05/17 10:54:52 by axlee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+// OLDPWD IS NOT BEING UPDATED IN THE ENV
+// HOWEVER CODE IS FUNCTIONING PROPERLY
+
 #include "minishell.h"
 
-static void update_env_pwd(t_shell *minishell) {
-    char *old_pwd = get_env_value(minishell, "PWD");
-    char *new_pwd = getcwd(NULL, 0);
+static void	update_env_pwd(t_shell *minishell)
+{
+	char	*old_pwd;
+	char	*new_pwd;
 
-    if (new_pwd) {
-        set_env(minishell, "OLDPWD", old_pwd);
-        set_env(minishell, "PWD", new_pwd);
-        free(new_pwd);
-    }
-    if (old_pwd)
-        free(old_pwd);
+	old_pwd = get_env_value(minishell, "PWD");
+	new_pwd = getcwd(NULL, 0);
+	if (new_pwd)
+	{
+		set_env(minishell, "OLDPWD", old_pwd);
+		set_env(minishell, "PWD", new_pwd);
+		free(new_pwd);
+	}
+	if (old_pwd)
+		free(old_pwd);
 }
 
-static int cd_error_messages(int err, char *target_dir, int err_no) {
-    if (err == 1) {
-        ft_putstr_fd("minishell: cd: too many arguments\n", 2);
-    } else {
-        ft_putstr_fd("minishell: cd: ", 2);
-        ft_putstr_fd(target_dir, 2);
-        ft_putstr_fd(": ", 2);
-        ft_putstr_fd(strerror(err_no), 2);  // Use the strerror function to get a string representation of the error number
-        ft_putstr_fd("\n", 2);
-    }
-    return (1);
+static int	change_and_check_error(t_shell *minishell)
+{
+	t_token	*cmd_token;
+	t_token	*dir_token;
+
+	cmd_token = minishell->cmd_list;
+	dir_token = cmd_token->next;
+	if (chdir(dir_token->token) != 0)
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(dir_token->token, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
+		return (1);
+	}
 }
 
+int	minishell_cd(t_shell *minishell)
+{
+	t_token	*cmd_token;
+	t_token	*dir_token;
 
-int minishell_cd(t_shell *minishell) {
-    char *target_dir;
-    t_token *cmd_token = minishell->cmd_list->next; // Skip 'cd' command token
-
-    if (!cmd_token || cmd_token->type != T_IDENTIFIER) { // No argument or improper token
-        target_dir = get_env_value(minishell, "HOME");
-    } else if (cmd_token->next) { // Too many arguments
-        return cd_error_messages(1, NULL, 0);
-    } else if (strcmp(cmd_token->token, "-") == 0) {
-        target_dir = get_env_value(minishell, "OLDPWD");
-    } else {
-        target_dir = cmd_token->token;
-    }
-
-    if (chdir(target_dir) != 0) {
-        return cd_error_messages(0, target_dir, errno);
-    }
-
-    update_env_pwd(minishell);
-    return 0;
+	cmd_token = minishell->cmd_list;
+	if (!cmd_token)
+	{
+		ft_putstr_fd("minishell: cd: too few arguments 1\n", 2);
+		return (1);
+	}
+	if (ft_strncmp(cmd_token->token, "cd", 2) != 0)
+	{
+		ft_putstr_fd("minishell: cd: command not found 2\n", 2);
+		return (1);
+	}
+	dir_token = cmd_token->next;
+	if (!dir_token)
+		return (1);
+	if (dir_token->next)
+	{
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		return (1);
+	}
+	change_and_check_error(minishell);
+	update_env_pwd(minishell);
+	return (0);
 }

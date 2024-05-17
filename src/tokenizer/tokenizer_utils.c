@@ -30,9 +30,7 @@ int	ft_isbackslash(char *line)
 int	ft_issemicolon(char *line)
 {
 	if (*line == ';')
-	{
 		return (1);
-	}
 	return (0);
 }
 

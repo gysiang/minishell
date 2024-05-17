@@ -15,72 +15,6 @@
 
 #include "minishell.h"
 
-/* Split the command string into parts based on spaces, then find the full path
-of the command to be exxecuted. If the command fails to execute, will print the
-eroor messages, free the allocated memmory and then exits the program */
-/**
-static char	**init_command(t_token *token_lst, int num_of_command)
-{
-	t_token	*curr_token;
-	char	**command;
-	int		i;
-
-	command = (char **)malloc((num_of_command + 1) * sizeof(char *));
-	if (!command)
-		exit(EXIT_FAILURE);
-	i = 0;
-	curr_token = token_lst;
-	while (i < num_of_command)
-	{
-		if (curr_token->type == T_IDENTIFIER)
-		{
-			command[i++] = curr_token->token;
-			//printf("command[%d]: %s\n", i, curr_token->token);
-		}
-		curr_token = curr_token->next;
-	}
-	command[num_of_command] = NULL;
-	return (command);
-} **/
-/***
-void	child_process(char *command, t_shell *minishell, int *fd)
-{
-	pid_t	pid;
-	int		status;
-
-	pid = fork();
-	if (pid == -1)
-		return ;
-	if (!pid)
-	{
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		exec_cmd(command, minishell);
-	}
-	else
-	{
-		close(fd[1]);
-		dup2(fd[0], STDIN_FILENO);
-		waitpid(pid, &status, 0);
-	}
-}
-
-void	last_child_process(char *command, t_shell *minishell)
-{
-	pid_t	pid;
-	int		status;
-
-	pid = fork();
-	if (pid == -1)
-		return ;
-	if (!pid)
-		exec_cmd(command, minishell);
-	else
-	{
-		waitpid(pid, &status, 0);
-	}
-} **/
-
 static int	num_of_commands(t_shell *minishell)
 {
 	int		i;
@@ -105,23 +39,6 @@ static int	assign_last(t_token *c)
 	else
 		return (1);
 }
-/***
-static void print_fd_contents(int fd) {
-    char buffer[1024];  // Buffer to hold the read data
-    ssize_t bytes_read; // Number of bytes read by read()
-
-    // Read from the file descriptor until there's no more data
-    while ((bytes_read = read(fd, buffer, sizeof(buffer))) > 0) {
-        // Print the data read from the file descriptor
-        write(STDOUT_FILENO, buffer, bytes_read);
-    }
-
-    // Check for read errors
-    if (bytes_read == -1) {
-        perror("read");
-    }
-}
-**/
 
 void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
 {

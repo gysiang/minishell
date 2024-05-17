@@ -34,26 +34,21 @@ t_token	*create_token(char *token, t_token_type type)
 
 void	token_add_back(t_token **head, char *token, t_token_type type)
 {
-	t_token	*current_node;
-	t_token	*prev_node;
 	t_token	*new_node;
+	t_token *current;
 
 	new_node = create_token(token, type);
 	if (!new_node)
-		return ;
-	current_node = *head;
-	prev_node = NULL;
-	while (current_node != NULL)
-	{
-		prev_node = current_node;
-		current_node = current_node->next;
-	}
-	if (prev_node == NULL)
+		return;
+	if (*head == NULL)
 		*head = new_node;
 	else
 	{
-		new_node->prev = prev_node;
-		prev_node->next = new_node;
+		current = *head;
+		while (current->next != NULL)
+			current = current->next;
+		current->next = new_node;
+		new_node->prev = current;
 	}
 }
 

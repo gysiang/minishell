@@ -3,38 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:49:27 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/04/29 19:34:26 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:14:23 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	prompt()
+void	prompt(void)
 {
 	printf("minishell$");
 	usleep(5000);
 }
 
-void	print_history()
+void	print_history(void)
 {
-	HIST_ENTRY	**mylist = history_list();
-	int	i;
+	HIST_ENTRY	**mylist;
+	int			i;
 
+	mylist = history_list();
 	i = 0;
 	if (!mylist)
 	{
 		printf("Error getting history list\n");
 		return ;
 	}
-	while (1)
+	while (mylist[i] != NULL)
 	{
-		if (mylist[i] != NULL)
-			printf("%d: %s\n", i + 1, mylist[i]->line);
-		else
-			break ;
+		printf("%d: %s\n", i + 1, mylist[i]->line);
 		i++;
 	}
 }

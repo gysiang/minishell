@@ -40,6 +40,30 @@ static int	assign_last(t_token *c)
 		return (1);
 }
 
+static int	handle_redirection(t_shell *minishell, t_token *curr)
+{
+	if (curr->next && (curr->next->type == T_LESSER_THAN || curr->next->type == T_LEFT_SHIFT))
+	{
+		if (redirect_input(minishell,curr->next->next) != -1)
+		{
+			dup2(minishell->heredoc_fd, STDIN_FILENO);
+			close(minishell->heredoc_fd);
+			return (1);
+		}
+	}
+	else if (curr->next && (curr->next->type == T_GREATER_THAN || curr->next->type == T_RIGHT_SHIFT))
+	{
+		if (redirect_output(minishell,curr->next->next) != -1)
+		{
+			dup2(minishell->heredoc_fd, STDOUT_FILENO);
+			close(minishell->heredoc_fd);
+			return (1);
+		}
+	}
+	return (0);
+}
+
+
 void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
 {
 	int	pipe_fd[2];
@@ -64,32 +88,7 @@ void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
 		}
 		else
 		{
-			/***
-			if (curr->next && curr->next->type == T_LEFT_SHIFT)
-			{
-				if (here_doc(minishell, curr->next->next->token) != -1)
-				{
-					dup2(minishell->heredoc_fd, STDIN_FILENO);
-					close(minishell->heredoc_fd);
-				}
-			} **/
-			if (curr->next && (curr->next->type == T_LESSER_THAN || curr->next->type == T_LEFT_SHIFT))
-			{
-				if (redirect_input(minishell,curr->next->next) != -1)
-				{
-					dup2(minishell->heredoc_fd, STDIN_FILENO);
-					close(minishell->heredoc_fd);
-				}
-			}
-			if (curr->next && (curr->next->type == T_GREATER_THAN || curr->next->type == T_RIGHT_SHIFT))
-			{
-				if (redirect_output(minishell,curr->next->next) != -1)
-				{
-					dup2(minishell->heredoc_fd, STDOUT_FILENO);
-					close(minishell->heredoc_fd);
-				}
-			}
-			else
+			if (handle_redirection(minishell, curr) != 1)
 			{
 				dup2(pipe_fd[0], STDIN_FILENO);
 				close(pipe_fd[1]);
@@ -99,15 +98,6 @@ void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
 	}
 	else
 	{
-		/***
-		if (curr->next && (curr->next->type == T_GREATER_THAN || curr->next->type == T_RIGHT_SHIFT))
-		{
-			if (redirect_output(minishell,curr->next->next) != -1)
-			{
-				dup2(minishell->heredoc_fd, STDOUT_FILENO);
-				close(minishell->heredoc_fd);
-			}
-		} **/
 		if (last_command)
 		{
 			close(pipe_fd[0]);
@@ -117,7 +107,17 @@ void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
 	}
 }
 
-
+static	int	check_redirection_type(t_token *curr)
+{
+	if (!curr)
+		return (0);
+	if (curr->type == T_LEFT_SHIFT || curr->type == T_LESSER_THAN
+		|| curr->type == T_GREATER_THAN || curr->type == T_RIGHT_SHIFT)
+	{
+		return (1);
+	}
+	return (0);
+}
 
 void pipex(t_shell *minishell)
 {
@@ -131,27 +131,17 @@ void pipex(t_shell *minishell)
 	while (curr != NULL)
 	{
 		//printf("curr token processing %s\n", curr->token);
-		if (curr->type == T_LEFT_SHIFT || curr->type == T_LESSER_THAN || curr->type == T_GREATER_THAN || curr->type == T_RIGHT_SHIFT)
+		if (check_redirection_type(curr))
 		{
 			curr = curr->next;
 		}
 		else if (curr->type == T_IDENTIFIER)
 		{
 			is_last_command = assign_last(curr);
-			if (curr->next && (curr->next->type == T_LESSER_THAN || curr->next->type == T_LEFT_SHIFT || curr->next->type == T_GREATER_THAN || curr->next->type == T_RIGHT_SHIFT))
+			if (curr->next && (check_redirection_type(curr->next)))
 			{
 				is_last_command = 1;
 			}
-			/***
-			if (curr->next && curr->next->type == T_LEFT_SHIFT)
-			{
-				//here_doc(minishell, curr->next->next->token);
-				//printf("printing from heredoc_fd:\n");
-				//print_fd_contents(minishell->heredoc_fd);
-				//dup2(minishell->heredoc_fd, STDIN_FILENO);
-				//close(minishell->heredoc_fd);
-				is_last_command = 1;
-			} **/
 			execute_command(i++, curr, minishell, is_last_command);
 		}
 		curr = curr->next;

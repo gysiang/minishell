@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/17 12:44:56 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/17 16:00:22 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ static int	change_and_check_error(t_shell *minishell)
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
 		ft_putstr_fd("\n", 2);
-		return (0);
+		return (1);
 	}
-	return (1);
+	return (0);
 }
 
 int	minishell_cd(t_shell *minishell)

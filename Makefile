@@ -41,6 +41,7 @@ SRC_FILES := main.c \
                 builtins/builtin_pwd.c \
                 builtins/builtin_unset.c \
                 pipex/pipex_utils.c \
+                pipex/execute.c \
                 pipex/pipex.c \
                 tokenizer/create_token.c \
                 tokenizer/tokenizer_utils.c \

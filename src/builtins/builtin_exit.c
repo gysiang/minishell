@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 11:06:17 by axlee             #+#    #+#             */
-/*   Updated: 2024/04/12 12:26:46 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/17 11:38:12 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void minishell_exit(t_shell *minishell)
+void	minishell_exit(t_shell *minishell)
 {
-    free_shell(minishell);
-    ft_putstr_fd("exit\n", STDOUT_FILENO);
-    exit(0);
+	free_shell(minishell);
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	exit(0);
 }

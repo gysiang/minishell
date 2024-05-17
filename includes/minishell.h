@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/16 23:21:15 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/17 14:10:56 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,8 @@ void	exec_cmd(char *cmd, t_shell *minishell);
 void	ft_free_tab(char **tab);
 void	exit_handler(int exit_code);
 void	pipex(t_shell *minishell);
-void	child(int *curr_pipe, int i, int num_of_command);
-void	parent(int *curr_pipe, int i);
+int	num_of_commands(t_shell *minishell);
+int	handle_redirection(t_shell *minishell, t_token *curr);
 void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command);
 
 

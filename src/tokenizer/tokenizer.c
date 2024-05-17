@@ -44,7 +44,6 @@ int add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
     return (0);
 }
 
-// pure command
 int add_command_lst(char **line, t_token **token_lst)
 {
     int word_len;

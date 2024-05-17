@@ -57,7 +57,7 @@ int execute_builtin(t_shell *minishell)
 	}
     if (ft_strncmp(s, "cd", 2) == 0)
     {
-        //minishell_cd(minishell);
+        minishell_cd(minishell);
         return (1);
     }
 	if (ft_strcmp(s, "echo") == 0)
@@ -141,7 +141,7 @@ int main(int argc, char **argv, char **envp)
             break;
         add_history(line);
         token_lst = token_processor(line, g_shell);
-		print_tokenlst(token_lst);
+        print_tokenlst(token_lst);
         free(line);
         if (token_lst != NULL)
             g_shell->cmd_list = token_lst;

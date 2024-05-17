@@ -18,10 +18,3 @@ void minishell_exit(t_shell *minishell)
     ft_putstr_fd("exit\n", STDOUT_FILENO);
     exit(0);
 }
-
-/*void minishell_exit(void)
-{
-    ft_putstr_fd("exit\n", STDOUT_FILENO);
-    // Any cleanup or additional actions before exiting can be done here
-    exit(0);
-}*/

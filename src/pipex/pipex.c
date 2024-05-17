@@ -76,9 +76,17 @@ void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
 	if (i != num_of_command - 1)
 	{
 		if (pipe(pipe_fd) == -1)
+		{
+			minishell_error_msg("pipe", errno);
 			exit(EXIT_FAILURE);
+		}
 	}
 	pid = fork();
+	if (pid == -1)
+	{
+		minishell_error_msg("fork", errno);
+		exit(EXIT_FAILURE);
+	}
 	if (!pid)
 	{
 		if (!last_command)

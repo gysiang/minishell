@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:35:43 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/17 14:54:56 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/17 15:10:29 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ void	free_and_exit(t_shell *minishell, int return_value)
 char	*error_messages(int i)
 {
 	static const char	*error_msg[] = {
-		"minishell: %s: command not found",
-		"minishell: %s: No such file or directory",
-		"minishell: %s: Is a directory",
-		"minishell: %s: Permission denied"};
+		"command not found",
+		"No such file or directory",
+		"Is a directory",
+		"Permission denied"};
 
 	if (i >= 0 && i <= 3)
-		return (error_msg[i]);
+		return (ft_strdup(error_msg[i]));
 	else
 		return (NULL);
 }
@@ -68,13 +68,16 @@ int	minishell_error_msg(char *cmd, int error_no)
 {
 	char	*error;
 	int		return_no;
+	char	*error_msg;
 
 	error = ft_strdup("minishell: ");
 	error = ft_strjoin_free(&error, cmd);
 	error = ft_strjoin_free(&error, ": ");
 	if (error_no >= 0 && error_no <= 3)
 	{
-		error = ft_strjoin_free(&error, error_messages(error_no));
+		error_msg = error_messages(error_no);
+		error = ft_strjoin_free(&error, error_msg);
+		free(error_msg);
 	}
 	else
 	{

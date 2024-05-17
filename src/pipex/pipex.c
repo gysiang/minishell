@@ -94,10 +94,10 @@ void pipex(t_shell *minishell)
 		else if (curr->type == T_IDENTIFIER)
 		{
 			is_last_command = assign_last(curr);
-			if (curr->next && (check_redirection_type(curr->next)))
-			{
+			if (num_of_commands(minishell) == 1)
+				is_last_command = 0;
+			else if (curr->next && (check_redirection_type(curr->next)))
 				is_last_command = 1;
-			}
 			execute_command(i++, curr, minishell, is_last_command);
 		}
 		curr = curr->next;

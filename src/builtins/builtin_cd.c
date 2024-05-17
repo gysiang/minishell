@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/17 10:54:52 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/17 14:29:10 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static int	change_and_check_error(t_shell *minishell)
 		ft_putstr_fd("\n", 2);
 		return (1);
 	}
+	return (0);
 }
 
 int	minishell_cd(t_shell *minishell)

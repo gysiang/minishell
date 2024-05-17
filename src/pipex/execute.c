@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:01:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/17 14:22:59 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:24:48 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
 	int num_of_command;
 	int status;
 
-	//printf("executing %s\n", curr->token);
 	num_of_command = num_of_commands(minishell);
-	if (i <= num_of_command - 1)
+	if (i != num_of_command - 1)
 	{
 		if (pipe(pipe_fd) == -1)
 			exit(EXIT_FAILURE);
@@ -29,15 +28,15 @@ void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
 	pid = fork();
 	if (!pid)
 	{
+		if (!last_command)
+		{
+			dup2(pipe_fd[1], STDOUT_FILENO);
+			close(pipe_fd[0]);
+		}
 		if (handle_redirection(minishell, curr) != 1)
 		{
 			dup2(pipe_fd[0], STDIN_FILENO);
 			close(pipe_fd[1]);
-		}
-		else if (!last_command)
-		{
-			dup2(pipe_fd[1], STDOUT_FILENO);
-			close(pipe_fd[0]);
 		}
 		exec_cmd(curr->token, minishell);
 	}
@@ -51,6 +50,17 @@ void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
 		waitpid(pid, &status, 0);
 	}
 }
+/***
+void	execute_single_command(t_token *curr, t_shell *minishell)
+{
+	int pid;
+	int	pipe_fd[2];
+
+	pid = fork();
+
+	if (!pid)
+	{
+} **/
 
 void	exec_cmd(char *cmd, t_shell *minishell)
 {

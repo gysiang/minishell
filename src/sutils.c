@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sutils.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:35:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/03 14:13:47 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:26:17 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ft_wcount(char const *s, char c)
 {
-	int		n;
+	int	n;
 
 	n = 0;
 	while (*s && *s == c)
@@ -32,8 +32,8 @@ static int	ft_wcount(char const *s, char c)
 
 static void	handle_split(char ***ret, const char *s, int *i, int *n)
 {
-	int len;
-	char *end_quote;
+	int		len;
+	char	*end_quote;
 
 	len = 0;
 	while (s[*i] == ' ')
@@ -56,9 +56,9 @@ static void	handle_split(char ***ret, const char *s, int *i, int *n)
 
 char	**ft_dqsplit(char const *s, char c)
 {
-	int n;
-	char **ret;
-	int i;
+	int		n;
+	char	**ret;
+	int		i;
 
 	i = -1;
 	if (!s)
@@ -82,8 +82,8 @@ char	**ft_dqsplit(char const *s, char c)
 
 void	convert_cmd(char **av)
 {
-	int i;
-	int j;
+	int		i;
+	int		j;
 	char	*combined;
 	char	*tmp;
 

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 12:39:54 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/17 12:42:42 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/17 13:11:15 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@ int	is_valid_var_name(char *var_name)
 	return (1);
 }
 
-static void	not_valid_var(char **cmd, int index)
+static int	not_valid_var(char **cmd, int index)
 {
 	if (!is_valid_var_name(cmd[index]))
 	{
-		ft_putstr_fd("minishell: unset: '", 2);
-		ft_putstr_fd(cmd[index], 2);
-		ft_putstr_fd("': not a valid identifier\n", 2);
+		printf("minishell: unset: '%s': not a valid identifier\n", cmd[index]);
+		return (1);
 	}
+	return (0);
 }
 
 int	minishell_unset(t_shell *minishell)
@@ -68,8 +68,7 @@ int	minishell_unset(t_shell *minishell)
 	cmd = ft_split(token->token, ' ');
 	while (cmd[i])
 	{
-		not_valid_var(cmd, i);
-		if (is_valid_var_name(cmd[i]))
+		if (not_valid_var(cmd, i) == 0)
 		{
 			var_index = search_env(minishell, cmd[i]);
 			if (var_index >= 0)
@@ -80,5 +79,6 @@ int	minishell_unset(t_shell *minishell)
 		}
 		i++;
 	}
+	ft_split_free(&cmd);
 	return (0);
 }

@@ -45,6 +45,7 @@ SRC_FILES := main.c \
              tokenizer/tokenizer_utils.c \
              tokenizer/tokenizer.c \
 			 parser/join_tokens.c \
+             parser/parser_commands.c \
 			 parser/parser.c
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))

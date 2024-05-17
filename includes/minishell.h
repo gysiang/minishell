@@ -6,7 +6,8 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/17 16:04:54 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/17 16:26:33 by axlee            ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
@@ -150,6 +151,9 @@ void	exit_handler(int exit_code);
 void	pipex(t_shell *minishell);
 int	num_of_commands(t_shell *minishell);
 int	handle_redirection(t_shell *minishell, t_token *curr);
+void	handle_child_process(int pipe_fd[2], t_token *curr, t_shell *minishell,int last_command);
+void	handle_parent_process(int pipe_fd[2], int pid, int last_command);
+char **prepare_command(char *cmd, t_shell *minishell);
 void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command);
 
 

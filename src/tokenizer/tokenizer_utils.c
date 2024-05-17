@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:33:25 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/06 10:00:17 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/17 14:06:29 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,19 +61,4 @@ char	*ft_strcat(char *dest, const char *src)
 	}
 	*ptr = '\0';
 	return (dest);
-}
-
-// print the linked list that holds the tokens;
-void	print_tokenlst(t_token *token_lst)
-{
-	t_token	*curr;
-
-	curr = token_lst;
-	printf("entered into print_tokenlst\n");
-	while (curr != NULL)
-	{
-		printf("token: %s\n", curr->token);
-		printf("token type: %d\n", curr->type);
-		curr = curr->next;
-	}
 }

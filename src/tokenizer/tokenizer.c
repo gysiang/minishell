@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:16:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/06 10:01:02 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/17 14:06:14 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,39 +25,54 @@ size_t	ft_wordlen(const char *s, char c)
 	return (i);
 }
 
-int add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
+int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
 {
-    int word_len;
-    char *symbol;
+	int		word_len;
+	char	*symbol;
 
-    word_len = ft_wordlen(*line, ' ');
-    symbol = (char *)malloc(word_len + 1);
-    if (!symbol)
-        return (0);
-    ft_copy(symbol, *line, word_len);
-    token_add_back(token_lst, symbol, type);
-    free(symbol);
-    if (type == T_LEFT_SHIFT || type == T_RIGHT_SHIFT)
-        (*line) += 2;
-    else
-        (*line)++;
-    return (0);
+	word_len = ft_wordlen(*line, ' ');
+	symbol = (char *)malloc(word_len + 1);
+	if (!symbol)
+		return (0);
+	ft_copy(symbol, *line, word_len);
+	token_add_back(token_lst, symbol, type);
+	free(symbol);
+	if (type == T_LEFT_SHIFT || type == T_RIGHT_SHIFT)
+		(*line) += 2;
+	else
+		(*line)++;
+	return (0);
 }
 
-int add_command_lst(char **line, t_token **token_lst)
+int	add_command_lst(char **line, t_token **token_lst)
 {
-    int word_len;
-    char *cmd;
+	int		word_len;
+	char	*cmd;
 
-    word_len = ft_wordlen(*line, ' ');
-    cmd = (char *)malloc(word_len + 1);
-    if (!cmd)
-        return (0);
-    ft_copy(cmd, *line, word_len);
-    token_add_back(token_lst, cmd, T_IDENTIFIER);
-    free(cmd);
-    (*line) += word_len;
-    return (0);
+	word_len = ft_wordlen(*line, ' ');
+	cmd = (char *)malloc(word_len + 1);
+	if (!cmd)
+		return (0);
+	ft_copy(cmd, *line, word_len);
+	token_add_back(token_lst, cmd, T_IDENTIFIER);
+	free(cmd);
+	(*line) += word_len;
+	return (0);
+}
+
+// print the linked list that holds the tokens;
+void	print_tokenlst(t_token *token_lst)
+{
+	t_token	*curr;
+
+	curr = token_lst;
+	printf("entered into print_tokenlst\n");
+	while (curr != NULL)
+	{
+		printf("token: %s\n", curr->token);
+		printf("token type: %d\n", curr->type);
+		curr = curr->next;
+	}
 }
 
 t_token	*token_processor(char *line, t_shell *minishell)

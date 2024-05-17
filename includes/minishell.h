@@ -3,11 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/17 14:10:56 by gyong-si         ###   ########.fr       */
-/*                                                                            */
+/*   Updated: 2024/05/17 16:04:54 by axlee            ###   ########.fr       */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
@@ -102,6 +101,8 @@ void minishell_exit(t_shell *minishell);
 int minishell_export(t_shell *minishell);
 int	minishell_unset(t_shell *minishell);
 int		search_env(t_shell *minishell, char *var);
+void	print_vars(t_shell *minishell);
+char	*join_from_index(char **cmd, int start_index);
 void	minishell_env(t_shell *minishell);
 void    env_realloc(t_shell *minishell);
 void	minishell_pwd();
@@ -167,6 +168,14 @@ t_token *create_token(char *token, t_token_type type);
 t_token	*token_processor(char *line, t_shell *minishell);
 
 // parser
+void	parse_singlequote(t_token *t);
+void	parse_semicolon(t_token *token);
+void	handle_env_variable(t_token *curr, t_shell *minishell);
+void	parse_doublequote(t_token *t);
+void	parse_value(t_token *token_lst, t_shell *minishell);
+void	set_token_pointers(t_token *tokens);
+void	handle_cd_command(t_token **curr, t_shell *minishell);
+void	parse_token(t_token *token, t_shell *minishell);
 void	join_identifier_tokens(t_token *lst);
 t_token *token_parser(t_token *token_lst, t_shell *minishell);
 

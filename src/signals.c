@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:33:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/09 17:17:32 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:20:19 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 // Need to handle multiple minishell
 
 /*
@@ -32,38 +33,38 @@ minishell$ minishell$
 ^Cminishell$ */
 // Most likely did not disable the previous signal and running signal at once
 
-void sigint_handler(int signal)
+void	sigint_handler(int signal)
 {
-    if (signal == SIGINT)
-    {
-        if (write(STDOUT_FILENO, "\n", 1) == -1)
+	if (signal == SIGINT)
+	{
+		if (write(STDOUT_FILENO, "\n", 1) == -1)
 			exit(EXIT_FAILURE);
-        rl_on_new_line();
-        rl_replace_line("", 0);
-        rl_redisplay();
-    }
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
-void sigquit_handler(int signal)
+void	sigquit_handler(int signal)
 {
-    if (signal == SIGQUIT)
-    {
-        (void)signal;
-        rl_on_new_line();
-        rl_redisplay();
-    }
+	if (signal == SIGQUIT)
+	{
+		(void)signal;
+		rl_on_new_line();
+		rl_redisplay();
+	}
 }
 
-void setup_signal_handler(void)
+void	setup_signal_handler(void)
 {
-    if (signal(SIGINT, sigint_handler) == SIG_ERR)
-    {
-        ft_putstr_fd("signal", 2);
-        exit(1);
-    }
-    if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
-    {
-        ft_putstr_fd("signal", 2);
-        exit(1);
-    }
+	if (signal(SIGINT, sigint_handler) == SIG_ERR)
+	{
+		ft_putstr_fd("signal", 2);
+		exit(1);
+	}
+	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+	{
+		ft_putstr_fd("signal", 2);
+		exit(1);
+	}
 }

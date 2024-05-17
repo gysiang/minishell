@@ -6,11 +6,10 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/17 14:29:10 by gyong-si         ###   ########.fr       */
-/*                                                                            */
+/*   Updated: 2024/05/17 16:00:22 by axlee            ###   ########.fr       */
 /* ************************************************************************** */
 
-// OLDPWD IS NOT BEING UPDATED IN THE ENV
+// OLDPWD IS NOT BEING UPDATED IN THE ENV (STILL STUCKED AT MINISHELL/SRC)
 // HOWEVER CODE IS FUNCTIONING PROPERLY
 
 #include "minishell.h"

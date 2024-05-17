@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 19:36:29 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/06 09:59:28 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/17 14:05:06 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ t_token	*create_token(char *token, t_token_type type)
 void	token_add_back(t_token **head, char *token, t_token_type type)
 {
 	t_token	*new_node;
-	t_token *current;
+	t_token	*current;
 
 	new_node = create_token(token, type);
 	if (!new_node)
-		return;
+		return ;
 	if (*head == NULL)
 		*head = new_node;
 	else
@@ -53,22 +53,22 @@ void	token_add_back(t_token **head, char *token, t_token_type type)
 }
 
 // free the memory for linked list
-void free_tokenlst(t_token *head)
+void	free_tokenlst(t_token *head)
 {
-    t_token *current_node;
-    t_token *tmp;
+	t_token	*current_node;
+	t_token	*tmp;
 
-    current_node = head;
-    while (current_node != NULL)
-    {
-        tmp = current_node;
-        current_node = current_node->next;
-        if (tmp->token != NULL)
-        {
-            free(tmp->token);
-            tmp->token = NULL;
-        }
-        free(tmp);
-    }
-    head = NULL;
+	current_node = head;
+	while (current_node != NULL)
+	{
+		tmp = current_node;
+		current_node = current_node->next;
+		if (tmp->token != NULL)
+		{
+			free(tmp->token);
+			tmp->token = NULL;
+		}
+		free(tmp);
+	}
+	head = NULL;
 }

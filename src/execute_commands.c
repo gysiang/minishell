@@ -12,6 +12,18 @@
 
 #include "minishell.h"
 
+int	check_builtin(char *s)
+{
+	if (!ft_strncmp(s, "cd", 2) || !ft_strcmp(s, "echo")
+		|| !ft_strncmp(s, "env", 3) || !ft_strcmp(s, "pwd")
+		|| !ft_strncmp(s, "export", 6) || !ft_strncmp(s, "unset", 5)
+		|| !ft_strcmp(s, "history") || !ft_strcmp(s, "history -c"))
+	{
+		return (1);
+	}
+	return (0);
+}
+
 int	execute_builtin_1(t_shell *minishell)
 {
 	char	*s;

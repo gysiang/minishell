@@ -15,7 +15,6 @@
 t_shell	*init_shell(void)
 {
 	t_shell	*shell;
-	int		p_fd[2];
 
 	shell = (t_shell *)malloc(sizeof(t_shell));
 	if (!shell)
@@ -23,29 +22,33 @@ t_shell	*init_shell(void)
 		perror("malloc");
 		return (NULL);
 	}
-	if (pipe(p_fd) == -1)
-	{
-		free(shell);
-		return (NULL);
-	}
 	shell->env_size = BASE_ENV_SIZE;
 	shell->prompt = PROMPT;
 	shell->cmd_list = NULL;
-	shell->data_fd[0] = p_fd[0];
-	shell->data_fd[1] = p_fd[1];
 	shell->last_return = 0;
 	shell->end = false;
 	return (shell);
 }
 
-void	free_shell(t_shell *minishell)
+void free_shell(t_shell *minishell)
 {
 	if (minishell == NULL)
-		return ;
+		return;
 	if (minishell->cmd_list != NULL)
-	{
-		free_tokenlst(minishell->cmd_list);
 		minishell->cmd_list = NULL;
-	}
 	free(minishell);
+}
+
+void	initialize_shell(t_shell **minishell, char **envp)
+{
+	*minishell = init_shell();
+	init_env(*minishell, envp);
+	using_history();
+	setup_signal_handler();
+}
+
+void	cleanup(t_shell *g_shell)
+{
+	free_shell(g_shell);
+	clear_history();
 }

@@ -68,7 +68,7 @@ void	exec_cmd(char *cmd, t_shell *minishell)
 		exit(EXIT_FAILURE);
 	}
 	path = get_path(s_cmd[0], minishell);
-	if (execute_builtin(minishell))
+	if (execute_builtin_1(minishell) || execute_builtin_2(minishell) || other_cmds(minishell))
 	{
 		ft_free_tab(s_cmd);
 		return ;

@@ -98,7 +98,7 @@ void	exec_cmd(char *cmd, t_shell *minishell)
 		exit(EXIT_FAILURE);
 	}
 	s_cmd = prepare_command(cmd, minishell);
-	if (execute_builtin(minishell))
+	if (execute_builtin_1(minishell) || execute_builtin_2(minishell) || other_cmds(minishell))
 	{
 		ft_free_tab(s_cmd);
 		return ;

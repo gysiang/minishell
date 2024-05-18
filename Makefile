@@ -28,8 +28,10 @@ SRC_FILES := main.c \
                 env_manager.c \
                 error_msg.c \
                 history.c \
+                execute_commands.c \
                 redirect_heredoc.c \
                 redirect.c \
+                shell.c \
                 signals.c \
                 sutils.c \
                 builtins/builtin_cd.c \

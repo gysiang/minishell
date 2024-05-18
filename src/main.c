@@ -6,106 +6,11 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/12 20:54:50 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/18 09:13:16 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_shell	*init_shell(void)
-{
-	t_shell	*shell;
-	int		p_fd[2];
-
-	shell = (t_shell *)malloc(sizeof(t_shell));
-	if (!shell)
-	{
-		perror("malloc");
-		return (NULL);
-	}
-	if (pipe(p_fd) == -1)
-	{
-		free(shell);
-		return (NULL);
-	}
-	shell->env_size = BASE_ENV_SIZE;
-	shell->prompt = PROMPT;
-	shell->cmd_list = NULL;
-	shell->data_fd[0] = p_fd[0];
-	shell->data_fd[1] = p_fd[1];
-	shell->last_return = 0;
-	shell->end = false;
-	return (shell);
-}
-
-int execute_builtin(t_shell *minishell)
-{
-	char	*s;
-
-	s = minishell->cmd_list->token;
-	if (minishell->cmd_list == NULL)
-        return (0);
-	if (ft_strcmp(s, "history") == 0)
-	{
-		print_history();
-		return (1);
-	}
-	if (ft_strcmp(s, "history -c") == 0)
-	{
-		clear_history();
-		return (1);
-	}
-    if (ft_strncmp(s, "cd", 2) == 0)
-    {
-        minishell_cd(minishell);
-        return (1);
-    }
-	if (ft_strcmp(s, "echo") == 0)
-	{
-		minishell_echo(minishell);
-		return (1);
-	}
-	if (ft_strncmp(s, "env", 3) == 0)
-	{
-		minishell_env(minishell);
-		return (1);
-	}
-	if (ft_strcmp(s, "pwd") == 0)
-	{
-		minishell_pwd(minishell);
-		return (1);
-	}
-	if (ft_strncmp(s, "exit", 4) == 0)
-	{
-		minishell_exit(minishell);
-		return (1);
-	}
-	if (ft_strncmp(s, "export", 6) == 0)
-	{
-		printf("calling export\n");
-		minishell_export(minishell);
-		return (1);
-	}
-	if (ft_strncmp(s, "unset", 5) == 0)
-	{
-		printf("calling unset\n");
-		minishell_unset(minishell);
-		return (1);
-	}
-	return (0);
-}
-
-void free_shell(t_shell *minishell)
-{
-    if (minishell == NULL)
-        return;
-    if (minishell->cmd_list != NULL)
-    {
-        free_tokenlst(minishell->cmd_list);
-        minishell->cmd_list = NULL;
-    }
-    free(minishell);
-}
 
 int main(int argc, char **argv, char **envp)
 {
@@ -145,7 +50,7 @@ int main(int argc, char **argv, char **envp)
         free(line);
         if (token_lst != NULL)
             g_shell->cmd_list = token_lst;
-        if (execute_builtin(g_shell) == 1)
+        if (execute_builtin_1(g_shell) == 1 || execute_builtin_2(g_shell) == 1 || other_cmds(g_shell) == 1)
         {
             free_tokenlst(token_lst);
             token_lst = NULL;

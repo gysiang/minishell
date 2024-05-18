@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/17 16:00:22 by axlee            ###   ########.fr       */
+/*   Created: 2024/05/18 07:46:40 by axlee             #+#    #+#             */
+/*   Updated: 2024/05/18 07:46:46 by axlee            ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 // OLDPWD IS NOT BEING UPDATED IN THE ENV (STILL STUCKED AT MINISHELL/SRC)
 // HOWEVER CODE IS FUNCTIONING PROPERLY
+
+// cd src src is not displaying as cd: too many arguments
+// cd builtins/builtins: No such file or directory is not being displayed
 
 #include "minishell.h"
 

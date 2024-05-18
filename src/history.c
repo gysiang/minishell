@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:49:27 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/17 15:14:23 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/17 23:32:51 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	prompt(void)
 	usleep(5000);
 }
 
-void	print_history(void)
+int	print_history(void)
 {
 	HIST_ENTRY	**mylist;
 	int			i;
@@ -28,13 +28,14 @@ void	print_history(void)
 	if (!mylist)
 	{
 		printf("Error getting history list\n");
-		return ;
+		return (0);
 	}
 	while (mylist[i] != NULL)
 	{
 		printf("%d: %s\n", i + 1, mylist[i]->line);
 		i++;
 	}
+	return (0);
 }
 
 int	hist_feature(const char *s)

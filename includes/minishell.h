@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/17 16:26:33 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/18 09:19:18 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # include <stdlib.h>
 # include <limits.h>
 
-# define PROMPT "minishell$ "
+# define PROMPT "\033[1;32mminishell$ \033[0m"
 # define BASE_ENV_SIZE 64
 # define TRUE			0
 # define FALSE			1
@@ -104,7 +104,7 @@ int	minishell_unset(t_shell *minishell);
 int		search_env(t_shell *minishell, char *var);
 void	print_vars(t_shell *minishell);
 char	*join_from_index(char **cmd, int start_index);
-void	minishell_env(t_shell *minishell);
+int	minishell_env(t_shell *minishell);
 void    env_realloc(t_shell *minishell);
 void	minishell_pwd();
 
@@ -133,7 +133,7 @@ void 	sigint_handler(int signal);
 void 	setup_signal_handler(void);
 
 //history
-void	print_history();
+int	print_history(void);
 void	prompt();
 int	hist_feature(const char *s);
 
@@ -189,5 +189,11 @@ void	free_shell(t_shell *minishell);
 int execute_builtin_1(t_shell *minishell);
 int execute_builtin_2(t_shell *minishell);
 int other_cmds(t_shell *minishell);
+int	check_builtin(char *s);
+char	*read_input_line(t_shell *g_shell);
+void	initialize_shell(t_shell **minishell, char **envp);
+void	process_command_line(t_shell *minishell, char *line);
+void	main_loop(t_shell *g_shell);
+void	cleanup(t_shell *g_shell);
 
 #endif

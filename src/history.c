@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:49:27 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/17 18:58:02 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/17 23:32:51 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	print_history(void)
 	if (!mylist)
 	{
 		printf("Error getting history list\n");
-		return ;
+		return (0);
 	}
 	while (mylist[i] != NULL)
 	{

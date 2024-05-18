@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 11:06:17 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/17 18:49:37 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/17 23:33:12 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	minishell_env(t_shell *minishell)
 
 	i = 0;
 	if (!minishell->env || !minishell->env[0])
-		return ;
+		return (0);
 	env_len(minishell);
 	while (minishell->env[i])
 	{
@@ -26,5 +26,5 @@ int	minishell_env(t_shell *minishell)
 		printf("%s\n", minishell->env[i]);
 		i++;
 	}
-	return (0)
+	return (0);
 }

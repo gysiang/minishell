@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/17 18:58:19 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/18 08:36:29 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,10 @@ t_shell	*init_shell(void);
 void	free_shell(t_shell *minishell);
 int execute_builtin(t_shell *minishell);
 int	check_builtin(char *s);
-int	handle_execution(t_shell *minishell)
+char	*read_input_line(t_shell *g_shell);
+void	initialize_shell(t_shell **minishell, char **envp);
+void	process_command_line(t_shell *minishell, char *line);
+void	main_loop(t_shell *g_shell);
+void	cleanup(t_shell *g_shell);
 
 #endif

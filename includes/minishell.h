@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/18 08:36:29 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/18 09:19:18 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # include <stdlib.h>
 # include <limits.h>
 
-# define PROMPT "minishell$ "
+# define PROMPT "\033[1;32mminishell$ \033[0m"
 # define BASE_ENV_SIZE 64
 # define TRUE			0
 # define FALSE			1

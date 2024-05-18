@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/18 08:48:08 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/18 09:13:25 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void free_shell(t_shell *minishell)
 		return;
 	if (minishell->cmd_list != NULL)
 	{
-		free_tokenlst(minishell->cmd_list);
+		//free_tokenlst(minishell->cmd_list);
 		minishell->cmd_list = NULL;
 	}
 	free(minishell);

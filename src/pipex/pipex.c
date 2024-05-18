@@ -1,18 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/17 16:16:32 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/17 16:18:05 by axlee            ###   ########.fr       */
+/*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
+/*   Updated: 2024/05/17 16:27:55 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// WRITE A FUNCTION THAT IGNORES THE PARENT PROCESS SIGNAL WHEN WE FORK IT,
-//BY RESETTING THE CHILD PROCESS SIGNAL TO 0 AND IGNORE PARENT. AFTER FINISH,
-// ENABLE PARENT PROCESS SIGNAL AGAIN
 
 #include "minishell.h"
 

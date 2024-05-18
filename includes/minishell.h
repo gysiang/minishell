@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/18 09:19:18 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:26:33 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void 	setup_signal_handler(void);
 
 //history
 int	print_history(void);
-void	prompt();
+void	prompt(void);
 int	hist_feature(const char *s);
 
 void    delete_command(void *elem);
@@ -142,20 +142,23 @@ void    free_and_exit(t_shell *minishell, int return_value);
 char *ft_strjoin_free(char **s1, char const *s2);
 int minishell_error_msg(char *cmd, int error_no);
 
-//pipex
-int		open_file(const char *file, int mode);
-char	*get_path(char *cmd, t_shell *minishell);
+//pipex(execute)
+void	handle_child_process(int pipe_fd[2], t_token *curr, t_shell *minishell, int last_command);
+void	handle_parent_process(int pipe_fd[2], int pid, int last_command);
+void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command);
+char	**prepare_command(char *cmd, t_shell *minishell);
 void	exec_cmd(char *cmd, t_shell *minishell);
-void	ft_free_tab(char **tab);
+
+//pipex(utils)
 void	exit_handler(int exit_code);
-void	pipex(t_shell *minishell);
+int	open_file(const char *file, int mode);
+void	ft_free_tab(char **tab);
+char	*get_path(char *cmd, t_shell *minishell);
+
+//pipex
 int	num_of_commands(t_shell *minishell);
 int	handle_redirection(t_shell *minishell, t_token *curr);
-void	handle_child_process(int pipe_fd[2], t_token *curr, t_shell *minishell,int last_command);
-void	handle_parent_process(int pipe_fd[2], int pid, int last_command);
-char **prepare_command(char *cmd, t_shell *minishell);
-void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command);
-
+void	pipex(t_shell *minishell);
 
 // tokenizer
 void	token_add_back(t_token **head, char *token, t_token_type type);
@@ -183,17 +186,21 @@ void	parse_token(t_token *token, t_shell *minishell);
 void	join_identifier_tokens(t_token *lst);
 t_token *token_parser(t_token *token_lst, t_shell *minishell);
 
-//main.c
-t_shell	*init_shell(void);
-void	free_shell(t_shell *minishell);
-int execute_builtin_1(t_shell *minishell);
-int execute_builtin_2(t_shell *minishell);
-int other_cmds(t_shell *minishell);
+//execute_commands.c
 int	check_builtin(char *s);
-char	*read_input_line(t_shell *g_shell);
+int	execute_builtin_1(t_shell *minishell);
+int	execute_builtin_2(t_shell *minishell);
+int	other_cmds(t_shell *minishell);
+
+//shell.c
+t_shell	*init_shell(void);
+void free_shell(t_shell *minishell);
 void	initialize_shell(t_shell **minishell, char **envp);
+void	cleanup(t_shell *g_shell);
+
+//main.c
+char	*read_input_line(t_shell *g_shell);
 void	process_command_line(t_shell *minishell, char *line);
 void	main_loop(t_shell *g_shell);
-void	cleanup(t_shell *g_shell);
 
 #endif

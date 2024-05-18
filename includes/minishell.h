@@ -186,7 +186,9 @@ t_token *token_parser(t_token *token_lst, t_shell *minishell);
 //main.c
 t_shell	*init_shell(void);
 void	free_shell(t_shell *minishell);
-int execute_builtin(t_shell *minishell);
+int execute_builtin_1(t_shell *minishell);
+int execute_builtin_2(t_shell *minishell);
+int other_cmds(t_shell *minishell);
 int	check_builtin(char *s);
 char	*read_input_line(t_shell *g_shell);
 void	initialize_shell(t_shell **minishell, char **envp);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:01:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/20 13:21:49 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/20 14:40:17 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ void exec_cmd(char *cmd, t_shell *minishell) {
         ft_free_tab(s_cmd);
         return;
     }
-
     path = get_path(s_cmd[0], minishell);
     if (!path) {
         return_code = minishell_error_msg(s_cmd[0], 42); // 0 corresponds to "command not found"

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:35:43 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/17 15:10:29 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/20 13:15:07 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,44 +50,45 @@ void	free_and_exit(t_shell *minishell, int return_value)
 	exit(return_value);
 }
 
-char	*error_messages(int i)
-{
-	static const char	*error_msg[] = {
-		"command not found",
-		"No such file or directory",
-		"Is a directory",
-		"Permission denied"};
+int minishell_error_msg(char *cmd, int error_no) {
+    char *error;
+    int return_no;
+    char *error_msg;
 
-	if (i >= 0 && i <= 3)
-		return (ft_strdup(error_msg[i]));
-	else
-		return (NULL);
-}
+    error = ft_strdup("minishell: ");
+    error = ft_strjoin_free(&error, cmd);
+    error = ft_strjoin_free(&error, ": ");
+    
+    // Specific error messages
+    if (error_no == 42) {
+        error_msg = ft_strdup("command not found");
+    } else if (error_no == EISDIR) {
+        error_msg = ft_strdup("Is a directory");
+    } else if (error_no == ENOENT) {
+        error_msg = ft_strdup("No such file or directory");
+    } else if (error_no == EACCES) {
+        error_msg = ft_strdup("Permission denied");
+    } else {
+        error_msg = ft_strdup(strerror(error_no));
+    }
+    
+    error = ft_strjoin_free(&error, error_msg);
+    free(error_msg);
+    ft_putendl_fd(error, 2);
+    free(error);
 
-int	minishell_error_msg(char *cmd, int error_no)
-{
-	char	*error;
-	int		return_no;
-	char	*error_msg;
+    // Map specific errors to their corresponding exit codes
+    if (error_no == 42) {  // "command not found"
+        return_no = 127;
+    } else if (error_no == ENOENT) {  // "No such file or directory"
+        return_no = 127;
+    } else if (error_no == EISDIR) {  // "Is a directory"
+        return_no = 126;
+    } else if (error_no == EACCES) {  // "Permission denied"
+        return_no = 126;
+    } else {
+        return_no = 1;  // General error
+    }
 
-	error = ft_strdup("minishell: ");
-	error = ft_strjoin_free(&error, cmd);
-	error = ft_strjoin_free(&error, ": ");
-	if (error_no >= 0 && error_no <= 3)
-	{
-		error_msg = error_messages(error_no);
-		error = ft_strjoin_free(&error, error_msg);
-		free(error_msg);
-	}
-	else
-	{
-		error = ft_strjoin_free(&error, strerror(error_no));
-	}
-	ft_putendl_fd(ft_itoa(error_no), 2);
-	free(error);
-	if (error_no == 0 || error_no == -1)
-		return_no = 127;
-	else
-		return_no = 126;
-	return (return_no);
+    return return_no;
 }

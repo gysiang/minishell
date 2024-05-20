@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/20 11:07:40 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/20 14:01:01 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 char	*read_input_line(t_shell *g_shell)
 {
-	char *line;
+	char	*line;
+	char	*trimmed_line;
 
 	line = NULL;
+	rl_bind_key('\t', rl_insert);
 	while (line == NULL)
 	{
 		line = readline(PROMPT);
@@ -26,7 +28,10 @@ char	*read_input_line(t_shell *g_shell)
 			g_shell->end = 1;
 			break;
 		}
-		if (*line == '\0')
+		trimmed_line = line;
+		while (*trimmed_line == ' ' || *trimmed_line == '\t')
+			trimmed_line++;
+		if (*trimmed_line == '\0')
 		{
 			free(line);
 			line = NULL;

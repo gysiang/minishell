@@ -6,13 +6,64 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/17 11:26:43 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/20 11:19:03 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	execute_echo(t_shell *minishell)
+static void execute_echo(t_shell *minishell)
+{
+    t_token *token;
+
+    token = minishell->cmd_list->next;
+    printf("Entered execute_echo\n");  // Debug print
+    while (token)
+    {
+        if (token->token != NULL)
+        {
+            printf("Token: %s\n", token->token);  // Debug print
+            printf("%s", token->token);
+            if (token->next)
+                printf(" ");
+        }
+        else
+        {
+            printf("Token is null\n");  // Debug print
+            if (token->next)
+                printf(" ");
+        }
+        token = token->next;
+    }
+    printf("\nExited execute_echo\n");  // Debug print
+}
+
+int minishell_echo(t_shell *minishell)
+{
+    t_token *token;
+    int newline = 1;  // Initialize newline to 1
+
+    printf("Entered minishell_echo\n");  // Debug print
+    if (minishell->cmd_list == NULL)
+    {
+        printf("Command list is null\n");  // Debug print
+        printf("\n");
+        return (0);
+    }
+    token = minishell->cmd_list->next;
+    if (token && ft_strcmp(token->token, "-n") == 0)
+    {
+        newline = 0;
+        token = token->next;
+    }
+    execute_echo(minishell);
+    if (newline)
+        printf("\n");
+    printf("Exited minishell_echo\n");  // Debug print
+    return (0);
+}
+
+/*static void	execute_echo(t_shell *minishell)
 {
 	t_token	*token;
 
@@ -55,7 +106,7 @@ int	minishell_echo(t_shell *minishell)
 	if (newline)
 		printf("\n");
 	return (0);
-}
+}*/
 
 // Test cases that failed
 // echo "hi" | cat | cat | cat | cat | cat | cat | cat

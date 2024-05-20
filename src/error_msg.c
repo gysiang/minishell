@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:35:43 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/20 13:04:47 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/20 13:15:07 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int minishell_error_msg(char *cmd, int error_no) {
     error = ft_strjoin_free(&error, ": ");
     
     // Specific error messages
-    if (error_no == 1) {
+    if (error_no == 42) {
         error_msg = ft_strdup("command not found");
     } else if (error_no == EISDIR) {
         error_msg = ft_strdup("Is a directory");
@@ -78,7 +78,7 @@ int minishell_error_msg(char *cmd, int error_no) {
     free(error);
 
     // Map specific errors to their corresponding exit codes
-    if (error_no == 1) {  // "command not found"
+    if (error_no == 42) {  // "command not found"
         return_no = 127;
     } else if (error_no == ENOENT) {  // "No such file or directory"
         return_no = 127;

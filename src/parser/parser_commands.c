@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:54:35 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/20 13:03:26 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/20 13:18:19 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	parse_value(t_token *token_lst, t_shell *minishell)
 		return ;
 	if (ft_strcmp(token, "$") == 0)
 		return ;
-	else if (ft_strcmp(token, "$?") == 0)
+	else if (ft_strncmp(token, "$?", 2) == 0)
 	{
 		exit_status = minishell->last_return ;
 		exit_status_str = ft_itoa(exit_status);

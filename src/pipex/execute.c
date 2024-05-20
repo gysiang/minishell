@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:01:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/20 12:53:09 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/20 13:21:49 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void exec_cmd(char *cmd, t_shell *minishell) {
     }
 
     // Handle the special case for `$?`
-    if (ft_strcmp(cmd, "$?") == 0) {
+    if (ft_strncmp(cmd, "$?", 2) == 0) {
         printf("%d\n", minishell->last_return); // Print last return status
         minishell->last_return = 0; // Reset last return status
         return;
@@ -94,7 +94,7 @@ void exec_cmd(char *cmd, t_shell *minishell) {
 
     path = get_path(s_cmd[0], minishell);
     if (!path) {
-        return_code = minishell_error_msg(s_cmd[0], 1); // 0 corresponds to "command not found"
+        return_code = minishell_error_msg(s_cmd[0], 42); // 0 corresponds to "command not found"
         minishell->last_return = return_code;
         ft_free_tab(s_cmd);
         return;
@@ -104,7 +104,7 @@ void exec_cmd(char *cmd, t_shell *minishell) {
         return_code = minishell_error_msg(s_cmd[0], errno); // Use errno to get the specific error
         minishell->last_return = return_code;
         ft_free_tab(s_cmd);
-        return;
+        exit(return_code);
     }
 
     ft_free_tab(s_cmd);

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:35:43 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/20 13:15:07 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/21 13:48:47 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void	free_and_exit(t_shell *minishell, int return_value)
 	exit(return_value);
 }
 
-int minishell_error_msg(char *cmd, int error_no) {
+int minishell_error_msg(char *cmd, int error_no)
+{
     char *error;
     int return_no;
     char *error_msg;
@@ -60,9 +61,11 @@ int minishell_error_msg(char *cmd, int error_no) {
     error = ft_strjoin_free(&error, ": ");
     
     // Specific error messages
-    if (error_no == 42) {
+    if (error_no == 42)
         error_msg = ft_strdup("command not found");
-    } else if (error_no == EISDIR) {
+    else if (error_no == 43)
+        error_msg = ft_strdup("too many arguements");
+    else if (error_no == EISDIR) {
         error_msg = ft_strdup("Is a directory");
     } else if (error_no == ENOENT) {
         error_msg = ft_strdup("No such file or directory");

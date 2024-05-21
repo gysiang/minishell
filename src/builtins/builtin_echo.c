@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/20 11:19:03 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/21 13:49:17 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int minishell_echo(t_shell *minishell)
     if (minishell->cmd_list == NULL)
     {
         printf("Command list is null\n");  // Debug print
-        printf("\n");
         return (0);
     }
     token = minishell->cmd_list->next;

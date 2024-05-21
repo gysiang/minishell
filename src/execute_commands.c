@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/18 09:21:09 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/21 13:49:08 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,58 @@ int	execute_builtin_1(t_shell *minishell)
 	return (0);
 }
 
-int	execute_builtin_2(t_shell *minishell)
+int execute_builtin_2(t_shell *minishell)
+{
+    int count = 0;
+    bool is_word = false;
+    t_token *cmd_list = minishell->cmd_list;
+    t_token *token = cmd_list;
+
+    // Count the number of tokens
+    while (token != NULL)
+    {
+        char *current_token = token->token;
+        while (*current_token != '\0')
+        {
+            if (*current_token != ' ')
+            {
+                if (!is_word)
+                {
+                    count++;
+                    is_word = true; // Set flag as a new word is encountered
+                }
+            }
+            else
+                is_word = false; // Set flag as the current word ends
+            current_token++;
+        }
+        token = token->next;
+    }
+    token = cmd_list; // Reset token to the beginning
+    if (ft_strncmp(token->token, "exit", 4) == 0)
+    {
+        if (count > 2) // Check if there is more than one command line (exit + argument)
+        {
+            minishell_error_msg("exit", 43); // Display "too many commands" error message
+            return 1;
+        }
+        minishell_exit(minishell);
+        return 1;
+    }
+    else if (ft_strcmp(token->token, "export") == 0)
+    {
+        minishell_export(minishell);
+        return 1;
+    }
+    else if (ft_strcmp(token->token, "unset") == 0)
+    {
+        minishell_unset(minishell);
+        return 1;
+    }
+    return 0;
+}
+
+/*int	execute_builtin_2(t_shell *minishell)
 {
 	char	*s;
 
@@ -63,18 +114,16 @@ int	execute_builtin_2(t_shell *minishell)
 	}
 	if (ft_strncmp(s, "export", 6) == 0)
 	{
-		printf("calling export\n");
 		minishell_export(minishell);
 		return (1);
 	}
 	if (ft_strncmp(s, "unset", 5) == 0)
 	{
-		printf("calling unset\n");
 		minishell_unset(minishell);
 		return (1);
 	}
 	return (0);
-}
+}*/
 
 int	other_cmds(t_shell *minishell)
 {

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/20 12:59:11 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/21 16:33:22 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int minishell_error_msg(char *cmd, int error_no);
 
 // builtins
 int minishell_cd(t_shell *minishell);
-int	minishell_echo(t_shell *minishell);
+void	minishell_echo(t_shell *minishell);
 void minishell_exit(t_shell *minishell);
 int minishell_export(t_shell *minishell);
 int	minishell_unset(t_shell *minishell);

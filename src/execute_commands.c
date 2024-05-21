@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/21 13:49:08 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/21 16:32:54 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	execute_builtin_1(t_shell *minishell)
 		minishell_cd(minishell);
 		return (1);
 	}
-	if (ft_strcmp(s, "echo") == 0)
+	if (ft_strncmp(s, "echo", 4) == 0)
 	{
 		minishell_echo(minishell);
 		return (1);

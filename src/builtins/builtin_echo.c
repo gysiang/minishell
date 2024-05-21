@@ -3,45 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/21 16:33:00 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/21 17:52:15 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void	skip_echo(char **str, int *newline)
+{
+	if (ft_strncmp(*str, "echo -n", 7) == 0)
+	{
+		*newline = 0;
+		*str += 8;
+	}
+	else if (ft_strncmp(*str, "echo ", 5) == 0)
+	{
+		*str += 5;
+	}
+}
+
 void minishell_echo(t_shell *minishell)
 {
-    t_token *token;
-    int newline;
+	int	newline;
+	char	*str;
 
-    newline = 1;
-    if (minishell->cmd_list == NULL)
-        return;
-    token = minishell->cmd_list;
-    if (token->next && strcmp(token->token, "echo") == 0)
-    {
-        token = token->next;
-        if (token->next && strcmp(token->token, "-n") == 0)
-        {
-            newline = 0;
-            token = token->next;
-        }
-    }
-    while (token)
-    {
-        if (token->token != NULL)
-        {
-            printf("%s", token->token);
-            if (token->next)
-                printf(" ");
-        }
-        token = token->next;
-    }
-    if (newline)
-        printf("\n");
+	newline = 1;
+	str = minishell->cmd_list->token;
+	if (minishell->cmd_list == NULL)
+		return;
+	skip_echo(&str, &newline);
+	if (str)
+		printf("%s", str);
+	if (newline)
+		printf("\n");
 }
 
 /*void minishell_echo(t_shell *minishell)

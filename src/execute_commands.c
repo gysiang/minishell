@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/21 16:32:54 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/21 17:27:15 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	execute_builtin_1(t_shell *minishell)
 	}
 	if (ft_strncmp(s, "echo", 4) == 0)
 	{
+		printf("entered into echo\n");
 		minishell_echo(minishell);
 		return (1);
 	}

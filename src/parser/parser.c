@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/20 13:03:23 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/21 17:28:07 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_token	*token_parser(t_token *token_lst, t_shell *minishell)
 		parse_token(curr, minishell);
 		curr = curr->next;
 	}
-	join_identifier_tokens(token_lst);
 	set_token_pointers(token_lst);
+	join_identifier_tokens(token_lst);
 	return (token_lst);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:16:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/21 13:49:45 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/21 15:27:24 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	print_tokenlst(t_token *token_lst)
 t_token	*token_processor(char *line, t_shell *minishell)
 {
 	t_token	*token_lst;
-
+	(void)minishell;
 	token_lst = NULL;
 	while (*line != '\0')
 	{

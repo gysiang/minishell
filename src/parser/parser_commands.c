@@ -6,13 +6,41 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:54:35 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/20 13:18:19 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/21 20:20:38 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parse_singlequote(t_token *t)
+void parse_singlequote(t_token *t)
+{
+    char *result;
+    char *str;
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+    str = t->token;
+    result = (char *)malloc(ft_strlen(str) + 1);
+    if (!result)
+        return;
+    while (str[i] != '\0')
+    {
+        if (str[i] == '\"' || str[i] == '\'')
+        {
+            i++;
+            continue;
+        }
+        result[j++] = str[i++];
+    }
+    result[j] = '\0';
+    free(t->token);
+    t->token = result;
+}
+
+
+/*void	parse_singlequote(t_token *t)
 {
 	char	*result;
 	char	*str;
@@ -35,8 +63,61 @@ void	parse_singlequote(t_token *t)
 	free(t->token);
 	t->token = result;
 	return ;
+}*/
+
+void parse_doublequote(t_token *t)
+{
+    char *result;
+    char *str;
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+    str = t->token;
+    result = (char *)malloc(ft_strlen(str) + 1);
+    if (!result)
+        return;
+    while (str[i] != '\0')
+    {
+        if (str[i] == '\"')
+        {
+            i++;
+            continue;
+        }
+        result[j++] = str[i++];
+    }
+    result[j] = '\0';
+    free(t->token);
+    t->token = result;
 }
 
+
+
+/*void	parse_doublequote(t_token *t)
+{
+	char	*result;
+	char	*str;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	str = t->token;
+	result = (char *)malloc(ft_strlen(str) + 1);
+	if (!result)
+		return ;
+	while (str[i] != '\0')
+	{
+		if (str[i] != '\"')
+			result[j++] = str[i];
+		i++;
+	}
+	result[j] = '\0';
+	free(t->token);
+	t->token = result;
+	return ;
+}*/
 void	parse_semicolon(t_token *token)
 {
 	t_token	*curr;
@@ -94,27 +175,3 @@ void	parse_value(t_token *token_lst, t_shell *minishell)
 		handle_env_variable(curr, minishell);
 }
 
-void	parse_doublequote(t_token *t)
-{
-	char	*result;
-	char	*str;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	str = t->token;
-	result = (char *)malloc(ft_strlen(str) + 1);
-	if (!result)
-		return ;
-	while (str[i] != '\0')
-	{
-		if (str[i] != '\"')
-			result[j++] = str[i];
-		i++;
-	}
-	result[j] = '\0';
-	free(t->token);
-	t->token = result;
-	return ;
-}

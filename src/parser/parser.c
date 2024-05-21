@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/21 17:28:07 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:37:48 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,17 @@ void	handle_cd_command(t_token **curr, t_shell *minishell)
 
 void	parse_token(t_token *token, t_shell *minishell)
 {
-	if (ft_strchr(token->token, '\''))
+	if (ft_strchr(token->token, '\"'))
+		parse_doublequote(token);
+	else if (ft_strchr(token->token, '\''))
 		parse_singlequote(token);
 	else if (ft_strchr(token->token, ';'))
 		parse_semicolon(token);
 	else if (ft_strchr(token->token, '$'))
 	{
-		parse_doublequote(token);
+		//parse_doublequote(token);
 		parse_value(token, minishell);
 	}
-	else if (ft_strchr(token->token, '\"'))
-		parse_doublequote(token);
 	else if (strcmp(token->token, "cd") == 0)
 		handle_cd_command(&token, minishell);
 }

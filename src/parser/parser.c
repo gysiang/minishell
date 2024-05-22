@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/21 19:37:48 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/23 02:13:44 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	set_token_pointers(t_token *tokens)
 		prev_token->next = NULL;
 }
 
-void	handle_cd_command(t_token **curr, t_shell *minishell)
+/*void	handle_cd_command(t_token **curr, t_shell *minishell)
 {
 	t_token	*next_token;
 	char	*dir;
@@ -55,7 +55,7 @@ void	handle_cd_command(t_token **curr, t_shell *minishell)
 		minishell->last_return = 1;
 		*curr = (*curr)->next;
 	}
-}
+}*/
 
 void	parse_token(t_token *token, t_shell *minishell)
 {
@@ -70,8 +70,6 @@ void	parse_token(t_token *token, t_shell *minishell)
 		//parse_doublequote(token);
 		parse_value(token, minishell);
 	}
-	else if (strcmp(token->token, "cd") == 0)
-		handle_cd_command(&token, minishell);
 }
 
 t_token	*token_parser(t_token *token_lst, t_shell *minishell)

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:16:40 by gyong-si          #+#    #+#             */
 /*   Updated: 2024/05/23 02:08:53 by axlee            ###   ########.fr       */
@@ -67,7 +67,6 @@ void	print_tokenlst(t_token *token_lst)
 	t_token	*curr;
 
 	curr = token_lst;
-	printf("entered into print_tokenlst\n");
 	while (curr != NULL)
 	{
 		printf("token: %s\n", curr->token);
@@ -101,7 +100,6 @@ t_token	*token_processor(char *line, t_shell *minishell)
 			while (ft_iswhitespace(line)) // Skip whitespace after a command
 				line++;
 		}
-	}
-	token_lst = token_parser(token_lst, minishell);
+	}	token_lst = token_parser(token_lst, minishell);
 	return (token_lst);
 }

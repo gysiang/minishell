@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/21 17:53:29 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/23 17:21:05 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,43 +87,18 @@ int execute_builtin_2(t_shell *minishell)
         minishell_exit(minishell);
         return 1;
     }
-    else if (ft_strcmp(token->token, "export") == 0)
+    else if (ft_strncmp(token->token, "export", 6) == 0)
     {
         minishell_export(minishell);
         return 1;
     }
-    else if (ft_strcmp(token->token, "unset") == 0)
+    else if (ft_strncmp(token->token, "unset", 5) == 0)
     {
         minishell_unset(minishell);
         return 1;
     }
     return 0;
 }
-
-/*int	execute_builtin_2(t_shell *minishell)
-{
-	char	*s;
-
-	s = minishell->cmd_list->token;
-	if (minishell->cmd_list == NULL)
-		return (0);
-	if (ft_strncmp(s, "exit", 4) == 0)
-	{
-		minishell_exit(minishell);
-		return (1);
-	}
-	if (ft_strncmp(s, "export", 6) == 0)
-	{
-		minishell_export(minishell);
-		return (1);
-	}
-	if (ft_strncmp(s, "unset", 5) == 0)
-	{
-		minishell_unset(minishell);
-		return (1);
-	}
-	return (0);
-}*/
 
 int	other_cmds(t_shell *minishell)
 {

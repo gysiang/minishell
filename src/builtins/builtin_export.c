@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 22:45:07 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/17 16:01:27 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/23 17:08:13 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static int	save_var(t_shell *minishell, char *content)
 	char	*var_name;
 	int		var_index;
 
-	printf("inside savevar\n");
 	if (!is_valid_identifier(content))
 	{
 		ft_putstr_fd("minishell: export: '", 2);
@@ -49,32 +48,36 @@ static int	save_var(t_shell *minishell, char *content)
 	if (var_index == -1)
 		var_index = env_len(minishell);
 	if (var_index == minishell->env_size)
-	{
-		printf("Environment size reached. Reallocating...\n");
 		env_realloc(minishell);
-	}
 	minishell->env[var_index] = ft_strdup(content);
 	return (0);
 }
 
-int	minishell_export(t_shell *minishell)
+int minishell_export(t_shell *minishell)
 {
-	t_token	*token;
-	char	**cmd;
-	char	*joined;
+	t_token	*tokens;
+	t_token	*current;
+	int	result;
 
-	token = minishell->cmd_list;
-	if (!token)
-	{
-		print_vars(minishell);
-		return (0);
-	}
-	cmd = ft_split(token->token, ' ');
-	joined = join_from_index(cmd, 1);
-	if (joined)
-	{
-		save_var(minishell, joined);
-	}
-	free(joined);
-	return (0);
+    if (!minishell || !minishell->cmd_list)
+    {
+        printf("No command list provided.\n");
+        return (0);
+    }
+    tokens = minishell->cmd_list;
+    current = tokens->next;  // Start with the next token after 'export'
+    if (!current)
+    {
+        print_vars(minishell);
+        return (0);
+    }
+    result = 0;
+    while (current)
+    {
+        result = save_var(minishell, current->token);
+        if (result != 0)
+            return result;  // Return error code if save_var fails
+        current = current->next;
+    }
+    return result;  // Return the last result or 0 if all variables processed successfully
 }

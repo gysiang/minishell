@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:10:31 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/17 12:29:18 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/23 17:22:29 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ char	*string_concat(char **strings, char *joined, int start_index)
 	i = start_index;
 	while (strings[i])
 	{
-		new_len = ft_strlen(joined) + ft_strlen(strings[i]);
+		new_len = ft_strlen(joined) + ft_strlen(strings[i]) + 1;  // +1 for space or null terminator
 		if (i > start_index)
-			new_len += 1;
+			new_len++;  // Additional space for separation
 		temp = (char *)realloc(joined, new_len);
 		if (!temp)
 		{
@@ -67,9 +67,9 @@ char	*string_concat(char **strings, char *joined, int start_index)
 			return (NULL);
 		}
 		joined = temp;
-		ft_strcat(joined, strings[i]);
+		strcat(joined, strings[i]);
 		if (strings[i + 1])
-			ft_strcat(joined, " ");
+			strcat(joined, " ");
 		i++;
 	}
 	return (joined);
@@ -79,9 +79,10 @@ char	*join_from_index(char **cmd, int start_index)
 {
 	char	*joined;
 
-	joined = (char *)malloc(1);
+	joined = (char *)malloc(1);  // Initially just for the null terminator
 	if (!joined)
 		return (NULL);
 	joined[0] = '\0';
-	return (string_concat(cmd, joined, start_index));
+	char *result = string_concat(cmd, joined, start_index);
+	return result;
 }

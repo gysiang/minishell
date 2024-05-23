@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 15:31:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/23 02:11:48 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/23 14:45:12 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ static void	merge_identifier_tokens(t_token *curr)
 static bool is_command(char *token)
 {
     // Implement a check to see if the token is a known command
-    static const char *commands[] = {"cd", "ls", "echo", "exit", NULL};
+    static const char *commands[] = {
+        "cd", "ls", "echo", "exit", "unset", "pwd", "env", "export", NULL
+    };
     for (int i = 0; commands[i]; i++)
     {
         if (strcmp(token, commands[i]) == 0)

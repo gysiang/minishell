@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/21 17:52:15 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:02:49 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ static void	skip_echo(char **str, int *newline)
 		*str += 8;
 	}
 	else if (ft_strncmp(*str, "echo ", 5) == 0)
-	{
 		*str += 5;
-	}
 }
 
 void minishell_echo(t_shell *minishell)

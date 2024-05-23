@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 12:16:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/21 15:27:24 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/23 02:08:53 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,21 @@ int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
 	return (0);
 }
 
-int	add_command_lst(char **line, t_token **token_lst)
+int add_command_lst(char **line, t_token **token_lst)
 {
-	int		word_len;
-	char	*cmd;
-
-	word_len = ft_wordlen(*line, ' ');
-	cmd = (char *)malloc(word_len + 1);
-	if (!cmd)
-		return (0);
-	ft_copy(cmd, *line, word_len);
-	token_add_back(token_lst, cmd, T_IDENTIFIER);
-	free(cmd);
-	(*line) += word_len;
-	return (0);
+    while (ft_iswhitespace(*line)) // Skip leading whitespace
+        (*line)++;
+    char *end = *line;
+    while (*end && !ft_iswhitespace(end)) // Find end of the word
+        end++;
+    if (*line != end)
+    {
+        char *cmd = strndup(*line, end - *line);
+        token_add_back(token_lst, cmd, T_IDENTIFIER);
+        free(cmd);
+        *line = end; // Move line pointer past the processed token
+    }
+    return (0);
 }
 
 // print the linked list that holds the tokens;
@@ -95,7 +96,11 @@ t_token	*token_processor(char *line, t_shell *minishell)
 		else if (!ft_strncmp(line, ">", 1))
 			add_symbol_lst(&line, T_GREATER_THAN, &token_lst);
 		else
+		{
 			add_command_lst(&line, &token_lst);
+			while (ft_iswhitespace(line)) // Skip whitespace after a command
+				line++;
+		}
 	}
 	token_lst = token_parser(token_lst, minishell);
 	return (token_lst);

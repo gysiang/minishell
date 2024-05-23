@@ -6,13 +6,13 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/21 19:02:49 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/23 14:23:02 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	skip_echo(char **str, int *newline)
+/*static void	skip_echo(char **str, int *newline)
 {
 	if (ft_strncmp(*str, "echo -n", 7) == 0)
 	{
@@ -21,22 +21,27 @@ static void	skip_echo(char **str, int *newline)
 	}
 	else if (ft_strncmp(*str, "echo ", 5) == 0)
 		*str += 5;
-}
+}*/
 
 void minishell_echo(t_shell *minishell)
 {
-	int	newline;
-	char	*str;
+    int newline = 1;
 
-	newline = 1;
-	str = minishell->cmd_list->token;
-	if (minishell->cmd_list == NULL)
-		return;
-	skip_echo(&str, &newline);
-	if (str)
-		printf("%s", str);
-	if (newline)
-		printf("\n");
+    if (minishell->cmd_list == NULL)
+        return;
+
+    t_token *current_token = minishell->cmd_list->next; // Skip the 'echo' command itself
+    while (current_token != NULL) {
+        if (current_token->token) {
+            parse_quotes(current_token); // Parse quotes for each token
+            printf("%s", current_token->token);
+            if (current_token->next)
+                printf(" ");  // Add space between arguments
+        }
+        current_token = current_token->next;
+    }
+    if (newline)
+        printf("\n");
 }
 
 /*void minishell_echo(t_shell *minishell)

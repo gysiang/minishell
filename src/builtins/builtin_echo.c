@@ -25,18 +25,25 @@ static void	skip_echo(char **str, int *newline)
 
 void minishell_echo(t_shell *minishell)
 {
-	int	newline;
-	char	*str;
+    int newline = 1;
 
-	newline = 1;
-	str = minishell->cmd_list->token;
-	if (minishell->cmd_list == NULL)
-		return;
-	skip_echo(&str, &newline);
-	if (str)
-		printf("%s", str);
-	if (newline)
-		printf("\n");
+    if (minishell->cmd_list == NULL)
+        return;
+
+    t_token *current_token = minishell->cmd_list;
+    skip_echo(&current_token->token, &newline);  // Adjust to skip only the first token if necessary
+    // Iterate through all tokens starting from the first argument
+    current_token = current_token->next;  // Move to the first argument
+    while (current_token != NULL) {
+        if (current_token->token) {
+            printf("%s", current_token->token);
+            if (current_token->next)
+                printf(" ");  // Add space between arguments
+        }
+        current_token = current_token->next;
+    }
+    if (newline)
+        printf("\n");
 }
 
 /*void minishell_echo(t_shell *minishell)

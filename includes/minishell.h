@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/23 01:59:06 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/23 13:59:51 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,13 +175,14 @@ t_token *create_token(char *token, t_token_type type);
 t_token	*token_processor(char *line, t_shell *minishell);
 
 // parser
-void	parse_singlequote(t_token *t);
+//void	parse_singlequote(t_token *t);
 void	parse_semicolon(t_token *token);
 void	handle_env_variable(t_token *curr, t_shell *minishell);
-void	parse_doublequote(t_token *t);
+//void	parse_doublequote(t_token *t);
 void	parse_value(t_token *token_lst, t_shell *minishell);
 void	set_token_pointers(t_token *tokens);
 void	handle_cd_command(t_token **curr, t_shell *minishell);
+void	parse_quotes(t_token *token);
 void	parse_token(t_token *token, t_shell *minishell);
 void	join_identifier_tokens(t_token *lst);
 t_token *token_parser(t_token *token_lst, t_shell *minishell);

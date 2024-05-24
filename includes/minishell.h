@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/24 15:26:29 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/24 16:15:12 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_shell
 	int		data_fd[2];
 	int		ret_fd[2];
 	int		heredoc_fd;
+	int		prev_fd;
 	int		last_return;
 	bool	end;
 }	t_shell;
@@ -145,7 +146,7 @@ int minishell_error_msg(char *cmd, int error_no);
 //pipex(execute)
 void	handle_child_process(int pipe_fd[2], t_token *curr, t_shell *minishell, int last_command);
 void	handle_parent_process(int pipe_fd[2], int pid, int last_command);
-void	execute_command(int i, t_token *curr, t_shell *minishell, int last_command);
+void 	execute_command(int i, t_token *curr, t_shell *minishell);
 char	**prepare_command(char *cmd, t_shell *minishell);
 void	exec_cmd(char *cmd, t_shell *minishell);
 
@@ -157,6 +158,7 @@ char	*get_path(char *cmd, t_shell *minishell);
 
 //pipex
 int	num_of_commands(t_shell *minishell);
+int	num_of_pipes(t_shell *minishell);
 int	handle_redirection(t_shell *minishell, t_token *curr);
 void	pipex(t_shell *minishell);
 

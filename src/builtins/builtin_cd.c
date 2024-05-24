@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:46:40 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/18 07:46:46 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/24 23:14:56 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ int minishell_cd(t_shell *minishell)
     cmd_token = minishell->cmd_list;
     if (!cmd_token)
     {
-        ft_putstr_fd("minishell: cd: too few arguments 1\n", 2);
+        ft_putstr_fd("minishell: cd: too few arguments\n", 2);
         return (1);
     }
     if (ft_strncmp(cmd_token->token, "cd", 2) != 0)
     {
-        ft_putstr_fd("minishell: cd: command not found 2\n", 2);
+        minishell_error_msg("cd", 42);
         return (1);
     }
     dir_token = cmd_token->next;
@@ -73,16 +73,27 @@ int minishell_cd(t_shell *minishell)
     }
     else
     {
-        dir = dir_token->token;
+        if (strcmp(dir_token->token, "~") == 0)  // Check if the token is '~'
+        {
+            dir = get_env_value(minishell, "HOME");
+            if (dir == NULL)
+            {
+                ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+                return (1);
+            }
+        }
+        else
+        {
+            dir = dir_token->token;
+        }
         if (dir_token->next)
         {
-            ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+            minishell_error_msg("cd", 43);
             return (1);
         }
     }
     if (change_and_check_error(minishell, dir) != 0)
-    {
         return (1);
-    }
     return (0);
 }
+

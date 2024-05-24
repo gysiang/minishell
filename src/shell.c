@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/20 14:00:16 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:12:25 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_shell	*init_shell(void)
 	shell->prompt = PROMPT;
 	shell->cmd_list = NULL;
 	shell->last_return = 0;
+	shell->prev_fd = -1;
 	shell->end = false;
 	return (shell);
 }

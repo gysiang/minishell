@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/20 11:06:39 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/24 16:16:34 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,30 @@ int	num_of_commands(t_shell *minishell)
 	return (i);
 }
 
+int	num_of_pipes(t_shell *minishell)
+{
+	int		i;
+	t_token	*curr_token;
+
+	i = 0;
+	curr_token = minishell->cmd_list;
+	i = 0;
+	while (curr_token != NULL)
+	{
+		if (curr_token->type == T_PIPE)
+			i++;
+		curr_token = curr_token->next;
+	}
+	return (i);
+}
+/***
 static int	assign_last(t_token *c)
 {
 	if (c->next != NULL)
 		return (0);
 	else
 		return (1);
-}
+} **/
 
 int	handle_redirection(t_shell *minishell, t_token *curr)
 {
@@ -72,14 +89,28 @@ static int	check_redirection_type(t_token *curr)
 	return (0);
 }
 
+static void wait_for_all_commands(t_shell *minishell, int num_of_pipe)
+{
+	int status;
+	int i;
+
+	i = 0;
+	while (i++ < num_of_pipe + 1)
+	{
+		waitpid(-1, &status, 0);
+		if (WIFEXITED(status))
+			minishell->last_return = WEXITSTATUS(status);
+		else
+			minishell->last_return = 1;
+	}
+}
+
 void	pipex(t_shell *minishell)
 {
 	int		i;
-	int		is_last_command;
 	t_token	*curr;
 
 	i = 0;
-	is_last_command = 0;
 	curr = minishell->cmd_list;
 	while (curr != NULL)
 	{
@@ -87,13 +118,9 @@ void	pipex(t_shell *minishell)
 			curr = curr->next;
 		else if (curr->type == T_IDENTIFIER)
 		{
-			is_last_command = assign_last(curr);
-			if (num_of_commands(minishell) == 1)
-				is_last_command = 0;
-			else if (curr->next && (check_redirection_type(curr->next)))
-				is_last_command = 1;
-			execute_command(i++, curr, minishell, is_last_command);
+			execute_command(i++, curr, minishell);
 		}
 		curr = curr->next;
 	}
+	wait_for_all_commands(minishell, num_of_pipes(minishell));
 }

@@ -25,23 +25,26 @@ size_t	ft_wordlen(const char *s, char c)
 	return (i);
 }
 
-int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
+int add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
 {
-	int		word_len;
-	char	*symbol;
+    int     word_len;
+    char    *symbol;
 
-	word_len = ft_wordlen(*line, ' ');
-	symbol = (char *)malloc(word_len + 1);
-	if (!symbol)
-		return (0);
-	ft_copy(symbol, *line, word_len);
-	token_add_back(token_lst, symbol, type);
-	free(symbol);
-	if (type == T_LEFT_SHIFT || type == T_RIGHT_SHIFT)
-		(*line) += 2;
-	else
-		(*line)++;
-	return (0);
+    // Determine the length of the symbol based on its type
+    if (type == T_LEFT_SHIFT || type == T_RIGHT_SHIFT)
+        word_len = 2;  // "<<" or ">>"
+    else
+        word_len = 1;  // "|", "<", ">"
+    symbol = (char *)malloc(word_len + 1);
+    if (!symbol)
+        return (0);
+    ft_copy(symbol, *line, word_len);
+    symbol[word_len] = '\0';  // Ensure null termination
+    token_add_back(token_lst, symbol, type);
+    free(symbol);
+    // Increment the line pointer based on the length of the symbol
+    (*line) += word_len;
+    return (0);
 }
 
 int add_command_lst(char **line, t_token **token_lst)
@@ -84,16 +87,31 @@ t_token	*token_processor(char *line, t_shell *minishell)
 	{
 		if (ft_iswhitespace(line) || ft_isbackslash(line))
 			line++;
-		else if (!ft_strncmp(line, "|", 1))
+		else if (ft_strncmp(line, "|", 1) == 0)
+		{
+			printf("Pipe has been found\n");
 			add_symbol_lst(&line, T_PIPE, &token_lst);
-		else if (!ft_strncmp(line, "<<", 2))
-			add_symbol_lst(&line, T_LEFT_SHIFT, &token_lst);
-		else if (!ft_strncmp(line, "<", 1))
+		}
+		else if (ft_strncmp(line, "<", 1) == 0)
+		{
+			printf("Redirect Input has been found\n");
 			add_symbol_lst(&line, T_LESSER_THAN, &token_lst);
-		else if (!ft_strncmp(line, ">>", 2))
-			add_symbol_lst(&line, T_RIGHT_SHIFT, &token_lst);
-		else if (!ft_strncmp(line, ">", 1))
+		}
+		else if (ft_strncmp(line, ">", 1) == 0)
+		{
+			printf("Redirect Output has been found\n");
 			add_symbol_lst(&line, T_GREATER_THAN, &token_lst);
+		}
+		else if (ft_strncmp(line, "<<", 2) == 0)
+		{
+			printf("Here Document has been found\n");
+			add_symbol_lst(&line, T_LEFT_SHIFT, &token_lst);
+		}
+		else if (ft_strncmp(line, ">>", 2) == 0)
+		{
+			printf("Redirect Output has been found\n");
+			add_symbol_lst(&line, T_RIGHT_SHIFT, &token_lst);
+		}
 		else
 		{
 			add_command_lst(&line, &token_lst);
@@ -103,3 +121,5 @@ t_token	*token_processor(char *line, t_shell *minishell)
 	}	token_lst = token_parser(token_lst, minishell);
 	return (token_lst);
 }
+
+

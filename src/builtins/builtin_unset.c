@@ -6,22 +6,18 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 12:39:54 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/17 13:11:15 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/24 15:31:59 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	shift_env_entries(t_shell *minishell, int start_index)
+static int is_valid_identifier(const char *str)
 {
-	while (minishell->env[start_index + 1])
-	{
-		minishell->env[start_index] = minishell->env[start_index + 1];
-		start_index++;
-	}
-	minishell->env[start_index] = NULL;
+    if (str == NULL || *str == '\0' || ft_isdigit(*str))
+        return (0);
+    return (1);
 }
-
 int	search_env(t_shell *minishell, char *var)
 {
 	int	i;
@@ -36,49 +32,51 @@ int	search_env(t_shell *minishell, char *var)
 	return (-1);
 }
 
-int	is_valid_var_name(char *var_name)
+static void shift_env_entries(t_shell *minishell, int index)
 {
-	if (var_name == NULL || *var_name == '\0' || ft_isdigit(*var_name))
-	{
-		printf("n\n");
-		return (0);
-	}
-	return (1);
+    if (index < 0 || index >= env_len(minishell))
+        return;
+    while (minishell->env[index] != NULL)
+    {
+        free(minishell->env[index]);
+        minishell->env[index] = minishell->env[index + 1];
+        index++;
+    }
 }
 
-static int	not_valid_var(char **cmd, int index)
+static void unset_variable(t_shell *minishell, char *var_name)
 {
-	if (!is_valid_var_name(cmd[index]))
-	{
-		printf("minishell: unset: '%s': not a valid identifier\n", cmd[index]);
-		return (1);
-	}
-	return (0);
+    int var_index;
+
+    if (!is_valid_identifier(var_name))
+    {
+        printf("minishell: unset: '%s': not a valid identifier\n", var_name);
+        return;
+    }
+    var_index = search_env(minishell, var_name);
+    if (var_index >= 0)
+    {
+        shift_env_entries(minishell, var_index);
+        printf("minishell: unset: removed '%s'\n", var_name);
+    }
+    else
+        printf("minishell: unset: '%s' not found in environment\n", var_name);
 }
 
-int	minishell_unset(t_shell *minishell)
+int minishell_unset(t_shell *minishell)
 {
-	int		var_index;
-	t_token	*token;
-	char	**cmd;
-	int		i;
+    t_token *current;
 
-	i = 1;
-	token = minishell->cmd_list;
-	cmd = ft_split(token->token, ' ');
-	while (cmd[i])
-	{
-		if (not_valid_var(cmd, i) == 0)
-		{
-			var_index = search_env(minishell, cmd[i]);
-			if (var_index >= 0)
-			{
-				shift_env_entries(minishell, var_index);
-				printf("removed env index %d\n", var_index);
-			}
-		}
-		i++;
-	}
-	ft_split_free(&cmd);
-	return (0);
+    if (!minishell || !minishell->cmd_list)
+    {
+        printf("No command list provided.\n");
+        return (0);
+    }
+    current = minishell->cmd_list->next;  // Start with the next token after 'unset'
+    while (current)
+    {
+        unset_variable(minishell, current->token);
+        current = current->next;
+    }
+    return (0);
 }

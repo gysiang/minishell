@@ -1,18 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   execute.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/24 15:02:56 by axlee            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minishell.h"
-
-void execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
+/*void execute_command(int i, t_token *curr, t_shell *minishell, int last_command)
 {
     int pipe_fd[2];
     int pid;
@@ -139,4 +125,4 @@ void exec_cmd(char *cmd, t_shell *minishell) {
     }
 
     ft_free_tab(s_cmd);
-}
+}*/

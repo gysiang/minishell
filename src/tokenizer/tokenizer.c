@@ -81,37 +81,56 @@ void	print_tokenlst(t_token *token_lst)
 void handle_environment_variable(char **line, t_token **token_lst, t_shell *minishell)
 {
     (*line)++; // Move past the dollar sign
-    char *start = *line;
-    while (**line && !ft_iswhitespace(*line) && **line != '/') // Find end of the variable name
-        (*line)++;
-    char *var_name = strndup(start, *line - start); // Write custom function for strndup
-    char *expanded = get_env_value(minishell, var_name); // Assume getenv is a function to get environment variable
-    free(var_name);
-    if (expanded) {
-        char *temp = ft_strdup(expanded);
-        char *token = strtok(temp, " "); // Split expanded variable by spaces and remember to write custom functionf or it
-        while (token) {
-            token_add_back(token_lst, token, T_IDENTIFIER);
-            token = strtok(NULL, " ");
+    if (**line == '?') {
+        // Handle the special case of $? which should return the last command's exit status
+        (*line)++; // Move past the question mark
+        char *exit_status_str = ft_itoa(minishell->last_return);
+        char *start = *line;
+        while (**line && !ft_iswhitespace(*line) && **line != '|' && **line != '<' && **line != '>')
+            (*line)++;
+        int length = *line - start;
+        char *suffix = strndup(start, length); // Copy the text immediately following $? if any
+        char *result = (char *)malloc(strlen(exit_status_str) + length + 1);
+        if (result) {
+            strcpy(result, exit_status_str); // Start with the exit status
+            strcat(result, suffix); // Append the following text
+            token_add_back(token_lst, result, T_IDENTIFIER);
+            free(result);
         }
-        free(temp);
+        free(exit_status_str);
+        free(suffix);
+    } else {
+        // Normal environment variable handling
+        char *start = *line;
+        while (**line && !ft_iswhitespace(*line) && **line != '/') // Find end of the variable name
+            (*line)++;
+        char *var_name = strndup(start, *line - start);
+        char *expanded = get_env_value(minishell, var_name);
+        free(var_name);
+        if (expanded) {
+            token_add_back(token_lst, expanded, T_IDENTIFIER);
+        }
     }
 }
 
 void handle_backslash(char **line, t_token **token_lst)
 {
     (*line)++; // Move past the backslash
-    if (**line == ' ') {
-        char *start = *line;
-        while (**line == ' ') // Count all escaped spaces
+    if (**line == '\"' || **line == '\'') { // Check if it's escaping a quote
+        // Start building the token from the character after the backslash
+        char *start = *line; // Point to the quote
+        (*line)++; // Move past the quote
+        // Continue until a whitespace or a special shell character is found
+        while (**line && !ft_iswhitespace(*line) && **line != '|' && **line != '<' && **line != '>')
             (*line)++;
+        // Allocate and copy the token starting from the quote
         int length = *line - start;
-        char *space_token = (char *)malloc(length + 1);
-        if (space_token) {
-            strncpy(space_token, start, length); // Need to write custom functionf or it 
-            space_token[length] = '\0';
-            token_add_back(token_lst, space_token, T_IDENTIFIER);
-            free(space_token);
+        char *escaped_token = (char *)malloc(length + 1);
+        if (escaped_token) {
+            strncpy(escaped_token, start, length); // Copy starting from the quote
+            escaped_token[length] = '\0';
+            token_add_back(token_lst, escaped_token, T_IDENTIFIER);
+            free(escaped_token);
         }
     } else {
         // Handle other characters escaped by backslash

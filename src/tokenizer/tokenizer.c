@@ -85,31 +85,84 @@ t_token	*token_processor(char *line, t_shell *minishell)
 	token_lst = NULL;
 	while (*line != '\0')
 	{
-		if (ft_iswhitespace(line) || ft_isbackslash(line))
+		if (ft_iswhitespace(line))
 			line++;
+		else if (*line == '\\') // Check for backslash
+		{
+			line++; // Move past the backslash
+			if (*line == '\"' || *line == '\'') // Check if it's escaping a quote
+			{
+				char escaped_quote[2] = {*line, '\0'}; // Create a token for the escaped quote
+				line++; // Move past the quote
+				char *start = line;
+				while (*line && !ft_iswhitespace(line) && *line != '\\') // Find end of the word
+					line++;
+				char *word = strndup(start, line - start);
+				char *full_token = (char *)malloc(strlen(escaped_quote) + strlen(word) + 1);
+				strcpy(full_token, escaped_quote);
+				strcat(full_token, word);
+				token_add_back(&token_lst, full_token, T_IDENTIFIER);
+				free(word);
+				free(full_token);
+			}
+			else
+			{
+				// Handle other characters escaped by backslash
+				char escaped[2] = {*line, '\0'};
+				token_add_back(&token_lst, escaped, T_IDENTIFIER);
+				line++;
+			}
+		}
+		else if ((*line == '\"' || *line == '\'') && *(line + 1) == *(line) && *(line + 2) != *(line)) // Check for empty double or single quotes
+		{
+			token_add_back(&token_lst, "", T_IDENTIFIER);
+			line += 2; // Move past the empty quotes
+		}
+		else if (*line == '\"' || *line == '\'') // Check for quoted content
+		{
+			char quote_type = *line;
+			line++; // Move past the opening quote
+			char *start = line;
+			while (*line && *line != quote_type) // Find the closing quote
+				line++;
+			if (*line == quote_type)
+			{
+				int length = line - start;
+				char *quoted_content = (char *)malloc(length + 1);
+				if (quoted_content)
+				{
+					strncpy(quoted_content, start, length);
+					quoted_content[length] = '\0';
+					token_add_back(&token_lst, quoted_content, T_IDENTIFIER);
+					free(quoted_content);
+				}
+				line++; // Move past the closing quote
+			}
+			else
+			{
+				// If no closing quote is found, treat the opening quote as a literal character
+				char literal_quote[2] = {quote_type, '\0'};
+				token_add_back(&token_lst, literal_quote, T_IDENTIFIER);
+			}
+		}
 		else if (ft_strncmp(line, "|", 1) == 0)
 		{
-			printf("Pipe has been found\n");
 			add_symbol_lst(&line, T_PIPE, &token_lst);
 		}
 		else if (ft_strncmp(line, "<", 1) == 0)
 		{
-			printf("Redirect Input has been found\n");
 			add_symbol_lst(&line, T_LESSER_THAN, &token_lst);
 		}
 		else if (ft_strncmp(line, ">", 1) == 0)
 		{
-			printf("Redirect Output has been found\n");
 			add_symbol_lst(&line, T_GREATER_THAN, &token_lst);
 		}
 		else if (ft_strncmp(line, "<<", 2) == 0)
 		{
-			printf("Here Document has been found\n");
 			add_symbol_lst(&line, T_LEFT_SHIFT, &token_lst);
 		}
 		else if (ft_strncmp(line, ">>", 2) == 0)
 		{
-			printf("Redirect Output has been found\n");
 			add_symbol_lst(&line, T_RIGHT_SHIFT, &token_lst);
 		}
 		else
@@ -118,8 +171,10 @@ t_token	*token_processor(char *line, t_shell *minishell)
 			while (ft_iswhitespace(line)) // Skip whitespace after a command
 				line++;
 		}
-	}	token_lst = token_parser(token_lst, minishell);
+	}
+	token_lst = token_parser(token_lst, minishell);
 	return (token_lst);
 }
+
 
 

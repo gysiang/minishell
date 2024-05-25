@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/25 19:10:01 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/25 19:53:50 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ void	pipex(t_shell *minishell);
 // tokenizer
 void	token_add_back(t_token **head, char *token, t_token_type type);
 void handle_environment_variable(char **line, t_token **token_lst, t_shell *minishell);
+void handle_remaining_text(char **line, t_token **token_lst);
 void handle_backslash(char **line, t_token **token_lst);
 void handle_quotes(char **line, t_token **token_lst);
 void	free_tokenlst(t_token *head);
@@ -180,10 +181,8 @@ t_token *create_token(char *token, t_token_type type);
 t_token	*token_processor(char *line, t_shell *minishell);
 
 // parser
-//void	parse_singlequote(t_token *t);
 void	parse_semicolon(t_token *token);
 void	handle_env_variable(t_token *curr, t_shell *minishell);
-//void	parse_doublequote(t_token *t);
 void	parse_value(t_token *token_lst, t_shell *minishell);
 void	set_token_pointers(t_token *tokens);
 void	handle_cd_command(t_token **curr, t_shell *minishell);

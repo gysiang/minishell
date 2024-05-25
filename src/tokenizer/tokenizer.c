@@ -81,35 +81,39 @@ void	print_tokenlst(t_token *token_lst)
 void handle_environment_variable(char **line, t_token **token_lst, t_shell *minishell)
 {
     (*line)++; // Move past the dollar sign
-    if (**line == '?') {
-        // Handle the special case of $? which should return the last command's exit status
-        (*line)++; // Move past the question mark
-        char *exit_status_str = ft_itoa(minishell->last_return);
+    char *start = *line;
+    while (**line && !ft_iswhitespace(*line) && **line != '/') // Find end of the variable name
+        (*line)++;
+    char *var_name = strndup(start, *line - start); // Extract variable name
+    char *expanded = get_env_value(minishell, var_name); // Get expanded value
+    free(var_name);
+
+    if (expanded) {
+        // Add the expanded variable as a token
+        token_add_back(token_lst, expanded, T_IDENTIFIER);
+    }
+
+    // Check if there's more text following the variable
+    if (**line != '\0') {
+        // Handle the rest of the line as separate tokens
+        handle_remaining_text(line, token_lst);
+    }
+}
+
+void handle_remaining_text(char **line, t_token **token_lst)
+{
+    // Skip any whitespace immediately after the variable expansion
+    while (ft_iswhitespace(*line))
+        (*line)++;
+
+    // If there's more text, treat it as a separate token
+    if (**line != '\0') {
         char *start = *line;
-        while (**line && !ft_iswhitespace(*line) && **line != '|' && **line != '<' && **line != '>')
+        while (**line && !ft_iswhitespace(*line))
             (*line)++;
-        int length = *line - start;
-        char *suffix = strndup(start, length); // Copy the text immediately following $? if any
-        char *result = (char *)malloc(strlen(exit_status_str) + length + 1);
-        if (result) {
-            strcpy(result, exit_status_str); // Start with the exit status
-            strcat(result, suffix); // Append the following text
-            token_add_back(token_lst, result, T_IDENTIFIER);
-            free(result);
-        }
-        free(exit_status_str);
-        free(suffix);
-    } else {
-        // Normal environment variable handling
-        char *start = *line;
-        while (**line && !ft_iswhitespace(*line) && **line != '/') // Find end of the variable name
-            (*line)++;
-        char *var_name = strndup(start, *line - start);
-        char *expanded = get_env_value(minishell, var_name);
-        free(var_name);
-        if (expanded) {
-            token_add_back(token_lst, expanded, T_IDENTIFIER);
-        }
+        char *text = strndup(start, *line - start);
+        token_add_back(token_lst, text, T_IDENTIFIER);
+        free(text);
     }
 }
 

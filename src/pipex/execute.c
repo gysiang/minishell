@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/24 16:14:11 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/25 19:38:56 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void execute_command(int i, t_token *curr, t_shell *minishell)
 			{
 				dup2(pipe_fd[1], STDOUT_FILENO);
 				close(pipe_fd[0]);
-                close(pipe_fd[0]);
+                close(pipe_fd[1]);
 			}
 		}
         exec_cmd(curr->token, minishell);

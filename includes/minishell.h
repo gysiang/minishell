@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/24 16:15:12 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/25 19:10:01 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,9 @@ void	pipex(t_shell *minishell);
 
 // tokenizer
 void	token_add_back(t_token **head, char *token, t_token_type type);
+void handle_environment_variable(char **line, t_token **token_lst, t_shell *minishell);
+void handle_backslash(char **line, t_token **token_lst);
+void handle_quotes(char **line, t_token **token_lst);
 void	free_tokenlst(t_token *head);
 void	print_tokenlst(t_token *token_lst);
 int	ft_iswhitespace(char *line);

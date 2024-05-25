@@ -22,11 +22,24 @@ static char	*get_var_name(char *cmd)
 	return (NULL);
 }
 
-static int	is_valid_identifier(const char *str)
+static int is_valid_identifier(const char *str)
 {
-	if (str == NULL || *str == '\0' || ft_isdigit(*str))
-		return (0);
-	return (1);
+    if (str == NULL || *str == '\0')
+        return (0);
+
+    // Check if the first character is a letter or underscore
+    if (!ft_isalpha(*str) && *str != '_')
+        return (0);
+
+    // Check the rest of the string
+    str++;
+    while (*str)
+    {
+        if (!ft_isalnum(*str) && *str != '_')
+            return (0);
+        str++;
+    }
+    return (1);
 }
 
 static int	save_var(t_shell *minishell, char *content)

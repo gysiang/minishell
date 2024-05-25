@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/23 14:21:12 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/25 10:41:37 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,28 +56,6 @@ void	set_token_pointers(t_token *tokens)
 		*curr = (*curr)->next;
 	}
 }*/
-
-
-void parse_quotes(t_token *token)
-{
-    char *str = token->token;
-    int len = strlen(str);
-    char *result = malloc(len + 1); // Allocate space for the new string
-    if (!result) return; // Always check malloc return
-
-    // Check if the entire token is encapsulated by single or double quotes
-    if (len > 1 && ((str[0] == '\'' && str[len - 1] == '\'') || (str[0] == '\"' && str[len - 1] == '\"'))) {
-        // Copy the inside, excluding the outermost quotes
-        memcpy(result, str + 1, len - 2);
-        result[len - 2] = '\0'; // Null-terminate the new string
-    } else {
-        // If not encapsulated by quotes, just copy the string
-        strcpy(result, str);
-    }
-
-    free(token->token);
-    token->token = result;
-}
 
 void parse_token(t_token *token, t_shell *minishell)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/25 19:53:50 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/26 10:29:17 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,10 +144,7 @@ char *ft_strjoin_free(char **s1, char const *s2);
 int minishell_error_msg(char *cmd, int error_no);
 
 //pipex(execute)
-void	handle_child_process(int pipe_fd[2], t_token *curr, t_shell *minishell, int last_command);
-void	handle_parent_process(int pipe_fd[2], int pid, int last_command);
 void 	execute_command(int i, t_token *curr, t_shell *minishell);
-char	**prepare_command(char *cmd, t_shell *minishell);
 void	exec_cmd(char *cmd, t_shell *minishell);
 
 //pipex(utils)
@@ -193,9 +190,9 @@ t_token *token_parser(t_token *token_lst, t_shell *minishell);
 
 //execute_commands.c
 int	check_builtin(char *s);
-int	execute_builtin_1(t_shell *minishell);
-int	execute_builtin_2(t_shell *minishell);
-int	other_cmds(t_shell *minishell);
+int	execute_builtin_1(t_token *curr, t_shell *minishell);
+int execute_builtin_2(t_token *curr, t_shell *minishell);
+int	other_cmds(t_token *curr, t_shell *minishell);
 
 //shell.c
 t_shell	*init_shell(void);

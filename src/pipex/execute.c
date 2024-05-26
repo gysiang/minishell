@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/25 19:38:56 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/26 10:28:13 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,12 @@ void exec_cmd(char *cmd, t_shell *minishell)
         minishell->last_return = 1;
         return;
     }
-
+    /***
     if (execute_builtin_1(minishell) || execute_builtin_2(minishell) || other_cmds(minishell)) {
         printf("Executed a builtin or other command\n");
         ft_free_tab(s_cmd);
         return;
-    }
+    } **/
 
     path = get_path(s_cmd[0], minishell);
     if (!path) {

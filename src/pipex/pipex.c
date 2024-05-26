@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/24 16:16:34 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/26 10:32:31 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,18 @@ static void wait_for_all_commands(t_shell *minishell, int num_of_pipe)
 	}
 }
 
+static void	execute_builtins_or_exc(int	i, t_token *curr, t_shell *minishell)
+{
+	if (check_builtin(curr->token))
+	{
+		execute_builtin_1(curr, minishell);
+		execute_builtin_2(curr, minishell);
+		other_cmds(curr, minishell);
+	}
+	else
+		execute_command(i, curr, minishell);
+}
+
 void	pipex(t_shell *minishell)
 {
 	int		i;
@@ -118,7 +130,9 @@ void	pipex(t_shell *minishell)
 			curr = curr->next;
 		else if (curr->type == T_IDENTIFIER)
 		{
-			execute_command(i++, curr, minishell);
+			execute_builtins_or_exc(i++, curr, minishell);
+			if (curr->next && curr->next->type == T_IDENTIFIER)
+				curr = curr->next;
 		}
 		curr = curr->next;
 	}

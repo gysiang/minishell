@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/25 13:41:16 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/29 19:01:27 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,17 @@ void minishell_echo(t_shell *minishell)
         return;
 
     t_token *current_token = minishell->cmd_list->next; // Skip the 'echo' command itself
-    while (current_token != NULL) {
-        if (current_token->token) {
+    while (current_token != NULL)
+	{
+        if (current_token->type == T_IDENTIFIER)
+		{
             parse_quotes(current_token); // Parse quotes for each token
             printf("%s", current_token->token);
             if (current_token->next)
                 printf(" ");  // Add space between arguments
         }
+		else
+			break;
         current_token = current_token->next;
     }
     if (newline)

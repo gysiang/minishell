@@ -185,18 +185,18 @@ t_token	*token_processor(char *line, t_shell *minishell)
 			handle_quotes(&line, &token_lst);
 		else if (ft_strncmp(line, "|", 1) == 0)
 			add_symbol_lst(&line, T_PIPE, &token_lst);
+        else if (ft_strncmp(line, "<<", 2) == 0)
+			add_symbol_lst(&line, T_LEFT_SHIFT, &token_lst);
+		else if (ft_strncmp(line, ">>", 2) == 0)
+			add_symbol_lst(&line, T_RIGHT_SHIFT, &token_lst);
 		else if (ft_strncmp(line, "<", 1) == 0)
 			add_symbol_lst(&line, T_LESSER_THAN, &token_lst);
 		else if (ft_strncmp(line, ">", 1) == 0)
 			add_symbol_lst(&line, T_GREATER_THAN, &token_lst);
-		else if (ft_strncmp(line, "<<", 2) == 0)
-			add_symbol_lst(&line, T_LEFT_SHIFT, &token_lst);
-		else if (ft_strncmp(line, ">>", 2) == 0)
-			add_symbol_lst(&line, T_RIGHT_SHIFT, &token_lst);
 		else
 		{
 			add_command_lst(&line, &token_lst);
-			while (ft_iswhitespace(line)) // Skip whitespace after a command
+			while (ft_iswhitespace(line))
 				line++;
 		}
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:46:40 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/25 19:42:03 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/29 18:24:35 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int minishell_cd(t_shell *minishell)
     }
     else
     {
-        if (strcmp(dir_token->token, "~") == 0)  // Check if the token is '~'
+        if (ft_strcmp(dir_token->token, "~") == 0)  // Check if the token is '~'
         {
             dir = get_env_value(minishell, "HOME");
             if (dir == NULL)

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/26 10:28:13 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:17:01 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void execute_command(int i, t_token *curr, t_shell *minishell)
 	}
 	else
 	{
+        minishell->process_ids[minishell->process_count++] = pid;
 		if (minishell->prev_fd != -1)
 			close(minishell->prev_fd);
 		if (i < num_of_pipe)

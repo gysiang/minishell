@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:48:39 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/18 08:43:56 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/29 18:40:26 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static int	open_output(char *file_name, int type)
 }
 
 int	redirect_output(t_shell *minishell, t_token *curr)
-{	
+{
 	int	fd;
 
 	printf("inside redirect output\n");
@@ -93,12 +93,3 @@ int	redirect_output(t_shell *minishell, t_token *curr)
 		minishell->heredoc_fd = fd;
 	return (fd);
 }
-
-/***
-void    redirect(t_token *token, int *redir)
-{
-    redir[0] = redirect_input(minishell);
-    if (redir[0] == -1)
-        return ;
-    redir[1] = redirect_output(t_token *token);
-} **/

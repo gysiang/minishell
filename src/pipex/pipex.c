@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/26 10:32:31 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:59:50 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,6 @@ int	num_of_pipes(t_shell *minishell)
 	}
 	return (i);
 }
-/***
-static int	assign_last(t_token *c)
-{
-	if (c->next != NULL)
-		return (0);
-	else
-		return (1);
-} **/
 
 int	handle_redirection(t_shell *minishell, t_token *curr)
 {
@@ -89,19 +81,42 @@ static int	check_redirection_type(t_token *curr)
 	return (0);
 }
 
-static void wait_for_all_commands(t_shell *minishell, int num_of_pipe)
+static void wait_for_all_commands(t_shell *minishell)
 {
 	int status;
 	int i;
+	int	num_of_process;
 
 	i = 0;
-	while (i++ < num_of_pipe + 1)
+	num_of_process = minishell->process_count;
+	while (i < num_of_process)
 	{
-		waitpid(-1, &status, 0);
+		printf("Waiting for process: %d\n", minishell->process_ids[i]);
+		waitpid(minishell->process_ids[i], &status, 0);
 		if (WIFEXITED(status))
 			minishell->last_return = WEXITSTATUS(status);
 		else
 			minishell->last_return = 1;
+		i++;
+	}
+	minishell->process_count = 0;
+}
+
+void	execute_builtins(t_token *curr, t_shell *minishell)
+{
+	int	pid;
+
+	pid = fork();
+
+	if (pid == 0)
+	{
+		execute_builtin_1(curr, minishell);
+		execute_builtin_2(curr, minishell);
+		other_cmds(curr, minishell);
+	}
+	else
+	{
+		minishell->process_ids[minishell->process_count++] = pid;
 	}
 }
 
@@ -109,9 +124,7 @@ static void	execute_builtins_or_exc(int	i, t_token *curr, t_shell *minishell)
 {
 	if (check_builtin(curr->token))
 	{
-		execute_builtin_1(curr, minishell);
-		execute_builtin_2(curr, minishell);
-		other_cmds(curr, minishell);
+		execute_builtins(curr, minishell);
 	}
 	else
 		execute_command(i, curr, minishell);
@@ -136,5 +149,18 @@ void	pipex(t_shell *minishell)
 		}
 		curr = curr->next;
 	}
-	wait_for_all_commands(minishell, num_of_pipes(minishell));
+	wait_for_all_commands(minishell);
 }
+// need to rewrite pipex
+/**
+echo,
+hello world
+>>
+output.txt
+
+in echo i need to move the linked list till its a different type;
+1. check if there is execute_builtins
+2. echo Hello world > output.txt
+**/
+
+

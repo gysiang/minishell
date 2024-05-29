@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/26 10:29:17 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:22:11 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,10 @@ typedef struct s_shell
 	char	**env;
 	char	*prompt;
 	t_token	*cmd_list;
-	int		data_fd[2];
-	int		ret_fd[2];
 	int		heredoc_fd;
 	int		prev_fd;
+	pid_t	process_ids[100];
+	int		process_count;
 	int		last_return;
 	bool	end;
 }	t_shell;
@@ -146,6 +146,7 @@ int minishell_error_msg(char *cmd, int error_no);
 //pipex(execute)
 void 	execute_command(int i, t_token *curr, t_shell *minishell);
 void	exec_cmd(char *cmd, t_shell *minishell);
+void	execute_builtins(t_token *curr, t_shell *minishell);
 
 //pipex(utils)
 void	exit_handler(int exit_code);

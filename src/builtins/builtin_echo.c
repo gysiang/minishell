@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/29 19:01:27 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/30 19:51:47 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,30 @@
 
 void minishell_echo(t_shell *minishell)
 {
-    int newline = 1;
+    int newline = 1;  // Default is to print newline at the end
 
     if (minishell->cmd_list == NULL)
         return;
 
     t_token *current_token = minishell->cmd_list->next; // Skip the 'echo' command itself
+
+    // Check for '-n' option which suppresses the newline
+    if (current_token != NULL && strcmp(current_token->token, "-n") == 0) {
+        newline = 0;  // Do not print newline at the end
+        current_token = current_token->next;  // Move to the next token
+    }
+
     while (current_token != NULL)
-	{
+    {
         if (current_token->type == T_IDENTIFIER)
-		{
+        {
             parse_quotes(current_token); // Parse quotes for each token
             printf("%s", current_token->token);
             if (current_token->next)
                 printf(" ");  // Add space between arguments
         }
-		else
-			break;
+        else
+            break;
         current_token = current_token->next;
     }
     if (newline)

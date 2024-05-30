@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 02:53:04 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/31 03:00:12 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ void	execute_builtins(t_token *curr, t_shell *minishell)
 	else
 	{
 		pid = fork();
+
 		if (pid == 0)
 		{
 			execute_builtin_1(curr, minishell);

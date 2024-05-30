@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 15:31:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/25 20:04:35 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/30 19:52:59 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,18 @@ static bool is_command(char *token)
     }
     return false;
 }
+static bool is_part_of_command_arguments(t_token *token)
+{
+    t_token *prev = NULL;
+
+    // Traverse backwards to find the first command token
+    for (prev = token; prev != NULL && prev->type == T_IDENTIFIER; prev = prev->prev) {
+        if (is_command(prev->token)) {
+            return true;  // The token is an argument to a command
+        }
+    }
+    return false;  // No command token found before this, not a part of command arguments
+}
 
 void	join_identifier_tokens(t_token *lst)
 {
@@ -76,7 +88,8 @@ void	join_identifier_tokens(t_token *lst)
         {
             // Check if both tokens are not just simple identifiers but potentially commands and arguments
             if (curr->type == T_IDENTIFIER && curr->next->type == T_IDENTIFIER &&
-                !is_command(curr->token) && !is_command(curr->next->token))
+                !is_command(curr->token) && !is_command(curr->next->token) &&
+                !is_part_of_command_arguments(curr->next))
             {
                 merge_identifier_tokens(curr);
                 merged = 1;

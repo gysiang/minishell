@@ -26,12 +26,8 @@ static int is_valid_identifier(const char *str)
 {
     if (str == NULL || *str == '\0')
         return (0);
-
-    // Check if the first character is a letter or underscore
     if (!ft_isalpha(*str) && *str != '_')
         return (0);
-
-    // Check the rest of the string
     str++;
     while (*str)
     {
@@ -42,28 +38,30 @@ static int is_valid_identifier(const char *str)
     return (1);
 }
 
-static int	save_var(t_shell *minishell, char *content)
+static int save_var(t_shell *minishell, char *content)
 {
-	char	*var_name;
-	int		var_index;
+    char    *var_name;
+    int     var_index;
 
-	if (!is_valid_identifier(content))
-	{
-		ft_putstr_fd("minishell: export: '", 2);
-		ft_putstr_fd(content, 2);
-		ft_putstr_fd("': not a valid identifier\n", 2);
-		return (1);
-	}
-	var_name = get_var_name(content);
-	if (!var_name)
-		return (0);
-	var_index = search_env(minishell, var_name);
-	if (var_index == -1)
-		var_index = env_len(minishell);
-	if (var_index == minishell->env_size)
-		env_realloc(minishell);
-	minishell->env[var_index] = ft_strdup(content);
-	return (0);
+    var_name = get_var_name(content);
+    if (!var_name)
+        return (0);
+    if (!is_valid_identifier(var_name))
+    {
+        ft_putstr_fd("minishell: export: '", 2);
+        ft_putstr_fd(content, 2);
+        ft_putstr_fd("': not a valid identifier\n", 2);
+        free(var_name);
+        return (1);
+    }
+    var_index = search_env(minishell, var_name);
+    if (var_index == -1)
+        var_index = env_len(minishell);
+    if (var_index == minishell->env_size)
+        env_realloc(minishell);
+    minishell->env[var_index] = ft_strdup(content);
+    free(var_name);
+    return (0);
 }
 
 int minishell_export(t_shell *minishell)

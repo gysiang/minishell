@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/30 18:10:18 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/30 20:48:11 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void	execute_builtins(t_token *curr, t_shell *minishell)
 	else
 	{
 		pid = fork();
+
 		if (pid == 0)
 		{
 			execute_builtin_1(curr, minishell);
@@ -146,27 +147,31 @@ void	restore_fds(int	input_fd, int output_fd)
 	}
 }
 
-void	pipex(t_shell *minishell)
+void pipex(t_shell *minishell)
 {
-	int		i;
-	t_token	*curr;
+    int i;
+    t_token *curr;
+    t_token *start_cmd;
 
-	i = 0;
-	curr = minishell->cmd_list;
-	while (curr != NULL)
-	{
-		if (check_redirection_type(curr))
-			curr = curr->next;
-		else if (curr->type == T_IDENTIFIER)
-		{
-			execute_builtins_or_exc(i++, curr, minishell);
-			if (curr->next && curr->next->type == T_IDENTIFIER)
-				curr = curr->next;
-		}
-		curr = curr->next;
-	}
-	wait_for_all_commands(minishell);
-	restore_fds(minishell->input_fd, minishell->output_fd);
+    i = 0;
+    curr = minishell->cmd_list;
+    while (curr != NULL)
+    {
+        if (check_redirection_type(curr))
+            curr = curr->next;
+        else if (curr->type == T_IDENTIFIER)
+        {
+            start_cmd = curr; // Start of a new command
+            while (curr->next && curr->next->type == T_IDENTIFIER)
+            {
+                curr = curr->next; // Move to the end of the command arguments
+            }
+            execute_builtins_or_exc(i++, start_cmd, minishell); // Execute the whole command with arguments
+        }
+        curr = curr->next;
+    }
+    wait_for_all_commands(minishell);
+    restore_fds(minishell->input_fd, minishell->output_fd);
 }
 // need to rewrite pipex
 /**

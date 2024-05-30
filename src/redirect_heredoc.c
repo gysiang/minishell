@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 21:03:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/18 08:42:47 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/30 16:54:56 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ static void	here_doc_read(t_shell *minishell, int *pipe_fds, char *delimiter)
 		}
 		if (!ft_strncmp(str, delimiter, delimiter_len + 1))
 			break ;
+		write(pipe_fds[1], str, ft_strlen(str));
+		write(pipe_fds[1], "\n", 1);
 	}
-	write(pipe_fds[1], str, ft_strlen(str));
-	write(pipe_fds[1], "\n", 1);
 	free(str);
 	close(pipe_fds[1]);
 	free_and_exit(minishell, 0);
@@ -80,10 +80,10 @@ int	here_doc(t_shell *minishell, char *delimiter)
 	if (WEXITSTATUS(status) == 130)
 	{
 		close(pipe_des[0]);
-		close(pipe_des[0]);
+		close(pipe_des[1]);
 		return (-1);
 	}
 	close(pipe_des[1]);
-	minishell->heredoc_fd = pipe_des[0];
+	minishell->input_fd = pipe_des[0];
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/26 10:27:52 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/30 16:44:52 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	process_command_line(t_shell *minishell, char *line)
 	pipex(minishell);
 	free_tokenlst(token_lst);
 	token_lst = NULL;
+	minishell->prev_fd = -1;
+	reset_process_ids(minishell);
 }
 
 void	main_loop(t_shell *g_shell)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/29 18:22:11 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/30 16:43:50 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,9 @@ typedef struct s_shell
 	char	**env;
 	char	*prompt;
 	t_token	*cmd_list;
-	int		heredoc_fd;
+	int		input_fd;
+	int		output_fd;
+	//int		heredoc_fd;
 	int		prev_fd;
 	pid_t	process_ids[100];
 	int		process_count;
@@ -159,6 +161,7 @@ int	num_of_commands(t_shell *minishell);
 int	num_of_pipes(t_shell *minishell);
 int	handle_redirection(t_shell *minishell, t_token *curr);
 void	pipex(t_shell *minishell);
+void	restore_fds(int	input_fd, int output_fd);
 
 // tokenizer
 void	token_add_back(t_token **head, char *token, t_token_type type);
@@ -200,6 +203,7 @@ t_shell	*init_shell(void);
 void free_shell(t_shell *minishell);
 void	initialize_shell(t_shell **minishell, char **envp);
 void	cleanup(t_shell *g_shell);
+void reset_process_ids(t_shell *minishell);
 
 //main.c
 char	*read_input_line(t_shell *g_shell);

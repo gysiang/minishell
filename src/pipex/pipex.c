@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/30 16:44:25 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/30 18:10:18 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,17 +106,19 @@ void	execute_builtins(t_token *curr, t_shell *minishell)
 {
 	int	pid;
 
-	pid = fork();
-
-	if (pid == 0)
-	{
-		execute_builtin_1(curr, minishell);
+	if (ft_strncmp(curr->token, "exit", 4) == 0)
 		execute_builtin_2(curr, minishell);
-		other_cmds(curr, minishell);
-	}
 	else
 	{
-		minishell->process_ids[minishell->process_count++] = pid;
+		pid = fork();
+		if (pid == 0)
+		{
+			execute_builtin_1(curr, minishell);
+			execute_builtin_2(curr, minishell);
+			other_cmds(curr, minishell);
+		}
+		else
+			minishell->process_ids[minishell->process_count++] = pid;
 	}
 }
 

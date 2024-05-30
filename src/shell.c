@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/24 16:12:25 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/30 16:28:07 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,28 @@ t_shell	*init_shell(void)
 	shell->prompt = PROMPT;
 	shell->cmd_list = NULL;
 	shell->last_return = 0;
+	shell->input_fd = dup(STDIN_FILENO);
+	shell->output_fd = dup(STDOUT_FILENO);
 	shell->prev_fd = -1;
 	shell->end = false;
 	return (shell);
 }
 
-void free_shell(t_shell *minishell)
+void reset_process_ids(t_shell *minishell)
+{
+	int	i;
+
+	i = 0;
+
+	while (i < 100)
+	{
+		minishell->process_ids[i] = 0;
+		i++;
+	}
+	minishell->process_count = 0;
+}
+
+void	free_shell(t_shell *minishell)
 {
 	if (minishell == NULL)
 		return;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/29 18:59:50 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/30 16:44:25 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ int	handle_redirection(t_shell *minishell, t_token *curr)
 	{
 		if (redirect_input(minishell, curr->next->next) != -1)
 		{
-			dup2(minishell->heredoc_fd, STDIN_FILENO);
-			close(minishell->heredoc_fd);
+			dup2(minishell->input_fd, STDIN_FILENO);
+			close(minishell->input_fd);
 			return (1);
 		}
 	}
@@ -63,8 +63,8 @@ int	handle_redirection(t_shell *minishell, t_token *curr)
 	{
 		if (redirect_output(minishell, curr->next->next) != -1)
 		{
-			dup2(minishell->heredoc_fd, STDOUT_FILENO);
-			close(minishell->heredoc_fd);
+			dup2(minishell->output_fd, STDOUT_FILENO);
+			close(minishell->output_fd);
 			return (1);
 		}
 	}
@@ -130,6 +130,20 @@ static void	execute_builtins_or_exc(int	i, t_token *curr, t_shell *minishell)
 		execute_command(i, curr, minishell);
 }
 
+void	restore_fds(int	input_fd, int output_fd)
+{
+	if (output_fd != STDOUT_FILENO)
+	{
+		dup2(output_fd, STDOUT_FILENO);
+		close(output_fd);
+	}
+	if (input_fd != STDIN_FILENO)
+	{
+		dup2(input_fd, STDIN_FILENO);
+		close(input_fd);
+	}
+}
+
 void	pipex(t_shell *minishell)
 {
 	int		i;
@@ -150,6 +164,7 @@ void	pipex(t_shell *minishell)
 		curr = curr->next;
 	}
 	wait_for_all_commands(minishell);
+	restore_fds(minishell->input_fd, minishell->output_fd);
 }
 // need to rewrite pipex
 /**
@@ -162,5 +177,3 @@ in echo i need to move the linked list till its a different type;
 1. check if there is execute_builtins
 2. echo Hello world > output.txt
 **/
-
-

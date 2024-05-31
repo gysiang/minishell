@@ -78,7 +78,42 @@ void	print_tokenlst(t_token *token_lst)
 	}
 }
 
-void handle_environment_variable(char **line, t_token **token_lst, t_shell *minishell)
+/*void handle_environment_variable(char **line, t_token **token_lst, t_shell *minishell)
+{
+    char *start = *line;
+    
+    // Check if the token is just a dollar sign
+    if (**line == '$' && ft_iswhitespace(*(*line + 1))) {
+        token_add_back(token_lst, "$", T_IDENTIFIER); // Add the dollar sign as a token
+        return;
+    }
+
+    if (**line == '$') {
+        (*line)++; // Move past the dollar sign
+        start = *line; // Update the start position
+    }
+
+    while (**line && !ft_iswhitespace(*line) && **line != '/') {
+        (*line)++; // Find end of the variable name
+    }
+
+    char *var_name = strndup(start, *line - start); // Extract variable name
+    char *expanded = get_env_value(minishell, var_name); // Get expanded value
+    free(var_name);
+
+    if (expanded) {
+        // Add the expanded variable as a token
+        token_add_back(token_lst, expanded, T_IDENTIFIER);
+    }
+
+    // Check if there's more text following the variable
+    if (**line != '\0') {
+        // Handle the rest of the line as separate tokens
+        handle_remaining_text(line, token_lst);
+    }
+}*/
+
+/*void handle_environment_variable(char **line, t_token **token_lst, t_shell *minishell)
 {
     (*line)++; // Move past the dollar sign
     char *start = *line;
@@ -87,6 +122,23 @@ void handle_environment_variable(char **line, t_token **token_lst, t_shell *mini
     char *var_name = strndup(start, *line - start); // Extract variable name
     char *expanded = get_env_value(minishell, var_name); // Get expanded value
     free(var_name);
+
+    if (expanded) {
+        // Add the expanded variable as a token
+        token_add_back(token_lst, expanded, T_IDENTIFIER);
+    }
+
+    // Check if there's more text following the variable
+    if (**line != '\0') {
+        // Handle the rest of the line as separate tokens
+        handle_remaining_text(line, token_lst);
+    }
+}*/
+
+void handle_environment_variable(char **line, t_token **token_lst, t_shell *minishell)
+{
+    char *var_name = "$"; // Treat the dollar sign as the variable name
+    char *expanded = get_env_value(minishell, var_name); // Get expanded value
 
     if (expanded) {
         // Add the expanded variable as a token

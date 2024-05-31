@@ -312,4 +312,3 @@ void	pipex(t_shell *minishell)
 	wait_for_all_commands(minishell);
 	restore_fds(minishell->input_fd, minishell->output_fd);
 }
-

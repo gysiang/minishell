@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 01:17:13 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/31 11:43:05 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,33 @@ int	check_builtin(char *s)
 	return (0);
 }
 
+int count_tokens(t_shell *minishell)
+{
+	int	count;
+	t_token *token;
+
+	count = 0;
+	token = minishell->cmd_list;
+	while (token != NULL)
+    {
+        count++;
+        token = token->next;
+    }
+	return (count);
+}
 int	execute_builtin_1(t_token *curr, t_shell *minishell)
 {
-	char	*s;
-
-	if (curr == NULL)
-		return (0);
-	s = curr->token;
-	if (ft_strncmp(s, "cd", 2) == 0)
+	if (ft_strncmp(curr->token, "cd", 2) == 0)
 	{
 		minishell_cd(minishell);
 		return (1);
 	}
-	if (ft_strncmp(s, "echo", 4) == 0)
+	if (ft_strncmp(curr->token, "echo", 4) == 0)
 	{
 		minishell_echo(minishell);
 		return (1);
 	}
-	if (ft_strncmp(s, "env", 3) == 0)
+	if (ft_strncmp(curr->token, "env", 3) == 0)
 	{
 		minishell_env(minishell);
 		return (1);
@@ -50,46 +59,13 @@ int	execute_builtin_1(t_token *curr, t_shell *minishell)
 	return (0);
 }
 
-int count_tokens(t_shell *minishell)
-{
-	int	count;
-	bool is_word;
-	t_token *token;
-
-	count = 0;
-	is_word = false;
-	token = minishell->cmd_list;
-	while (token != NULL)
-    {
-        char *current_token = token->token;
-        while (*current_token != '\0')
-        {
-            if (*current_token != ' ')
-            {
-                if (!is_word)
-                {
-                    count++;
-                    is_word = true;
-                }
-            }
-            else
-                is_word = false;
-            current_token++;
-        }
-        token = token->next;
-    }
-	return (count);
-}
-
 int execute_builtin_2(t_token *curr, t_shell *minishell)
 {
-	/***
 	int	count;
 
-	count = 0;
+	count = count_tokens(minishell);
     if (ft_strncmp(curr->token, "exit", 4) == 0)
     {
-		count = count_tokens(minishell);
         if (count > 2)
         {
             minishell_error_msg("exit", 43);
@@ -98,7 +74,6 @@ int execute_builtin_2(t_token *curr, t_shell *minishell)
         minishell_exit(minishell);
         return 1;
     }
-	**/
     if (ft_strncmp(curr->token, "export", 6) == 0)
     {
         minishell_export(minishell);
@@ -114,22 +89,17 @@ int execute_builtin_2(t_token *curr, t_shell *minishell)
 
 int	other_cmds(t_token *curr, t_shell *minishell)
 {
-	char	*s;
-
-	if (curr == NULL)
-		return (0);
-	s = curr->token;
-	if (ft_strcmp(s, "pwd") == 0)
+	if (ft_strcmp(curr->token, "pwd") == 0)
 	{
 		minishell_pwd(minishell);
 		return (1);
 	}
-	if (ft_strcmp(s, "history") == 0)
+	if (ft_strcmp(curr->token, "history") == 0)
 	{
 		print_history();
 		return (1);
 	}
-	if (ft_strcmp(s, "history -c") == 0)
+	if (ft_strcmp(curr->token, "history -c") == 0)
 	{
 		clear_history();
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 11:19:10 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/31 11:34:31 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,25 +102,25 @@ static void wait_for_all_commands(t_shell *minishell)
 	minishell->process_count = 0;
 }
 
-void	execute_builtins(t_token *curr, t_shell *minishell)
+void execute_builtins(t_token *curr, t_shell *minishell)
 {
-	int	pid;
+    int pid;
 
-	if (ft_strncmp(curr->token, "exit", 4) == 0)
-		execute_builtin_2(curr, minishell);
-	else
-	{
-		pid = fork();
-
-		if (pid == 0)
-		{
-			execute_builtin_1(curr, minishell);
-			execute_builtin_2(curr, minishell);
-			other_cmds(curr, minishell);
-		}
-		else
-			minishell->process_ids[minishell->process_count++] = pid;
-	}
+    if (ft_strncmp(curr->token, "exit", 4) == 0 || ft_strncmp(curr->token, "export", 6) == 0 || ft_strncmp(curr->token, "unset", 5) == 0)
+        execute_builtin_2(curr, minishell); // Only call execute_builtin_2 for exit, export, unset
+    else
+    {
+        pid = fork();
+        if (pid == 0)
+        {
+            if (ft_strncmp(curr->token, "cd", 2) == 0 || ft_strncmp(curr->token, "echo", 4) == 0 || ft_strncmp(curr->token, "env", 3) == 0)
+                execute_builtin_1(curr, minishell); // Only call execute_builtin_1 for cd, echo, env
+            other_cmds(curr, minishell);
+            exit(0); // Ensure child process exits after execution
+        }
+        else
+            minishell->process_ids[minishell->process_count++] = pid;
+    }
 }
 
 static void	execute_builtins_or_exc(int	i, t_token *curr, t_shell *minishell)

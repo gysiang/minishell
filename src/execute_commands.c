@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/26 10:25:48 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/31 01:17:13 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	execute_builtin_1(t_token *curr, t_shell *minishell)
 	return (0);
 }
 
-static int count_tokens(t_shell *minishell)
+int count_tokens(t_shell *minishell)
 {
 	int	count;
 	bool is_word;
@@ -83,6 +83,7 @@ static int count_tokens(t_shell *minishell)
 
 int execute_builtin_2(t_token *curr, t_shell *minishell)
 {
+	/***
 	int	count;
 
 	count = 0;
@@ -97,7 +98,8 @@ int execute_builtin_2(t_token *curr, t_shell *minishell)
         minishell_exit(minishell);
         return 1;
     }
-    else if (ft_strncmp(curr->token, "export", 6) == 0)
+	**/
+    if (ft_strncmp(curr->token, "export", 6) == 0)
     {
         minishell_export(minishell);
         return 1;

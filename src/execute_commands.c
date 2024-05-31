@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/26 10:25:48 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/31 09:49:40 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,31 +53,16 @@ int	execute_builtin_1(t_token *curr, t_shell *minishell)
 static int count_tokens(t_shell *minishell)
 {
 	int	count;
-	bool is_word;
 	t_token *token;
 
 	count = 0;
-	is_word = false;
 	token = minishell->cmd_list;
 	while (token != NULL)
     {
-        char *current_token = token->token;
-        while (*current_token != '\0')
-        {
-            if (*current_token != ' ')
-            {
-                if (!is_word)
-                {
-                    count++;
-                    is_word = true;
-                }
-            }
-            else
-                is_word = false;
-            current_token++;
-        }
+        count++;
         token = token->next;
     }
+	printf("Total tokens: %d\n", count);
 	return (count);
 }
 

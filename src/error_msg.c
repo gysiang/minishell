@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:35:43 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/21 13:48:47 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/31 09:49:35 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int minishell_error_msg(char *cmd, int error_no)
     if (error_no == 42)
         error_msg = ft_strdup("command not found");
     else if (error_no == 43)
-        error_msg = ft_strdup("too many arguements");
+        error_msg = ft_strdup("too many arguments");
     else if (error_no == EISDIR) {
         error_msg = ft_strdup("Is a directory");
     } else if (error_no == ENOENT) {

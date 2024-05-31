@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 10:07:39 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/31 10:15:33 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	execute_builtin_1(t_token *curr, t_shell *minishell)
 
 int execute_builtin_2(t_token *curr, t_shell *minishell)
 {
+	/***
 	int	count;
 
 	count = count_tokens(minishell);
@@ -78,7 +79,8 @@ int execute_builtin_2(t_token *curr, t_shell *minishell)
         minishell_exit(minishell);
         return 1;
     }
-    else if (ft_strncmp(curr->token, "export", 6) == 0)
+	**/
+    if (ft_strncmp(curr->token, "export", 6) == 0)
     {
         minishell_export(minishell);
         return 1;

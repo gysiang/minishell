@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/30 22:44:45 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/31 02:58:31 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ char	*join_from_index(char **cmd, int start_index);
 int	minishell_env(t_shell *minishell);
 void    env_realloc(t_shell *minishell);
 void	minishell_pwd();
+int count_tokens(t_shell *minishell);
 
 // utils
 int	ft_strcmp(const char *s1, const char *s2);
@@ -149,12 +150,15 @@ int minishell_error_msg(char *cmd, int error_no);
 void 	execute_command(int i, t_token *curr, t_shell *minishell);
 void	exec_cmd(char *cmd, t_shell *minishell);
 void	execute_builtins(t_token *curr, t_shell *minishell);
+void	execute_without_redirection(t_shell *minishell);
+void	execute_with_redirection(t_shell *minishell, int index);
 
 //pipex(utils)
 void	exit_handler(int exit_code);
 int	open_file(const char *file, int mode);
 void	ft_free_tab(char **tab);
 char	*get_path(char *cmd, t_shell *minishell);
+t_token	*move_lst_by_index(t_shell *minishell, int index);
 
 //pipex
 int	num_of_commands(t_shell *minishell);

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 11:43:28 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/31 14:28:58 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,4 +187,3 @@ void pipex(t_shell *minishell)
     wait_for_all_commands(minishell);
     restore_fds(minishell->input_fd, minishell->output_fd);
 }
-

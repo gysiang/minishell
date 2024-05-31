@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 13:48:41 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/31 13:52:29 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,10 +232,8 @@ void	execute_with_redirection(t_shell *minishell, int index)
 	head = minishell->cmd_list;
 	curr = head;
 	curr = move_lst_by_index(minishell, index);
-	// move to the redirection symbol
 	printf("curr node in ex curr: %s\n", curr->token);
 	handle_redirection(minishell, curr);
-	// execute the echo/command in the head node
 	i = 0;
 	if (head)
 	{

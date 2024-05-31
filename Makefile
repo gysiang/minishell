@@ -59,10 +59,18 @@ OBJ       := $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))
 
 # Compilation rules
 $(NAME): $(LIBFT) $(OBJ) $(INCLUDES)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LFLAGS) $(IFLAGS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LFLAGS) $(IFLAGS) $(ASCII_ART)
 
 all: $(NAME)
-
+	@echo "\033[0;32m"
+	@echo "_____________________________________"
+	@echo "   __  ____      _     __       ____ "
+	@echo "  /  |/  (_)__  (_)__ / /  ___ / / / "
+	@echo " / /|_/ / / _ \/ (_-</ _ \/ -_) / /  "
+	@echo "/_/  /_/_/_//_/_/___/_//_/\__/_/_/   "
+	@echo "       Compilation Complete          "
+	@echo "_____________________________________"
+	@echo "\033[0m"
 bonus: all
 
 $(LIBFT):
@@ -86,6 +94,8 @@ fclean: clean
 re: fclean all
 
 .PHONY: clean fclean re
+
+ASCII_ART := $(call ASCII_ART)
 
 # Norminette
 norm:

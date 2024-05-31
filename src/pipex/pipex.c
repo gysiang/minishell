@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 11:34:31 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/31 11:43:28 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,20 +106,30 @@ void execute_builtins(t_token *curr, t_shell *minishell)
 {
     int pid;
 
-    if (ft_strncmp(curr->token, "exit", 4) == 0 || ft_strncmp(curr->token, "export", 6) == 0 || ft_strncmp(curr->token, "unset", 5) == 0)
+    if (ft_strncmp(curr->token, "exit", 4) == 0 ||
+        ft_strncmp(curr->token, "export", 6) == 0 ||
+        ft_strncmp(curr->token, "unset", 5) == 0)
+    {
         execute_builtin_2(curr, minishell); // Only call execute_builtin_2 for exit, export, unset
+    }
     else
     {
         pid = fork();
         if (pid == 0)
         {
-            if (ft_strncmp(curr->token, "cd", 2) == 0 || ft_strncmp(curr->token, "echo", 4) == 0 || ft_strncmp(curr->token, "env", 3) == 0)
+            if (ft_strncmp(curr->token, "cd", 2) == 0 ||
+                ft_strncmp(curr->token, "echo", 4) == 0 ||
+                ft_strncmp(curr->token, "env", 3) == 0)
+            {
                 execute_builtin_1(curr, minishell); // Only call execute_builtin_1 for cd, echo, env
+            }
             other_cmds(curr, minishell);
             exit(0); // Ensure child process exits after execution
         }
         else
+        {
             minishell->process_ids[minishell->process_count++] = pid;
+        }
     }
 }
 
@@ -152,11 +162,15 @@ void pipex(t_shell *minishell)
     int i;
     t_token *curr;
     t_token *start_cmd;
+    int token_count;
 
     i = 0;
     curr = minishell->cmd_list;
     while (curr != NULL)
     {
+        token_count = count_tokens(minishell); // Count tokens at the start of command processing
+        printf("Total tokens: %d\n", token_count); // Display the total number of tokens
+
         if (check_redirection_type(curr))
             curr = curr->next;
         else if (curr->type == T_IDENTIFIER)
@@ -173,14 +187,4 @@ void pipex(t_shell *minishell)
     wait_for_all_commands(minishell);
     restore_fds(minishell->input_fd, minishell->output_fd);
 }
-// need to rewrite pipex
-/**
-echo,
-hello world
->>
-output.txt
 
-in echo i need to move the linked list till its a different type;
-1. check if there is execute_builtins
-2. echo Hello world > output.txt
-**/

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 11:19:31 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/31 11:43:05 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,6 @@ int count_tokens(t_shell *minishell)
 }
 int	execute_builtin_1(t_token *curr, t_shell *minishell)
 {
-	int	count;
-
-	count = count_tokens(minishell);
 	if (ft_strncmp(curr->token, "cd", 2) == 0)
 	{
 		minishell_cd(minishell);
@@ -59,7 +56,6 @@ int	execute_builtin_1(t_token *curr, t_shell *minishell)
 		minishell_env(minishell);
 		return (1);
 	}
-	printf("Total tokens: %d\n", count);
 	return (0);
 }
 
@@ -88,15 +84,11 @@ int execute_builtin_2(t_token *curr, t_shell *minishell)
         minishell_unset(minishell);
         return 1;
     }
-	printf("Total tokens: %d\n", count);
     return 0;
 }
 
 int	other_cmds(t_token *curr, t_shell *minishell)
 {
-	int	count;
-
-	count = count_tokens(minishell);
 	if (ft_strcmp(curr->token, "pwd") == 0)
 	{
 		minishell_pwd(minishell);
@@ -112,6 +104,5 @@ int	other_cmds(t_token *curr, t_shell *minishell)
 		clear_history();
 		return (1);
 	}
-	printf("Total tokens: %d\n", count);
 	return (0);
 }

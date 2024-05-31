@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 12:39:54 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/24 15:31:59 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/31 18:48:15 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,20 @@ static int is_valid_identifier(const char *str)
         return (0);
     return (1);
 }
-int	search_env(t_shell *minishell, char *var)
+int search_env(t_shell *minishell, char *var)
 {
-	int	i;
+    int i;
+    int var_len;
 
-	i = 0;
-	while (minishell->env[i])
-	{
-		if (ft_strncmp(minishell->env[i], var, ft_strlen(var)) == 0)
-			return (i);
-		i++;
-	}
-	return (-1);
+    var_len = ft_strlen(var);
+    i = 0;
+    while (minishell->env[i])
+    {
+        if (ft_strncmp(minishell->env[i], var, var_len) == 0 && minishell->env[i][var_len] == '=')
+            return (i);
+        i++;
+    }
+    return (-1);
 }
 
 static void shift_env_entries(t_shell *minishell, int index)
@@ -38,7 +40,6 @@ static void shift_env_entries(t_shell *minishell, int index)
         return;
     while (minishell->env[index] != NULL)
     {
-        free(minishell->env[index]);
         minishell->env[index] = minishell->env[index + 1];
         index++;
     }
@@ -56,6 +57,7 @@ static void unset_variable(t_shell *minishell, char *var_name)
     var_index = search_env(minishell, var_name);
     if (var_index >= 0)
     {
+        free(minishell->env[var_index]);
         shift_env_entries(minishell, var_index);
         printf("minishell: unset: removed '%s'\n", var_name);
     }

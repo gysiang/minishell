@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 13:52:29 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:46:39 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,21 +245,51 @@ void	execute_with_redirection(t_shell *minishell, int index)
 	close(saved_stdout);
 }
 
+static int	num_of_arguments(t_shell *minishell)
+{
+	int		i;
+	t_token *curr;
+
+	i = -1;
+	curr = minishell->cmd_list;
+	while (curr)
+	{
+		if (curr->type == T_IDENTIFIER)
+		{
+			i++;
+		}
+		else
+			return (i);
+		curr = curr->next;
+	}
+	return (i);
+}
+
 void	execute_without_redirection(t_shell *minishell)
 {
 	int		i;
+	int		num;
 	t_token	*curr;
 
 	i = 0;
+	num = 0;
 	curr = minishell->cmd_list;
 	printf("execute without redirections\n");
 	while (curr != NULL)
 	{
 		if (curr->type == T_IDENTIFIER)
 		{
+			if (ft_strcmp(curr->token, "echo") == 0)
+			{
+				num = num_of_arguments(minishell);
+				printf("number of arguments %d\n", num);
+			}
 			execute_builtins_or_exec(i++, curr, minishell);
-			if (curr->next && curr->next->type == T_IDENTIFIER)
+			while (num > 0)
+			{
 				curr = curr->next;
+				num--;
+			}
 		}
 		curr = curr->next;
 	}

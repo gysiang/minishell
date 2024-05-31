@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 09:49:40 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/31 10:07:39 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,31 +25,6 @@ int	check_builtin(char *s)
 	return (0);
 }
 
-int	execute_builtin_1(t_token *curr, t_shell *minishell)
-{
-	char	*s;
-
-	if (curr == NULL)
-		return (0);
-	s = curr->token;
-	if (ft_strncmp(s, "cd", 2) == 0)
-	{
-		minishell_cd(minishell);
-		return (1);
-	}
-	if (ft_strncmp(s, "echo", 4) == 0)
-	{
-		minishell_echo(minishell);
-		return (1);
-	}
-	if (ft_strncmp(s, "env", 3) == 0)
-	{
-		minishell_env(minishell);
-		return (1);
-	}
-	return (0);
-}
-
 static int count_tokens(t_shell *minishell)
 {
 	int	count;
@@ -62,18 +37,39 @@ static int count_tokens(t_shell *minishell)
         count++;
         token = token->next;
     }
-	printf("Total tokens: %d\n", count);
 	return (count);
+}
+int	execute_builtin_1(t_token *curr, t_shell *minishell)
+{
+	int	count;
+
+	count = count_tokens(minishell);
+	if (ft_strncmp(curr->token, "cd", 2) == 0)
+	{
+		minishell_cd(minishell);
+		return (1);
+	}
+	if (ft_strncmp(curr->token, "echo", 4) == 0)
+	{
+		minishell_echo(minishell);
+		return (1);
+	}
+	if (ft_strncmp(curr->token, "env", 3) == 0)
+	{
+		minishell_env(minishell);
+		return (1);
+	}
+	printf("Total tokens: %d\n", count);
+	return (0);
 }
 
 int execute_builtin_2(t_token *curr, t_shell *minishell)
 {
 	int	count;
 
-	count = 0;
+	count = count_tokens(minishell);
     if (ft_strncmp(curr->token, "exit", 4) == 0)
     {
-		count = count_tokens(minishell);
         if (count > 2)
         {
             minishell_error_msg("exit", 43);
@@ -92,30 +88,30 @@ int execute_builtin_2(t_token *curr, t_shell *minishell)
         minishell_unset(minishell);
         return 1;
     }
+	printf("Total tokens: %d\n", count);
     return 0;
 }
 
 int	other_cmds(t_token *curr, t_shell *minishell)
 {
-	char	*s;
+	int	count;
 
-	if (curr == NULL)
-		return (0);
-	s = curr->token;
-	if (ft_strcmp(s, "pwd") == 0)
+	count = count_tokens(minishell);
+	if (ft_strcmp(curr->token, "pwd") == 0)
 	{
 		minishell_pwd(minishell);
 		return (1);
 	}
-	if (ft_strcmp(s, "history") == 0)
+	if (ft_strcmp(curr->token, "history") == 0)
 	{
 		print_history();
 		return (1);
 	}
-	if (ft_strcmp(s, "history -c") == 0)
+	if (ft_strcmp(curr->token, "history -c") == 0)
 	{
 		clear_history();
 		return (1);
 	}
+	printf("Total tokens: %d\n", count);
 	return (0);
 }

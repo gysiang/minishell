@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 14:28:58 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/31 13:48:41 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,20 @@ int	num_of_pipes(t_shell *minishell)
 
 int	handle_redirection(t_shell *minishell, t_token *curr)
 {
-	if (curr->next && (curr->next->type == T_LESSER_THAN
-			|| curr->next->type == T_LEFT_SHIFT))
+	if (curr && (curr->type == T_LESSER_THAN
+			|| curr->type == T_LEFT_SHIFT))
 	{
-		if (redirect_input(minishell, curr->next->next) != -1)
+		if (redirect_input(minishell, curr) != -1)
 		{
 			dup2(minishell->input_fd, STDIN_FILENO);
 			close(minishell->input_fd);
 			return (1);
 		}
 	}
-	else if (curr->next && (curr->next->type == T_GREATER_THAN
-			|| curr->next->type == T_RIGHT_SHIFT))
+	else if (curr && (curr->type == T_GREATER_THAN
+			|| curr->type == T_RIGHT_SHIFT))
 	{
-		if (redirect_output(minishell, curr->next->next) != -1)
+		if (redirect_output(minishell, curr) != -1)
 		{
 			dup2(minishell->output_fd, STDOUT_FILENO);
 			close(minishell->output_fd);
@@ -133,7 +133,7 @@ void execute_builtins(t_token *curr, t_shell *minishell)
     }
 }
 
-static void	execute_builtins_or_exc(int	i, t_token *curr, t_shell *minishell)
+static void	execute_builtins_or_exec(int	i, t_token *curr, t_shell *minishell)
 {
 	if (check_builtin(curr->token))
 	{
@@ -156,7 +156,7 @@ void	restore_fds(int	input_fd, int output_fd)
 		close(input_fd);
 	}
 }
-
+/***
 void pipex(t_shell *minishell)
 {
     int i;
@@ -186,4 +186,101 @@ void pipex(t_shell *minishell)
     }
     wait_for_all_commands(minishell);
     restore_fds(minishell->input_fd, minishell->output_fd);
+} **/
+
+static int	check_for_redirections(t_shell *minishell)
+{
+	t_token	*curr;
+	int	i;
+
+	i = 0;
+	curr = minishell->cmd_list;
+	while (curr)
+	{
+		if (check_redirection_type(curr))
+			return (i);
+		curr = curr->next;
+		i++;
+	}
+	return (0);
+}
+
+t_token	*move_lst_by_index(t_shell *minishell, int index)
+{
+	t_token *curr;
+
+	curr = minishell->cmd_list;
+	while (curr != NULL && index > 0)
+	{
+		curr = curr->next;
+		index--;
+	}
+	return (curr);
+}
+
+void	execute_with_redirection(t_shell *minishell, int index)
+{
+	t_token *head;
+	t_token *curr;
+	int		saved_stdin;
+	int		saved_stdout;
+	int		i;
+
+	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
+	printf("execute with redirection\n");
+	head = minishell->cmd_list;
+	curr = head;
+	curr = move_lst_by_index(minishell, index);
+	// move to the redirection symbol
+	printf("curr node in ex curr: %s\n", curr->token);
+	handle_redirection(minishell, curr);
+	// execute the echo/command in the head node
+	i = 0;
+	if (head)
+	{
+		execute_builtins_or_exec(i, head, minishell);
+	}
+	dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdin);
+	dup2(saved_stdout, STDOUT_FILENO);
+	close(saved_stdout);
+}
+
+void	execute_without_redirection(t_shell *minishell)
+{
+	int		i;
+	t_token	*curr;
+
+	i = 0;
+	curr = minishell->cmd_list;
+	printf("execute without redirections\n");
+	while (curr != NULL)
+	{
+		if (curr->type == T_IDENTIFIER)
+		{
+			execute_builtins_or_exec(i++, curr, minishell);
+			if (curr->next && curr->next->type == T_IDENTIFIER)
+				curr = curr->next;
+		}
+		curr = curr->next;
+	}
+}
+
+void	pipex(t_shell *minishell)
+{
+	int	index;
+	int token_count;
+
+	index = check_for_redirections(minishell);
+	printf("index %d\n", index);
+	token_count = count_tokens(minishell);
+    printf("Total tokens: %d\n", token_count);
+	// if index > 0 means redirection is found
+	if (index > 0)
+		execute_with_redirection(minishell, index);
+	else
+		execute_without_redirection(minishell);
+	wait_for_all_commands(minishell);
+	restore_fds(minishell->input_fd, minishell->output_fd);
 }

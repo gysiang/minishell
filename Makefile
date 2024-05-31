@@ -59,7 +59,7 @@ OBJ       := $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))
 
 # Compilation rules
 $(NAME): $(LIBFT) $(OBJ) $(INCLUDES)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LFLAGS) $(IFLAGS) $(ASCII_ART)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LFLAGS) $(IFLAGS)
 
 all: $(NAME)
 	@echo "\033[0;32m"

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 19:36:29 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/17 14:26:53 by axlee            ###   ########.fr       */
+/*   Updated: 2024/05/31 19:48:53 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	sort_env(t_shell *minishell)
 	}
 }
 
-static void	set_env_entry(t_shell *minishell, char *new_entry, int idx)
+void	set_env_entry(t_shell *minishell, char *new_entry, int idx)
 {
 	int	current_length;
 

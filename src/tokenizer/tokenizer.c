@@ -51,18 +51,27 @@ int add_command_lst(char **line, t_token **token_lst)
 {
     while (ft_iswhitespace(*line)) // Skip leading whitespace
         (*line)++;
-    char *end = *line;
-    while (*end && !ft_iswhitespace(end)) // Find end of the word
-        end++;
-    if (*line != end)
+    char *start = *line;
+    while (**line && !ft_iswhitespace(*line) && **line != '|' && **line != '<' && **line != '>' && **line != '\'' && **line != '\"') // Find end of the word
+        (*line)++;
+    if (**line == '\"' || **line == '\'') // Handle quoted strings
     {
-        char *cmd = strndup(*line, end - *line);
+        char quote_type = **line;
+        (*line)++; // Move past the opening quote
+        while (**line && **line != quote_type) // Find the closing quote
+            (*line)++;
+        if (**line == quote_type)
+            (*line)++; // Move past the closing quote
+    }
+    if (*line != start)
+    {
+        char *cmd = strndup(start, *line - start);
         token_add_back(token_lst, cmd, T_IDENTIFIER);
         free(cmd);
-        *line = end; // Move line pointer past the processed token
     }
     return (0);
 }
+
 
 // print the linked list that holds the tokens;
 void	print_tokenlst(t_token *token_lst)
@@ -215,43 +224,48 @@ void handle_quotes(char **line, t_token **token_lst)
         (*line)++; // Move past the closing quote
     } else {
         // If no closing quote is found, treat the opening quote as a literal character
-        char literal_quote[2] = {quote_type, '\0'};
-        token_add_back(token_lst, literal_quote, T_IDENTIFIER);
+        char *literal_quote = (char *)malloc(2);
+        if (literal_quote) {
+            literal_quote[0] = quote_type;
+            literal_quote[1] = '\0';
+            token_add_back(token_lst, literal_quote, T_IDENTIFIER);
+            free(literal_quote);
+        }
     }
 }
 
-t_token	*token_processor(char *line, t_shell *minishell)
+t_token *token_processor(char *line, t_shell *minishell)
 {
-	t_token	*token_lst;
-	(void)minishell;
-	token_lst = NULL;
-	while (*line != '\0')
-	{
-		if (ft_iswhitespace(line))
-			line++;
-		else if (*line == '\\')
-			handle_backslash(&line, &token_lst);
-		else if (*line == '$')
-			handle_environment_variable(&line, &token_lst, minishell);
-		else if (*line == '\"' || *line == '\'')
-			handle_quotes(&line, &token_lst);
-		else if (ft_strncmp(line, "|", 1) == 0)
-			add_symbol_lst(&line, T_PIPE, &token_lst);
+    t_token *token_lst;
+    (void)minishell;
+    token_lst = NULL;
+    while (*line != '\0')
+    {
+        if (ft_iswhitespace(line))
+            line++;
+        else if (*line == '\\')
+            handle_backslash(&line, &token_lst);
+        else if (*line == '$')
+            handle_environment_variable(&line, &token_lst, minishell);
+        else if (*line == '\"' || *line == '\'')
+            handle_quotes(&line, &token_lst);
+        else if (ft_strncmp(line, "|", 1) == 0)
+            add_symbol_lst(&line, T_PIPE, &token_lst);
         else if (ft_strncmp(line, "<<", 2) == 0)
-			add_symbol_lst(&line, T_LEFT_SHIFT, &token_lst);
-		else if (ft_strncmp(line, ">>", 2) == 0)
-			add_symbol_lst(&line, T_RIGHT_SHIFT, &token_lst);
-		else if (ft_strncmp(line, "<", 1) == 0)
-			add_symbol_lst(&line, T_LESSER_THAN, &token_lst);
-		else if (ft_strncmp(line, ">", 1) == 0)
-			add_symbol_lst(&line, T_GREATER_THAN, &token_lst);
-		else
-		{
-			add_command_lst(&line, &token_lst);
-			while (ft_iswhitespace(line))
-				line++;
-		}
-	}
-	token_lst = token_parser(token_lst, minishell);
-	return (token_lst);
+            add_symbol_lst(&line, T_LEFT_SHIFT, &token_lst);
+        else if (ft_strncmp(line, ">>", 2) == 0)
+            add_symbol_lst(&line, T_RIGHT_SHIFT, &token_lst);
+        else if (ft_strncmp(line, "<", 1) == 0)
+            add_symbol_lst(&line, T_LESSER_THAN, &token_lst);
+        else if (ft_strncmp(line, ">", 1) == 0)
+            add_symbol_lst(&line, T_GREATER_THAN, &token_lst);
+        else
+        {
+            add_command_lst(&line, &token_lst);
+            while (ft_iswhitespace(line))
+                line++;
+        }
+    }
+    token_lst = token_parser(token_lst, minishell);
+    return (token_lst);
 }

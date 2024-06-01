@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/31 14:13:31 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/02 00:19:04 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,14 +151,15 @@ void 	execute_command(int i, t_token *curr, t_shell *minishell);
 void	exec_cmd(char *cmd, t_shell *minishell);
 void	execute_builtins(t_token *curr, t_shell *minishell);
 void	execute_without_redirection(t_shell *minishell);
-void	execute_with_redirection(t_shell *minishell, int index);
+void	execute_with_redirection(t_token *token, t_shell *minishell, int index);
+void	execute_pipeline(t_token *curr, t_shell *minishell);
 
 //pipex(utils)
 void	exit_handler(int exit_code);
 int	open_file(const char *file, int mode);
 void	ft_free_tab(char **tab);
 char	*get_path(char *cmd, t_shell *minishell);
-t_token	*move_lst_by_index(t_shell *minishell, int index);
+t_token	*move_lst_by_index(t_token *curr, int index);
 
 //pipex
 int	num_of_commands(t_shell *minishell);

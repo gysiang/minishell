@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 14:28:26 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/01 20:31:47 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void execute_command(int i, t_token *curr, t_shell *minishell)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (!handle_redirection(minishell, curr))
-		{
 			if (minishell->prev_fd != -1)
 			{
 				dup2(minishell->prev_fd, STDIN_FILENO);
@@ -39,7 +37,6 @@ void execute_command(int i, t_token *curr, t_shell *minishell)
 				close(pipe_fd[0]);
                 close(pipe_fd[1]);
 			}
-		}
         exec_cmd(curr->token, minishell);
 	}
 	else

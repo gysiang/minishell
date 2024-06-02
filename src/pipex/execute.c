@@ -171,15 +171,14 @@ void exec_cmd(char *cmd, t_shell *minishell)
         minishell->last_return = 1;
         return;
     }
-    /***
-    if (execute_builtin_1(minishell) || execute_builtin_2(minishell) || other_cmds(minishell)) {
-        printf("Executed a builtin or other command\n");
-        ft_free_tab(s_cmd);
-        return;
-    } **/
 
-    path = get_path(s_cmd[0], minishell);
-    if (!path) {
+    // Check if the command is a full path
+    if (s_cmd[0][0] == '/' || s_cmd[0][0] == '.')
+        path = s_cmd[0];
+    else 
+        path = get_path(s_cmd[0], minishell);
+    if (!path)
+    {
         printf("Command not found: %s\n", s_cmd[0]);
         return_code = minishell_error_msg(s_cmd[0], 42);
         minishell->last_return = return_code;

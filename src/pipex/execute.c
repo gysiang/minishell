@@ -6,12 +6,102 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/01 20:31:47 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/02 13:17:35 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	execute_builtin_with_no_exit(t_token *curr, t_shell *minishell)
+{
+	execute_builtin_1(curr, minishell);
+	other_cmds(curr, minishell);
+}
+
+void	execute_single_command(t_token *curr, t_shell *minishell)
+{
+	int pid;
+
+	printf("in exe single command\n");
+	pid = fork();
+	if (pid == 0)
+	{
+		if (minishell->prev_fd != -1)
+		{
+			dup2(minishell->prev_fd, STDIN_FILENO);
+			close(minishell->prev_fd);
+		}
+		exec_cmd(curr->token, minishell);
+	}
+	else
+	{
+		minishell->process_ids[minishell->process_count++] = pid;
+		if (minishell->prev_fd != -1)
+			close(minishell->prev_fd);
+	}
+}
+
+void	execute_pipeline(t_token *curr, t_shell *minishell)
+{
+	int pipe_fd[2];
+	int	pid;
+
+	printf("in exe pipeline\n");
+	if (pipe(pipe_fd) == -1)
+		exit(EXIT_FAILURE);
+	pid = fork();
+	if (pid == 0)
+	{
+		if (minishell->prev_fd != -1)
+		{
+			dup2(minishell->prev_fd, STDIN_FILENO);
+			close(minishell->prev_fd);
+		}
+		dup2(pipe_fd[1], STDOUT_FILENO);
+		close(pipe_fd[1]);
+		close(pipe_fd[0]);
+		if (check_builtin(curr->token))
+		{
+			execute_builtin_1(curr, minishell);
+			other_cmds(curr, minishell);
+			exit(0);
+		}
+		else
+			exec_cmd(curr->token, minishell);
+	}
+	else
+	{
+		minishell->process_ids[minishell->process_count++] = pid;
+		if (minishell->prev_fd != -1)
+			close(minishell->prev_fd);
+		minishell->prev_fd = pipe_fd[0];
+		close(pipe_fd[1]);
+	}
+}
+
+void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
+{
+	t_token *head;
+	t_token *curr;
+	int		saved_stdin;
+	int		saved_stdout;
+
+	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
+	printf("execute with redirection\n");
+	if (!ft_strncmp(minishell->cmd_list->token, "echo", 4))
+		head = minishell->cmd_list;
+	else
+		head = token;
+	curr = head;
+	curr = move_lst_by_index(curr, index);
+	if (handle_redirection(minishell, curr))
+	{
+		execute_builtin_or_exec(head, minishell);
+	}
+	restore_fds(saved_stdin, saved_stdout);
+}
+/***
 void execute_command(int i, t_token *curr, t_shell *minishell)
 {
 	int pipe_fd[2];
@@ -50,7 +140,7 @@ void execute_command(int i, t_token *curr, t_shell *minishell)
             close(pipe_fd[1]);
 		}
     }
-}
+} **/
 
 void exec_cmd(char *cmd, t_shell *minishell)
 {

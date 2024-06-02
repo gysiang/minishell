@@ -124,6 +124,7 @@ int search_env_by_var(t_shell *minishell, const char *var);
 void  sort_env(t_shell *minishell);
 void init_env(t_shell *minishell, char **envp);
 void set_env(t_shell *minishell, const char *var, const char *value);
+void	set_env_entry(t_shell *minishell, char *new_entry, int idx);
 
 // redirect
 //void	redirect(t_shell *minishell, t_cmd *cmd, int *redir);

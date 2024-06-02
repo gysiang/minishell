@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 11:43:05 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/02 13:09:29 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ int count_tokens(t_shell *minishell)
     }
 	return (count);
 }
+
 int	execute_builtin_1(t_token *curr, t_shell *minishell)
 {
 	if (ft_strncmp(curr->token, "cd", 2) == 0)
 	{
-		minishell_cd(minishell);
-		return (1);
+		return (minishell_cd(minishell), 1);
 	}
 	if (ft_strncmp(curr->token, "echo", 4) == 0)
 	{
@@ -56,6 +56,16 @@ int	execute_builtin_1(t_token *curr, t_shell *minishell)
 		minishell_env(minishell);
 		return (1);
 	}
+	if (ft_strncmp(curr->token, "export", 6) == 0)
+    {
+        minishell_export(minishell);
+        return 1;
+    }
+    else if (ft_strncmp(curr->token, "unset", 5) == 0)
+    {
+        minishell_unset(minishell);
+        return 1;
+    }
 	return (0);
 }
 
@@ -74,17 +84,7 @@ int execute_builtin_2(t_token *curr, t_shell *minishell)
         minishell_exit(minishell);
         return 1;
     }
-    if (ft_strncmp(curr->token, "export", 6) == 0)
-    {
-        minishell_export(minishell);
-        return 1;
-    }
-    else if (ft_strncmp(curr->token, "unset", 5) == 0)
-    {
-        minishell_unset(minishell);
-        return 1;
-    }
-    return 0;
+    return (0);
 }
 
 int	other_cmds(t_token *curr, t_shell *minishell)

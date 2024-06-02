@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/02 21:06:00 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/02 22:05:42 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,11 @@ void	pipex(t_shell *minishell)
 	{
 		printf("current token in process: %s\n", curr->token);
 		if (curr->type == T_IDENTIFIER && (!curr->next))
+		{
 			execute_builtin_or_exec(curr, minishell);
+			curr = curr->next;
+			continue;
+		}
 		if ((curr->type == T_IDENTIFIER) && (curr->next) && (curr->next->type == T_PIPE))
 			execute_pipeline(curr, minishell);
 		if (curr->type == T_IDENTIFIER && (check_builtin(curr->token) == 1))

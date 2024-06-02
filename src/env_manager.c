@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 19:36:29 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/31 19:48:53 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/02 21:52:48 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	set_env(t_shell *minishell, const char *var, const char *value)
 	new_entry[var_len] = '=';
 	ft_strcpy(&new_entry[var_len + 1], value);
 	set_env_entry(minishell, new_entry, idx);
+	printf("Set environment variable: %s=%s\n", var, value);
 }
 
 void	init_env(t_shell *minishell, char **envp)
@@ -79,6 +80,7 @@ void	init_env(t_shell *minishell, char **envp)
 	int		i;
 	int		j;
 	char	*equal_sign;
+	char	*cwd;
 
 	i = 0;
 	j = 0;
@@ -87,8 +89,7 @@ void	init_env(t_shell *minishell, char **envp)
 	while (envp[i])
 	{
 		equal_sign = ft_strchr(envp[i], '=');
-		if (equal_sign && !ft_strnstr(envp[i], "_WORKSPACE_", equal_sign
-				- &envp[i][0]))
+		if (equal_sign && !ft_strnstr(envp[i], "_WORKSPACE_", equal_sign - envp[i]))
 		{
 			if (j == minishell->env_size - 1)
 				env_realloc(minishell);
@@ -96,5 +97,18 @@ void	init_env(t_shell *minishell, char **envp)
 			j++;
 		}
 		i++;
+	}
+
+	// Initialize OLDPWD to the current working directory
+	cwd = getcwd(NULL, 0);
+	if (cwd)
+	{
+		printf("Initializing OLDPWD with current working directory: %s\n", cwd); // Debug print
+		set_env(minishell, "OLDPWD", cwd);
+		free(cwd);
+	}
+	else
+	{
+		perror("getcwd failed");
 	}
 }

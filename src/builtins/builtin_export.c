@@ -40,6 +40,16 @@ static int is_valid_identifier(const char *str)
     return (1);
 }
 
+static void create_env_entry(char *dest, const char *var_name, const char *var_value)
+{
+    while (*var_name)
+        *dest++ = *var_name++;
+    *dest++ = '=';
+    while (*var_value)
+        *dest++ = *var_value++;
+    *dest = '\0';
+}
+
 static int save_var(t_shell *minishell, char *content)
 {
     char *var_name;
@@ -61,25 +71,13 @@ static int save_var(t_shell *minishell, char *content)
     }
 
     var_name = get_var_name(content);
-    if (!var_name)
+    if (!var_name || !is_valid_identifier(var_name))
     {
         ft_putstr_fd("minishell: export: `", 2);
         ft_putstr_fd(content, 2);
         ft_putstr_fd("': not a valid identifier\n", 2);
         return (1);
     }
-
-    printf("Extracted variable name: %s\n", var_name); // Debugging print statement
-
-    if (!is_valid_identifier(var_name))
-    {
-        ft_putstr_fd("minishell: export: `", 2);
-        ft_putstr_fd(content, 2);
-        ft_putstr_fd("': not a valid identifier\n", 2);
-        free(var_name);
-        return (1);
-    }
-
     var_value = ft_strchr(content, '=') + 1;
     printf("Extracted variable value: %s\n", var_value); // Debugging print statement
 
@@ -93,9 +91,7 @@ static int save_var(t_shell *minishell, char *content)
             *end_quote = '\0';
         }
     }
-
     printf("Processed variable value: %s\n", var_value); // Debugging print statement
-
     var_index = search_env(minishell, var_name);
     if (var_index == -1)
     {
@@ -111,7 +107,7 @@ static int save_var(t_shell *minishell, char *content)
     ft_strcpy(new_entry, var_name);
     ft_strcat(new_entry, "=");
     ft_strcat(new_entry, var_value);
-
+    create_env_entry(new_entry, var_name, var_value);
     printf("Setting environment variable: %s\n", new_entry); // Debugging print statement
 
     set_env_entry(minishell, new_entry, var_index);
@@ -121,9 +117,9 @@ static int save_var(t_shell *minishell, char *content)
 
 int minishell_export(t_shell *minishell)
 {
-	t_token	*tokens;
-	t_token	*current;
-	int	result;
+    t_token *tokens;
+    t_token *current;
+    int result;
 
     if (!minishell || !minishell->cmd_list)
     {
@@ -140,6 +136,7 @@ int minishell_export(t_shell *minishell)
     result = 0;
     while (current)
     {
+        printf("Processing token: %s\n", current->token); // Debugging print statement
         result = save_var(minishell, current->token);
         if (result != 0)
             return result;  // Return error code if save_var fails

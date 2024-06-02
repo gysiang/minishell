@@ -1,1 +1,2 @@
-hello 
+inside minishell echo
+hello world 

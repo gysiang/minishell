@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/02 13:41:15 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/02 13:02:32 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,25 +148,36 @@ char *ft_strjoin_free(char **s1, char const *s2);
 int minishell_error_msg(char *cmd, int error_no);
 
 //pipex(execute)
+void	execute_single_command(t_token *curr, t_shell *minishell);
+void 	execute_builtin_with_no_exit(t_token *curr, t_shell *minishell);
+void	execute_builtin_or_exec(t_token *curr, t_shell *minishell);
 void 	execute_command(int i, t_token *curr, t_shell *minishell);
 void	exec_cmd(char *cmd, t_shell *minishell);
-void	execute_builtins(t_token *curr, t_shell *minishell);
-void	execute_without_redirection(t_shell *minishell);
-void	execute_with_redirection(t_shell *minishell, int index);
+void	execute_pipeline(t_token *curr, t_shell *minishell);
+void	execute_with_redirection(t_token *token, t_shell *minishell, int index);
+
 
 //pipex(utils)
 void	exit_handler(int exit_code);
 int	open_file(const char *file, int mode);
 void	ft_free_tab(char **tab);
 char	*get_path(char *cmd, t_shell *minishell);
-t_token	*move_lst_by_index(t_shell *minishell, int index);
+void	restore_fds(int	input_fd, int output_fd);
 
-//pipex
+//pipex(utils1)
 int	num_of_commands(t_shell *minishell);
 int	num_of_pipes(t_shell *minishell);
+int	num_of_arguments(t_shell *minishell);
+t_token	*move_lst_by_index(t_token *curr, int index);
+
+//pipex(utils2)
+int	check_redirection_type(t_token *curr);
+int	check_for_redirections(t_shell *minishell);
+
+//pipex
 int	handle_redirection(t_shell *minishell, t_token *curr);
+t_token	*handle_echo(t_token *curr, t_shell *minishell);
 void	pipex(t_shell *minishell);
-void	restore_fds(int	input_fd, int output_fd);
 
 // tokenizer
 void	token_add_back(t_token **head, char *token, t_token_type type);

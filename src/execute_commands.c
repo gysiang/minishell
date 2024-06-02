@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 11:43:05 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/02 21:06:57 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int count_tokens(t_shell *minishell)
     }
 	return (count);
 }
+
 int	execute_builtin_1(t_token *curr, t_shell *minishell)
 {
 	if (ft_strncmp(curr->token, "cd", 2) == 0)
@@ -56,25 +57,7 @@ int	execute_builtin_1(t_token *curr, t_shell *minishell)
 		minishell_env(minishell);
 		return (1);
 	}
-	return (0);
-}
-
-int execute_builtin_2(t_token *curr, t_shell *minishell)
-{
-	int	count;
-
-	count = count_tokens(minishell);
-    if (ft_strncmp(curr->token, "exit", 4) == 0)
-    {
-        if (count > 2)
-        {
-            minishell_error_msg("exit", 43);
-            return 1;
-        }
-        minishell_exit(minishell);
-        return 1;
-    }
-    if (ft_strncmp(curr->token, "export", 6) == 0)
+	if (ft_strncmp(curr->token, "export", 6) == 0)
     {
         minishell_export(minishell);
         return 1;
@@ -84,7 +67,27 @@ int execute_builtin_2(t_token *curr, t_shell *minishell)
         minishell_unset(minishell);
         return 1;
     }
-    return 0;
+	return (0);
+}
+
+int execute_builtin_2(t_token *curr, t_shell *minishell)
+{
+	int	count;
+
+	count = count_tokens(minishell);
+	if (ft_strncmp(curr->token, "exit", 4) == 0)
+	{
+		//printf("in minishell exit\n");
+		//printf("count: %d\n", count);
+		if (count > 2)
+		{
+			minishell_error_msg("exit", 43);
+			return (1);
+		}
+		minishell_exit(minishell);
+		return (1);
+	}
+	return (0);
 }
 
 int	other_cmds(t_token *curr, t_shell *minishell)

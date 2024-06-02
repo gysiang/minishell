@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/02 13:17:37 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/02 21:06:00 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void execute_builtin_or_exec(t_token *curr, t_shell *minishell)
 	int builtin_type ;
 
 	builtin_type = check_builtin(curr->token);
+	//printf("builtin type: %d\n", builtin_type);
+	//printf("curr type in builtin: %s\n", curr->token);
 	if (builtin_type == 1)
 	{
 		execute_builtin_1(curr, minishell);
@@ -82,6 +84,7 @@ t_token	*handle_echo(t_token *curr, t_shell *minishell)
 	num = num_of_arguments(minishell);
 	index = check_for_redirections(minishell);
 	num_of_pipe = num_of_pipes(minishell);
+	//printf("in handle echo args: %d\n", num);
 	if (num_of_pipe == 0 && (index == 0))
 	{
 		execute_builtin_or_exec(curr, minishell);
@@ -106,7 +109,7 @@ void	pipex(t_shell *minishell)
 			execute_builtin_or_exec(curr, minishell);
 		if ((curr->type == T_IDENTIFIER) && (curr->next) && (curr->next->type == T_PIPE))
 			execute_pipeline(curr, minishell);
-		if (curr->type == T_IDENTIFIER && !ft_strncmp(curr->token, "echo", 4))
+		if (curr->type == T_IDENTIFIER && (check_builtin(curr->token) == 1))
 		{
 			curr = handle_echo(curr, minishell);
 		}

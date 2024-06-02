@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/02 13:09:29 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/02 21:06:57 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ int	execute_builtin_1(t_token *curr, t_shell *minishell)
 {
 	if (ft_strncmp(curr->token, "cd", 2) == 0)
 	{
-		return (minishell_cd(minishell), 1);
+		minishell_cd(minishell);
+		return (1);
 	}
 	if (ft_strncmp(curr->token, "echo", 4) == 0)
 	{
@@ -74,17 +75,19 @@ int execute_builtin_2(t_token *curr, t_shell *minishell)
 	int	count;
 
 	count = count_tokens(minishell);
-    if (ft_strncmp(curr->token, "exit", 4) == 0)
-    {
-        if (count > 2)
-        {
-            minishell_error_msg("exit", 43);
-            return 1;
-        }
-        minishell_exit(minishell);
-        return 1;
-    }
-    return (0);
+	if (ft_strncmp(curr->token, "exit", 4) == 0)
+	{
+		//printf("in minishell exit\n");
+		//printf("count: %d\n", count);
+		if (count > 2)
+		{
+			minishell_error_msg("exit", 43);
+			return (1);
+		}
+		minishell_exit(minishell);
+		return (1);
+	}
+	return (0);
 }
 
 int	other_cmds(t_token *curr, t_shell *minishell)

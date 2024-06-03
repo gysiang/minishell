@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 19:36:29 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/03 11:45:03 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/03 13:16:52 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ void	init_env(t_shell *minishell, char **envp)
 	while (envp[i])
 	{
 		equal_sign = ft_strchr(envp[i], '=');
-		if (equal_sign && !ft_strnstr(envp[i], "_WORKSPACE_", equal_sign - envp[i]))
+		if (equal_sign && !ft_strnstr(envp[i], "_WORKSPACE_",
+				equal_sign - envp[i]))
 		{
 			if (j == minishell->env_size - 1)
 				env_realloc(minishell);

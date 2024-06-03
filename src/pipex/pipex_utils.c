@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:23:30 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/02 09:16:02 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/03 13:10:36 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*get_path(char *cmd, t_shell *minishell)
 	return (NULL);
 }
 
-void	restore_fds(int	input_fd, int output_fd)
+void	restore_fds(int input_fd, int output_fd)
 {
 	if (output_fd != STDOUT_FILENO)
 	{

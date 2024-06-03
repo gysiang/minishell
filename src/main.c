@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/30 23:55:22 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/03 12:54:43 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*read_input_line(t_shell *g_shell)
 		{
 			printf("exit\n");
 			g_shell->end = 1;
-			break;
+			break ;
 		}
 		trimmed_line = line;
 		while (*trimmed_line == ' ' || *trimmed_line == '\t')
@@ -42,7 +42,7 @@ char	*read_input_line(t_shell *g_shell)
 
 void	process_command_line(t_shell *minishell, char *line)
 {
-	t_token *token_lst;
+	t_token	*token_lst;
 
 	token_lst = token_processor(line, minishell);
 	print_tokenlst(token_lst);
@@ -75,10 +75,10 @@ void	main_loop(t_shell *g_shell)
 
 int	main(int argc, char **argv, char **envp)
 {
+	t_shell	*g_shell;
+
 	(void)argc;
 	(void)argv;
-	t_shell *g_shell;
-
 	initialize_shell(&g_shell, envp);
 	main_loop(g_shell);
 	cleanup(g_shell);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 21:03:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/30 16:54:56 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/03 12:57:03 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static void	signal_exit(int signal_number)
 // Need to reduce the length of this line
 static void	error_eof(char *end_of_file)
 {
-	ft_putstr_fd("minishell: warning: here_document delimited by end-of-file (wanted ", 2);
+	ft_putstr_fd("minishell: warning: here_document delimited by", 2);
+	ft_putstr_fd("end-of-file (wanted ", 2);
 	ft_putstr_fd(end_of_file, 2);
 	ft_putendl_fd(")", 2);
 }

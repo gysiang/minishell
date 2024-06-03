@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 12:39:54 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 18:48:15 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/03 13:24:40 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int is_valid_identifier(const char *str)
+static int  is_valid_identifier(const char *str)
 {
     if (str == NULL || *str == '\0' || ft_isdigit(*str))
         return (0);

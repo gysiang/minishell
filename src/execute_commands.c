@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/03 11:34:05 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/03 13:38:20 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,18 @@ int	check_builtin(char *s)
 	return (0);
 }
 
-int count_tokens(t_shell *minishell)
+int	count_tokens(t_shell *minishell)
 {
-	int	count;
-	t_token *token;
+	int		count;
+	t_token	*token;
 
 	count = 0;
 	token = minishell->cmd_list;
 	while (token != NULL)
-    {
-        count++;
-        token = token->next;
-    }
+	{
+		count++;
+		token = token->next;
+	}
 	return (count);
 }
 
@@ -58,28 +58,16 @@ int	execute_builtin_1(t_token *curr, t_shell *minishell)
 		minishell_env(minishell);
 		return (1);
 	}
-	if (ft_strncmp(curr->token, "export", 6) == 0)
-    {
-        minishell_export(minishell);
-        return 1;
-    }
-    else if (ft_strncmp(curr->token, "unset", 5) == 0)
-    {
-        minishell_unset(minishell);
-        return 1;
-    }
 	return (0);
 }
 
-int execute_builtin_2(t_token *curr, t_shell *minishell)
+int	execute_builtin_2(t_token *curr, t_shell *minishell)
 {
 	int	count;
 
 	count = count_tokens(minishell);
 	if (ft_strncmp(curr->token, "exit", 4) == 0)
 	{
-		//printf("in minishell exit\n");
-		//printf("count: %d\n", count);
 		if (count > 2)
 		{
 			minishell_error_msg("exit", 43);
@@ -88,14 +76,26 @@ int execute_builtin_2(t_token *curr, t_shell *minishell)
 		minishell_exit(minishell);
 		return (1);
 	}
+	if (ft_strncmp(curr->token, "export", 6) == 0)
+	{
+		minishell_export(minishell);
+		return (1);
+	}
+	if (ft_strncmp(curr->token, "unset", 5) == 0)
+	{
+		minishell_unset(minishell);
+		return (1);
+	}
 	return (0);
 }
 
 int	other_cmds(t_token *curr, t_shell *minishell)
 {
+	(void)minishell;
+
 	if (ft_strcmp(curr->token, "pwd") == 0)
 	{
-		minishell_pwd(minishell);
+		minishell_pwd();
 		return (1);
 	}
 	if (ft_strcmp(curr->token, "history") == 0)

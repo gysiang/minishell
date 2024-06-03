@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_msg.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:35:43 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 09:49:35 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/03 13:24:54 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int minishell_error_msg(char *cmd, int error_no)
     error = ft_strdup("minishell: ");
     error = ft_strjoin_free(&error, cmd);
     error = ft_strjoin_free(&error, ": ");
-    
+
     // Specific error messages
     if (error_no == 42)
         error_msg = ft_strdup("command not found");
@@ -74,7 +74,7 @@ int minishell_error_msg(char *cmd, int error_no)
     } else {
         error_msg = ft_strdup(strerror(error_no));
     }
-    
+
     error = ft_strjoin_free(&error, error_msg);
     free(error_msg);
     ft_putendl_fd(error, 2);

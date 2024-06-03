@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 19:36:29 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/02 21:52:48 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/03 11:45:03 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	set_env_entry(t_shell *minishell, char *new_entry, int idx)
 		minishell->env[current_length] = new_entry;
 		minishell->env[current_length + 1] = NULL;
 	}
+	printf("Updated environment entry: %s\n", new_entry);
 }
 
 void	set_env(t_shell *minishell, const char *var, const char *value)
@@ -72,7 +73,6 @@ void	set_env(t_shell *minishell, const char *var, const char *value)
 	new_entry[var_len] = '=';
 	ft_strcpy(&new_entry[var_len + 1], value);
 	set_env_entry(minishell, new_entry, idx);
-	printf("Set environment variable: %s=%s\n", var, value);
 }
 
 void	init_env(t_shell *minishell, char **envp)
@@ -80,7 +80,6 @@ void	init_env(t_shell *minishell, char **envp)
 	int		i;
 	int		j;
 	char	*equal_sign;
-	char	*cwd;
 
 	i = 0;
 	j = 0;
@@ -97,18 +96,5 @@ void	init_env(t_shell *minishell, char **envp)
 			j++;
 		}
 		i++;
-	}
-
-	// Initialize OLDPWD to the current working directory
-	cwd = getcwd(NULL, 0);
-	if (cwd)
-	{
-		printf("Initializing OLDPWD with current working directory: %s\n", cwd); // Debug print
-		set_env(minishell, "OLDPWD", cwd);
-		free(cwd);
-	}
-	else
-	{
-		perror("getcwd failed");
 	}
 }

@@ -1,2 +1,1 @@
-inside minishell echo
-hello world 
+hi this is a test 

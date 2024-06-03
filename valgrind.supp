@@ -1,0 +1,7 @@
+{
+   readline_memory_leak
+   Memcheck:Leak
+   fun:readline
+   fun:read_input_line
+}
+

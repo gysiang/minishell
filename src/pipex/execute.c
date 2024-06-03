@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/02 13:17:35 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/03 13:09:47 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	execute_builtin_with_no_exit(t_token *curr, t_shell *minishell)
 
 void	execute_single_command(t_token *curr, t_shell *minishell)
 {
-	int pid;
+	int	pid;
 
 	printf("in exe single command\n");
 	pid = fork();
@@ -43,7 +43,7 @@ void	execute_single_command(t_token *curr, t_shell *minishell)
 
 void	execute_pipeline(t_token *curr, t_shell *minishell)
 {
-	int pipe_fd[2];
+	int	pipe_fd[2];
 	int	pid;
 
 	printf("in exe pipeline\n");
@@ -81,8 +81,8 @@ void	execute_pipeline(t_token *curr, t_shell *minishell)
 
 void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 {
-	t_token *head;
-	t_token *curr;
+	t_token	*head;
+	t_token	*curr;
 	int		saved_stdin;
 	int		saved_stdout;
 
@@ -101,6 +101,60 @@ void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 	}
 	restore_fds(saved_stdin, saved_stdout);
 }
+
+void	exec_cmd(char *cmd, t_shell *minishell)
+{
+	char	**s_cmd;
+	char	*path;
+	int		return_code;
+
+	printf("Executing command: %s\n", cmd);
+	if (!cmd || !minishell)
+	{
+		printf("Invalid command or shell context\n");
+		ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);
+		minishell->last_return = 1;
+		return ;
+	}
+	if (ft_strncmp(cmd, "$?", 2) == 0)
+	{
+		printf("Handling special case for last return status\n");
+		printf("%d\n", minishell->last_return);
+		minishell->last_return = 0;
+		return ;
+	}
+	s_cmd = ft_split(cmd, ' ');
+	if (!s_cmd)
+	{
+		printf("Failed to split command string\n");
+		ft_putstr_fd("Failed to split command\n", STDERR_FILENO);
+		minishell->last_return = 1;
+		return ;
+	}
+	if (s_cmd[0][0] == '/' || s_cmd[0][0] == '.')
+		path = s_cmd[0];
+	else
+		path = get_path(s_cmd[0], minishell);
+	if (!path)
+	{
+		printf("Command not found: %s\n", s_cmd[0]);
+		return_code = minishell_error_msg(s_cmd[0], 42);
+		minishell->last_return = return_code;
+		ft_free_tab(s_cmd);
+		return ;
+	}
+	printf("Executing external command via execve: %s\n", path);
+	if (execve(path, s_cmd, minishell->env) == -1)
+	{
+		printf("execve failed: %s\n", strerror(errno));
+		return_code = minishell_error_msg(s_cmd[0], errno);
+		minishell->last_return = return_code;
+		ft_free_tab(s_cmd);
+		exit(return_code);
+	}
+	ft_free_tab(s_cmd);
+}
+
 /***
 void execute_command(int i, t_token *curr, t_shell *minishell)
 {
@@ -141,59 +195,3 @@ void execute_command(int i, t_token *curr, t_shell *minishell)
 		}
     }
 } **/
-
-void exec_cmd(char *cmd, t_shell *minishell)
-{
-    char **s_cmd;
-    char *path;
-    int return_code;
-
-    printf("Executing command: %s\n", cmd);
-
-    if (!cmd || !minishell) {
-        printf("Invalid command or shell context\n");
-        ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);
-        minishell->last_return = 1;
-        return;
-    }
-
-    if (ft_strncmp(cmd, "$?", 2) == 0) {
-        printf("Handling special case for last return status\n");
-        printf("%d\n", minishell->last_return);
-        minishell->last_return = 0;
-        return;
-    }
-
-    s_cmd = ft_split(cmd, ' ');
-    if (!s_cmd) {
-        printf("Failed to split command string\n");
-        ft_putstr_fd("Failed to split command\n", STDERR_FILENO);
-        minishell->last_return = 1;
-        return;
-    }
-
-    // Check if the command is a full path
-    if (s_cmd[0][0] == '/' || s_cmd[0][0] == '.')
-        path = s_cmd[0];
-    else 
-        path = get_path(s_cmd[0], minishell);
-    if (!path)
-    {
-        printf("Command not found: %s\n", s_cmd[0]);
-        return_code = minishell_error_msg(s_cmd[0], 42);
-        minishell->last_return = return_code;
-        ft_free_tab(s_cmd);
-        return;
-    }
-
-    printf("Executing external command via execve: %s\n", path);
-    if (execve(path, s_cmd, minishell->env) == -1) {
-        printf("execve failed: %s\n", strerror(errno));
-        return_code = minishell_error_msg(s_cmd[0], errno);
-        minishell->last_return = return_code;
-        ft_free_tab(s_cmd);
-        exit(return_code);
-    }
-
-    ft_free_tab(s_cmd);
-}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 08:32:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/02 09:27:00 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/03 13:10:51 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	num_of_pipes(t_shell *minishell)
 int	num_of_arguments(t_shell *minishell)
 {
 	int		i;
-	t_token *curr;
+	t_token	*curr;
 
 	i = -1;
 	curr = minishell->cmd_list;

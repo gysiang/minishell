@@ -90,7 +90,7 @@ void	print_tokenlst(t_token *token_lst)
 /*void handle_environment_variable(char **line, t_token **token_lst, t_shell *minishell)
 {
     char *start = *line;
-    
+
     // Check if the token is just a dollar sign
     if (**line == '$' && ft_iswhitespace(*(*line + 1))) {
         token_add_back(token_lst, "$", T_IDENTIFIER); // Add the dollar sign as a token

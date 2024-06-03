@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 11:06:17 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/02 21:56:09 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/03 13:19:02 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@ int	minishell_env(t_shell *minishell)
 {
 	int	i;
 
-	printf("Entering minishell_env function\n"); // Debug print
-
+	printf("Entering minishell_env function\n");
 	i = 0;
 	if (!minishell->env || !minishell->env[0])
 	{
-		printf("No environment variables to print\n"); // Debug print
+		printf("No environment variables to print\n");
 		return (0);
 	}
 	env_len(minishell);
@@ -31,8 +30,7 @@ int	minishell_env(t_shell *minishell)
 		printf("%s\n", minishell->env[i]);
 		i++;
 	}
-
-	printf("Exiting minishell_env function\n"); // Debug print
+	printf("Exiting minishell_env function\n");
 	return (0);
 }
 

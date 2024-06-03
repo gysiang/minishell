@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:48:39 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/31 02:38:46 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/03 12:58:48 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	open_input(char *file_name)
 {
-	int	fd;
-	struct	stat buffer;
+	int			fd;
+	struct stat	buffer;
 
 	if (stat(file_name, &buffer) == -1 || S_ISDIR(buffer.st_mode))
 	{
@@ -62,8 +62,8 @@ int	redirect_input(t_shell *minishell, t_token *curr)
 
 static int	open_output(char *file_name, int type)
 {
-	struct stat buffer;
-	int fd;
+	struct stat	buffer;
+	int			fd;
 
 	fd = -1;
 	if (stat(file_name, &buffer) == 0 && S_ISDIR(buffer.st_mode))

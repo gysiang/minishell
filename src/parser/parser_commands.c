@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:54:35 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/31 15:12:52 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/04 02:42:01 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ void	parse_value(t_token *token_lst, t_shell *minishell)
 	t_token	*curr;
 	char	*token;
 	char	*exit_status_str;
+    char    *new_token;
 	int		exit_status;
 
 	curr = token_lst;
@@ -148,8 +149,10 @@ void	parse_value(t_token *token_lst, t_shell *minishell)
 	{
 		exit_status = minishell->last_return ;
 		exit_status_str = ft_itoa(exit_status);
+        new_token = ft_strjoin(exit_status_str, token + 2);
 		free(curr->token);
-		curr->token = exit_status_str;
+		curr->token = new_token;
+        free(exit_status_str);
 	}
 	else
 		handle_env_variable(curr, minishell);

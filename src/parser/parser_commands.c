@@ -6,94 +6,60 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:54:35 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/04 02:42:01 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/04 04:38:05 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*void parse_singlequote(t_token *t)
+void parse_single_quotes(t_token *token)
 {
-    char *result;
     char *str;
-    int i;
-    int j;
+    int len;
+    char *result;
 
-    i = 0;
-    j = 0;
-    str = t->token;
-    result = (char *)malloc(strlen(str) + 1);
+    str = token->token;
+    len = ft_strlen(str);
+    result = malloc(len - 1); // Allocate memory for the string without quotes
     if (!result)
         return;
-
-    while (str[i] != '\0') {
-        if (str[i] == '\'') {
-            i++;  // Skip the opening single quote
-            while (str[i] != '\'' && str[i] != '\0') {
-                result[j++] = str[i++];  // Copy everything inside the single quotes
-            }
-            if (str[i] == '\'') {
-                i++;  // Skip the closing single quote
-            }
-        } else {
-            result[j++] = str[i++];
-        }
+    if (len > 1 && str[0] == '\'' && str[len - 1] == '\'')
+    {
+        ft_memcpy(result, str + 1, len - 2); // Copy the string without the quotes
+        result[len - 2] = '\0';
+        token->is_single_quoted = 1;
     }
-    result[j] = '\0';
-    free(t->token);
-    t->token = result;
-}*/
+    else 
+    {
+        ft_strcpy(result, str);
+        token->is_single_quoted = 0;
+    }
+    free(token->token);
+    token->token = result;
+}
 
-
-/*void parse_doublequote(t_token *t)
+void parse_double_quotes(t_token *token)
 {
-    char *result;
     char *str;
-    int i;
-    int j;
+    int len;
+    char *result;
 
-    i = 0;
-    j = 0;
-    str = t->token;
-    result = (char *)malloc(strlen(str) + 1);
+    str = token->token;
+    len = ft_strlen(str);
+    result = malloc(len - 1); // Allocate memory for the string without quotes
     if (!result)
         return;
-
-    while (str[i] != '\0') {
-        if (str[i] == '\"') {
-            i++;  // Skip the opening single quote
-            while (str[i] != '\"' && str[i] != '\0') {
-                result[j++] = str[i++];  // Copy everything inside the single quotes
-            }
-            if (str[i] == '\"') {
-                i++;  // Skip the closing single quote
-            }
-        } else {
-            result[j++] = str[i++];
-        }
+    if (len > 1 && str[0] == '\"' && str[len - 1] == '\"')
+    {
+        ft_memcpy(result, str + 1, len - 2); // Copy the string without the quotes
+        result[len - 2] = '\0';
+        token->is_single_quoted = 0;
     }
-    result[j] = '\0';
-    free(t->token);
-    t->token = result;
-}*/
-
-void parse_quotes(t_token *token)
-{
-    char *str = token->token;
-    int len = strlen(str);
-    char *result = malloc(len + 1); // Allocate space for the new string
-    if (!result) return; // Always check malloc return
-
-    // Check if the entire token is encapsulated by single or double quotes
-    if (len > 1 && ((str[0] == '\'' && str[len - 1] == '\'') || (str[0] == '\"' && str[len - 1] == '\"'))) {
-        // Copy the inside, excluding the outermost quotes
-        memcpy(result, str + 1, len - 2);
-        result[len - 2] = '\0'; // Null-terminate the new string
-    } else {
-        // If not encapsulated by quotes, just copy the string
-        strcpy(result, str);
+    else 
+    {
+        ft_strcpy(result, str);
+        token->is_single_quoted = 0;
     }
-
     free(token->token);
     token->token = result;
 }
@@ -125,7 +91,7 @@ void	handle_env_variable(t_token *curr, t_shell *minishell)
 	env_value = get_env_value(minishell, result);
 	free(result);
 	if (!env_value)
-		env_value = (" ");
+		env_value = ft_strdup(" ");
 	free(curr->token);
 	curr->token = env_value;
 }
@@ -141,10 +107,18 @@ void	parse_value(t_token *token_lst, t_shell *minishell)
 	curr = token_lst;
 	token = curr->token;
 	exit_status = 0;
+	new_token = NULL;
 	if (token == NULL || token[0] != '$')
 		return ;
 	if (ft_strcmp(token, "$") == 0)
 		return ;
+	else if (ft_strcmp(token, "$?") == 0)
+	{
+		exit_status = minishell->last_return ;
+		exit_status_str = ft_itoa(exit_status);
+		free(curr->token);
+		curr->token = new_token;
+	}
 	else if (ft_strncmp(token, "$?", 2) == 0)
 	{
 		exit_status = minishell->last_return ;
@@ -157,4 +131,3 @@ void	parse_value(t_token *token_lst, t_shell *minishell)
 	else
 		handle_env_variable(curr, minishell);
 }
-

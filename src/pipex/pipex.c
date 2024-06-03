@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/02 22:05:42 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/03 12:18:13 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ void execute_builtin_or_exec(t_token *curr, t_shell *minishell)
 	int builtin_type ;
 
 	builtin_type = check_builtin(curr->token);
-	//printf("builtin type: %d\n", builtin_type);
-	//printf("curr type in builtin: %s\n", curr->token);
 	if (builtin_type == 1)
 	{
 		execute_builtin_1(curr, minishell);
@@ -75,7 +73,7 @@ void execute_builtin_or_exec(t_token *curr, t_shell *minishell)
 		execute_single_command(curr, minishell);
 }
 
-t_token	*handle_echo(t_token *curr, t_shell *minishell)
+t_token	*handle_builtins(t_token *curr, t_shell *minishell)
 {
 	int num;
 	int	index;
@@ -84,7 +82,7 @@ t_token	*handle_echo(t_token *curr, t_shell *minishell)
 	num = num_of_arguments(minishell);
 	index = check_for_redirections(minishell);
 	num_of_pipe = num_of_pipes(minishell);
-	//printf("in handle echo args: %d\n", num);
+	//printf("in handle args: %d\n", num);
 	if (num_of_pipe == 0 && (index == 0))
 	{
 		execute_builtin_or_exec(curr, minishell);
@@ -105,18 +103,12 @@ void	pipex(t_shell *minishell)
 	while (curr != NULL)
 	{
 		printf("current token in process: %s\n", curr->token);
-		if (curr->type == T_IDENTIFIER && (!curr->next))
-		{
-			execute_builtin_or_exec(curr, minishell);
-			curr = curr->next;
-			continue;
-		}
+		if (curr->type == T_IDENTIFIER && (!curr->next) && (!check_builtin(curr->token)))
+			execute_single_command(curr, minishell);
 		if ((curr->type == T_IDENTIFIER) && (curr->next) && (curr->next->type == T_PIPE))
 			execute_pipeline(curr, minishell);
 		if (curr->type == T_IDENTIFIER && (check_builtin(curr->token) == 1))
-		{
-			curr = handle_echo(curr, minishell);
-		}
+			curr = handle_builtins(curr, minishell);
 		if ((curr->type == T_IDENTIFIER) && (curr->next) && (check_redirection_type(curr->next)))
 		{
 			execute_with_redirection(curr, minishell, 1);

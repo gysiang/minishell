@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/04 14:24:52 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/04 14:49:43 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,12 @@ void parse_token(t_token *token, t_shell *minishell)
     }
     else if (len > 1 && str[0] == '\"' && str[len - 1] == '\"')
         parse_double_quotes(token);
-    else if (ft_strncmp(str, "$?", 2) == 0)
-        handle_exit_status_with_suffix(token, minishell, str + 2);
+    /*else if (ft_strncmp(str, "$?", 2) == 0)
+        handle_exit_status_with_suffix(token, minishell, str + 2);*/
     else if (!token->is_single_quoted && strchr(token->token, '$'))
         parse_value(token, minishell);
-    if (strchr(token->token, ';'))
-        parse_semicolon(token);
+    else if (strchr(token->token, '$')) // Handle unquoted tokens
+        parse_value(token, minishell);
 }
 
 t_token	*token_parser(t_token *token_lst, t_shell *minishell)

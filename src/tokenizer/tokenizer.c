@@ -207,6 +207,45 @@ void handle_backslash(char **line, t_token **token_lst)
 
 void handle_quotes(char **line, t_token **token_lst)
 {
+    char quote_type;
+    char *start;
+    int length;
+    char *quoted_content;
+    char *literal_quote;
+
+    quote_type = **line;
+    start = *line; // Include the opening quote
+    (*line)++; // Move past the opening quote
+    while (**line && **line != quote_type) // Find the closing quote
+        (*line)++;
+    if (**line == quote_type)
+    {
+        (*line)++; // Move past the closing quote
+        length = *line - start;
+        quoted_content = (char *)malloc(length + 1);
+        if (quoted_content)
+        {
+            strncpy(quoted_content, start, length);
+            quoted_content[length] = '\0';
+            token_add_back(token_lst, quoted_content, T_IDENTIFIER);
+            free(quoted_content);
+        }
+    }
+    else
+    {
+        // If no closing quote is found, treat the opening quote as a literal character
+        literal_quote = (char *)malloc(2);
+        if (literal_quote) {
+            literal_quote[0] = quote_type;
+            literal_quote[1] = '\0';
+            token_add_back(token_lst, literal_quote, T_IDENTIFIER);
+            free(literal_quote);
+        }
+    }
+}
+
+/*void handle_quotes(char **line, t_token **token_lst)
+{
     char quote_type = **line;
     (*line)++; // Move past the opening quote
     char *start = *line;
@@ -232,7 +271,7 @@ void handle_quotes(char **line, t_token **token_lst)
             free(literal_quote);
         }
     }
-}
+}*/
 
 t_token *token_processor(char *line, t_shell *minishell)
 {

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/30 20:15:42 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/04 04:18:04 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,24 @@ void	set_token_pointers(t_token *tokens)
 
 void parse_token(t_token *token, t_shell *minishell)
 {
-	if (strcmp(token->token, "echo") == 0 && token->next)
-        parse_quotes(token->next);  // Apply quote parsing to the argument of echo
+    char *str;
+    int len;
+
+    str = token->token;
+    len = ft_strlen(str);
+    if (len > 1 && str[0] == '\"' && str[len - 1] == '\"')
+        parse_double_quotes(token); // Parse double quotes
+    else if (len > 1 && str[0] == '\'' && str[len - 1] == '\'')
+        parse_single_quotes(token); // Parse single quotes
+    if (!token->is_single_quoted)
+	{
+        if (strchr(token->token, '$'))
+        {
+            parse_value(token, minishell);
+        }
+    }
     if (strchr(token->token, ';'))
         parse_semicolon(token);
-    if (strchr(token->token, '$'))
-        parse_value(token, minishell);
 }
 
 t_token	*token_parser(t_token *token_lst, t_shell *minishell)

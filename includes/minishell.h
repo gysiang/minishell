@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/04 04:22:06 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/04 14:18:13 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,8 @@ void	parse_semicolon(t_token *token);
 void	handle_env_variable(t_token *curr, t_shell *minishell);
 void	parse_value(t_token *token_lst, t_shell *minishell);
 void	set_token_pointers(t_token *tokens);
-void	handle_cd_command(t_token **curr, t_shell *minishell);
+void	handle_exit_status(t_token *curr, t_shell *minishell);
+void	handle_exit_status_with_suffix(t_token *curr, t_shell *minishell, const char *suffix);
 void 	parse_single_quotes(t_token *token);
 void 	parse_double_quotes(t_token *token);
 void	parse_token(t_token *token, t_shell *minishell);

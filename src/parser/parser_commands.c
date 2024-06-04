@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:54:35 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/04 04:38:05 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/04 13:55:25 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ void parse_single_quotes(t_token *token)
 
     str = token->token;
     len = ft_strlen(str);
-    result = malloc(len - 1); // Allocate memory for the string without quotes
+    result = malloc(len - 1);
     if (!result)
         return;
     if (len > 1 && str[0] == '\'' && str[len - 1] == '\'')
     {
-        ft_memcpy(result, str + 1, len - 2); // Copy the string without the quotes
+        ft_memcpy(result, str + 1, len - 2);
         result[len - 2] = '\0';
         token->is_single_quoted = 1;
     }
@@ -46,12 +46,12 @@ void parse_double_quotes(t_token *token)
 
     str = token->token;
     len = ft_strlen(str);
-    result = malloc(len - 1); // Allocate memory for the string without quotes
+    result = malloc(len - 1);
     if (!result)
         return;
     if (len > 1 && str[0] == '\"' && str[len - 1] == '\"')
     {
-        ft_memcpy(result, str + 1, len - 2); // Copy the string without the quotes
+        ft_memcpy(result, str + 1, len - 2);
         result[len - 2] = '\0';
         token->is_single_quoted = 0;
     }
@@ -96,38 +96,48 @@ void	handle_env_variable(t_token *curr, t_shell *minishell)
 	curr->token = env_value;
 }
 
-void	parse_value(t_token *token_lst, t_shell *minishell)
+void handle_exit_status(t_token *curr, t_shell *minishell)
 {
-	t_token	*curr;
-	char	*token;
-	char	*exit_status_str;
-    char    *new_token;
-	int		exit_status;
+    char *exit_status_str;
+    int exit_status;
 
-	curr = token_lst;
-	token = curr->token;
-	exit_status = 0;
-	new_token = NULL;
-	if (token == NULL || token[0] != '$')
-		return ;
-	if (ft_strcmp(token, "$") == 0)
-		return ;
-	else if (ft_strcmp(token, "$?") == 0)
-	{
-		exit_status = minishell->last_return ;
-		exit_status_str = ft_itoa(exit_status);
-		free(curr->token);
-		curr->token = new_token;
-	}
-	else if (ft_strncmp(token, "$?", 2) == 0)
-	{
-		exit_status = minishell->last_return ;
-		exit_status_str = ft_itoa(exit_status);
-        new_token = ft_strjoin(exit_status_str, token + 2);
-		free(curr->token);
-		curr->token = new_token;
-        free(exit_status_str);
-	}
-	else
-		handle_env_variable(curr, minishell);
+    exit_status = minishell->last_return;
+    exit_status_str = ft_itoa(exit_status);
+    free(curr->token);
+    curr->token = exit_status_str;
 }
+
+void handle_exit_status_with_suffix(t_token *curr, t_shell *minishell, const char *suffix)
+{
+    char *exit_status_str;
+    char *new_token;
+    int exit_status;
+
+    exit_status = minishell->last_return;
+    exit_status_str = ft_itoa(exit_status);
+    new_token = ft_strjoin(exit_status_str, suffix);
+    free(curr->token);
+    curr->token = new_token;
+    free(exit_status_str);
+}
+
+void parse_value(t_token *token_lst, t_shell *minishell)
+{
+    t_token *curr;
+    char *token;
+
+    curr = token_lst;
+    token = curr->token;
+
+    if (token == NULL || token[0] != '$')
+        return;
+    if (ft_strcmp(token, "$") == 0)
+        return;
+    else if (ft_strcmp(token, "$?") == 0)
+        handle_exit_status(curr, minishell);
+    else if (ft_strncmp(token, "$?", 2) == 0)
+        handle_exit_status_with_suffix(curr, minishell, token + 2);
+    else
+        handle_env_variable(curr, minishell);
+}
+

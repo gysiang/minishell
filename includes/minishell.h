@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/06 00:14:04 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/06 01:27:38 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,13 +153,14 @@ int		minishell_error_msg(char *cmd, int error_no);
 void	execute_single_command(t_token *curr, t_shell *minishell);
 void	execute_builtin_with_no_exit(t_token *curr, t_shell *minishell);
 void	execute_builtin_or_exec(t_token *curr, t_shell *minishell);
-void	exec_cmd(char *cmd, t_shell *minishell);
+//void	exec_cmd(char *cmd, t_shell *minishell);
 void	execute_pipeline(t_token *curr, t_shell *minishell);
 void	execute_with_redirection(t_token *token, t_shell *minishell, int index);
 int	check_command(char *cmd, t_shell *minishell);
 char	**get_command_array(char *cmd, t_shell *minishell);
 void	load_previous_fd(t_shell *minishell);
 char	*get_command_path(char **s_cmd, t_shell *minishell);
+void	exec_cmd(t_token *curr, t_shell *minishell);
 
 //pipex(utils)
 void	exit_handler(int exit_code);

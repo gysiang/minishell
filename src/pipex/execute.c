@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/06 00:46:17 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/06 01:28:10 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,30 @@ void	load_previous_fd(t_shell *minishell)
 	}
 }
 
+void	exec_cmd(t_token *curr, t_shell *minishell)
+{
+	char	**s_cmd;
+	char	*path;
+	int	return_code;
+	//int status;
+
+	check_command(curr->token, minishell);
+	s_cmd = get_command_array(curr->token, minishell);
+	path = get_command_path(s_cmd, minishell);
+	signal(SIGINT, sigint_handler1);
+	if (execve(path, s_cmd, minishell->env) == -1)
+	{
+		printf("execve failed: %s\n", strerror(errno));
+		return_code = minishell_error_msg(s_cmd[0], errno);
+		minishell->last_return = return_code;
+	}
+	ft_free_tab(s_cmd);
+}
+
 void	execute_single_command(t_token *curr, t_shell *minishell)
 {
 	int	pid;
+	/**
 	int	return_code;
 	char	**s_cmd;
 	char	*path;
@@ -35,20 +56,17 @@ void	execute_single_command(t_token *curr, t_shell *minishell)
 	{
 		s_cmd = get_command_array(curr->token, minishell);
 		path = get_command_path(s_cmd, minishell);
-	}
+	}	**/
+
 	pid = fork();
 	if (pid == 0)
 	{
-		load_previous_fd(minishell);
-		printf("path: %s\n", path);
-		printf("s_cmd: %s\n", s_cmd[0]);
-		signal(SIGINT, sigint_handler1);
-		if (execve(path, s_cmd, minishell->env) == -1)
+		if (minishell->prev_fd != -1)
 		{
-			printf("execve failed: %s\n", strerror(errno));
-			return_code = minishell_error_msg(s_cmd[0], errno);
-			minishell->last_return = return_code;
+			dup2(minishell->prev_fd, STDIN_FILENO);
+			close(minishell->prev_fd);
 		}
+		exec_cmd(curr, minishell);
 	}
 	else
 	{
@@ -56,7 +74,6 @@ void	execute_single_command(t_token *curr, t_shell *minishell)
 		minishell->process_ids[minishell->process_count++] = pid;
 		if (minishell->prev_fd != -1)
 			close(minishell->prev_fd);
-		ft_free_tab(s_cmd);
 	}
 }
 
@@ -184,7 +201,7 @@ char	*get_command_path(char **s_cmd, t_shell *minishell)
 		printf("Command not found: %s\n", s_cmd[0]);
 		return_code = minishell_error_msg(s_cmd[0], 42);
 		minishell->last_return = return_code;
-		return (NULL);
+		exit(1);
 	}
 	return (path);
 }

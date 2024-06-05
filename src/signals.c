@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:33:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/05 18:30:50 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/06 00:24:36 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	sigint_handler1(int signal)
 {
 	(void)signal;
 	g_signal_received = 1;
-	write(STDOUT_FILENO, "\n", 1);
-	//printf("SIGINT received\n");
+	write(1, "\n", 1);
+	write(1, "signal_int", 10);
 }
 
 void	sigquit_handler(int signal)

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/03 13:09:47 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/05 18:32:19 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	execute_single_command(t_token *curr, t_shell *minishell)
 	pid = fork();
 	if (pid == 0)
 	{
+		signal(SIGINT, sigint_handler1);
 		if (minishell->prev_fd != -1)
 		{
 			dup2(minishell->prev_fd, STDIN_FILENO);
@@ -35,6 +36,7 @@ void	execute_single_command(t_token *curr, t_shell *minishell)
 	}
 	else
 	{
+		signal(SIGINT, SIG_IGN);
 		minishell->process_ids[minishell->process_count++] = pid;
 		if (minishell->prev_fd != -1)
 			close(minishell->prev_fd);
@@ -85,7 +87,6 @@ void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 	t_token	*curr;
 	int		saved_stdin;
 	int		saved_stdout;
-
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	printf("execute with redirection\n");
@@ -108,7 +109,8 @@ void	exec_cmd(char *cmd, t_shell *minishell)
 	char	*path;
 	int		return_code;
 
-	printf("Executing command: %s\n", cmd);
+	return_code = 0;
+	//printf("Executing command: %s\n", cmd);
 	if (!cmd || !minishell)
 	{
 		printf("Invalid command or shell context\n");
@@ -140,19 +142,34 @@ void	exec_cmd(char *cmd, t_shell *minishell)
 		printf("Command not found: %s\n", s_cmd[0]);
 		return_code = minishell_error_msg(s_cmd[0], 42);
 		minishell->last_return = return_code;
-		ft_free_tab(s_cmd);
 		return ;
 	}
-	printf("Executing external command via execve: %s\n", path);
+	//printf("Executing external command via execve: %s\n", path);
+	int	pid = fork();
+	if (pid == 0)
+	{
+		signal(SIGINT, sigint_handler1);
+		if (execve(path, s_cmd, minishell->env) == -1)
+		{
+			printf("execve failed: %s\n", strerror(errno));
+			return_code = minishell_error_msg(s_cmd[0], errno);
+			minishell->last_return = return_code;
+		}
+	}
+	else
+	{
+		minishell->process_ids[minishell->process_count++] = pid;
+		ft_free_tab(s_cmd);
+	}
+	/***
 	if (execve(path, s_cmd, minishell->env) == -1)
 	{
 		printf("execve failed: %s\n", strerror(errno));
 		return_code = minishell_error_msg(s_cmd[0], errno);
 		minishell->last_return = return_code;
-		ft_free_tab(s_cmd);
-		exit(return_code);
-	}
-	ft_free_tab(s_cmd);
+	} **/
+	//ft_free_tab(s_cmd);
+	//exit(return_code);
 }
 
 /***
@@ -169,7 +186,8 @@ void execute_command(int i, t_token *curr, t_shell *minishell)
 	}
 	pid = fork();
 	if (pid == 0)
-	{
+	{		if (curr->type == T_IDENTIFIER && (check_builtin(curr->token) == 1))
+			curr = handle_builtins(curr, minishell);./
 			if (minishell->prev_fd != -1)
 			{
 				dup2(minishell->prev_fd, STDIN_FILENO);
@@ -191,7 +209,5 @@ void execute_command(int i, t_token *curr, t_shell *minishell)
 		if (i < num_of_pipe)
 		{
 			minishell->prev_fd = pipe_fd[0];
-            close(pipe_fd[1]);
-		}
-    }
-} **/
+            close(pipe_fd[1]); signal(SIGINT, sigint_handler);
+**/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/04 14:18:13 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/05 16:12:33 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ typedef struct s_shell
 	bool	end;
 }	t_shell;
 
+extern int	g_signal_received;
+
 // Error Message
 void	delete_command(void *elem);
 void	free_and_exit(t_shell *minishell, int return_value);
@@ -135,6 +137,7 @@ int		redirect_output(t_shell *minishell, t_token *curr);
 void	sigquit_handler(int signal);
 void	sigint_handler(int signal);
 void	setup_signal_handler(void);
+void	sigint_handler1(int signal);
 
 //history
 int		print_history(void);

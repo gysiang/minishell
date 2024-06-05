@@ -6,23 +6,23 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 21:03:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/03 12:57:03 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/05 17:34:31 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/***
 static void	signal_free(t_shell *minishell)
 {
 	if (minishell)
 		free_and_exit(minishell, 130);
 }
+**/
 
 static void	signal_exit(int signal_number)
 {
 	(void)signal_number;
-	printf("\n");
-	signal_free(NULL);
+	exit(0);
 }
 
 // Need to reduce the length of this line
@@ -38,12 +38,13 @@ static void	here_doc_read(t_shell *minishell, int *pipe_fds, char *delimiter)
 {
 	char	*str;
 	size_t	delimiter_len;
+	(void)	minishell;
 
 	delimiter_len = ft_strlen(delimiter);
 	signal(SIGINT, signal_exit);
 	while (1)
 	{
-		str = readline("> ");
+		str = readline("heredoc> ");
 		if (!str)
 		{
 			printf("End of file reached\n");
@@ -57,7 +58,6 @@ static void	here_doc_read(t_shell *minishell, int *pipe_fds, char *delimiter)
 	}
 	free(str);
 	close(pipe_fds[1]);
-	free_and_exit(minishell, 0);
 }
 
 int	here_doc(t_shell *minishell, char *delimiter)
@@ -77,12 +77,16 @@ int	here_doc(t_shell *minishell, char *delimiter)
 		here_doc_read(minishell, pipe_des, delimiter);
 		exit(0);
 	}
-	waitpid(pid, &status, WUNTRACED);
-	if (WEXITSTATUS(status) == 130)
+	else
 	{
-		close(pipe_des[0]);
-		close(pipe_des[1]);
-		return (-1);
+		signal(SIGINT, SIG_IGN);
+		waitpid(pid, &status, WUNTRACED);
+		if (WEXITSTATUS(status) == SIGINT)
+		{
+			close(pipe_des[0]);
+			close(pipe_des[1]);
+			return (-1);
+		}
 	}
 	close(pipe_des[1]);
 	minishell->input_fd = pipe_des[0];

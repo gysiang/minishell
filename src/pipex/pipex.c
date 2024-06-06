@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/03 13:17:37 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/06 10:37:43 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,7 @@ static void	wait_for_all_commands(t_shell *minishell)
 		i++;
 	}
 	minishell->process_count = 0;
-}
-
-void	execute_builtin_or_exec(t_token *curr, t_shell *minishell)
-{
-	int	builtin_type ;
-
-	builtin_type = check_builtin(curr->token);
-	if (builtin_type == 1)
-	{
-		execute_builtin_1(curr, minishell);
-		execute_builtin_2(curr, minishell);
-		other_cmds(curr, minishell);
-	}
-	else
-		execute_single_command(curr, minishell);
+	signal(SIGINT, sigint_handler);
 }
 
 t_token	*handle_builtins(t_token *curr, t_shell *minishell)
@@ -94,8 +80,6 @@ t_token	*handle_builtins(t_token *curr, t_shell *minishell)
 	curr = move_lst_by_index(curr, num);
 	return (curr);
 }
-
-//restore_fds(minishell->input_fd, minishell->output_fd);
 
 void	pipex(t_shell *minishell)
 {

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/04 14:18:13 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/06 18:42:35 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ void	set_token_pointers(t_token *tokens);
 void	handle_exit_status(t_token *curr, t_shell *minishell);
 void	handle_exit_status_with_suffix(t_token *curr, t_shell *minishell, const char *suffix);
 void 	parse_single_quotes(t_token *token);
-void 	parse_double_quotes(t_token *token);
+void 	parse_double_quotes(t_token *token, t_shell *minishell);
 void	parse_token(t_token *token, t_shell *minishell);
 void	join_identifier_tokens(t_token *lst);
 t_token	*token_parser(t_token *token_lst, t_shell *minishell);

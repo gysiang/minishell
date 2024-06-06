@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/04 14:49:43 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/06 19:16:05 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,32 +31,6 @@ void	set_token_pointers(t_token *tokens)
 		prev_token->next = NULL;
 }
 
-/*void	handle_cd_command(t_token **curr, t_shell *minishell)
-{
-	t_token	*next_token;
-	char	*dir;
-
-	next_token = (*curr)->next;
-	if (next_token != NULL && next_token->type == T_IDENTIFIER)
-	{
-		dir = next_token->token;
-		if (chdir(dir) != 0)
-		{
-			ft_putstr_fd("minishell: cd", 2);
-			minishell->last_return = 1;
-		}
-		else
-			minishell->last_return = 0;
-		*curr = next_token->next;
-	}
-	else
-	{
-		ft_putstr_fd("minishell:cd :too few arguments\n", 2);
-		minishell->last_return = 1;
-		*curr = (*curr)->next;
-	}
-}*/
-
 void parse_token(t_token *token, t_shell *minishell)
 {
     char *str;
@@ -70,12 +44,10 @@ void parse_token(t_token *token, t_shell *minishell)
         parse_single_quotes(token);
     }
     else if (len > 1 && str[0] == '\"' && str[len - 1] == '\"')
-        parse_double_quotes(token);
-    /*else if (ft_strncmp(str, "$?", 2) == 0)
-        handle_exit_status_with_suffix(token, minishell, str + 2);*/
+        parse_double_quotes(token, minishell);
     else if (!token->is_single_quoted && strchr(token->token, '$'))
         parse_value(token, minishell);
-    else if (strchr(token->token, '$')) // Handle unquoted tokens
+    else if (strchr(token->token, '$'))
         parse_value(token, minishell);
 }
 

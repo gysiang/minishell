@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:54:35 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/04 14:44:50 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/06 19:15:09 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,51 +17,105 @@ void parse_single_quotes(t_token *token)
     char *str;
     int len;
     char *result;
+    int i, j;
 
     str = token->token;
     len = ft_strlen(str);
-    result = malloc(len - 1);
+    result = malloc(len + 1); // Allocate enough space for the result
     if (!result)
         return;
-    if (len > 1 && str[0] == '\'' && str[len - 1] == '\'')
+    i = 0;
+    j = 0;
+    while (i < len)
     {
-        ft_memcpy(result, str + 1, len - 2);
-        result[len - 2] = '\0';
-        token->is_single_quoted = 1;
+        if (str[i] != '\'') // Skip single quotes
+        {
+            result[j] = str[i];
+            j++;
+        }
+        i++;
     }
-    else 
-    {
-        ft_strcpy(result, str);
-        token->is_single_quoted = 0;
-    }
+    result[j] = '\0'; // Null-terminate the result
     free(token->token);
     token->token = result;
+    token->is_single_quoted = 1; // Set the flag to indicate single quotes were processed
 }
 
-void parse_double_quotes(t_token *token)
+static void handle_special_env_variable(char *result, int *i, int *j, t_shell *minishell)
+{
+    char *expanded;
+
+    expanded = ft_itoa(minishell->last_return); // Convert last return value to string
+    strcpy(&result[*j], expanded);
+    *j += strlen(expanded);
+    free(expanded);
+    *i += 2; // Skip past the $?
+}
+
+static void handle_env_variable_expansion(char *str, char *result, int *i, int *j, t_shell *minishell)
+{
+    char *var_start;
+    char *var_end;
+    int var_len;
+    char *var_name;
+    char *expanded;
+
+    if (str[*i + 1] == '?')
+        handle_special_env_variable(result, i, j, minishell);
+    else
+    {
+        var_start = &str[*i + 1];
+        var_end = var_start;
+        while (*var_end && (ft_isalnum(*var_end) || *var_end == '_'))
+            var_end++;
+        var_len = var_end - var_start;
+        var_name = strndup(var_start, var_len);
+        expanded = get_env_value(minishell, var_name);
+        free(var_name);
+        if (expanded)
+        {
+            strcpy(&result[*j], expanded);
+            *j += strlen(expanded);
+        }
+        *i += var_len + 1;
+    }
+}
+
+void parse_double_quotes(t_token *token, t_shell *minishell)
 {
     char *str;
     int len;
     char *result;
+    int i;
+    int j;
 
+    i = 0;
+    j = 0;
     str = token->token;
     len = ft_strlen(str);
-    result = malloc(len - 1);
+    result = malloc(len + 1); // Allocate enough space for the result
     if (!result)
         return;
-    if (len > 1 && str[0] == '\"' && str[len - 1] == '\"')
+    while (i < len)
     {
-        ft_memcpy(result, str + 1, len - 2);
-        result[len - 2] = '\0';
-        token->is_single_quoted = 0;
+        if (str[i] != '\"') // Skip double quotes
+        {
+            if (str[i] == '$')
+                handle_env_variable_expansion(str, result, &i, &j, minishell);
+            else
+            {
+                result[j] = str[i];
+                j++;
+                i++;
+            }
+        }
+        else
+            i++;
     }
-    else 
-    {
-        ft_strcpy(result, str);
-        token->is_single_quoted = 0;
-    }
+    result[j] = '\0'; // Null-terminate the result
     free(token->token);
     token->token = result;
+    token->is_single_quoted = 0; // Set the flag to indicate double quotes were processed
 }
 
 void	parse_semicolon(t_token *token)

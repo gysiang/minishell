@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:54:35 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/06 19:15:09 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/06 19:56:10 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void parse_single_quotes(t_token *token)
     result = malloc(len + 1); // Allocate enough space for the result
     if (!result)
         return;
+
     i = 0;
     j = 0;
     while (i < len)
@@ -36,6 +37,7 @@ void parse_single_quotes(t_token *token)
         i++;
     }
     result[j] = '\0'; // Null-terminate the result
+
     free(token->token);
     token->token = result;
     token->is_single_quoted = 1; // Set the flag to indicate single quotes were processed
@@ -61,7 +63,9 @@ static void handle_env_variable_expansion(char *str, char *result, int *i, int *
     char *expanded;
 
     if (str[*i + 1] == '?')
+    {
         handle_special_env_variable(result, i, j, minishell);
+    }
     else
     {
         var_start = &str[*i + 1];
@@ -86,33 +90,43 @@ void parse_double_quotes(t_token *token, t_shell *minishell)
     char *str;
     int len;
     char *result;
-    int i;
-    int j;
+    int i, j;
 
-    i = 0;
-    j = 0;
     str = token->token;
     len = ft_strlen(str);
     result = malloc(len + 1); // Allocate enough space for the result
     if (!result)
         return;
+
+    i = 0;
+    j = 0;
     while (i < len)
     {
-        if (str[i] != '\"') // Skip double quotes
+        if (str[i] == '\"') // Skip double quotes
         {
-            if (str[i] == '$')
-                handle_env_variable_expansion(str, result, &i, &j, minishell);
+            i++;
+            continue;
+        }
+        if (str[i] == '$')
+        {
+            // Handle environment variable expansion
+            if (str[i + 1] == '\0' || (!ft_isalnum(str[i + 1]) && str[i + 1] != '_' && str[i + 1] != '?'))
+            {
+                result[j++] = '$'; // Treat as a literal $
+                i++;
+            }
             else
             {
-                result[j] = str[i];
-                j++;
-                i++;
+                handle_env_variable_expansion(str, result, &i, &j, minishell);
             }
         }
         else
-            i++;
+        {
+            result[j++] = str[i++];
+        }
     }
     result[j] = '\0'; // Null-terminate the result
+
     free(token->token);
     token->token = result;
     token->is_single_quoted = 0; // Set the flag to indicate double quotes were processed
@@ -194,4 +208,3 @@ void parse_value(t_token *token_lst, t_shell *minishell)
     else
         handle_env_variable(curr, minishell);
 }
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/04 14:18:13 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/06 10:34:09 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ typedef struct s_shell
 	bool	end;
 }	t_shell;
 
+extern int	g_signal_received;
+
 // Error Message
 void	delete_command(void *elem);
 void	free_and_exit(t_shell *minishell, int return_value);
@@ -135,6 +137,7 @@ int		redirect_output(t_shell *minishell, t_token *curr);
 void	sigquit_handler(int signal);
 void	sigint_handler(int signal);
 void	setup_signal_handler(void);
+void	sigint_handler1(int signal);
 
 //history
 int		print_history(void);
@@ -148,11 +151,18 @@ int		minishell_error_msg(char *cmd, int error_no);
 
 //pipex(execute)
 void	execute_single_command(t_token *curr, t_shell *minishell);
-void	execute_builtin_with_no_exit(t_token *curr, t_shell *minishell);
-void	execute_builtin_or_exec(t_token *curr, t_shell *minishell);
-void	exec_cmd(char *cmd, t_shell *minishell);
 void	execute_pipeline(t_token *curr, t_shell *minishell);
 void	execute_with_redirection(t_token *token, t_shell *minishell, int index);
+void	execute_builtin_or_exec_exit(t_token *curr, t_shell *minishell);
+void	execute_builtin_or_exec(t_token *curr, t_shell *minishell);
+
+
+//pipex(execute_utils)
+int	check_command(char *cmd, t_shell *minishell);
+char	**get_command_array(char *cmd, t_shell *minishell);
+void	load_previous_fd(t_shell *minishell);
+char	*get_command_path(char **s_cmd, t_shell *minishell);
+void	exec_cmd(t_token *curr, t_shell *minishell);
 
 //pipex(utils)
 void	exit_handler(int exit_code);

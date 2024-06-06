@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/06 11:18:42 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/06 23:23:11 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ int	check_command(char *cmd, t_shell *minishell)
 		printf("Invalid command or shell context\n");
 		ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);
 		minishell->last_return = 1;
-		return (1);
+		exit(1);
 	}
 	if (ft_strncmp(cmd, "$?", 2) == 0)
 	{
 		printf("Handling special case for last return status\n");
 		printf("%d\n", minishell->last_return);
 		minishell->last_return = 0;
-		return (1);
+		exit(1);
 	}
 	return (0);
 }
@@ -84,7 +84,6 @@ void	exec_cmd(t_token *curr, t_shell *minishell)
 	check_command(curr->token, minishell);
 	s_cmd = get_command_array(curr->token, minishell);
 	path = get_command_path(s_cmd, minishell);
-	signal(SIGINT, sigint_handler1);
 	if (execve(path, s_cmd, minishell->env) == -1)
 	{
 		printf("execve failed: %s\n", strerror(errno));

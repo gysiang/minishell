@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/06 11:12:10 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/06 23:43:56 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,21 @@ void	execute_single_command(t_token *curr, t_shell *minishell)
 	int	pid;
 
 	pid = fork();
+	if (!ft_strcmp(curr->token, "./minishell"))
+		g_signal_received = 1;
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		load_previous_fd(minishell);
 		exec_cmd(curr, minishell);
 	}
 	else
 	{
-		signal(SIGINT, SIG_IGN);
+		//printf("g_signal: %d\n", g_signal_received);
+		if (g_signal_received == 1)
+			signal(SIGINT, SIG_IGN);
+		else
+			signal(SIGINT, sigint_handler1);
 		minishell->process_ids[minishell->process_count++] = pid;
 		if (minishell->prev_fd != -1)
 			close(minishell->prev_fd);

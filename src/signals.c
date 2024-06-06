@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:33:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/06 01:14:59 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/06 22:52:43 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	sigint_handler1(int signal)
 {
 	(void)signal;
 	g_signal_received = 1;
-	write(1, "signal_int", 10);
+	//write(1, "signal_int", 10);
 	write(1, "\n", 1);
 }
 

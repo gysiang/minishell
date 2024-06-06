@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/06 10:37:43 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/06 23:08:30 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ static void	wait_for_all_commands(t_shell *minishell)
 			minishell->last_return = 1;
 		i++;
 	}
-	minishell->process_count = 0;
 	signal(SIGINT, sigint_handler);
+	minishell->process_count = 0;
 }
 
 t_token	*handle_builtins(t_token *curr, t_shell *minishell)

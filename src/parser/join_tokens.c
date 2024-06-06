@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join_tokens.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 15:31:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/03 13:25:04 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/06 18:24:39 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,11 @@ static char	*concat_token(const char *token1, const char *token2)
 
 	len1 = ft_strlen(token1);
 	len2 = ft_strlen(token2);
-	total_len = len1 + len2 + 2;
-	joined_str = (char *)malloc(total_len);
+	total_len = len1 + len2 + 1; // No need for extra space
+	joined_str = (char *)malloc(total_len + 1); // +1 for null terminator
 	if (!joined_str)
 		return (NULL);
 	ft_copy(joined_str, token1, len1);
-	ft_strcat(joined_str, " ");
 	ft_strcat(joined_str, token2);
 	return (joined_str);
 }
@@ -43,10 +42,12 @@ static void	merge_identifier_tokens(t_token *curr)
 		curr->token = joined;
 		next = curr->next;
 		curr->next = next->next;
+		if (next->next != NULL)
+			next->next->prev = curr;
+		free(next->token);
 		free(next);
 	}
 }
-
 
 static bool is_command(char *token)
 {
@@ -61,6 +62,7 @@ static bool is_command(char *token)
     }
     return false;
 }
+
 static bool is_part_of_command_arguments(t_token *token)
 {
     t_token *prev = NULL;
@@ -74,10 +76,10 @@ static bool is_part_of_command_arguments(t_token *token)
     return false;  // No command token found before this, not a part of command arguments
 }
 
-void	join_identifier_tokens(t_token *lst)
+void join_identifier_tokens(t_token *lst)
 {
-    t_token	*curr;
-    int		merged;
+    t_token *curr;
+    int merged;
 
     merged = 1;
     while (merged)

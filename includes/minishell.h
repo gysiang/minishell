@@ -213,7 +213,7 @@ void	set_token_pointers(t_token *tokens);
 void	handle_exit_status(t_token *curr, t_shell *minishell);
 void	handle_exit_status_with_suffix(t_token *curr, t_shell *minishell, const char *suffix);
 void 	parse_single_quotes(t_token *token);
-void 	parse_double_quotes(t_token *token);
+void 	parse_double_quotes(t_token *token, t_shell *minishell);
 void	parse_token(t_token *token, t_shell *minishell);
 void	join_identifier_tokens(t_token *lst);
 t_token	*token_parser(t_token *token_lst, t_shell *minishell);

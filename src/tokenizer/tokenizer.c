@@ -146,18 +146,74 @@ void	print_tokenlst(t_token *token_lst)
 
 void handle_environment_variable(char **line, t_token **token_lst, t_shell *minishell)
 {
-    char *var_name = "$"; // Treat the dollar sign as the variable name
-    char *expanded = get_env_value(minishell, var_name); // Get expanded value
+    char *start = *line;
+    char *var_name;
+    char *expanded;
+    char *result;
+    int var_len;
 
-    if (expanded) {
-        // Add the expanded variable as a token
-        token_add_back(token_lst, expanded, T_IDENTIFIER);
+    // Move past the dollar sign
+    (*line)++;
+    start = *line;
+
+    // Special case for $?
+    if (**line == '?')
+    {
+        (*line)++;
+        expanded = ft_itoa(minishell->last_return); // Convert last return value to string
+        var_len = strlen(expanded);
+        result = malloc(var_len + 1);
+        if (result)
+        {
+            strcpy(result, expanded);
+            free(expanded);
+            // Handle the rest of the line as part of the same token
+            while (**line && !ft_iswhitespace(*line) && **line != '$' && **line != '\'' && **line != '\"')
+            {
+                result = realloc(result, strlen(result) + 2);
+                strncat(result, *line, 1);
+                (*line)++;
+            }
+            token_add_back(token_lst, result, T_IDENTIFIER);
+            free(result);
+        }
+        return;
     }
 
-    // Check if there's more text following the variable
-    if (**line != '\0') {
-        // Handle the rest of the line as separate tokens
-        handle_remaining_text(line, token_lst);
+    // Find the end of the variable name
+    while (**line && (ft_isalnum(**line) || **line == '_'))
+        (*line)++;
+
+    var_len = *line - start;
+    var_name = strndup(start, var_len);
+    expanded = get_env_value(minishell, var_name);
+    free(var_name);
+
+    if (expanded)
+    {
+        // Allocate space for the result
+        result = malloc(strlen(expanded) + 1);
+        if (result)
+        {
+            strcpy(result, expanded);
+            free(expanded);
+            // Handle the rest of the line as part of the same token
+            while (**line && !ft_iswhitespace(*line) && **line != '$' && **line != '\'' && **line != '\"')
+            {
+                result = realloc(result, strlen(result) + 2);
+                strncat(result, *line, 1);
+                (*line)++;
+            }
+            token_add_back(token_lst, result, T_IDENTIFIER);
+            free(result);
+        }
+    }
+    else
+    {
+        // If the variable is not found, add the original text
+        result = strndup(start - 1, var_len + 1);
+        token_add_back(token_lst, result, T_IDENTIFIER);
+        free(result);
     }
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 21:03:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/05 17:34:31 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/06 11:07:18 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	here_doc_read(t_shell *minishell, int *pipe_fds, char *delimiter)
 	signal(SIGINT, signal_exit);
 	while (1)
 	{
-		str = readline("heredoc> ");
+		str = readline("> ");
 		if (!str)
 		{
 			printf("End of file reached\n");

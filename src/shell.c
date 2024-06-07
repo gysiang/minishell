@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/04 13:30:54 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/07 17:31:39 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,18 @@ void	reset_process_ids(t_shell *minishell)
 
 void	free_shell(t_shell *minishell)
 {
+	int	i;
+
+	i = 0;
 	if (minishell == NULL)
 		return ;
 	if (minishell->cmd_list != NULL)
 		minishell->cmd_list = NULL;
+	while (minishell->env[i])
+	{
+		free(minishell->env[i++]);
+	}
+	free(minishell->env);
 	free(minishell);
 }
 

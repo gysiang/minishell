@@ -45,8 +45,11 @@ void parse_token(t_token *token, t_shell *minishell)
     }
     else if (len > 1 && str[0] == '\"' && str[len - 1] == '\"')
         parse_double_quotes(token, minishell);
-    else if (!token->is_single_quoted && strchr(token->token, '$'))
-        parse_value(token, minishell);
+    else if (strchr(token->token, '$'))
+	{
+		if(!token->is_single_quoted)
+			parse_value(token, minishell);
+	}
     else if (strchr(token->token, '$'))
         parse_value(token, minishell);
 }

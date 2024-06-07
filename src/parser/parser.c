@@ -34,6 +34,7 @@ void	set_token_pointers(t_token *tokens)
 void remove_embedded_quotes(t_token *token)
 {
    char *str;
+    char *new_str;
    int len;
    int first_quote_index;
    int last_quote_index;
@@ -87,7 +88,6 @@ void remove_embedded_quotes(t_token *token)
    if (!found_in_between && first_quote_index != -1 && last_quote_index != -1)
    {
        // Remove the quotes
-       char *new_str;
        new_str = malloc(len - 1); // Allocate space for new string without the two quotes
        if (!new_str) return;
        memcpy(new_str, str, first_quote_index); // Copy part before the first quote

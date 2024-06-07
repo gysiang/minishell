@@ -54,6 +54,7 @@ static void handle_special_env_variable(char *result, int *i, int *j, t_shell *m
     *i += 2; // Skip past the $?
 }
 
+
 static void handle_env_variable_expansion(char *str, char *result, int *i, int *j, t_shell *minishell)
 {
     char *var_start;

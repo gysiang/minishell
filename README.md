@@ -4,6 +4,11 @@ Objective: Create a simplified bash shell with specific functionalities.
 
 Functionalities: Command prompt display, command history, executables handling, quote recognition, redirections, pipes, environment variables, signal handling, and a set of built-in commands.
 
+#### Valgrind Supression Command
+
+valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp ./minishell
+
+
 ## Pseudo Code Structure
 ### Initialization
 
@@ -16,7 +21,7 @@ Functionalities: Command prompt display, command history, executables handling, 
 - [x] Add input to history.
 - [ ] Check and handle input errors.
 - [x] Parse and route the command.
-- [ ]Clear up command list for next input.
+- [x]Clear up command list for next input.
 - [x] Repeat unless an exit condition is met (e.g., "exit" command or ctrl-D).
 
 ### Command Parsing and Execution
@@ -24,26 +29,26 @@ Functionalities: Command prompt display, command history, executables handling, 
 - [x] Lexer (Tokenizer): Breaks down input into tokens (words or symbols).
 - [] Parser: Groups tokens into commands and their arguments, identifying redirections, pipes, and built-in commands.
 - [x] Executor: Executes the commands based on parsed data.
-- [ ]For built-in commands (like cd, exit), execute directly in the shell.
+- [x]For built-in commands (like cd, exit), execute directly in the shell.
 - [x] For external commands, find the executable and run it, handling input/output redirection and piping as needed.
-- [ ]Built-in Commands Handling
+- [x]Built-in Commands Handling
 
 Identify if the first word of a command is a built-in command.
 If so, execute the corresponding function directly within the shell.
 
 ### Redirections and Pipes
 
-- [ ] Handle input (<), output (>), append (>>), and heredoc (<<) redirections by adjusting file descriptors.
+- [x] Handle input (<), output (>), append (>>), and heredoc (<<) redirections by adjusting file descriptors.
 - [x] Use pipes (|) to connect the output of one command to the input of another.
 
 ### Environment Variables and Exit Status
 
 - [ ] Replace $VARIABLE with its value.
 - [ ] Replace $? with the last command's exit status.
-- [ ] Signal Handling
+- [x] Signal Handling
 
 - [x] Ensure ctrl-C, ctrl-D, and ctrl-\ are handled similarly to bash.
-- [ ] Reset and Cleanup
+- [x] Reset and Cleanup
 
 After each command execution or on exit, free allocated resources and prepare for the next input or shutdown.
 

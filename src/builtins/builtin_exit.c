@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 11:06:17 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/03 13:19:41 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:29:43 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 
 void minishell_exit(t_shell *minishell)
 {
-    for (int i = 0; i < minishell->process_count; i++)
+    int i;
+
+    i = 0;
+    while (i < minishell->process_count)
     {
         kill(minishell->process_ids[i], SIGTERM);
         waitpid(minishell->process_ids[i], NULL, WNOHANG);
+        i++;
     }
     free_shell(minishell);
     ft_putstr_fd("exit\n", STDOUT_FILENO);

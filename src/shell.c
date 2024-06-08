@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/07 17:31:39 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/08 08:27:34 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	free_shell(t_shell *minishell)
 	{
 		free(minishell->env[i++]);
 	}
+	close(minishell->input_fd);
+	close(minishell->output_fd);
 	free(minishell->env);
 	free(minishell);
 }

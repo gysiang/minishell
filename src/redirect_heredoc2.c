@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_exit.c                                     :+:      :+:    :+:   */
+/*   redirect_heredoc2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/12 11:06:17 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/08 23:22:30 by gyong-si         ###   ########.fr       */
+/*   Created: 2024/06/08 22:17:59 by gyong-si          #+#    #+#             */
+/*   Updated: 2024/06/08 22:18:53 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void minishell_exit(t_shell *minishell)
+void	signal_exit(int signal_number)
 {
-	int i;
-
-	i = 0;
-	while (i < minishell->process_count)
-	{
-		kill(minishell->process_ids[i], SIGTERM);
-		waitpid(minishell->process_ids[i], NULL, WNOHANG);
-		i++;
-	}
-	free_shell(minishell);
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	(void)signal_number;
 	exit(0);
+}
+
+void	error_eof(char *end_of_file)
+{
+	ft_putstr_fd("minishell: warning: here_document delimited by", 2);
+	ft_putstr_fd("end-of-file (wanted ", 2);
+	ft_putstr_fd(end_of_file, 2);
+	ft_putendl_fd(")", 2);
 }

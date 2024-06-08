@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/06 10:34:09 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/08 22:18:49 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,9 +129,18 @@ void	set_env(t_shell *minishell, const char *var, const char *value);
 void	set_env_entry(t_shell *minishell, char *new_entry, int idx);
 
 // redirect
+int		execute_parent(int pid, int *pipe_des);
 int		here_doc(t_shell *minishell, char *delimiter);
 int		redirect_input(t_shell *minishell, t_token *curr);
 int		redirect_output(t_shell *minishell, t_token *curr);
+
+// redirect utils
+char	*join_and_free(char *s1, const char *s2);
+char	*expand_env_variable(char *str, t_shell *minishell);
+int	read_input(char **str, char *delimiter);
+int is_delimiter(const char *str, const char *delimiter);
+void	signal_exit(int signal_number);
+void	error_eof(char *end_of_file);
 
 // signals
 void	sigquit_handler(int signal);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/03 13:38:20 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/08 23:36:38 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ int	execute_builtin_2(t_token *curr, t_shell *minishell)
 int	other_cmds(t_token *curr, t_shell *minishell)
 {
 	(void)minishell;
-
 	if (ft_strcmp(curr->token, "pwd") == 0)
 	{
 		minishell_pwd();

@@ -6,117 +6,76 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 21:03:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/08 18:16:31 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/08 22:21:55 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/***
-static void	signal_free(t_shell *minishell)
-{
-	if (minishell)
-		free_and_exit(minishell, 130);
-}
-**/
 
-static void	signal_exit(int signal_number)
+static char	*expand_if_needed(char *str, t_shell *minishell)
 {
-	(void)signal_number;
-	exit(0);
-}
+	char	*expanded_str;
 
-// Need to reduce the length of this line
-static void	error_eof(char *end_of_file)
-{
-	ft_putstr_fd("minishell: warning: here_document delimited by", 2);
-	ft_putstr_fd("end-of-file (wanted ", 2);
-	ft_putstr_fd(end_of_file, 2);
-	ft_putendl_fd(")", 2);
-}
-
-static char *join_and_free(char *s1, const char *s2)
-{
-	char *joined = ft_strjoin(s1, s2);
-	free(s1);
-	return (joined);
-}
-
-static char *expand_env_variable(char *str, t_shell *minishell)
-{
-	char *start;
-	char *end;
-	char *var_name;
-	char *env_value;
-	char *result;
-	size_t len;
-
-	result = ft_strdup("");
-	if (!result)
-		return (NULL);
-	while ((start = ft_strchr(str, '$')))
+	if (ft_strchr(str, '$'))
 	{
-		len = start - str;
-		result = join_and_free(result, ft_substr(str, 0, len));
-		end = start + 1;
-		while (ft_isalnum(*end) || *end == '_')
-			end++;
-		var_name = ft_substr(start, 1, end - start - 1);
-		env_value = get_env_value(minishell, var_name);
-		free(var_name);
-		if (!env_value)
-			env_value = ft_strdup("");
-		result = join_and_free(result, env_value);
-		free(env_value);
-		str = end;
+		expanded_str = expand_env_variable(str, minishell);
+		if (expanded_str)
+			return (expanded_str);
 	}
-	result = join_and_free(result, ft_strdup(str));
-	return (result);
+	return (ft_strdup(str));
+}
+
+static void	write_to_pipe(int fd, const char *str)
+{
+	write(fd, str, ft_strlen(str));
+	write(fd, "\n", 1);
 }
 
 static void	here_doc_read(t_shell *minishell, int *pipe_fds, char *delimiter)
 {
 	char	*str;
-	size_t	delimiter_len;
-	char *expanded_str;
-	(void)	minishell;
+	char	*expanded_str;
 
-	delimiter_len = ft_strlen(delimiter);
 	signal(SIGINT, signal_exit);
 	while (1)
 	{
-		str = readline("> ");
-		if (!str)
-		{
-			printf("End of file reached\n");
-			error_eof(delimiter);
+		if (!read_input(&str, delimiter))
 			break ;
-		}
-		if (!ft_strncmp(str, delimiter, delimiter_len + 1))
+		if (is_delimiter(str, delimiter))
 			break ;
-		if (ft_strchr(str, '$'))
+		expanded_str = expand_if_needed(str, minishell);
+		if (expanded_str)
 		{
-			expanded_str = expand_env_variable(str, minishell);
-			if (expanded_str)
-			{
-				write(pipe_fds[1], expanded_str, ft_strlen(expanded_str));
-				free(expanded_str);
-			}
+			write_to_pipe(pipe_fds[1], expanded_str);
+			free(expanded_str);
 		}
-		else
-			write(pipe_fds[1], str, ft_strlen(str));
-		write(pipe_fds[1], "\n", 1);
 	}
 	free(str);
 	close(pipe_fds[1]);
 }
 
+int	execute_parent(int pid, int *pipe_des)
+{
+	int	status;
+
+	signal(SIGINT, SIG_IGN);
+	waitpid(pid, &status, WUNTRACED);
+	if (WEXITSTATUS(status) == SIGINT)
+	{
+		close(pipe_des[0]);
+		close(pipe_des[1]);
+		return (-1);
+	}
+	close(pipe_des[1]);
+	return (pipe_des[0]);
+}
+
 int	here_doc(t_shell *minishell, char *delimiter)
 {
 	int	pipe_des[2];
-	int	status;
 	int	pid;
+	int	input_fd;
 
-	printf("entered into heredoc\n");
 	if (pipe(pipe_des) == -1)
 		exit(EXIT_FAILURE);
 	pid = fork();
@@ -129,16 +88,10 @@ int	here_doc(t_shell *minishell, char *delimiter)
 	}
 	else
 	{
-		signal(SIGINT, SIG_IGN);
-		waitpid(pid, &status, WUNTRACED);
-		if (WEXITSTATUS(status) == SIGINT)
-		{
-			close(pipe_des[0]);
-			close(pipe_des[1]);
+		input_fd = execute_parent(pid, pipe_des);
+		if (input_fd == -1)
 			return (-1);
-		}
+		minishell->input_fd = input_fd;
 	}
-	close(pipe_des[1]);
-	minishell->input_fd = pipe_des[0];
 	return (0);
 }

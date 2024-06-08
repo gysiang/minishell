@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/08 23:26:35 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/08 23:36:38 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int	execute_builtin_2(t_token *curr, t_shell *minishell)
 			minishell_error_msg("exit", 43);
 			return (1);
 		}
-		free_tokenlst(curr);
 		minishell_exit(minishell);
 		return (1);
 	}

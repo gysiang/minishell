@@ -30,6 +30,8 @@ SRC_FILES := main.c \
                 history.c \
                 execute_commands.c \
                 redirect_heredoc.c \
+				redirect_heredoc1.c \
+				redirect_heredoc2.c \
                 redirect.c \
                 shell.c \
                 signals.c \

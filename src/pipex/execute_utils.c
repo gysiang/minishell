@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/06 23:23:11 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/08 22:23:00 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	check_command(char *cmd, t_shell *minishell)
 
 char	**get_command_array(char *cmd, t_shell *minishell)
 {
-	char **s_cmd;
+	char	**s_cmd;
 
 	s_cmd = ft_split(cmd, ' ');
 	if (!s_cmd)
@@ -79,7 +79,7 @@ void	exec_cmd(t_token *curr, t_shell *minishell)
 {
 	char	**s_cmd;
 	char	*path;
-	int	return_code;
+	int		return_code;
 
 	check_command(curr->token, minishell);
 	s_cmd = get_command_array(curr->token, minishell);

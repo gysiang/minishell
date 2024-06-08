@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 21:03:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/06 11:07:18 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/08 18:16:31 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,50 @@ static void	error_eof(char *end_of_file)
 	ft_putendl_fd(")", 2);
 }
 
+static char *join_and_free(char *s1, const char *s2)
+{
+	char *joined = ft_strjoin(s1, s2);
+	free(s1);
+	return (joined);
+}
+
+static char *expand_env_variable(char *str, t_shell *minishell)
+{
+	char *start;
+	char *end;
+	char *var_name;
+	char *env_value;
+	char *result;
+	size_t len;
+
+	result = ft_strdup("");
+	if (!result)
+		return (NULL);
+	while ((start = ft_strchr(str, '$')))
+	{
+		len = start - str;
+		result = join_and_free(result, ft_substr(str, 0, len));
+		end = start + 1;
+		while (ft_isalnum(*end) || *end == '_')
+			end++;
+		var_name = ft_substr(start, 1, end - start - 1);
+		env_value = get_env_value(minishell, var_name);
+		free(var_name);
+		if (!env_value)
+			env_value = ft_strdup("");
+		result = join_and_free(result, env_value);
+		free(env_value);
+		str = end;
+	}
+	result = join_and_free(result, ft_strdup(str));
+	return (result);
+}
+
 static void	here_doc_read(t_shell *minishell, int *pipe_fds, char *delimiter)
 {
 	char	*str;
 	size_t	delimiter_len;
+	char *expanded_str;
 	(void)	minishell;
 
 	delimiter_len = ft_strlen(delimiter);
@@ -53,7 +93,17 @@ static void	here_doc_read(t_shell *minishell, int *pipe_fds, char *delimiter)
 		}
 		if (!ft_strncmp(str, delimiter, delimiter_len + 1))
 			break ;
-		write(pipe_fds[1], str, ft_strlen(str));
+		if (ft_strchr(str, '$'))
+		{
+			expanded_str = expand_env_variable(str, minishell);
+			if (expanded_str)
+			{
+				write(pipe_fds[1], expanded_str, ft_strlen(expanded_str));
+				free(expanded_str);
+			}
+		}
+		else
+			write(pipe_fds[1], str, ft_strlen(str));
 		write(pipe_fds[1], "\n", 1);
 	}
 	free(str);

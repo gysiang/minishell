@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join_tokens.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 15:31:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/06 18:24:39 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/08 10:34:55 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@ static char	*concat_token(const char *token1, const char *token2)
 
 	len1 = ft_strlen(token1);
 	len2 = ft_strlen(token2);
-	total_len = len1 + len2 + 1; // No need for extra space
-	joined_str = (char *)malloc(total_len + 1); // +1 for null terminator
+	total_len = len1 + len2 + 2;
+	joined_str = (char *)malloc(total_len + 1);
 	if (!joined_str)
 		return (NULL);
 	ft_copy(joined_str, token1, len1);
+	ft_strcat(joined_str, " ");
 	ft_strcat(joined_str, token2);
 	return (joined_str);
 }
@@ -51,16 +52,19 @@ static void	merge_identifier_tokens(t_token *curr)
 
 static bool is_command(char *token)
 {
-    // Implement a check to see if the token is a known command
-    static const char *commands[] = {
-        "cd", "ls", "echo", "exit", "unset", "pwd", "env", "export", NULL
-    };
-    for (int i = 0; commands[i]; i++)
-    {
-        if (strcmp(token, commands[i]) == 0)
-            return true;
-    }
-    return false;
+	int	i;
+
+	i = 0;
+	static const char *commands[] = {
+		"cd", "echo", "exit", "unset", "pwd", "env", "export", NULL
+	};
+	while (commands[i])
+	{
+		if (ft_strcmp(token, commands[i]) == 0)
+			return (true);
+		i++;
+	}
+	return (false);
 }
 
 static bool is_part_of_command_arguments(t_token *token)
@@ -88,7 +92,6 @@ void join_identifier_tokens(t_token *lst)
         curr = lst;
         while (curr != NULL && curr->next != NULL)
         {
-            // Check if both tokens are not just simple identifiers but potentially commands and arguments
             if (curr->type == T_IDENTIFIER && curr->next->type == T_IDENTIFIER &&
                 !is_command(curr->token) && !is_command(curr->next->token) &&
                 !is_part_of_command_arguments(curr->next))

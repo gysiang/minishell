@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 12:04:18 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 00:59:26 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/10 01:04:04 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	process_special_dollar_cases(char *str, char *result,
 	char	exit_status[12];
 	int		length;
 
-	next_char = str[indices->i + 1];
+	next_char = str[minishell->i + 1];
 	if (next_char == '?')
 	{
 		length = snprintf(exit_status, sizeof(exit_status), "%d",
@@ -61,7 +61,7 @@ void	process_special_dollar_cases(char *str, char *result,
 
 void	process_dollar_character(char *str, char *result, t_shell *minishell)
 {
-	if (str[indices->i + 1] == '\0')
+	if (str[minishell->i + 1] == '\0')
 	{
 		result[minishell->j++] = '$';
 		minishell->i++;
@@ -74,7 +74,7 @@ void	process_dollar_character(char *str, char *result, t_shell *minishell)
 
 void	process_character(char *str, char *result, t_shell *minishell)
 {
-	if (str[indices->i] == '\"')
+	if (str[minishell->i] == '\"')
 	{
 		minishell->i++;
 	}

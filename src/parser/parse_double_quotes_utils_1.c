@@ -84,8 +84,7 @@ void	handle_env_variable_expansion(char *str, char *result, t_shell *minishell)
 	}
 	else
 	{
-		// If the variable is not found, just copy the variable name as is
-		strcpy(&result[minishell->j], var_name);
+		ft_strcpy(&result[minishell->j], var_name);
 		minishell->j += strlen(var_name);
 	}
 }

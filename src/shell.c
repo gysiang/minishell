@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/08 23:36:10 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/09 13:49:35 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_shell	*init_shell(void)
 	shell->output_fd = dup(STDOUT_FILENO);
 	shell->prev_fd = -1;
 	shell->process_count = 0;
+	shell->signal_received = 0;
 	shell->end = false;
 	ft_memset(shell->process_ids, 0, sizeof(shell->process_ids));
 	return (shell);

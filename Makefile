@@ -54,8 +54,15 @@ SRC_FILES := main.c \
                 tokenizer/tokenizer_utils.c \
                 tokenizer/tokenizer.c \
                 parser/join_tokens.c \
-                parser/parser_commands.c \
-                parser/parser.c
+				parser/parse_double_quotes_utils_1.c \
+				parser/parse_double_quotes_utils_2.c \
+				parser/parse_double_quotes.c \
+				parser/parse_semicolon.c \
+				parser/parse_single_quotes.c \
+				parser/parse_value.c \
+				parser/remove_embedded_quotes_utils.c \
+				parser/remove_embedded_quotes.c \
+                parser/parser.c \
 
 SRC := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 

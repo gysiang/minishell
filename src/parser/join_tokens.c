@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join_tokens.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 15:31:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/08 10:34:55 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/09 11:39:55 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,13 @@ static void	merge_identifier_tokens(t_token *curr)
 	}
 }
 
-static bool is_command(char *token)
+static bool	is_command(char *token)
 {
-	int	i;
+	int					i;
+	static const char	*commands[] = {"cd", "echo", "exit", "unset", "pwd",
+		"env", "export", NULL};
 
 	i = 0;
-	static const char *commands[] = {
-		"cd", "echo", "exit", "unset", "pwd", "env", "export", NULL
-	};
 	while (commands[i])
 	{
 		if (ft_strcmp(token, commands[i]) == 0)
@@ -67,40 +66,41 @@ static bool is_command(char *token)
 	return (false);
 }
 
-static bool is_part_of_command_arguments(t_token *token)
+static bool	is_part_of_command_arguments(t_token *token)
 {
-    t_token *prev = NULL;
+	t_token	*prev;
 
-    // Traverse backwards to find the first command token
-    for (prev = token; prev != NULL && prev->type == T_IDENTIFIER; prev = prev->prev) {
-        if (is_command(prev->token)) {
-            return true;  // The token is an argument to a command
-        }
-    }
-    return false;  // No command token found before this, not a part of command arguments
+	prev = token;
+	while (prev != NULL && prev->type == T_IDENTIFIER)
+	{
+		if (is_command(prev->token))
+			return (true);
+		prev = prev->prev;
+	}
+	return (false);
 }
 
-void join_identifier_tokens(t_token *lst)
+void	join_identifier_tokens(t_token *lst)
 {
-    t_token *curr;
-    int merged;
+	t_token	*curr;
+	int		merged;
 
-    merged = 1;
-    while (merged)
-    {
-        merged = 0;
-        curr = lst;
-        while (curr != NULL && curr->next != NULL)
-        {
-            if (curr->type == T_IDENTIFIER && curr->next->type == T_IDENTIFIER &&
-                !is_command(curr->token) && !is_command(curr->next->token) &&
-                !is_part_of_command_arguments(curr->next))
-            {
-                merge_identifier_tokens(curr);
-                merged = 1;
-                break;
-            }
-            curr = curr->next;
-        }
-    }
+	merged = 1;
+	while (merged)
+	{
+		merged = 0;
+		curr = lst;
+		while (curr != NULL && curr->next != NULL)
+		{
+			if (curr->type == T_IDENTIFIER && curr->next->type == T_IDENTIFIER
+				&& !is_command(curr->token) && !is_command(curr->next->token)
+				&& !is_part_of_command_arguments(curr->next))
+			{
+				merge_identifier_tokens(curr);
+				merged = 1;
+				break ;
+			}
+			curr = curr->next;
+		}
+	}
 }

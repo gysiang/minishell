@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/06 19:16:09 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/09 23:16:57 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,11 @@ static void print_tokens(t_token *current_token, t_shell *minishell, int newline
         {
             parse_token(current_token, minishell); // Parse the token
             printf("%s", current_token->token);
-            if (current_token->next)
-                printf(" ");  // Add space between arguments
+            if (current_token->next && current_token->next->token[0] != '\0' &&
+                current_token->token[strlen(current_token->token) - 1] != '\0')
+            {
+                printf(" ");  // Add space between arguments if not adjacent
+            }
         }
         else
             break;

@@ -63,31 +63,30 @@ void	handle_regular_env_variable(char *str, char *result, t_shell *minishell)
 	free(var_name);
 }
 
-void	handle_env_variable_expansion(char *str, char *result,
-		t_shell *minishell, t_indices *indices)
+void	handle_env_variable_expansion(char *str, char *result, t_shell *minishell)
 {
 	char	var_name[256];
 	char	*var_value;
 	int		var_len;
 
 	var_len = 0;
-	indices->i++; // Skip the '$' character
-	while (ft_isalnum(str[indices->i]) || str[indices->i] == '_')
+	minishell->i++; // Skip the '$' character
+	while (ft_isalnum(str[minishell->i]) || str[minishell->i] == '_')
 	{
-		var_name[var_len++] = str[indices->i++];
+		var_name[var_len++] = str[minishell->i++];
 	}
 	var_name[var_len] = '\0';
 	// Assuming minishell has a function to get environment variable values
 	var_value = get_env_value(minishell, var_name);
 	if (var_value)
 	{
-		ft_strcpy(&result[indices->j], var_value);
-		indices->j += strlen(var_value);
+		ft_strcpy(&result[minishell->j], var_value);
+		minishell->j += strlen(var_value);
 	}
 	else
 	{
 		// If the variable is not found, just copy the variable name as is
-		strcpy(&result[indices->j], var_name);
-		indices->j += strlen(var_name);
+		strcpy(&result[minishell->j], var_name);
+		minishell->j += strlen(var_name);
 	}
 }

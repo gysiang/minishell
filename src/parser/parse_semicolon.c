@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_double_quotes.c                              :+:      :+:    :+:   */
+/*   parse_semicolon.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/09 11:00:03 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 12:36:39 by axlee            ###   ########.fr       */
+/*   Created: 2024/06/09 11:12:10 by axlee             #+#    #+#             */
+/*   Updated: 2024/06/09 12:08:15 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parse_double_quotes(t_token *token)
+void	parse_semicolon(t_token *token)
 {
-	char	*str;
-	int		len;
+	t_token	*curr;
 	char	*result;
-	int		i;
-	int		j;
+	size_t	len;
 
-	initialize_parse_variables(token, &str, &len, &result);
+	curr = token;
+	len = ft_wordlen(curr->token, ';');
+	result = (char *)malloc(len + 1);
 	if (!result)
 		return ;
-	while (i < len)
-		process_character(str, result, &i, &j);
-	result[j] = '\0';
-	free(token->token);
-	token->token = result;
-	token->is_single_quoted = 0;
+	ft_copy(result, curr->token, len);
+	free(curr->token);
+	curr->token = result;
 }

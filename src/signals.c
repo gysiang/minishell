@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:33:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/08 22:24:42 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/09 13:46:20 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	sigint_handler(int signal)
 {
 	(void)signal;
-	g_signal_received = 1;
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
@@ -25,7 +24,6 @@ void	sigint_handler(int signal)
 void	sigint_handler1(int signal)
 {
 	(void)signal;
-	g_signal_received = 1;
 	write(1, "\n", 1);
 }
 

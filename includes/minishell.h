@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/09 12:36:42 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/09 13:46:42 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,21 +76,21 @@ typedef struct s_cmd
 
 typedef struct s_shell
 {
-	int				env_size;
-	int				exit;
-	char			**env;
-	char			*prompt;
-	t_token			*cmd_list;
-	int				input_fd;
-	int				output_fd;
-	int				prev_fd;
-	pid_t			process_ids[100];
-	int				process_count;
-	int last_return ;
-	bool			end;
-}					t_shell;
+	int		env_size;
+	int		exit;
+	char	**env;
+	char	*prompt;
+	t_token	*cmd_list;
+	int		input_fd;
+	int		output_fd;
+	int		prev_fd;
+	pid_t	process_ids[100];
+	int		process_count;
+	int		last_return;
+	int		signal_received;
+	bool	end;
+}	t_shell;
 
-extern int			g_signal_received;
 
 // Error Message
 void				delete_command(void *elem);

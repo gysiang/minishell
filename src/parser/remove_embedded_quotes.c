@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 11:26:28 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 13:30:06 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/09 13:37:51 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	update_token_if_needed(t_token *token, char *new_str)
 	if (new_str != NULL)
 	{
 		free(token->token);
-		token->token = NULL;  // Set to NULL after freeing
+		token->token = NULL;
 		token->token = new_str;
 	}
 }
@@ -38,7 +38,7 @@ void	process_quote_removal(char *str, int len, t_token *token)
 				quote_char);
 		found_in_between = check_quotes_in_between(str, first_quote_index,
 				last_quote_index, quote_char);
-		if (!found_in_between)
+		if (!found_in_between && last_quote_index != -1)
 		{
 			new_str = remove_quotes(str, first_quote_index, last_quote_index,
 					len);

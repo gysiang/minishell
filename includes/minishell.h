@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/10 00:35:05 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/10 00:59:39 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ typedef struct s_shell
 {
 	int				env_size;
 	int				exit;
+	int				i;
+	int				j;
 	char			**env;
 	char			*prompt;
 	t_token			*cmd_list;
@@ -87,13 +89,6 @@ typedef struct s_shell
 	int				signal_received;
 	bool			end;
 }					t_shell;
-
-// Struct for double quotes
-typedef struct s_indices
-{
-	int				i;
-	int				j;
-}					t_indices;
 
 // Error Message
 void				delete_command(void *elem);
@@ -234,18 +229,18 @@ void				extract_variable_name(char *str, char **var_name,
 						int *var_len);
 void				handle_regular_env_variable(char *str, char *result,
 						t_shell *minishell);
-void 				handle_env_variable_expansion(char *str,
-						t_shell *minishell, t_indices *indices, char *result);
+void				handle_env_variable_expansion(char *str, char *result,
+						t_shell *minishell);
 
 // parser(parse_double_quotes_utils_2)
 void				initialize_parse_variables(t_token *token, char **str,
 						int *len, char **result);
 void				process_special_dollar_cases(char *str, char *result,
-						t_shell *minishell, t_indices *indices);
+						t_shell *minishell);
 void				process_dollar_character(char *str, char *result,
-						t_shell *minishell, t_indices *indices);
+						t_shell *minishell);
 void				process_character(char *str, char *result,
-						t_shell *minishell, t_indices *indices);
+						t_shell *minishell);
 
 // parser(parse_semicolon)
 void				parse_semicolon(t_token *token);

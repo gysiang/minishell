@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 12:04:18 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 00:35:28 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/10 00:59:26 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	initialize_parse_variables(t_token *token, char **str, int *len,
 }
 
 void	process_special_dollar_cases(char *str, char *result,
-		t_shell *minishell, t_indices *indices)
+		t_shell *minishell)
 {
 	char	next_char;
 	char	exit_status[12];
@@ -37,62 +37,60 @@ void	process_special_dollar_cases(char *str, char *result,
 				minishell->last_return);
 		if (length > 0)
 		{
-			strcpy(&result[indices->j], exit_status);
-			indices->j += strlen(exit_status);
+			strcpy(&result[minishell->j], exit_status);
+			minishell->j += strlen(exit_status);
 		}
-		indices->i += 2;
+		minishell->i += 2;
 	}
 	else if (!ft_isalnum(next_char) && next_char != '_' && next_char != '\"')
 	{
-		result[indices->j++] = '$';
-		result[indices->j++] = next_char;
-		indices->i += 2;
+		result[minishell->j++] = '$';
+		result[minishell->j++] = next_char;
+		minishell->i += 2;
 	}
 	else if (next_char == '\"')
 	{
-		result[indices->j++] = '$';
-		indices->i++;
+		result[minishell->j++] = '$';
+		minishell->i++;
 	}
 	else
 	{
-		handle_env_variable_expansion(str, minishell, indices, result);
+		handle_env_variable_expansion(str, result, minishell);
 	}
 }
 
-void	process_dollar_character(char *str, char *result, t_shell *minishell,
-		t_indices *indices)
+void	process_dollar_character(char *str, char *result, t_shell *minishell)
 {
 	if (str[indices->i + 1] == '\0')
 	{
-		result[indices->j++] = '$';
-		indices->i++;
+		result[minishell->j++] = '$';
+		minishell->i++;
 	}
 	else
 	{
-		process_special_dollar_cases(str, result, minishell, indices);
+		process_special_dollar_cases(str, result, minishell);
 	}
 }
 
-void	process_character(char *str, char *result, t_shell *minishell,
-		t_indices *indices)
+void	process_character(char *str, char *result, t_shell *minishell)
 {
 	if (str[indices->i] == '\"')
 	{
-		indices->i++;
+		minishell->i++;
 	}
-	else if (str[indices->i] == '\'')
+	else if (str[minishell->i] == '\'')
 	{
-		result[indices->j++] = str[indices->i++];
+		result[minishell->j++] = str[minishell->i++];
 	}
-	else if (str[indices->i] == '$')
+	else if (str[minishell->i] == '$')
 	{
-		process_dollar_character(str, result, minishell, indices);
+		process_dollar_character(str, result, minishell);
 	}
 	else
 	{
-		result[indices->j] = str[indices->i];
-		indices->j++;
-		indices->i++;
+		result[minishell->j] = str[minishell->i];
+		minishell->j++;
+		minishell->i++;
 	}
-	result[indices->j] = '\0';
+	result[minishell->j] = '\0';
 }

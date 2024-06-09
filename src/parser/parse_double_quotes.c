@@ -6,28 +6,29 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 11:00:03 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 13:20:58 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/09 18:14:03 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parse_double_quotes(t_token *token)
+void	parse_double_quotes(t_token *token, t_shell *minishell)
 {
-	char	*str;
-	int		len;
-	char	*result;
-	int		i;
-	int		j;
+	char		*str;
+	int			len;
+	char		*result;
+	t_indices	indices;
 
+	indices.i = 0;
+	indices.j = 0;
 	initialize_parse_variables(token, &str, &len, &result);
 	if (!result)
 		return ;
-    i = 0;
-    j = 0;
-	while (i < len)
-		process_character(str, result, &i, &j);
-	result[j] = '\0';
+	while (str[indices.i] != '\0')
+	{
+		process_character(str, result, minishell, &indices);
+	}
+	result[indices.j] = '\0';
 	free(token->token);
 	token->token = result;
 	token->is_single_quoted = 0;

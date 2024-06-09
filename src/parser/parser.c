@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 12:26:53 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/09 17:35:38 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	set_token_pointers(t_token *tokens)
 	if (prev_token != NULL)
 		prev_token->next = NULL;
 }
-
 void	parse_token(t_token *token, t_shell *minishell)
 {
 	char	*str;
@@ -38,46 +37,21 @@ void	parse_token(t_token *token, t_shell *minishell)
 
 	str = token->token;
 	len = ft_strlen(str);
-	if (len > 1 && ((str[0] == '\'' && str[len - 1] == '\'') || (str[0] == '\"'
-				&& str[len - 1] == '\"')))
+	if (len > 1)
 	{
-		if (str[0] == '\'')
+		if (str[0] == '\'' && str[len - 1] == '\'')
 			parse_single_quotes(token);
+		else if (str[0] == '\"' && str[len - 1] == '\"')
+			parse_double_quotes(token, minishell);
 		else
-			parse_double_quotes(token);
+			remove_embedded_quotes(token);
 	}
-	else
-		remove_embedded_quotes(token);
+	str = token->token;
+	len = ft_strlen(str);
 	if (strchr(token->token, '$') && !token->is_single_quoted)
 		parse_value(token, minishell);
 }
 
-/*void parse_token(t_token *token, t_shell *minishell)
-{
-	char	*str;
-	int		len;
-	t_token	*curr;
-	t_token	*curr;
-	t_token	*curr;
-
-	str = token->token;
-	len = ft_strlen(str);
-	if ((len > 1 && str[0] == '\'' && str[len - 1] == '\'') || (len > 1
-			&& str[0] == '\"' && str[len - 1] == '\"'))
-	{
-		if (str[0] == '\'')
-			parse_single_quotes(token);
-		else
-			parse_double_quotes(token, minishell);
-	}
-	else if (strchr(token->token, '$'))
-	{
-		if(!token->is_single_quoted)
-			parse_value(token, minishell);
-	}
-	else if (strchr(token->token, '$'))
-		parse_value(token, minishell);
-}*/
 t_token	*token_parser(t_token *token_lst, t_shell *minishell)
 {
 	t_token	*curr;

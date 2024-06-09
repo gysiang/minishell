@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 12:04:18 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 22:46:36 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/09 23:16:53 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ void	initialize_parse_variables(t_token *token, char **str, int *len,
 }
 
 void	process_special_dollar_cases(char *str, char *result,
-		t_shell *minishell, t_indices *indices)
+		t_shell *minishell)
 {
 	char	next_char;
 	char	exit_status[12];
 	int		length;
 
-	next_char = str[indices->i + 1];
+	next_char = str[minishell->i + 1];
 	printf("Next character after $: %c\n", next_char); // Debug print
 	if (next_char == '?')
 	{
@@ -38,65 +38,63 @@ void	process_special_dollar_cases(char *str, char *result,
 				minishell->last_return);
 		if (length > 0)
 		{
-			strcpy(&result[indices->j], exit_status);
-			indices->j += strlen(exit_status);
+			strcpy(&result[minishell->j], exit_status);
+			minishell->j += strlen(exit_status);
 		}
-		indices->i += 2;
+		minishell->i += 2;
 	}
 	else if (!ft_isalnum(next_char) && next_char != '_' && next_char != '\"')
 	{
-		result[indices->j++] = '$';
-		result[indices->j++] = next_char;
-		indices->i += 2;
+		result[minishell->j++] = '$';
+		result[minishell->j++] = next_char;
+		minishell->i += 2;
 	}
 	else if (next_char == '\"')
 	{
-		result[indices->j++] = '$';
-		indices->i++;
+		result[minishell->j++] = '$';
+		minishell->i++;
 	}
 	else
 	{
-		handle_env_variable_expansion(str, result, minishell, indices);
+		handle_env_variable_expansion(str, result, minishell);
 	}
 }
 
-void	process_dollar_character(char *str, char *result, t_shell *minishell,
-		t_indices *indices)
+void	process_dollar_character(char *str, char *result, t_shell *minishell)
 {
-	printf("Processing dollar character: %c\n", str[indices->i + 1]);
+	printf("Processing dollar character: %c\n", str[minishell->i + 1]);
 		// Debug print
-	if (str[indices->i + 1] == '\0')
+	if (str[minishell->i + 1] == '\0')
 	{
-		result[indices->j++] = '$';
-		indices->i++;
+		result[minishell->j++] = '$';
+		minishell->i++;
 	}
 	else
 	{
-		process_special_dollar_cases(str, result, minishell, indices);
+		process_special_dollar_cases(str, result, minishell);
 	}
 }
 
-void	process_character(char *str, char *result, t_shell *minishell,
-		t_indices *indices)
+void	process_character(char *str, char *result, t_shell *minishell)
 {
-	printf("Processing character: %c\n", str[indices->i]); // Debug print
-	if (str[indices->i] == '\"')
+	printf("Processing character: %c\n", str[minishell->i]); // Debug print
+	if (str[minishell->i] == '\"')
 	{
-		indices->i++;
+		minishell->i++;
 	}
-	else if (str[indices->i] == '\'')
+	else if (str[minishell->i] == '\'')
 	{
-		result[indices->j++] = str[indices->i++];
+		result[minishell->j++] = str[minishell->i++];
 	}
-	else if (str[indices->i] == '$')
+	else if (str[minishell->i] == '$')
 	{
-		process_dollar_character(str, result, minishell, indices);
+		process_dollar_character(str, result, minishell);
 	}
 	else
 	{
-		result[indices->j] = str[indices->i];
-		indices->j++;
-		indices->i++;
+		result[minishell->j] = str[minishell->i];
+		minishell->j++;
+		minishell->i++;
 	}
-	result[indices->j] = '\0';
+	result[minishell->j] = '\0';
 }

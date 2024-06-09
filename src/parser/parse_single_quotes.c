@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 10:49:34 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 18:39:22 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/09 22:59:22 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,16 @@ static char	*remove_single_quotes(const char *str)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (i < len)
+	while (str[i] != '\0')
 	{
-		if (str[i] != '\'' && str[i] != '\"')
+		if (str[i] == '\'' && str[i + 1] == '\'')
 		{
-			result[j] = str[i];
-			j++;
+			i += 2; // Skip consecutive single quotes
 		}
-		i++;
+		else
+		{
+			result[j++] = str[i++];
+		}
 	}
 	result[j] = '\0';
 	return (result);

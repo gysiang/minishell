@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 11:00:03 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 22:27:47 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/09 23:16:50 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,20 @@
 
 void	parse_double_quotes(t_token *token, t_shell *minishell)
 {
-	char		*str;
-	int			len;
-	char		*result;
-	t_indices	indices;
+	char	*str;
+	int		len;
+	char	*result;
 
-	indices.i = 0;
-	indices.j = 0;
+	minishell->i = 0;
+	minishell->j = 0;
 	initialize_parse_variables(token, &str, &len, &result);
 	if (!result)
 		return ;
-	while (str[indices.i] != '\0')
+	while (str[minishell->i] != '\0')
 	{
-		process_character(str, result, minishell, &indices);
+		process_character(str, result, minishell);
 	}
-	result[indices.j] = '\0';
+	result[minishell->j] = '\0';
 	free(token->token);
 	token->token = result;
 	token->is_single_quoted = 0;

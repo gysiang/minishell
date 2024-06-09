@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 12:04:18 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 13:46:00 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/09 20:55:28 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,58 +16,81 @@ void	initialize_parse_variables(t_token *token, char **str, int *len,
 		char **result)
 {
 	*str = token->token;
-	*len = ft_strlen(*str) * 2; // Allocate more space to handle expansions
+	*len = ft_strlen(*str) * 2;
 	*result = malloc(*len + 1);
 	if (!*result)
 		return ;
+	(*result)[0] = '\0'; // Initialize the result buffer
 }
 
-void	process_dollar_character(char *str, char *result, int *i, int *j)
+void	process_special_dollar_cases(char *str, char *result,
+		t_shell *minishell, t_indices *indices)
 {
-    t_shell	*minishell;
-    char	next_char;
-    char    exit_status[12];
+    char next_char;
+    char exit_status[12];
+    int length;
 
-    minishell = init_shell();
-    if (str[*i + 1] == '\0')
+    next_char = str[indices->i + 1];
+    printf("Next character after $: %c\n", next_char); // Debug print
+
+    if (next_char == '?')
     {
-        result[(*j)++] = '$';
-        (*i)++;
+        length = snprintf(exit_status, sizeof(exit_status), "%d",
+                minishell->last_return);
+        if (length > 0)
+        {
+            strcpy(&result[indices->j], exit_status);
+            indices->j += strlen(exit_status);
+        }
+        indices->i += 2;
+    }
+    else if (!ft_isalnum(next_char) && next_char != '_')
+    {
+        result[indices->j++] = '$';
+        result[indices->j++] = next_char;
+        indices->i += 2;
     }
     else
     {
-        next_char = str[*i + 1];
-        if (next_char == '?')
-        {
-            int length;
-            length = sprintf(exit_status, "%d", minishell->last_return);
-            if (length > 0)
-            {
-                strcpy(&result[*j], exit_status);
-                *j += strlen(exit_status);
-            }
-            *i += 2; // Skip past the '$' and '?'
-        }
-        else if (!ft_isalnum(next_char) && next_char != '_')
-        {
-            result[(*j)++] = '$';
-            (*i)++;
-        }
-        else
-            handle_env_variable_expansion(str, result, i, minishell);
+        handle_env_variable_expansion(str, result, minishell, indices);
     }
 }
 
-void	process_character(char *str, char *result, int *i, int *j)
+void	process_dollar_character(char *str, char *result, t_shell *minishell,
+		t_indices *indices)
 {
-	if (str[*i] == '\"')
-		(*i)++;
-	else if (str[*i] == '$')
-		process_dollar_character(str, result, i, j);
-	else
-	{
-		result[(*j)++] = str[*i];
-		(*i)++;
-	}
-	result[*j] = '\0';
+    printf("Processing dollar character: %c\n", str[indices->i + 1]); // Debug print
+
+    if (str[indices->i + 1] == '\0')
+    {
+        result[indices->j++] = '$';
+        indices->i++;
+    }
+    else
+    {
+        process_special_dollar_cases(str, result, minishell, indices);
+    }
 }
+
+void	process_character(char *str, char *result, t_shell *minishell,
+		t_indices *indices)
+{
+    printf("Processing character: %c\n", str[indices->i]); // Debug print
+
+    if (str[indices->i] == '\"' || str[indices->i] == '\'')
+    {
+        indices->i++;
+    }
+    else if (str[indices->i] == '$')
+    {
+        process_dollar_character(str, result, minishell, indices);
+    }
+    else
+    {
+        result[indices->j] = str[indices->i];
+        indices->j++;
+        indices->i++;
+    }
+    result[indices->j] = '\0';
+}
+

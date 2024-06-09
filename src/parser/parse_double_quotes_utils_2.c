@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 12:04:18 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 22:28:22 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/09 22:46:36 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,11 @@ void	process_special_dollar_cases(char *str, char *result,
 		result[indices->j++] = '$';
 		result[indices->j++] = next_char;
 		indices->i += 2;
+	}
+	else if (next_char == '\"')
+	{
+		result[indices->j++] = '$';
+		indices->i++;
 	}
 	else
 	{

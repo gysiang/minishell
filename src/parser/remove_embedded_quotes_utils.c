@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 11:10:47 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 12:19:46 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/09 13:28:35 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,26 @@ int	check_quotes_in_between(char *str, int first_quote_index,
 char	*remove_quotes(char *str, int first_quote_index, int last_quote_index,
 		int len)
 {
+	int		new_len;
 	char	*new_str;
+	int		i;
+	int		j;
 
-	new_str = malloc(len - 1);
-	if (new_str == NULL)
+	new_len = len - 2;
+	new_str = (char *)malloc(new_len + 1);
+	j = 0;
+	if (!new_str)
 		return (NULL);
-	memcpy(new_str, str, first_quote_index);
-	memcpy(new_str + first_quote_index, str + first_quote_index + 1,
-		last_quote_index - first_quote_index - 1);
-	memcpy(new_str + last_quote_index - 1, str + last_quote_index + 1, len
-		- last_quote_index - 1);
-	new_str[len - 2] = '\0';
+	i = 0;
+	while (i < len)
+	{
+		if (i != first_quote_index && i != last_quote_index)
+		{
+			new_str[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	new_str[new_len] = '\0';
 	return (new_str);
 }

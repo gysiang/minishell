@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 11:26:28 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 12:19:10 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/09 13:30:06 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	update_token_if_needed(t_token *token, char *new_str)
 	if (new_str != NULL)
 	{
 		free(token->token);
+		token->token = NULL;  // Set to NULL after freeing
 		token->token = new_str;
 	}
 }

@@ -6,13 +6,11 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/08 10:30:27 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/09 13:47:06 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	g_signal_received = 0;
 
 char	*read_input_line(t_shell *g_shell)
 {
@@ -55,7 +53,7 @@ void	process_command_line(t_shell *minishell, char *line)
 	token_lst = NULL;
 	minishell->prev_fd = -1;
 	reset_process_ids(minishell);
-	g_signal_received = 0;
+	minishell->signal_received = 0;
 }
 
 void	main_loop(t_shell *g_shell)

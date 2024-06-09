@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 11:26:28 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 13:37:51 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/09 19:44:01 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,21 @@ void	process_quote_removal(char *str, int len, t_token *token)
 
 void	remove_embedded_quotes(t_token *token)
 {
-	char	*str;
-	int		len;
+	char	*new_str;
+	int		i;
+	int		j;
 
-	str = token->token;
-	len = strlen(str);
-	process_quote_removal(str, len, token);
+	new_str = malloc(ft_strlen(token->token) + 1);
+	if (!new_str)
+		return ;
+	i = 0;
+	j = 0;
+	while (token->token[i])
+	{
+		if (token->token[i] != '\'' && token->token[i] != '\"')
+			new_str[j++] = token->token[i];
+		i++;
+	}
+	new_str[j] = '\0';
+	update_token_if_needed(token, new_str);
 }

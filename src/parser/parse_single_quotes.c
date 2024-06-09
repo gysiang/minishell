@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 10:49:34 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 12:08:41 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/09 18:39:22 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*remove_single_quotes(const char *str)
 	j = 0;
 	while (i < len)
 	{
-		if (str[i] != '\'')
+		if (str[i] != '\'' && str[i] != '\"')
 		{
 			result[j] = str[i];
 			j++;
@@ -42,7 +42,12 @@ void	parse_single_quotes(t_token *token)
 {
 	char	*result;
 
-	result = remove_single_quotes(token->token);
+	if ((ft_strlen(token->token) == 2 && token->token[0] == '\''
+			&& token->token[1] == '\'') || (ft_strlen(token->token) == 2
+			&& token->token[0] == '\"' && token->token[1] == '\"'))
+		result = ft_strdup("");
+	else
+		result = remove_single_quotes(token->token);
 	if (!result)
 		return ;
 	free(token->token);

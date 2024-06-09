@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 11:00:03 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 18:14:03 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/09 20:32:29 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,3 +33,4 @@ void	parse_double_quotes(t_token *token, t_shell *minishell)
 	token->token = result;
 	token->is_single_quoted = 0;
 }
+

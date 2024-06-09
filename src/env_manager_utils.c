@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_manager_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/03 13:35:37 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/09 20:45:48 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,18 @@
 
 char	*get_env_value(t_shell *minishell, const char *var)
 {
-	int		i;
-	size_t	var_len;
+    int i;
+    size_t var_len;
 
-	i = 0;
-	var_len = ft_strlen(var);
-	while (minishell->env[i])
-	{
-		if (ft_strncmp(minishell->env[i], var, var_len) == 0
-			&& minishell->env[i][var_len] == '=')
-			return (ft_strdup(&minishell->env[i][var_len + 1]));
-		i++;
-	}
-	return (NULL);
+    var_len = ft_strlen(var);
+    for (i = 0; minishell->env[i]; i++)
+    {
+        if (ft_strncmp(minishell->env[i], var, var_len) == 0 && minishell->env[i][var_len] == '=')
+        {
+            return ft_strdup(&minishell->env[i][var_len + 1]);
+        }
+    }
+    return NULL;
 }
 
 int	env_len(t_shell *minishell)

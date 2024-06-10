@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+         #
+#    By: axlee <axlee@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/13 15:19:53 by axlee             #+#    #+#              #
-#    Updated: 2024/04/28 13:55:21 by gyong-si         ###   ########.fr        #
+#    Updated: 2024/06/10 11:04:35 by axlee            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,7 +79,8 @@ MEM_FILES =		mem/ft_bzero.c \
 				mem/ft_memcmp.c \
 				mem/ft_memcpy.c \
 				mem/ft_memmove.c \
-				mem/ft_memset.c
+				mem/ft_memset.c \
+				mem/ft_realloc.c \
 
 MEM_OBJS =		$(addprefix $(OBJS_DIR)/,$(notdir $(MEM_FILES:.c=.o)))
 
@@ -129,6 +130,7 @@ STR_FILES =		str/ft_split.c \
 				str/ft_strccmp.c \
 				str/ft_strncmp.c \
 				str/ft_strnstr.c \
+				str/ft_strndup.c \
 				str/ft_strrchr.c \
 				str/ft_strtrim.c \
 				str/ft_strswap.c \

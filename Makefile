@@ -26,6 +26,7 @@ INCLUDES       := $(addprefix $(INCLUDES_DIR)/, $(INCLUDES_FILES))
 SRC_FILES := main.c \
                 env_manager_utils.c \
                 env_manager.c \
+				error_msg_utils.c \
                 error_msg.c \
                 history.c \
                 execute_commands.c \
@@ -39,7 +40,8 @@ SRC_FILES := main.c \
                 builtins/builtin_cd.c \
                 builtins/builtin_echo.c \
                 builtins/builtin_env.c \
-                builtins/builtin_export_utils.c \
+                builtins/builtin_export_utils_1.c \
+                builtins/builtin_export_utils_2.c \
                 builtins/builtin_export.c \
                 builtins/builtin_exit.c \
                 builtins/builtin_pwd.c \
@@ -51,7 +53,9 @@ SRC_FILES := main.c \
 				pipex/execute_utils.c \
                 pipex/pipex.c \
                 tokenizer/create_token.c \
-                tokenizer/tokenizer_utils.c \
+                tokenizer/tokenizer_utils_1.c \
+				tokenizer/tokenizer_utils_2.c \
+				tokenizer/tokenizer_utils_3.c \
                 tokenizer/tokenizer.c \
                 parser/join_tokens.c \
 				parser/parse_double_quotes_utils_1.c \

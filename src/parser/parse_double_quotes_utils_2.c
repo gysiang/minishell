@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 12:04:18 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 10:05:55 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/10 10:42:43 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,22 @@ void	update_parse_variables(int *len, char **result)
 
 void	initialize_parse_variables(t_token *token, t_shell *minishell)
 {
-	char	*str;
-	int		len;
-	char	*result;
+    char	*str;
+    int		len;
+    char	*result;
 
-	str = token->token;
-	len = ft_strlen(str) * 2;
-	result = malloc(len + 1);
-	if (!result)
-		return ;
-	result[0] = '\0';
-	minishell->allocated_size = len + 1; // Initialize allocated_size
-	update_parse_variables(&len, &result);
-	free(result); // Ensure the result buffer is always freed
+    str = token->token;
+    len = ft_strlen(str) * 2;
+    result = malloc(len + 1);
+    if (result == NULL)
+    {
+        return;
+    }
+    memset(result, '\0', len + 1); // Ensure the result buffer is always fully initialized to zero
+    minishell->allocated_size = len + 1; // Initialize allocated_size
+    update_parse_variables(&len, &result);
+	free(result);
+
 }
 
 void	process_special_dollar_cases(char *str, char **result,
@@ -106,3 +109,4 @@ void	process_character(char *str, char **result, t_shell *minishell)
 	}
 	(*result)[minishell->j] = '\0';
 }
+

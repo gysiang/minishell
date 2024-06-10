@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_env.c                                      :+:      :+:    :+:   */
+/*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/12 11:06:17 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 10:52:52 by axlee            ###   ########.fr       */
+/*   Created: 2024/06/10 10:54:28 by axlee             #+#    #+#             */
+/*   Updated: 2024/06/10 10:55:36 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	minishell_env(t_shell *minishell)
+void	*ft_realloc(void *ptr, size_t size)
 {
-	int	i;
+	void	*new_ptr;
 
-	printf("Entering minishell_env function\n");
-	i = 0;
-	if (!minishell->env || !minishell->env[0])
+	if (size == 0)
 	{
-		printf("No environment variables to print\n");
-		return (0);
+		free(ptr);
+		return (NULL);
 	}
-	env_len(minishell);
-	while (minishell->env[i])
-	{
-		printf("env %d : ", i);
-		printf("%s\n", minishell->env[i]);
-		i++;
-	}
-	printf("Exiting minishell_env function\n");
-	return (0);
+	if (!ptr)
+		return (malloc(size));
+	new_ptr = malloc(size);
+	if (!new_ptr)
+		return (NULL);
+	ft_memcpy(new_ptr, ptr, size);
+	free(ptr);
+	return (new_ptr);
 }

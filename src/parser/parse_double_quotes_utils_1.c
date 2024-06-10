@@ -37,7 +37,7 @@ void	extract_variable_name(char *str, char **var_name, int *var_len)
 	while (*var_end && (ft_isalnum(*var_end) || *var_end == '_'))
 		var_end++;
 	*var_len = var_end - var_start;
-	*var_name = strndup(var_start, *var_len);
+	*var_name = ft_strndup(var_start, *var_len);
 }
 
 void	handle_regular_env_variable(char *str, char *result, t_shell *minishell)
@@ -74,13 +74,14 @@ void	handle_env_variable_expansion(char *str, char **result,
 		var_name[var_len++] = str[minishell->i++];
 	var_name[var_len] = '\0';
 	var_value = get_env_value(minishell, var_name);
+	
 	if (var_value)
 	{
 		if (minishell->j + ft_strlen(var_value) + 1 > minishell->allocated_size)
 		{
 			// Reallocate result buffer if necessary
 			minishell->allocated_size = minishell->j + ft_strlen(var_value) + 1;
-			*result = realloc(*result, minishell->allocated_size);
+			*result = ft_realloc(*result, minishell->allocated_size);
 		}
 		ft_strcpy(&(*result)[minishell->j], var_value);
 		minishell->j += ft_strlen(var_value);
@@ -92,9 +93,10 @@ void	handle_env_variable_expansion(char *str, char **result,
 		{
 			// Reallocate result buffer if necessary
 			minishell->allocated_size = minishell->j + strlen(var_name) + 1;
-			*result = realloc(*result, minishell->allocated_size);
+			*result = ft_realloc(*result, minishell->allocated_size);
 		}
 		ft_strcpy(&(*result)[minishell->j], var_name);
 		minishell->j += ft_strlen(var_name);
 	}
 }
+

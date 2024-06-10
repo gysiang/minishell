@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 11:06:17 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 16:46:49 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/10 10:52:56 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void minishell_exit(t_shell *minishell)
+void	minishell_exit(t_shell *minishell)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < minishell->process_count)

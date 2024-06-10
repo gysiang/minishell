@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 17:53:03 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 10:03:44 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/10 12:03:59 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,13 @@ char	*ft_strdup(const char *s)
 	size_t	len;
 	size_t	i;
 
-	i = 0;
+	if (s == NULL)
+		return (NULL);
 	len = ft_strlen(s);
 	p = (char *)malloc(len + 1);
-	if (!p)
+	if (p == NULL)
 		return (NULL);
+	i = 0;
 	while (s[i] != '\0')
 	{
 		p[i] = s[i];

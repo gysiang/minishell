@@ -26,6 +26,7 @@ INCLUDES       := $(addprefix $(INCLUDES_DIR)/, $(INCLUDES_FILES))
 SRC_FILES := main.c \
                 env_manager_utils.c \
                 env_manager.c \
+				error_msg_utils.c \
                 error_msg.c \
                 history.c \
                 execute_commands.c \

@@ -35,9 +35,7 @@ void	extract_variable_name(char *str, char **var_name, int *var_len)
 	var_start = &str[1]; // Skip the '$' character
 	var_end = var_start;
 	while (*var_end && (ft_isalnum(*var_end) || *var_end == '_'))
-	{
 		var_end++;
-	}
 	*var_len = var_end - var_start;
 	*var_name = strndup(var_start, *var_len);
 }
@@ -56,14 +54,15 @@ void	handle_regular_env_variable(char *str, char *result, t_shell *minishell)
 	expanded = get_env_value(minishell, var_name);
 	if (expanded)
 	{
-		strcpy(&result[j], expanded);
+		ft_strcpy(&result[j], expanded);
 		j += strlen(expanded);
 	}
 	i += var_len;
 	free(var_name);
 }
 
-void	handle_env_variable_expansion(char *str, char *result, t_shell *minishell)
+void	handle_env_variable_expansion(char *str, char **result,
+		t_shell *minishell)
 {
 	char	var_name[256];
 	char	*var_value;
@@ -72,19 +71,29 @@ void	handle_env_variable_expansion(char *str, char *result, t_shell *minishell)
 	var_len = 0;
 	minishell->i++; // Skip the '$' character
 	while (ft_isalnum(str[minishell->i]) || str[minishell->i] == '_')
-	{
 		var_name[var_len++] = str[minishell->i++];
-	}
 	var_name[var_len] = '\0';
 	var_value = get_env_value(minishell, var_name);
 	if (var_value)
 	{
-		ft_strcpy(&result[minishell->j], var_value);
-		minishell->j += strlen(var_value);
+		if (minishell->j + ft_strlen(var_value) + 1 > minishell->allocated_size)
+		{
+			// Reallocate result buffer if necessary
+			minishell->allocated_size = minishell->j + ft_strlen(var_value) + 1;
+			*result = realloc(*result, minishell->allocated_size);
+		}
+		ft_strcpy(&(*result)[minishell->j], var_value);
+		minishell->j += ft_strlen(var_value);
 	}
 	else
 	{
-		ft_strcpy(&result[minishell->j], var_name);
-		minishell->j += strlen(var_name);
+		if (minishell->j + ft_strlen(var_name) + 1 > minishell->allocated_size)
+		{
+			// Reallocate result buffer if necessary
+			minishell->allocated_size = minishell->j + strlen(var_name) + 1;
+			*result = realloc(*result, minishell->allocated_size);
+		}
+		ft_strcpy(&(*result)[minishell->j], var_name);
+		minishell->j += ft_strlen(var_name);
 	}
 }

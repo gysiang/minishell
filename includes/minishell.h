@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/10 00:59:39 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/10 09:45:34 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_shell
 	int				exit;
 	int				i;
 	int				j;
+	size_t			allocated_size;
 	char			**env;
 	char			*prompt;
 	t_token			*cmd_list;
@@ -229,17 +230,18 @@ void				extract_variable_name(char *str, char **var_name,
 						int *var_len);
 void				handle_regular_env_variable(char *str, char *result,
 						t_shell *minishell);
-void				handle_env_variable_expansion(char *str, char *result,
+void				handle_env_variable_expansion(char *str, char **result,
 						t_shell *minishell);
 
 // parser(parse_double_quotes_utils_2)
-void				initialize_parse_variables(t_token *token, char **str,
-						int *len, char **result);
-void				process_special_dollar_cases(char *str, char *result,
+void				update_parse_variables(int *len, char **result);
+void				initialize_parse_variables(t_token *token,
 						t_shell *minishell);
-void				process_dollar_character(char *str, char *result,
+void				process_special_dollar_cases(char *str, char **result,
 						t_shell *minishell);
-void				process_character(char *str, char *result,
+void				process_dollar_character(char *str, char **result,
+						t_shell *minishell);
+void				process_character(char *str, char **result,
 						t_shell *minishell);
 
 // parser(parse_semicolon)

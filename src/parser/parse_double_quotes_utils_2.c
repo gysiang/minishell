@@ -3,27 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   parse_double_quotes_utils_2.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 12:04:18 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 01:04:04 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/10 09:45:14 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	initialize_parse_variables(t_token *token, char **str, int *len,
-		char **result)
+void	update_parse_variables(int *len, char **result)
 {
-	*str = token->token;
-	*len = ft_strlen(*str) * 2;
-	*result = malloc(*len + 1);
-	if (!*result)
-		return ;
-	(*result)[0] = '\0';
+	*len = *len;
+	*result = *result;
 }
 
-void	process_special_dollar_cases(char *str, char *result,
+void	initialize_parse_variables(t_token *token, t_shell *minishell)
+{
+	char	*str;
+	int		len;
+	char	*result;
+
+	str = token->token;
+	len = ft_strlen(str) * 2;
+	result = malloc(len + 1);
+	if (!result)
+		return ;
+	result[0] = '\0';
+	minishell->allocated_size = len + 1; // Initialize allocated_size
+	update_parse_variables(&len, &result);
+}
+
+void	process_special_dollar_cases(char *str, char **result,
 		t_shell *minishell)
 {
 	char	next_char;
@@ -37,20 +48,20 @@ void	process_special_dollar_cases(char *str, char *result,
 				minishell->last_return);
 		if (length > 0)
 		{
-			strcpy(&result[minishell->j], exit_status);
+			strcpy(&(*result)[minishell->j], exit_status);
 			minishell->j += strlen(exit_status);
 		}
 		minishell->i += 2;
 	}
 	else if (!ft_isalnum(next_char) && next_char != '_' && next_char != '\"')
 	{
-		result[minishell->j++] = '$';
-		result[minishell->j++] = next_char;
+		(*result)[minishell->j++] = '$';
+		(*result)[minishell->j++] = next_char;
 		minishell->i += 2;
 	}
 	else if (next_char == '\"')
 	{
-		result[minishell->j++] = '$';
+		(*result)[minishell->j++] = '$';
 		minishell->i++;
 	}
 	else
@@ -59,11 +70,11 @@ void	process_special_dollar_cases(char *str, char *result,
 	}
 }
 
-void	process_dollar_character(char *str, char *result, t_shell *minishell)
+void	process_dollar_character(char *str, char **result, t_shell *minishell)
 {
 	if (str[minishell->i + 1] == '\0')
 	{
-		result[minishell->j++] = '$';
+		(*result)[minishell->j++] = '$';
 		minishell->i++;
 	}
 	else
@@ -72,7 +83,7 @@ void	process_dollar_character(char *str, char *result, t_shell *minishell)
 	}
 }
 
-void	process_character(char *str, char *result, t_shell *minishell)
+void	process_character(char *str, char **result, t_shell *minishell)
 {
 	if (str[minishell->i] == '\"')
 	{
@@ -80,7 +91,7 @@ void	process_character(char *str, char *result, t_shell *minishell)
 	}
 	else if (str[minishell->i] == '\'')
 	{
-		result[minishell->j++] = str[minishell->i++];
+		(*result)[minishell->j++] = str[minishell->i++];
 	}
 	else if (str[minishell->i] == '$')
 	{
@@ -88,9 +99,9 @@ void	process_character(char *str, char *result, t_shell *minishell)
 	}
 	else
 	{
-		result[minishell->j] = str[minishell->i];
+		(*result)[minishell->j] = str[minishell->i];
 		minishell->j++;
 		minishell->i++;
 	}
-	result[minishell->j] = '\0';
+	(*result)[minishell->j] = '\0';
 }

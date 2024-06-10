@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/10 12:29:01 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/10 12:43:52 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,7 +249,6 @@ char				*ft_strcat(char *dest, const char *src);
 // tokenizer
 void				handle_remaining_text(char **line, t_token **token_lst);
 void				handle_backslash(char **line, t_token **token_lst);
-void				handle_quotes(char **line, t_token **token_lst);
 t_token				*token_processor(char *line, t_shell *minishell);
 
 // env_manager (utils)

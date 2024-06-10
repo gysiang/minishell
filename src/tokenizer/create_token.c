@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 19:36:29 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/08 00:51:36 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/10 12:40:30 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	token_add_back(t_token **head, char *token, t_token_type type)
 	}
 }
 
-// free the memory for linked list
 void	free_tokenlst(t_token *head)
 {
 	t_token	*current_node;

@@ -6,13 +6,13 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 10:49:34 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 12:31:11 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/10 12:48:12 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*remove_single_quotes(const char *str)
+/*static char	*remove_single_quotes(const char *str)
 {
 	int		len;
 	char	*result;
@@ -51,4 +51,24 @@ void	parse_single_quotes(t_token *token)
 	free(token->token);
 	token->token = result;
 	token->is_single_quoted = 1;
+}*/
+
+void	parse_single_quotes(t_token *token)
+{
+	char	*str;
+	char	*new_str;
+	int		len;
+
+	str = token->token;
+	len = ft_strlen(str);
+	if (len > 1 && str[0] == '\'' && str[len - 1] == '\'')
+	{
+		new_str = ft_strndup(str + 1, len - 2);
+		if (new_str)
+		{
+			free(token->token);
+			token->token = new_str;
+		}
+	}
 }
+

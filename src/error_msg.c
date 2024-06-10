@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:35:43 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 11:54:29 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/10 12:30:46 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	map_error_to_exit_code(int error_no)
 	else if (error_no == EISDIR || error_no == EACCES)
 		return_no = 126;
 	else
-		return_no = 1; // General error
+		return_no = 1;
 	return (return_no);
 }
 

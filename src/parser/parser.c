@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 18:39:17 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/10 12:31:57 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	set_token_pointers(t_token *tokens)
 	if (prev_token != NULL)
 		prev_token->next = NULL;
 }
+
 void	parse_token(t_token *token, t_shell *minishell)
 {
 	char	*str;

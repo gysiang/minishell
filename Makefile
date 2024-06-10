@@ -53,7 +53,8 @@ SRC_FILES := main.c \
 				pipex/execute_utils.c \
                 pipex/pipex.c \
                 tokenizer/create_token.c \
-                tokenizer/tokenizer_utils.c \
+                tokenizer/tokenizer_utils_1.c \
+				tokenizer/tokenizer_utils_2.c \
                 tokenizer/tokenizer.c \
                 parser/join_tokens.c \
 				parser/parse_double_quotes_utils_1.c \

@@ -87,63 +87,6 @@ void	print_tokenlst(t_token *token_lst)
 	}
 }
 
-/*void handle_environment_variable(char **line, t_token **token_lst, t_shell *minishell)
-{
-    char *start = *line;
-
-    // Check if the token is just a dollar sign
-    if (**line == '$' && ft_iswhitespace(*(*line + 1))) {
-        token_add_back(token_lst, "$", T_IDENTIFIER); // Add the dollar sign as a token
-        return;
-    }
-
-    if (**line == '$') {
-        (*line)++; // Move past the dollar sign
-        start = *line; // Update the start position
-    }
-
-    while (**line && !ft_iswhitespace(*line) && **line != '/') {
-        (*line)++; // Find end of the variable name
-    }
-
-    char *var_name = strndup(start, *line - start); // Extract variable name
-    char *expanded = get_env_value(minishell, var_name); // Get expanded value
-    free(var_name);
-
-    if (expanded) {
-        // Add the expanded variable as a token
-        token_add_back(token_lst, expanded, T_IDENTIFIER);
-    }
-
-    // Check if there's more text following the variable
-    if (**line != '\0') {
-        // Handle the rest of the line as separate tokens
-        handle_remaining_text(line, token_lst);
-    }
-}*/
-
-/*void handle_environment_variable(char **line, t_token **token_lst, t_shell *minishell)
-{
-    (*line)++; // Move past the dollar sign
-    char *start = *line;
-    while (**line && !ft_iswhitespace(*line) && **line != '/') // Find end of the variable name
-        (*line)++;
-    char *var_name = strndup(start, *line - start); // Extract variable name
-    char *expanded = get_env_value(minishell, var_name); // Get expanded value
-    free(var_name);
-
-    if (expanded) {
-        // Add the expanded variable as a token
-        token_add_back(token_lst, expanded, T_IDENTIFIER);
-    }
-
-    // Check if there's more text following the variable
-    if (**line != '\0') {
-        // Handle the rest of the line as separate tokens
-        handle_remaining_text(line, token_lst);
-    }
-}*/
-
 void handle_environment_variable(char **line, t_token **token_lst, t_shell *minishell)
 {
     char *start = *line;
@@ -300,34 +243,6 @@ void handle_quotes(char **line, t_token **token_lst)
     }
 }
 
-/*void handle_quotes(char **line, t_token **token_lst)
-{
-    char quote_type = **line;
-    (*line)++; // Move past the opening quote
-    char *start = *line;
-    while (**line && **line != quote_type) // Find the closing quote
-        (*line)++;
-    if (**line == quote_type) {
-        int length = *line - start;
-        char *quoted_content = (char *)malloc(length + 1);
-        if (quoted_content) {
-            strncpy(quoted_content, start, length);
-            quoted_content[length] = '\0';
-            token_add_back(token_lst, quoted_content, T_IDENTIFIER);
-            free(quoted_content);
-        }
-        (*line)++; // Move past the closing quote
-    } else {
-        // If no closing quote is found, treat the opening quote as a literal character
-        char *literal_quote = (char *)malloc(2);
-        if (literal_quote) {
-            literal_quote[0] = quote_type;
-            literal_quote[1] = '\0';
-            token_add_back(token_lst, literal_quote, T_IDENTIFIER);
-            free(literal_quote);
-        }
-    }
-}*/
 
 t_token *token_processor(char *line, t_shell *minishell)
 {

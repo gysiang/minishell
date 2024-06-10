@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 11:00:03 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 09:46:07 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/10 10:03:55 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	parse_double_quotes(t_token *token, t_shell *minishell)
 	result[0] = '\0';
 	while (str[minishell->i] != '\0')
 		process_character(str, &result, minishell);
+	free(token->token);
 	token->token = ft_strdup(result);
 	token->is_single_quoted = 0;
 	free(result);

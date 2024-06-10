@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 12:04:18 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 09:45:14 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/10 10:05:55 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	initialize_parse_variables(t_token *token, t_shell *minishell)
 	result[0] = '\0';
 	minishell->allocated_size = len + 1; // Initialize allocated_size
 	update_parse_variables(&len, &result);
+	free(result); // Ensure the result buffer is always freed
 }
 
 void	process_special_dollar_cases(char *str, char **result,

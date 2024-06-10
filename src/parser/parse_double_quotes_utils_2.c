@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_double_quotes_utils_2.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 12:04:18 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 23:16:53 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/10 01:04:04 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	initialize_parse_variables(t_token *token, char **str, int *len,
 	*result = malloc(*len + 1);
 	if (!*result)
 		return ;
-	(*result)[0] = '\0'; // Initialize the result buffer
+	(*result)[0] = '\0';
 }
 
 void	process_special_dollar_cases(char *str, char *result,
@@ -31,7 +31,6 @@ void	process_special_dollar_cases(char *str, char *result,
 	int		length;
 
 	next_char = str[minishell->i + 1];
-	printf("Next character after $: %c\n", next_char); // Debug print
 	if (next_char == '?')
 	{
 		length = snprintf(exit_status, sizeof(exit_status), "%d",
@@ -62,8 +61,6 @@ void	process_special_dollar_cases(char *str, char *result,
 
 void	process_dollar_character(char *str, char *result, t_shell *minishell)
 {
-	printf("Processing dollar character: %c\n", str[minishell->i + 1]);
-		// Debug print
 	if (str[minishell->i + 1] == '\0')
 	{
 		result[minishell->j++] = '$';
@@ -77,7 +74,6 @@ void	process_dollar_character(char *str, char *result, t_shell *minishell)
 
 void	process_character(char *str, char *result, t_shell *minishell)
 {
-	printf("Processing character: %c\n", str[minishell->i]); // Debug print
 	if (str[minishell->i] == '\"')
 	{
 		minishell->i++;

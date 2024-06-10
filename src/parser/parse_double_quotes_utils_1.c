@@ -76,7 +76,6 @@ void	handle_env_variable_expansion(char *str, char *result, t_shell *minishell)
 		var_name[var_len++] = str[minishell->i++];
 	}
 	var_name[var_len] = '\0';
-	// Assuming minishell has a function to get environment variable values
 	var_value = get_env_value(minishell, var_name);
 	if (var_value)
 	{
@@ -85,8 +84,7 @@ void	handle_env_variable_expansion(char *str, char *result, t_shell *minishell)
 	}
 	else
 	{
-		// If the variable is not found, just copy the variable name as is
-		strcpy(&result[minishell->j], var_name);
+		ft_strcpy(&result[minishell->j], var_name);
 		minishell->j += strlen(var_name);
 	}
 }

@@ -34,12 +34,13 @@ void	handle_backslash(char **line, t_token **token_lst)
 {
 	int		length;
 	char	*escaped_token;
-	char escaped[2] = {**line, '\0'};
+	char	escaped[2] = {**line, '\0'};
+	char	*start;
 
 	(*line)++;
 	if (**line == '\"' || **line == '\'')
 	{
-		char *start = *line;
+		start = *line;
 		(*line)++;
 		while (**line && !ft_iswhitespace(*line) && **line != '|'
 			&& **line != '<' && **line != '>')
@@ -102,7 +103,8 @@ void	handle_quotes(char **line, t_token **token_lst)
 
 t_token	*token_processor(char *line, t_shell *minishell)
 {
-	t_token *token_lst;
+	t_token	*token_lst;
+
 	(void)minishell;
 	token_lst = NULL;
 	while (*line != '\0')

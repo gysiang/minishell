@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_msg.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:35:43 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 12:30:46 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/10 15:32:14 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	minishell_error_msg(char *cmd, int error_no)
 	error = ft_strjoin_free(&error, error_msg);
 	free(error_msg);
 	ft_putendl_fd(error, 2);
+	free(cmd);
 	free(error);
 	return_no = map_error_to_exit_code(error_no);
 	return (return_no);

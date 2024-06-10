@@ -7,7 +7,7 @@ LIBFT        := $(LIBFT_DIR)/libft.a
 
 # Compiler and flags
 CC       := gcc
-LEAKCHECK:= -fsanitize=address
+LEAKCHECK:= #-fsanitize=address
 CFLAGS   := -g -O3 -Wall -Wextra -Werror -Wno-unused-result $(LEAKCHECK)
 LFLAGS   := -L./libft -lft -lreadline
 IFLAGS   := -I$(LIBFT_DIR) -I$(INCLUDES_DIR)

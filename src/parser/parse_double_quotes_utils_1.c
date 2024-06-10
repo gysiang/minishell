@@ -84,6 +84,7 @@ void	handle_env_variable_expansion(char *str, char **result,
 		}
 		ft_strcpy(&(*result)[minishell->j], var_value);
 		minishell->j += ft_strlen(var_value);
+		free(var_value);
 	}
 	else
 	{

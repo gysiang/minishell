@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/10 12:43:52 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/10 13:02:32 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_shell
 	int				prev_fd;
 	pid_t			process_ids[100];
 	int				process_count;
-	int				last_return ;
+	int last_return ;
 	int				signal_received;
 	bool			end;
 }					t_shell;
@@ -235,11 +235,13 @@ size_t				ft_wordlen(const char *s, char c);
 int					add_symbol_lst(char **line, t_token_type type,
 						t_token **token_lst);
 int					add_command_lst(char **line, t_token **token_lst);
+
+// tokenizer (tokenizer_utils_2)
 void				print_tokenlst(t_token *token_lst);
 void				handle_environment_variable(char **line,
 						t_token **token_lst, t_shell *minishell);
 
-// tokenizer (tokenizer_utils_2)
+// tokenizer (tokenizer_utils_3)
 int					ft_iswhitespace(char *line);
 int					ft_isbackslash(char *line);
 int					ft_issemicolon(char *line);

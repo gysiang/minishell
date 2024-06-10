@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_realloc.c                                       :+:      :+:    :+:   */
+/*   ft_strncat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/10 10:54:28 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 20:01:28 by axlee            ###   ########.fr       */
+/*   Created: 2024/06/10 20:14:31 by axlee             #+#    #+#             */
+/*   Updated: 2024/06/10 20:15:25 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_realloc(void *ptr, size_t size)
+char	*ft_strncat(char *dest, const char *src, size_t count)
 {
-	void	*new_ptr;
+	char	*ptr;
 
-	if (size == 0)
+	ptr = dest;
+	while (*ptr)
+		ptr++;
+	while (*src && count > 0)
 	{
-		free(ptr);
-		return (NULL);
+		*ptr = *src;
+		ptr++;
+		src++;
+		count--;
 	}
-	if (!ptr)
-		return (malloc(size));
-	new_ptr = malloc(size);
-	if (!new_ptr)
-		return (NULL);
-	ft_memcpy(new_ptr, ptr, size);
-	free(ptr);
-	return (new_ptr);
+	*ptr = '\0';
+	return (dest);
 }

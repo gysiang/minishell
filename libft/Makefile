@@ -6,7 +6,7 @@
 #    By: axlee <axlee@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/13 15:19:53 by axlee             #+#    #+#              #
-#    Updated: 2024/06/10 11:04:35 by axlee            ###   ########.fr        #
+#    Updated: 2024/06/10 20:28:16 by axlee            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -115,10 +115,14 @@ OTHERS_OBJS =		$(addprefix $(OBJS_DIR)/,$(notdir $(OTHERS_FILES:.c=.o)))
 #                              STR FUNCTIONS                                   #
 # **************************************************************************** #
 
-STR_FILES =		str/ft_split.c \
-				str/ft_strchr.c \
+STR_FILES =		str/ft_split_free.c \
+				str/ft_split.c \
 				str/ft_strcat.c \
+				str/ft_strccmp.c \
+				str/ft_strchr.c \
+				str/ft_strcmp.c \
 				str/ft_strcpy.c \
+				str/ft_strdel.c \
 				str/ft_strdup.c \
 				str/ft_striteri.c \
 				str/ft_strjoin.c \
@@ -126,19 +130,17 @@ STR_FILES =		str/ft_split.c \
 				str/ft_strlcpy.c \
 				str/ft_strlen.c \
 				str/ft_strmapi.c \
-				str/ft_strcmp.c \
-				str/ft_strccmp.c \
+				str/ft_strncat.c \
 				str/ft_strncmp.c \
-				str/ft_strnstr.c \
+				str/ft_strncpy.c \
 				str/ft_strndup.c \
+				str/ft_strnstr.c \
 				str/ft_strrchr.c \
-				str/ft_strtrim.c \
 				str/ft_strswap.c \
+				str/ft_strtrim.c \
 				str/ft_substr.c \
 				str/ft_tolower.c \
-				str/ft_toupper.c \
-				str/ft_strdel.c \
-				str/ft_split_free.c
+				str/ft_toupper.c
 
 STR_OBJS =		$(addprefix $(OBJS_DIR)/,$(notdir $(STR_FILES:.c=.o)))
 

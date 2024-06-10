@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:13:57 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 13:16:06 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/10 14:21:29 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	add_command_lst(char **line, t_token **token_lst)
 	skip_whitespace_and_extract_command(line, &start);
 	if (**line == '\"' || **line == '\'')
 		skip_quotes(line);
+	while (**line && !ft_iswhitespace(*line))
+		(*line)++;
 	if (*line != start)
 	{
 		cmd = ft_strndup(start, *line - start);

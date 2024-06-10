@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/10 09:54:58 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/10 11:21:07 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,19 +96,40 @@ void				delete_command(void *elem);
 void				free_and_exit(t_shell *minishell, int return_value);
 int					minishell_error_msg(char *cmd, int error_no);
 
-// builtins
-void				minishell_echo(t_shell *minishell);
-void				minishell_exit(t_shell *minishell);
-void				print_vars(t_shell *minishell);
-void				env_realloc(t_shell *minishell);
-void				minishell_pwd(void);
-int					count_tokens(t_shell *minishell);
+// builtin_cd
 int					minishell_cd(t_shell *minishell);
-int					minishell_export(t_shell *minishell);
-int					minishell_unset(t_shell *minishell);
-int					search_env(t_shell *minishell, char *var);
+
+// builtin_echo
+void				minishell_echo(t_shell *minishell);
+
+// builtin_env
 int					minishell_env(t_shell *minishell);
+
+// builtin_exit
+void				minishell_exit(t_shell *minishell);
+
+// builtin_export_utils_1
+void				env_realloc(t_shell *minishell);
+void				print_vars(t_shell *minishell);
+char				*string_concat(char **strings, char *joined,
+						int start_index);
 char				*join_from_index(char **cmd, int start_index);
+
+// builtin_export_utils_2
+char				*get_var_name(const char *content);
+int					is_valid_identifier(const char *str);
+void				create_env_entry(char *dest, const char *var_name,
+						const char *var_value);
+
+// builtin_export
+int					minishell_export(t_shell *minishell);
+
+// builtin_pwd
+void				minishell_pwd(void);
+
+// builtin_unset
+int					search_env(t_shell *minishell, char *var);
+int					minishell_unset(t_shell *minishell);
 
 // utils
 int					ft_strcmp(const char *s1, const char *s2);
@@ -279,6 +300,7 @@ int					check_builtin(char *s);
 int					execute_builtin_1(t_token *curr, t_shell *minishell);
 int					execute_builtin_2(t_token *curr, t_shell *minishell);
 int					other_cmds(t_token *curr, t_shell *minishell);
+int					count_tokens(t_shell *minishell);
 
 // shell.c
 t_shell				*init_shell(void);

@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_env.c                                      :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/12 11:06:17 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 10:52:52 by axlee            ###   ########.fr       */
+/*   Created: 2024/06/10 11:01:32 by axlee             #+#    #+#             */
+/*   Updated: 2024/06/10 11:04:32 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	minishell_env(t_shell *minishell)
+char	*ft_strndup(const char *str, size_t size)
 {
-	int	i;
+	char	*new_str;
+	size_t	i;
 
-	printf("Entering minishell_env function\n");
+	if (str == NULL)
+		return (NULL);
+	new_str = (char *)malloc(size + 1);
+	if (new_str == NULL)
+		return (NULL);
 	i = 0;
-	if (!minishell->env || !minishell->env[0])
+	while (i < size && str[i] != '\0')
 	{
-		printf("No environment variables to print\n");
-		return (0);
-	}
-	env_len(minishell);
-	while (minishell->env[i])
-	{
-		printf("env %d : ", i);
-		printf("%s\n", minishell->env[i]);
+		new_str[i] = str[i];
 		i++;
 	}
-	printf("Exiting minishell_env function\n");
-	return (0);
+	new_str[i] = '\0';
+	return (new_str);
 }

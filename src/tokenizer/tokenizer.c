@@ -65,7 +65,7 @@ int add_command_lst(char **line, t_token **token_lst)
     }
     if (*line != start)
     {
-        char *cmd = strndup(start, *line - start);
+        char *cmd = ft_strndup(start, *line - start);
         token_add_back(token_lst, cmd, T_IDENTIFIER);
         free(cmd);
     }
@@ -113,7 +113,7 @@ void handle_environment_variable(char **line, t_token **token_lst, t_shell *mini
             // Handle the rest of the line as part of the same token
             while (**line && !ft_iswhitespace(*line) && **line != '$' && **line != '\'' && **line != '\"')
             {
-                result = realloc(result, strlen(result) + 2);
+                result = ft_realloc(result, strlen(result) + 2);
                 strncat(result, *line, 1);
                 (*line)++;
             }
@@ -128,7 +128,7 @@ void handle_environment_variable(char **line, t_token **token_lst, t_shell *mini
         (*line)++;
 
     var_len = *line - start;
-    var_name = strndup(start, var_len);
+    var_name = ft_strndup(start, var_len);
     expanded = get_env_value(minishell, var_name);
     free(var_name);
 
@@ -143,7 +143,7 @@ void handle_environment_variable(char **line, t_token **token_lst, t_shell *mini
             // Handle the rest of the line as part of the same token
             while (**line && !ft_iswhitespace(*line) && **line != '$' && **line != '\'' && **line != '\"')
             {
-                result = realloc(result, strlen(result) + 2);
+                result = ft_realloc(result, strlen(result) + 2);
                 strncat(result, *line, 1);
                 (*line)++;
             }
@@ -154,7 +154,7 @@ void handle_environment_variable(char **line, t_token **token_lst, t_shell *mini
     else
     {
         // If the variable is not found, add the original text
-        result = strndup(start - 1, var_len + 1);
+        result = ft_strndup(start - 1, var_len + 1);
         token_add_back(token_lst, result, T_IDENTIFIER);
         free(result);
     }
@@ -171,7 +171,7 @@ void handle_remaining_text(char **line, t_token **token_lst)
         char *start = *line;
         while (**line && !ft_iswhitespace(*line))
             (*line)++;
-        char *text = strndup(start, *line - start);
+        char *text = ft_strndup(start, *line - start);
         token_add_back(token_lst, text, T_IDENTIFIER);
         free(text);
     }

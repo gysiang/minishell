@@ -6,49 +6,51 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 23:16:57 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/10 10:52:06 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void print_tokens(t_token *current_token, t_shell *minishell, int newline)
+static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 {
-    while (current_token != NULL)
-    {
-        if (current_token->type == T_IDENTIFIER)
-        {
-            parse_token(current_token, minishell); // Parse the token
-            printf("%s", current_token->token);
-            if (current_token->next && current_token->next->token[0] != '\0' &&
-                current_token->token[strlen(current_token->token) - 1] != '\0')
-            {
-                printf(" ");  // Add space between arguments if not adjacent
-            }
-        }
-        else
-            break;
-        current_token = current_token->next;
-    }
-    if (newline)
-        printf("\n");
+	while (current != NULL)
+	{
+		if (current->type == T_IDENTIFIER)
+		{
+			parse_token(current, minishell);
+			printf("%s", current->token);
+			if (current->next && current->next->token[0] != '\0')
+			{
+				if (current->token[ft_strlen(current->token) - 1] != '\0')
+				{
+					printf(" ");
+				}
+			}
+		}
+		else
+			break ;
+		current = current->next;
+	}
+	if (newline)
+		printf("\n");
 }
 
-void minishell_echo(t_shell *minishell)
+void	minishell_echo(t_shell *minishell)
 {
-    int newline;
-    t_token *current_token;
+	int		newline;
+	t_token	*current;
 
-    newline = 1;  // Default is to print newline at the end
-    if (minishell->cmd_list == NULL)
-        return;
-    current_token = minishell->cmd_list->next; // Skip the 'echo' command itself
-    // Check for '-n' option which suppresses the newline
-    if (current_token != NULL && strcmp(current_token->token, "-n") == 0) {
-        newline = 0;  // Do not print newline at the end
-        current_token = current_token->next;  // Move to the next token
-    }
-    print_tokens(current_token, minishell, newline);
+	newline = 1;
+	if (minishell->cmd_list == NULL)
+		return ;
+	current = minishell->cmd_list->next;
+	if (current != NULL && strcmp(current->token, "-n") == 0)
+	{
+		newline = 0;
+		current = current->next;
+	}
+	print_tokens(current, minishell, newline);
 }
 
 // Test cases that failed

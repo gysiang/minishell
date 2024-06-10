@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_export_utils.c                             :+:      :+:    :+:   */
+/*   builtin_export_utils_1.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:10:31 by axlee             #+#    #+#             */
-/*   Updated: 2024/05/23 17:22:29 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/10 11:11:19 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	env_realloc(t_shell *minishell)
 
 	old_size = minishell->env_size;
 	minishell->env_size *= 2;
-	new_env = (char **)realloc(minishell->env, minishell->env_size
+	new_env = (char **)ft_realloc(minishell->env, minishell->env_size
 			* sizeof(char *));
 	if (new_env == NULL)
 	{
@@ -57,10 +57,10 @@ char	*string_concat(char **strings, char *joined, int start_index)
 	i = start_index;
 	while (strings[i])
 	{
-		new_len = ft_strlen(joined) + ft_strlen(strings[i]) + 1;  // +1 for space or null terminator
+		new_len = ft_strlen(joined) + ft_strlen(strings[i]) + 1;
 		if (i > start_index)
-			new_len++;  // Additional space for separation
-		temp = (char *)realloc(joined, new_len);
+			new_len++;
+		temp = (char *)ft_realloc(joined, new_len);
 		if (!temp)
 		{
 			free(joined);
@@ -78,11 +78,12 @@ char	*string_concat(char **strings, char *joined, int start_index)
 char	*join_from_index(char **cmd, int start_index)
 {
 	char	*joined;
+	char	*result;
 
-	joined = (char *)malloc(1);  // Initially just for the null terminator
+	joined = (char *)malloc(1);
 	if (!joined)
 		return (NULL);
 	joined[0] = '\0';
-	char *result = string_concat(cmd, joined, start_index);
-	return result;
+	result = string_concat(cmd, joined, start_index);
+	return (result);
 }

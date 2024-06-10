@@ -3,63 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>               +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/19 12:16:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/23 02:08:53 by axlee            ###   ########.fr       */
+/*   Created: 2024/06/10 20:12:11 by axlee             #+#    #+#             */
+/*   Updated: 2024/06/10 20:42:04 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	handle_remaining_text(char **line, t_token **token_lst)
-{
-	char	*start;
-	char	*text;
-
-	while (ft_iswhitespace(*line))
-		(*line)++;
-	if (**line != '\0')
-	{
-		start = *line;
-		while (**line && !ft_iswhitespace(*line))
-			(*line)++;
-		text = ft_strndup(start, *line - start);
-		token_add_back(token_lst, text, T_IDENTIFIER);
-		free(text);
-	}
-}
-
-void	handle_backslash(char **line, t_token **token_lst)
-{
-	int		length;
-	char	*escaped_token;
-	char escaped[2] = {**line, '\0'};
-
-	(*line)++;
-	if (**line == '\"' || **line == '\'')
-	{
-		char *start = *line;
-		(*line)++;
-		while (**line && !ft_iswhitespace(*line) && **line != '|'
-			&& **line != '<' && **line != '>')
-			(*line)++;
-		length = *line - start;
-		escaped_token = (char *)malloc(length + 1);
-		if (escaped_token)
-		{
-			strncpy(escaped_token, start, length);
-			escaped_token[length] = '\0';
-			token_add_back(token_lst, escaped_token, T_IDENTIFIER);
-			free(escaped_token);
-		}
-	}
-	else
-	{
-		token_add_back(token_lst, escaped, T_IDENTIFIER);
-		(*line)++;
-	}
-}
 
 void	handle_quotes(char **line, t_token **token_lst)
 {
@@ -81,7 +32,7 @@ void	handle_quotes(char **line, t_token **token_lst)
 		quoted_content = (char *)malloc(length + 1);
 		if (quoted_content)
 		{
-			strncpy(quoted_content, start, length);
+			ft_strncpy(quoted_content, start, length);
 			quoted_content[length] = '\0';
 			token_add_back(token_lst, quoted_content, T_IDENTIFIER);
 			free(quoted_content);
@@ -102,7 +53,8 @@ void	handle_quotes(char **line, t_token **token_lst)
 
 t_token	*token_processor(char *line, t_shell *minishell)
 {
-	t_token *token_lst;
+	t_token	*token_lst;
+
 	(void)minishell;
 	token_lst = NULL;
 	while (*line != '\0')

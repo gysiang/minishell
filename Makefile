@@ -50,6 +50,7 @@ SRC_FILES := main.c \
 				pipex/pipex_utils1.c \
 				pipex/pipex_utils2.c \
                 pipex/execute.c \
+				pipex/execute1.c \
 				pipex/execute_utils.c \
                 pipex/pipex.c \
                 tokenizer/create_token.c \

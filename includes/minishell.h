@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/11 11:49:43 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/11 16:18:47 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,10 @@ void				execute_with_redirection(t_token *token, t_shell *minishell,
 void				execute_builtin_or_exec_exit(t_token *curr,
 						t_shell *minishell);
 void				execute_builtin_or_exec(t_token *curr, t_shell *minishell);
+
+// pipex (execute1)
+void				execute_command_with_redir(t_token *curr, t_shell *minishell);
+
 
 // pipex (utils)
 void				exit_handler(int exit_code);

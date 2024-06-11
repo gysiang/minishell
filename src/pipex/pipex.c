@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/06 23:08:30 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/11 16:51:37 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_token	*handle_builtins(t_token *curr, t_shell *minishell)
 	int	index;
 	int	num_of_pipe;
 
-	num = num_of_arguments(minishell);
+	num = num_of_arguments(minishell) + 2;
 	index = check_for_redirections(minishell);
 	num_of_pipe = num_of_pipes(minishell);
 	if (num_of_pipe == 0 && (index == 0))
@@ -97,10 +97,10 @@ void	pipex(t_shell *minishell)
 			execute_pipeline(curr, minishell);
 		if (curr->type == T_IDENTIFIER && (check_builtin(curr->token) == 1))
 			curr = handle_builtins(curr, minishell);
-		if ((curr->type == T_IDENTIFIER) && (curr->next)
-			&& (check_redirection_type(curr->next)))
+		if ((curr->type == T_IDENTIFIER) && (!check_builtin(curr->token))
+			&& (curr->next)&& (check_redirection_type(curr->next)))
 		{
-			execute_with_redirection(curr, minishell, 1);
+			execute_command_with_redir(curr, minishell);
 			curr = curr->next->next;
 		}
 		curr = curr->next;

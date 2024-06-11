@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/11 22:43:11 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/12 00:33:01 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	parse_token(t_token *token, t_shell *minishell)
 
 	str = token->token;
 	len = ft_strlen(str);
-	if (str[0] == '\\' && str[1] == '\0')
+	if (str[0] == '\0' || (str[0] == '\\' && str[1] == '\0'))
 	{
 		free(token->token);
 		token->token = ft_strdup(" ");

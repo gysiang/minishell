@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/11 22:54:26 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/12 00:34:54 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,10 @@ static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 		{
 			parse_token(current, minishell);
 			printf("%s", current->token);
-			if (!(current->token[0] == ' ' && current->token[1] == '\0'))
+			if (current->next && current->next->token[0] != '\0')
 			{
-				if (current->next && current->next->token[0] != '\0')
-				{
-					if (current->token[ft_strlen(current->token) - 1] != '\0')
-						printf(" ");
-				}
+				if (current->token[ft_strlen(current->token) - 1] != '\0')
+					printf(" ");
 			}
 		}
 		else

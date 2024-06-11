@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/11 11:35:55 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/12 00:33:01 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@ void	parse_token(t_token *token, t_shell *minishell)
 
 	str = token->token;
 	len = ft_strlen(str);
+	if (str[0] == '\0' || (str[0] == '\\' && str[1] == '\0'))
+	{
+		free(token->token);
+		token->token = ft_strdup(" ");
+	}
 	if (len > 1)
 	{
 		if (str[0] == '\'' && str[len - 1] == '\'')
@@ -49,8 +54,11 @@ void	parse_token(t_token *token, t_shell *minishell)
 	}
 	str = token->token;
 	len = ft_strlen(str);
-	if (strchr(token->token, '$') && !token->is_single_quoted)
-		parse_value(token, minishell);
+	if (minishell->flag)
+	{
+		if (ft_strchr(token->token, '$') && !token->is_single_quoted)
+			parse_value(token, minishell);
+	}
 }
 
 t_token	*token_parser(t_token *token_lst, t_shell *minishell)

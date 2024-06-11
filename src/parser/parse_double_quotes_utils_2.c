@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 12:04:18 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/11 20:13:11 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/11 22:22:46 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	initialize_parse_variables(t_token *token, t_shell *minishell)
     {
         return;
     }
-    memset(result, '\0', len + 1); // Ensure the result buffer is always fully initialized to zero
+    ft_memset(result, '\0', len + 1); // Ensure the result buffer is always fully initialized to zero
     minishell->allocated_size = len + 1; // Initialize allocated_size
     update_parse_variables(&len, &result);
 	free(result);

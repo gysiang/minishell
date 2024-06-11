@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/10 13:15:21 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/11 11:49:43 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,10 @@ void				handle_environment_variable(char **line,
 						t_token **token_lst, t_shell *minishell);
 
 // tokenizer (tokenizer_utils_3)
+void				handle_remaining_text(char **line, t_token **token_lst);
+void				handle_backslash(char **line, t_token **token_lst);
+
+// tokenizer (tokenizer_utils_4)
 int					ft_iswhitespace(char *line);
 int					ft_isbackslash(char *line);
 int					ft_issemicolon(char *line);
@@ -249,8 +253,11 @@ char				*ft_copy(char *dest, const char *src, size_t n);
 char				*ft_strcat(char *dest, const char *src);
 
 // tokenizer
-void				handle_remaining_text(char **line, t_token **token_lst);
-void				handle_backslash(char **line, t_token **token_lst);
+void				add_quoted_content_to_token_list(char *start, char **line,
+						t_token **token_lst);
+void				add_literal_quote_to_token_list(char quote_type,
+						t_token **token_lst);
+void				handle_quotes(char **line, t_token **token_lst);
 t_token				*token_processor(char *line, t_shell *minishell);
 
 // env_manager (utils)

@@ -61,11 +61,26 @@ void	handle_regular_env_variable(char *str, char *result, t_shell *minishell)
 	free(var_name);
 }
 
+static char	*prepend_dollar(const char *var_name)
+{
+	char	*result;
+	size_t	len;
+
+	len = ft_strlen(var_name);
+	result = malloc(len + 2);
+	if (!result)
+		return NULL;
+	result[0] = '$';
+	ft_strcpy(result + 1, var_name);
+	return (result);
+}
+
 void	handle_env_variable_expansion(char *str, char **result,
 		t_shell *minishell)
 {
 	char	var_name[256];
 	char	*var_value;
+	char	*temp;
 	int		var_len;
 
 	var_len = 0;
@@ -74,7 +89,6 @@ void	handle_env_variable_expansion(char *str, char **result,
 		var_name[var_len++] = str[minishell->i++];
 	var_name[var_len] = '\0';
 	var_value = get_env_value(minishell, var_name);
-	
 	if (var_value)
 	{
 		if (minishell->j + ft_strlen(var_value) + 1 > minishell->allocated_size)
@@ -83,19 +97,21 @@ void	handle_env_variable_expansion(char *str, char **result,
 			minishell->allocated_size = minishell->j + ft_strlen(var_value) + 1;
 			*result = ft_realloc(*result, ft_strlen(*result), minishell->allocated_size);
 		}
+		minishell->flag = 1;
 		ft_strcpy(&(*result)[minishell->j], var_value);
 		minishell->j += ft_strlen(var_value);
 		free(var_value);
 	}
 	else
 	{
-		if (minishell->j + ft_strlen(var_name) + 1 > minishell->allocated_size)
+		temp = prepend_dollar(var_name);
+		if (minishell->j + ft_strlen(temp) + 1 > minishell->allocated_size)
 		{
-			// Reallocate result buffer if necessary
-			minishell->allocated_size = minishell->j + strlen(var_name) + 1;
+			minishell->allocated_size = minishell->j + ft_strlen(var_name) + 1;
 			*result = ft_realloc(*result, ft_strlen(*result), minishell->allocated_size);
 		}
-		ft_strcpy(&(*result)[minishell->j], var_name);
-		minishell->j += ft_strlen(var_name);
+		ft_strcpy(&(*result)[minishell->j], temp);
+		minishell->j += ft_strlen(temp);
+		free(temp);
 	}
 }

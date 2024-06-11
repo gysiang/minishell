@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/09 16:45:05 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/11 21:17:57 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_shell	*init_shell(void)
 	shell->process_count = 0;
 	shell->signal_received = 0;
 	shell->end = false;
+	shell->flag = 0;
 	ft_memset(shell->process_ids, 0, sizeof(shell->process_ids));
 	return (shell);
 }

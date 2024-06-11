@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_double_quotes_utils_2.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 12:04:18 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 10:42:43 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/11 20:13:11 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	process_special_dollar_cases(char *str, char **result,
 				minishell->last_return);
 		if (length > 0)
 		{
-			strcpy(&(*result)[minishell->j], exit_status);
-			minishell->j += strlen(exit_status);
+			ft_strcpy(&(*result)[minishell->j], exit_status);
+			minishell->j += ft_strlen(exit_status);
 		}
 		minishell->i += 2;
 	}
@@ -109,4 +109,3 @@ void	process_character(char *str, char **result, t_shell *minishell)
 	}
 	(*result)[minishell->j] = '\0';
 }
-

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 17:48:56 by axlee             #+#    #+#             */
-/*   Updated: 2024/03/13 17:48:59 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/11 12:04:57 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,18 @@
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	char	*d;
+	char		*d;
+	const char	*s;
 
-	d = dest;
-	if (!src && !dest)
+	d = (char *)dest;
+	s = (const char *)src;
+	if (dest == NULL && src == NULL)
 		return (NULL);
 	while (n > 0)
 	{
-		*(char *)d = *(char *)src;
+		*d = *s;
 		d++;
-		src++;
+		s++;
 		n--;
 	}
 	return (dest);

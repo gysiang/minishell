@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:10:31 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 11:11:19 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/11 12:15:38 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	env_realloc(t_shell *minishell)
 
 	old_size = minishell->env_size;
 	minishell->env_size *= 2;
-	new_env = (char **)ft_realloc(minishell->env, minishell->env_size
-			* sizeof(char *));
+	new_env = (char **)ft_realloc(minishell->env, old_size * sizeof(char *),
+			minishell->env_size * sizeof(char *));
 	if (new_env == NULL)
 	{
 		ft_putendl_fd("minishell: memory allocation failed", 2);
@@ -60,7 +60,7 @@ char	*string_concat(char **strings, char *joined, int start_index)
 		new_len = ft_strlen(joined) + ft_strlen(strings[i]) + 1;
 		if (i > start_index)
 			new_len++;
-		temp = (char *)ft_realloc(joined, new_len);
+		temp = (char *)ft_realloc(joined, ft_strlen(joined), new_len);
 		if (!temp)
 		{
 			free(joined);

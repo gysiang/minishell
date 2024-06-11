@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:13:57 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 20:19:17 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/11 12:16:42 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,13 @@ void	print_tokenlst(t_token *token_lst)
 
 static void	append_rest_of_line(char **line, char *result, t_token **token_lst)
 {
+	size_t	current_length;
+
 	while (**line && !ft_iswhitespace(*line) && **line != '$' && **line != '\''
 		&& **line != '\"')
 	{
-		result = ft_realloc(result, strlen(result) + 2);
+		current_length = strlen(result);
+		result = ft_realloc(result, current_length, current_length + 2);
 		ft_strncat(result, *line, 1);
 		(*line)++;
 	}

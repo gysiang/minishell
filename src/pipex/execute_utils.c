@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/10 15:26:11 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/11 11:35:38 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ char	*get_command_path(char **s_cmd, t_shell *minishell)
 		path = get_path(s_cmd[0], minishell);
 	if (!path)
 	{
-		//printf("Command not found: %s\n", s_cmd[0]);
 		return_code = minishell_error_msg(s_cmd[0], 42);
 		minishell->last_return = return_code;
 		exit(1);

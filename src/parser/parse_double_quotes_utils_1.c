@@ -81,7 +81,7 @@ void	handle_env_variable_expansion(char *str, char **result,
 		{
 			// Reallocate result buffer if necessary
 			minishell->allocated_size = minishell->j + ft_strlen(var_value) + 1;
-			*result = ft_realloc(*result, minishell->allocated_size);
+			*result = ft_realloc(*result, ft_strlen(*result), minishell->allocated_size);
 		}
 		ft_strcpy(&(*result)[minishell->j], var_value);
 		minishell->j += ft_strlen(var_value);
@@ -93,10 +93,9 @@ void	handle_env_variable_expansion(char *str, char **result,
 		{
 			// Reallocate result buffer if necessary
 			minishell->allocated_size = minishell->j + strlen(var_name) + 1;
-			*result = ft_realloc(*result, minishell->allocated_size);
+			*result = ft_realloc(*result, ft_strlen(*result), minishell->allocated_size);
 		}
 		ft_strcpy(&(*result)[minishell->j], var_name);
 		minishell->j += ft_strlen(var_name);
 	}
 }
-

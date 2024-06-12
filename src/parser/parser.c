@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/12 16:37:43 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/12 21:52:13 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ static int check_unclosed(t_token *token)
 	return (inside_quote);
 }
 
-
 void	parse_token(t_token *token, t_shell *minishell)
 {
 	char	*str;
@@ -137,7 +136,7 @@ void	parse_token(t_token *token, t_shell *minishell)
 	if (str[0] == '\0' || (str[0] == '\\' && str[1] == '\0'))
 	{
 		free(token->token);
-		token->token = ft_strdup(" ");
+		token->token = ft_strdup("");
 	}
 	if (len > 1)
 	{

@@ -64,6 +64,7 @@ SRC_FILES := main.c \
 				parser/parse_double_quotes_utils_2.c \
 				parser/parse_double_quotes_utils_3.c \
 				parser/parse_double_quotes_utils_4.c \
+				parser/parse_double_quotes_utils_5.c \
 				parser/parse_double_quotes.c \
 				parser/parse_semicolon.c \
 				parser/parse_single_quotes.c \

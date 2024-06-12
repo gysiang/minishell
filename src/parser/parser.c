@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/12 15:34:02 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/12 16:37:43 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,9 +146,7 @@ void	parse_token(t_token *token, t_shell *minishell)
 		else if (str[0] == '\"' && str[len - 1] == '\"')
 			parse_double_quotes(token, minishell);
 		else if (check_unclosed(token) == 1)
-		{
 			parse_unclosed(token, minishell);
-		}
 		else
 			remove_embedded_quotes(token);
 	}

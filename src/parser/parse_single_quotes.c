@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_single_quotes.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 10:49:34 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/12 12:19:12 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/12 16:08:56 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	parse_single_quotes(t_token *token)
 	char	*new_str;
 	int		len;
 
-	printf("in s dq\n");
+	printf("in single quotes\n");
 	str = token->token;
 	len = ft_strlen(str);
 	if (len > 1 && str[0] == '\'' && str[len - 1] == '\'')

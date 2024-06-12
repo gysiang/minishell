@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:16:55 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/12 13:18:46 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/12 16:57:53 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	append_to_result(char **result, t_shell *minishell, const char *str)
 void	handle_variable_value(char **result, t_shell *minishell,
 		char *var_value)
 {
+	char	*temp;
+
 	if (var_value)
 	{
 		append_to_result(result, minishell, var_value);
@@ -51,7 +53,6 @@ void	handle_variable_value(char **result, t_shell *minishell,
 		free(var_value);
 	}
 }
-
 void	handle_variable_not_found(char **result, t_shell *minishell,
 		const char *var_name)
 {
@@ -62,9 +63,12 @@ void	handle_variable_not_found(char **result, t_shell *minishell,
 	free(temp);
 }
 
-void	handle_env_variable_expansion(char *str, char **result,
+/*void	handle_env_variable_expansion(char *str, char **result,
 		t_shell *minishell)
 {
+	char	var_name[256];
+	char	*var_value;
+	int		var_len;
 	char	var_name[256];
 	char	*var_value;
 	int		var_len;
@@ -79,4 +83,4 @@ void	handle_env_variable_expansion(char *str, char **result,
 		handle_variable_value(result, minishell, var_value);
 	else
 		handle_variable_not_found(result, minishell, var_name);
-}
+}*/

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/12 13:19:56 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/12 15:33:34 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	pipex(t_shell *minishell)
 	curr = minishell->cmd_list;
 	while (curr != NULL)
 	{
-		printf("current token in process: %s\n", curr->token);
+		//printf("current token in process: %s\n", curr->token);
 		if (curr->type == T_IDENTIFIER && (!curr->next)
 			&& (!check_builtin(curr->token)))
 			execute_single_command(curr, minishell);

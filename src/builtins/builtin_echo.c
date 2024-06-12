@@ -6,11 +6,24 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/12 00:34:54 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/12 15:28:42 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void print_input_fd(t_shell *minishell)
+{
+	char buffer[1024];
+	ssize_t bytes_read;
+
+	printf("\n");
+	while ((bytes_read = read(minishell->input_fd, buffer, sizeof(buffer) - 1)) > 0)
+	{
+		buffer[bytes_read] = '\0';  // Null-terminate the buffer
+		printf("%s", buffer);  // Print the buffer content
+	}
+}
 
 static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 {
@@ -18,7 +31,7 @@ static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 	{
 		if (current->type == T_IDENTIFIER)
 		{
-			parse_token(current, minishell);
+			//parse_token(current, minishell);
 			printf("%s", current->token);
 			if (current->next && current->next->token[0] != '\0')
 			{
@@ -29,6 +42,11 @@ static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 		else
 			break ;
 		current = current->next;
+	}
+	if (minishell->flag)
+	{
+		print_input_fd(minishell);
+		close(minishell->input_fd);
 	}
 	if (newline)
 		printf("\n");

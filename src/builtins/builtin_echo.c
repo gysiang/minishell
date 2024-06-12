@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/12 16:06:06 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/12 19:52:06 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static void print_input_fd(t_shell *minishell)
 
 static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 {
+	(void)minishell;
+
 	while (current != NULL)
 	{
 		if (current->type == T_IDENTIFIER)

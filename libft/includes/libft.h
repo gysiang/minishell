@@ -6,13 +6,14 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 17:22:12 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/11 12:14:15 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/12 12:46:59 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
 
@@ -48,6 +49,7 @@ char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s1, char const *set);
 char				**ft_split(char const *s, char c);
+int					ft_sprintf(char *str, const char *format, ...);
 void				ft_split_free(char ***str_array);
 char				*ft_itoa(int n);
 char				*ft_ltoa(long n);

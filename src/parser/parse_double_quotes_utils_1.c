@@ -2,66 +2,17 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parse_double_quotes_utils_1.c                      :+:      :+:    :+:   */
-/*                                                    +:+         +:+     */
+/*                                                    +:+ +:+         +:+     */
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/09 11:46:06 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 20:49:45 by axlee            ###   ########.fr       */
+/*   Created: 2024/06/12 13:16:55 by axlee             #+#    #+#             */
+/*   Updated: 2024/06/12 13:18:46 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_special_env_variable(char *result, t_shell *minishell)
-{
-	char	*expanded;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	expanded = ft_itoa(minishell->last_return);
-	ft_strcpy(&result[j], expanded);
-	j += ft_strlen(expanded);
-	free(expanded);
-	i += 2;
-}
-
-void	extract_variable_name(char *str, char **var_name, int *var_len)
-{
-	char	*var_start;
-	char	*var_end;
-
-	var_start = &str[1]; // Skip the '$' character
-	var_end = var_start;
-	while (*var_end && (ft_isalnum(*var_end) || *var_end == '_'))
-		var_end++;
-	*var_len = var_end - var_start;
-	*var_name = ft_strndup(var_start, *var_len);
-}
-
-void	handle_regular_env_variable(char *str, char *result, t_shell *minishell)
-{
-	char	*var_name;
-	char	*expanded;
-	int		var_len;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	extract_variable_name(str, &var_name, &var_len);
-	expanded = get_env_value(minishell, var_name);
-	if (expanded)
-	{
-		ft_strcpy(&result[j], expanded);
-		j += strlen(expanded);
-	}
-	i += var_len;
-	free(var_name);
-}
-
-static char	*prepend_dollar(const char *var_name)
+char	*prepend_dollar(const char *var_name)
 {
 	char	*result;
 	size_t	len;
@@ -69,10 +20,46 @@ static char	*prepend_dollar(const char *var_name)
 	len = ft_strlen(var_name);
 	result = malloc(len + 2);
 	if (!result)
-		return NULL;
+		return (NULL);
 	result[0] = '$';
 	ft_strcpy(result + 1, var_name);
 	return (result);
+}
+
+void	append_to_result(char **result, t_shell *minishell, const char *str)
+{
+	size_t	str_len;
+
+	str_len = ft_strlen(str);
+	if (minishell->j + str_len + 1 > minishell->allocated_size)
+	{
+		minishell->allocated_size = minishell->j + str_len + 1;
+		*result = ft_realloc(*result, ft_strlen(*result),
+				minishell->allocated_size);
+	}
+	ft_strcpy(&(*result)[minishell->j], str);
+	minishell->j += str_len;
+}
+
+void	handle_variable_value(char **result, t_shell *minishell,
+		char *var_value)
+{
+	if (var_value)
+	{
+		append_to_result(result, minishell, var_value);
+		minishell->flag = 1;
+		free(var_value);
+	}
+}
+
+void	handle_variable_not_found(char **result, t_shell *minishell,
+		const char *var_name)
+{
+	char	*temp;
+
+	temp = prepend_dollar(var_name);
+	append_to_result(result, minishell, temp);
+	free(temp);
 }
 
 void	handle_env_variable_expansion(char *str, char **result,
@@ -80,38 +67,16 @@ void	handle_env_variable_expansion(char *str, char **result,
 {
 	char	var_name[256];
 	char	*var_value;
-	char	*temp;
 	int		var_len;
 
 	var_len = 0;
-	minishell->i++; // Skip the '$' character
+	minishell->i++;
 	while (ft_isalnum(str[minishell->i]) || str[minishell->i] == '_')
 		var_name[var_len++] = str[minishell->i++];
 	var_name[var_len] = '\0';
 	var_value = get_env_value(minishell, var_name);
 	if (var_value)
-	{
-		if (minishell->j + ft_strlen(var_value) + 1 > minishell->allocated_size)
-		{
-			// Reallocate result buffer if necessary
-			minishell->allocated_size = minishell->j + ft_strlen(var_value) + 1;
-			*result = ft_realloc(*result, ft_strlen(*result), minishell->allocated_size);
-		}
-		minishell->flag = 1;
-		ft_strcpy(&(*result)[minishell->j], var_value);
-		minishell->j += ft_strlen(var_value);
-		free(var_value);
-	}
+		handle_variable_value(result, minishell, var_value);
 	else
-	{
-		temp = prepend_dollar(var_name);
-		if (minishell->j + ft_strlen(temp) + 1 > minishell->allocated_size)
-		{
-			minishell->allocated_size = minishell->j + ft_strlen(var_name) + 1;
-			*result = ft_realloc(*result, ft_strlen(*result), minishell->allocated_size);
-		}
-		ft_strcpy(&(*result)[minishell->j], temp);
-		minishell->j += ft_strlen(temp);
-		free(temp);
-	}
+		handle_variable_not_found(result, minishell, var_name);
 }

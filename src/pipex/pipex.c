@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/11 22:41:04 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/12 13:19:56 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 int	handle_redirection(t_shell *minishell, t_token *curr)
 {
-	if (curr && (curr->type == T_LESSER_THAN
-			|| curr->type == T_LEFT_SHIFT))
+	if (curr && (curr->type == T_LESSER_THAN || curr->type == T_LEFT_SHIFT))
 	{
 		if (redirect_input(minishell, curr) != -1)
 		{
@@ -100,7 +99,7 @@ void	pipex(t_shell *minishell)
 		if (curr->type == T_IDENTIFIER && (check_builtin(curr->token) == 1))
 			curr = handle_builtins(curr, minishell);
 		if ((curr->type == T_IDENTIFIER) && (!check_builtin(curr->token))
-			&& (curr->next)&& (check_redirection_type(curr->next)))
+			&& (curr->next) && (check_redirection_type(curr->next)))
 		{
 			execute_command_with_redir(curr, minishell);
 			curr = curr->next->next;

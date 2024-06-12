@@ -6,7 +6,7 @@
 #    By: axlee <axlee@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/13 15:19:53 by axlee             #+#    #+#              #
-#    Updated: 2024/06/10 20:28:16 by axlee            ###   ########.fr        #
+#    Updated: 2024/06/12 12:43:38 by axlee            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -117,6 +117,7 @@ OTHERS_OBJS =		$(addprefix $(OBJS_DIR)/,$(notdir $(OTHERS_FILES:.c=.o)))
 
 STR_FILES =		str/ft_split_free.c \
 				str/ft_split.c \
+				str/ft_sprintf.c \
 				str/ft_strcat.c \
 				str/ft_strccmp.c \
 				str/ft_strchr.c \

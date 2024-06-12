@@ -56,9 +56,9 @@ void	handle_backslash(char **line, t_token **token_lst)
 {
 	char	escaped[2];
 
+	(*line)++;
 	escaped[0] = **line;
 	escaped[1] = '\0';
-	(*line)++;
 	if (**line == '\"' || **line == '\'')
 		handle_quoted_escape(line, token_lst);
 	else

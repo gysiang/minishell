@@ -1,111 +1,62 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_double_quotes_utils_2.c                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   parse_double_quotes_utils_1.c                      :+:      :+:    :+:   */
+/*                                                    +:+         +:+     */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/09 12:04:18 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/11 22:22:46 by gyong-si         ###   ########.fr       */
+/*   Created: 2024/06/09 11:46:06 by axlee             #+#    #+#             */
+/*   Updated: 2024/06/09 20:49:45 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	update_parse_variables(int *len, char **result)
+void	handle_special_env_variable(char *result, t_shell *minishell)
 {
-	*len = *len;
-	*result = *result;
+	char	*expanded;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	expanded = ft_itoa(minishell->last_return);
+	ft_strcpy(&result[j], expanded);
+	j += ft_strlen(expanded);
+	free(expanded);
+	i += 2;
 }
 
-void	initialize_parse_variables(t_token *token, t_shell *minishell)
+void	extract_variable_name(char *str, char **var_name, int *var_len)
 {
-    char	*str;
-    int		len;
-    char	*result;
+	char	*var_start;
+	char	*var_end;
 
-    str = token->token;
-    len = ft_strlen(str) * 2;
-    result = malloc(len + 1);
-    if (result == NULL)
-    {
-        return;
-    }
-    ft_memset(result, '\0', len + 1); // Ensure the result buffer is always fully initialized to zero
-    minishell->allocated_size = len + 1; // Initialize allocated_size
-    update_parse_variables(&len, &result);
-	free(result);
-
+	var_start = &str[1];
+	var_end = var_start;
+	while (*var_end && (ft_isalnum(*var_end) || *var_end == '_'))
+		var_end++;
+	*var_len = var_end - var_start;
+	*var_name = ft_strndup(var_start, *var_len);
 }
 
-void	process_special_dollar_cases(char *str, char **result,
-		t_shell *minishell)
+void	handle_regular_env_variable(char *str, char *result, t_shell *minishell)
 {
-	char	next_char;
-	char	exit_status[12];
-	int		length;
+	char	*var_name;
+	char	*expanded;
+	int		var_len;
+	int		i;
+	int		j;
 
-	next_char = str[minishell->i + 1];
-	if (next_char == '?')
+	i = 0;
+	j = 0;
+	extract_variable_name(str, &var_name, &var_len);
+	expanded = get_env_value(minishell, var_name);
+	if (expanded)
 	{
-		length = snprintf(exit_status, sizeof(exit_status), "%d",
-				minishell->last_return);
-		if (length > 0)
-		{
-			ft_strcpy(&(*result)[minishell->j], exit_status);
-			minishell->j += ft_strlen(exit_status);
-		}
-		minishell->i += 2;
+		ft_strcpy(&result[j], expanded);
+		j += strlen(expanded);
 	}
-	else if (!ft_isalnum(next_char) && next_char != '_' && next_char != '\"')
-	{
-		(*result)[minishell->j++] = '$';
-		(*result)[minishell->j++] = next_char;
-		minishell->i += 2;
-	}
-	else if (next_char == '\"')
-	{
-		(*result)[minishell->j++] = '$';
-		minishell->i++;
-	}
-	else
-	{
-		handle_env_variable_expansion(str, result, minishell);
-	}
-}
-
-void	process_dollar_character(char *str, char **result, t_shell *minishell)
-{
-	if (str[minishell->i + 1] == '\0')
-	{
-		(*result)[minishell->j++] = '$';
-		minishell->i++;
-	}
-	else
-	{
-		process_special_dollar_cases(str, result, minishell);
-	}
-}
-
-void	process_character(char *str, char **result, t_shell *minishell)
-{
-	if (str[minishell->i] == '\"')
-	{
-		minishell->i++;
-	}
-	else if (str[minishell->i] == '\'')
-	{
-		(*result)[minishell->j++] = str[minishell->i++];
-	}
-	else if (str[minishell->i] == '$')
-	{
-		process_dollar_character(str, result, minishell);
-	}
-	else
-	{
-		(*result)[minishell->j] = str[minishell->i];
-		minishell->j++;
-		minishell->i++;
-	}
-	(*result)[minishell->j] = '\0';
+	i += var_len;
+	free(var_name);
 }

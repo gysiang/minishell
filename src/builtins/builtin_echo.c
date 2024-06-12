@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/12 00:34:54 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:32:42 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,28 @@ static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 	if (newline)
 		printf("\n");
 }
+
+/*static void	print_tokens(t_token *current, t_shell *minishell, int newline)
+{
+	while (current != NULL)
+	{
+		if (current->type == T_IDENTIFIER)
+		{
+			parse_token(current, minishell);
+			printf("%s", current->token);
+			if (current->next && current->next->token[0] != '\0')
+			{
+				if (current->token[ft_strlen(current->token) - 1] != '\0')
+					printf(" ");
+			}
+		}
+		else
+			break ;
+		current = current->next;
+	}
+	if (newline)
+		printf("\n");
+}*/
 
 void	minishell_echo(t_shell *minishell)
 {

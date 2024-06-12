@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/11 21:17:40 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/12 13:55:10 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_shell
 	int				prev_fd;
 	pid_t			process_ids[100];
 	int				process_count;
-	int				last_return;
+	int				last_return ;
 	int				flag;
 	int				signal_received;
 	bool			end;
@@ -137,6 +137,17 @@ void				parse_single_quotes(t_token *token);
 void				parse_double_quotes(t_token *token, t_shell *minishell);
 
 // parser(parse_double_quotes_utils_1)
+char				*prepend_dollar(const char *var_name);
+void				append_to_result(char **result, t_shell *minishell,
+						const char *str);
+void				handle_variable_value(char **result, t_shell *minishell,
+						char *var_value);
+void				handle_variable_not_found(char **result, t_shell *minishell,
+						const char *var_name);
+void				handle_env_variable_expansion(char *str, char **result,
+						t_shell *minishell);
+
+// parser(parse_double_quotes_utils_2)
 void				handle_special_env_variable(char *result,
 						t_shell *minishell);
 void				extract_variable_name(char *str, char **var_name,
@@ -146,18 +157,25 @@ void				handle_regular_env_variable(char *str, char *result,
 void				handle_env_variable_expansion(char *str, char **result,
 						t_shell *minishell);
 
-// parser (parse_double_quotes_utils_2)
-void				update_parse_variables(int *len, char **result);
-void				initialize_parse_variables(t_token *token,
+// parser (parse_double_quotes_utils_3)
+void				process_exit_status(char **result, t_shell *minishell);
+void				process_special_characters(char *str, char **result,
+						t_shell *minishell);
+void				process_dollar_followed_by_quote(char **result,
 						t_shell *minishell);
 void				process_special_dollar_cases(char *str, char **result,
 						t_shell *minishell);
 void				process_dollar_character(char *str, char **result,
 						t_shell *minishell);
+
+// parser (parse_double_quotes_utils_4)
+void				update_parse_variables(int *len, char **result);
+void				initialize_parse_variables(t_token *token,
+						t_shell *minishell);
 void				process_character(char *str, char **result,
 						t_shell *minishell);
 
-// parser (parse_semicolon)
+// parser (parse_semicolon)ls
 void				parse_semicolon(t_token *token);
 
 // parser (parse_value)
@@ -169,6 +187,8 @@ void				parse_value(t_token *token_lst, t_shell *minishell);
 
 // parser
 void				set_token_pointers(t_token *tokens);
+void				handle_token_parsing(t_token *token, t_shell *minishell,
+						char *str, int len);
 void				parse_token(t_token *token, t_shell *minishell);
 t_token				*token_parser(t_token *token_lst, t_shell *minishell);
 
@@ -204,8 +224,8 @@ void				execute_builtin_or_exec_exit(t_token *curr,
 void				execute_builtin_or_exec(t_token *curr, t_shell *minishell);
 
 // pipex (execute1)
-void				execute_command_with_redir(t_token *curr, t_shell *minishell);
-
+void				execute_command_with_redir(t_token *curr,
+						t_shell *minishell);
 
 // pipex (utils)
 void				exit_handler(int exit_code);

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/11 21:20:16 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:20:44 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	process_command_line(t_shell *minishell, char *line)
 	t_token	*token_lst;
 
 	token_lst = token_processor(line, minishell);
-	print_tokenlst(token_lst);
+	//print_tokenlst(token_lst);
 	if (token_lst != NULL)
 		minishell->cmd_list = token_lst;
 	pipex(minishell);

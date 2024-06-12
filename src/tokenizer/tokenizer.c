@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:12:11 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/11 11:47:30 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/12 14:19:46 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,23 @@ void	add_quoted_content_to_token_list(char *start, char **line,
 	}
 }
 
+static void	add_unclosed_quote_to_token_list(char *start, char **line,
+		t_token **token_lst)
+{
+	int		len;
+	char	*unclosed_quote;
+
+	len = *line - start;
+	unclosed_quote = (char *)malloc(len + 1);
+	if (unclosed_quote)
+	{
+		ft_strncpy(unclosed_quote, start, len);
+		unclosed_quote[len] = '\0';
+		token_add_back(token_lst, unclosed_quote, T_IDENTIFIER);
+		free(unclosed_quote);
+	}
+}
+
 void	add_literal_quote_to_token_list(char quote_type, t_token **token_lst)
 {
 	char	*literal_quote;
@@ -47,7 +64,9 @@ void	handle_quotes(char **line, t_token **token_lst)
 {
 	char	quote_type;
 	char	*start;
+	int		len;
 
+	len = ft_strlen(*line);
 	quote_type = **line;
 	start = *line;
 	(*line)++;
@@ -57,6 +76,10 @@ void	handle_quotes(char **line, t_token **token_lst)
 	{
 		(*line)++;
 		add_quoted_content_to_token_list(start, line, token_lst);
+	}
+	else if (*line[0] != *line[len - 1])
+	{
+		add_unclosed_quote_to_token_list(start, line, token_lst);
 	}
 	else
 		add_literal_quote_to_token_list(quote_type, token_lst);

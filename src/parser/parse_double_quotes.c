@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_double_quotes.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 11:00:03 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/12 16:08:32 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/13 11:38:28 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	parse_double_quotes(t_token *token, t_shell *minishell)
 	char	*str;
 	char	*result;
 
-	printf("in parse double quotes\n");
 	minishell->i = 0;
 	minishell->j = 0;
 	initialize_parse_variables(token, minishell);

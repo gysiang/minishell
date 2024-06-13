@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:48:39 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/08 23:19:32 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/13 11:55:49 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,23 @@ static int	open_output(char *file_name, int type)
 	int			fd;
 
 	fd = -1;
-	if (stat(file_name, &buffer) == 0 && S_ISDIR(buffer.st_mode))
+	if (access(file_name, F_OK) == 0)
 	{
-		minishell_error_msg(file_name, 2);
-		return (-1);
-	}
-	if (access(file_name, W_OK) == -1)
-	{
-		minishell_error_msg(file_name, 3);
-		return (-1);
+		if (stat(file_name, &buffer) == 0 && S_ISDIR(buffer.st_mode))
+		{
+			minishell_error_msg(file_name, 2);
+			return (-1);
+		}
+		if (access(file_name, W_OK) == -1)
+		{
+			minishell_error_msg(file_name, 3);
+			return (-1);
+		}
 	}
 	if (type == T_GREATER_THAN)
-		fd = open(file_name, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	else if (type == T_RIGHT_SHIFT)
-		fd = open(file_name, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		fd = open(file_name, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	return (fd);
 }
 
@@ -91,11 +94,8 @@ int	redirect_output(t_shell *minishell, t_token *curr)
 
 	if (!curr || !curr->next)
 		return (-1);
-	printf("inside redirect output\n");
 	file_name = curr->next->token;
-	printf("filename: %s\n", file_name);
 	type = curr->type;
-	printf("type: %d\n", type);
 	fd = open_output(file_name, type);
 	if (fd > 0)
 		minishell->output_fd = fd;

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/12 21:52:13 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/13 12:39:52 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void parse_unclosed(t_token *token, t_shell *minishell)
 		{
             if (input[i] == '"')
                 inside_quote = !inside_quote;
-            command = realloc(command, ft_strlen(command) + 2);
+            command = ft_realloc(command, ft_strlen(command) + 2);
             ft_strncat(command, &input[i], 1);
         }
         if (inside_quote && i == len - 1)

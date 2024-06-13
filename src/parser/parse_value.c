@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:54:35 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/10 12:31:26 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/12 21:26:54 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	handle_env_variable(t_token *curr, t_shell *minishell)
 	env_value = get_env_value(minishell, result);
 	free(result);
 	if (!env_value)
-		env_value = ft_strdup(" ");
+		env_value = ft_strdup("");
 	free(curr->token);
 	curr->token = env_value;
 }
@@ -60,6 +60,35 @@ void	parse_value(t_token *token_lst, t_shell *minishell)
 	char	*token;
 
 	curr = token_lst;
+	while (curr != NULL)
+	{
+		token = curr->token;
+		if (token == NULL || token[0] != '$')
+		{
+			curr = curr->next;
+			continue;
+		}
+		if (ft_strcmp(token, "$") == 0)
+		{
+			curr = curr->next;
+			continue;
+		}
+		else if (ft_strcmp(token, "$?") == 0)
+			handle_exit_status(curr, minishell);
+		else if (ft_strncmp(token, "$?", 2) == 0)
+			handle_exit_status_with_suffix(curr, minishell, token + 2);
+		else
+			handle_env_variable(curr, minishell);
+		curr = curr->next;
+	}
+}
+
+/*void	parse_value(t_token *token_lst, t_shell *minishell)
+{
+	t_token	*curr;
+	char	*token;
+
+	curr = token_lst;
 	token = curr->token;
 	if (token == NULL || token[0] != '$')
 		return ;
@@ -71,4 +100,4 @@ void	parse_value(t_token *token_lst, t_shell *minishell)
 		handle_exit_status_with_suffix(curr, minishell, token + 2);
 	else
 		handle_env_variable(curr, minishell);
-}
+}*/

@@ -55,7 +55,7 @@ void	handle_regular_env_variable(char *str, char *result, t_shell *minishell)
 	if (expanded)
 	{
 		ft_strcpy(&result[j], expanded);
-		j += strlen(expanded);
+		j += ft_strlen(expanded);
 	}
 	i += var_len;
 	free(var_name);

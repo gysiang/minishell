@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/12 19:52:06 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/12 21:53:22 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,33 @@ static void print_input_fd(t_shell *minishell)
 }
 
 static void	print_tokens(t_token *current, t_shell *minishell, int newline)
+{
+	(void)minishell;
+	int first = 1;
+
+	while (current != NULL)
+	{
+		if (current->type == T_IDENTIFIER)
+		{
+			if (!first)
+				printf(" ");
+			printf("%s", current->token);
+			first = 0;
+		}
+		else
+			break;
+		current = current->next;
+	}
+	if (minishell->flag)
+	{
+		print_input_fd(minishell);
+		close(minishell->input_fd);
+	}
+	if (newline)
+		printf("\n");
+}
+
+/*static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 {
 	(void)minishell;
 
@@ -52,7 +79,7 @@ static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 	}
 	if (newline)
 		printf("\n");
-}
+}*/
 
 /*static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 {

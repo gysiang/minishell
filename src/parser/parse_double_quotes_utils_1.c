@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_double_quotes_utils_1.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:16:55 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/12 19:47:22 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/12 20:47:39 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,16 @@ void	handle_variable_value(char **result, t_shell *minishell,
 		free(var_value);
 	}
 }
+
 void	handle_variable_not_found(char **result, t_shell *minishell,
+		const char *var_name)
+{
+
+	(void)var_name;
+	append_to_result(result, minishell, "");
+}
+
+/*void	handle_variable_not_found(char **result, t_shell *minishell,
 		const char *var_name)
 {
 	char	*temp;
@@ -59,7 +68,7 @@ void	handle_variable_not_found(char **result, t_shell *minishell,
 	temp = prepend_dollar(var_name);
 	append_to_result(result, minishell, temp);
 	free(temp);
-}
+}*/
 
 /*void	handle_env_variable_expansion(char *str, char **result,
 		t_shell *minishell)

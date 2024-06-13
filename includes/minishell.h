@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/12 16:36:29 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/13 12:31:47 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -357,8 +357,11 @@ void				sigint_handler1(int signal);
 void				sigquit_handler(int signal);
 void				setup_signal_handler(void);
 
-// sutils
+// sutils_1
 char				**ft_dqsplit(char const *s, char c);
 void				convert_cmd(char **s);
+
+// sutils_2
+void				*ft_realloc(void *ptr, size_t new_size);
 
 #endif

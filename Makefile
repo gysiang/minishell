@@ -36,7 +36,8 @@ SRC_FILES := main.c \
                 redirect.c \
                 shell.c \
                 signals.c \
-                sutils.c \
+                sutils_1.c \
+				sutils_2.c \
                 builtins/builtin_cd.c \
                 builtins/builtin_echo.c \
                 builtins/builtin_env.c \

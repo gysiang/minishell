@@ -6,7 +6,7 @@
 #    By: axlee <axlee@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/13 15:19:53 by axlee             #+#    #+#              #
-#    Updated: 2024/06/12 12:43:38 by axlee            ###   ########.fr        #
+#    Updated: 2024/06/13 12:30:47 by axlee            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,6 @@ MEM_FILES =		mem/ft_bzero.c \
 				mem/ft_memcpy.c \
 				mem/ft_memmove.c \
 				mem/ft_memset.c \
-				mem/ft_realloc.c \
 
 MEM_OBJS =		$(addprefix $(OBJS_DIR)/,$(notdir $(MEM_FILES:.c=.o)))
 

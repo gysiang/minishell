@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:16:55 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/12 20:47:39 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/13 12:38:47 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ void	append_to_result(char **result, t_shell *minishell, const char *str)
 	if (minishell->j + str_len + 1 > minishell->allocated_size)
 	{
 		minishell->allocated_size = minishell->j + str_len + 1;
-		*result = ft_realloc(*result, ft_strlen(*result),
-				minishell->allocated_size);
+		*result = ft_realloc(*result, minishell->allocated_size);
 	}
 	ft_strcpy(&(*result)[minishell->j], str);
 	minishell->j += str_len;

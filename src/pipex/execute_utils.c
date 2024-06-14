@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/14 00:51:14 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/14 15:09:25 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,6 @@ void	exec_cmd(t_token *curr, t_shell *minishell)
 		return_code = minishell_error_msg(s_cmd[0], errno);
 		minishell->last_return = return_code;
 	}
+	free(path);
 	ft_free_tab(s_cmd);
 }

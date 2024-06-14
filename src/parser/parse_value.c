@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:54:35 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/14 12:57:43 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/14 14:09:45 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	handle_env_variable(t_token *curr, t_shell *minishell)
 	result[0] = '\0';
 
 	// Skip the '$' character
-	//token++;
+	token++;
 
 	// Extract the variable name
 	var_name = ft_strdup(token);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/13 21:28:18 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/14 16:01:33 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ static void print_input_fd(t_shell *minishell)
 	printf("\n");
 	while ((bytes_read = read(minishell->input_fd, buffer, sizeof(buffer) - 1)) > 0)
 	{
-		buffer[bytes_read] = '\0';  // Null-terminate the buffer
-		printf("%s", buffer);  // Print the buffer content
+		buffer[bytes_read] = '\0';
+		printf("%s", buffer);
 	}
 }
 
 static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 {
-	(void)minishell;
-	int first = 1;
+	int first;
 
+	first = 1;
 	while (current != NULL)
 	{
 		if (current->type == T_IDENTIFIER)
@@ -111,8 +111,10 @@ void	minishell_echo(t_shell *minishell)
 	newline = 1;
 	if (minishell->cmd_list == NULL)
 		return ;
+	if (minishell->signal_received)
+		exit(1);
 	current = minishell->cmd_list->next;
-	if (current != NULL && strcmp(current->token, "-n") == 0)
+	if (current != NULL && ft_strcmp(current->token, "-n") == 0)
 	{
 		newline = 0;
 		current = current->next;

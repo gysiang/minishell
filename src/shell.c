@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/14 15:30:49 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/14 15:56:37 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_shell	*init_shell(void)
 	shell->signal_received = 0;
 	shell->end = false;
 	shell->flag = 0;
+	shell->signal_received = 0;
 	ft_memset(shell->process_ids, 0, sizeof(shell->process_ids));
 	return (shell);
 }

@@ -7,6 +7,7 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 12:29:38 by axlee             #+#    #+#             */
 /*   Updated: 2024/06/14 12:59:48 by gyong-si         ###   ########.fr       */
+
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,3 +52,4 @@ void	reset_minishell(t_shell *minishell)
 	minishell->signal_received = 0;
 	minishell->flag = 0;
 }
+

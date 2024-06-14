@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/11 16:51:41 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/14 12:58:12 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	execute_single_command(t_token *curr, t_shell *minishell)
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		load_previous_fd(minishell);
+		load_previous_fd_to_stdin(minishell);
 		exec_cmd(curr, minishell);
 	}
 	else
@@ -75,7 +75,7 @@ void	execute_pipeline(t_token *curr, t_shell *minishell)
 	pid = fork();
 	if (pid == 0)
 	{
-		load_previous_fd(minishell);
+		load_previous_fd_to_stdin(minishell);
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
 		close(pipe_fd[0]);
@@ -95,11 +95,7 @@ void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 {
 	t_token	*head;
 	t_token	*curr;
-	int		saved_stdin;
-	int		saved_stdout;
 
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
 	printf("execute with redirection\n");
 	if (!ft_strncmp(minishell->cmd_list->token, "echo", 4))
 		head = minishell->cmd_list;
@@ -111,5 +107,4 @@ void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 	{
 		execute_builtin_or_exec(head, minishell);
 	}
-	restore_fds(saved_stdin, saved_stdout);
 }

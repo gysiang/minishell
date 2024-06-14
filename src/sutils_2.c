@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sutils_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 12:29:38 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/13 12:51:11 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/14 12:59:48 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,13 @@ void	*ft_realloc(void *ptr, size_t new_size)
 		ft_memcpy(new_ptr, ptr, new_size);
 	free(ptr);
 	return (new_ptr);
+}
+
+void	reset_minishell(t_shell *minishell)
+{
+	minishell->prev_fd = -1;
+	minishell->process_count = 0;
+	reset_process_ids(minishell);
+	minishell->signal_received = 0;
+	minishell->flag = 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/11 11:35:38 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/14 00:51:14 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,6 @@ char	*get_command_path(char **s_cmd, t_shell *minishell)
 		exit(1);
 	}
 	return (path);
-}
-
-void	load_previous_fd(t_shell *minishell)
-{
-	if (minishell->prev_fd != -1)
-	{
-		dup2(minishell->prev_fd, STDIN_FILENO);
-		close(minishell->prev_fd);
-	}
 }
 
 void	exec_cmd(t_token *curr, t_shell *minishell)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/13 11:43:20 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/14 12:56:11 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,19 @@ int	handle_redirection(t_shell *minishell, t_token *curr)
 	else if (curr && (curr->type == T_GREATER_THAN
 			|| curr->type == T_RIGHT_SHIFT))
 	{
-		if (redirect_output(minishell, curr) != -1)
+		if (redirect_output(minishell, curr) != -1 && !minishell->flag)
 		{
 			dup2(minishell->output_fd, STDOUT_FILENO);
 			close(minishell->output_fd);
 			return (1);
 		}
+		else
+			return (1);
 	}
 	return (0);
 }
 
-static void	wait_for_all_commands(t_shell *minishell)
+static int	wait_for_all_commands(t_shell *minishell)
 {
 	int	status;
 	int	i;
@@ -55,7 +57,7 @@ static void	wait_for_all_commands(t_shell *minishell)
 		i++;
 	}
 	signal(SIGINT, sigint_handler);
-	minishell->process_count = 0;
+	return (1);
 }
 
 t_token	*handle_builtins(t_token *curr, t_shell *minishell)
@@ -102,9 +104,10 @@ void	pipex(t_shell *minishell)
 			&& (curr->next) && (check_redirection_type(curr->next)))
 		{
 			execute_command_with_redir(curr, minishell);
-			curr = curr->next->next;
+			update_curr_pointer(&curr, minishell->flag);
 		}
 		curr = curr->next;
 	}
 	wait_for_all_commands(minishell);
+	//load_previous_fd_to_stdout(minishell);
 }

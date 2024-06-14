@@ -1,0 +1,4 @@
+hello gyong-si
+My name is gyong-si
+My path is /home/gyong-si/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/gyong-si/.local/bin:/home/gyong-si/.local/bin:/home/gyong-si/.local/bin:/home/gyong-si/.local/bin:/home/gyong-si/.local/bin:/home/gyong-si/.local/bin:/home/gyong-si/.local/bin:/home/gyong-si/.local/bin:/home/gyong-si/.local/bin:/home/gyong-si/.local/bin:/home/gyong-si/.local/bin:/home/gyong-si/.local/bin:/home/gyong-si/.local/bin:/home/gyong-si/.local/bin:/home/gyong-si/.local/bin:/home/gyong-si/.local/bin
+Nice!

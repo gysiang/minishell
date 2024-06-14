@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/13 12:31:47 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/14 13:09:26 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,9 +218,13 @@ void				free_and_replace_token(t_token *token, char *new_str);
 // pipex (execute_utils)
 int					check_command(char *cmd, t_shell *minishell);
 char				**get_command_array(char *cmd, t_shell *minishell);
-void				load_previous_fd(t_shell *minishell);
 char				*get_command_path(char **s_cmd, t_shell *minishell);
 void				exec_cmd(t_token *curr, t_shell *minishell);
+
+// pipex (execute_utils1)
+void				load_previous_fd_to_stdin(t_shell *minishell);
+void				load_previous_fd_to_stdout(t_shell *minishell);
+void				update_curr_pointer(t_token **curr, int flag);
 
 // pipex (execute)
 void				execute_single_command(t_token *curr, t_shell *minishell);
@@ -232,8 +236,11 @@ void				execute_builtin_or_exec_exit(t_token *curr,
 void				execute_builtin_or_exec(t_token *curr, t_shell *minishell);
 
 // pipex (execute1)
-void				execute_command_with_redir(t_token *curr,
-						t_shell *minishell);
+void				execute_command_with_redir(t_token *curr, t_shell *minishell);
+void				handle_redir_child_process(t_token *curr, t_shell *minishell, t_token *redir_token);
+void				handle_redir_parent_process(t_shell *minishell, int pid);
+t_token				*get_redir_token(t_token *curr, t_shell *minishell);
+
 
 // pipex (utils)
 void				exit_handler(int exit_code);
@@ -363,5 +370,6 @@ void				convert_cmd(char **s);
 
 // sutils_2
 void				*ft_realloc(void *ptr, size_t new_size);
+void				reset_minishell(t_shell *minishell);
 
 #endif

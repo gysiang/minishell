@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:13:57 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/13 12:25:38 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/14 12:42:53 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	append_rest_of_line(char **line, char *result, t_token **token_lst)
 	while (**line && !ft_iswhitespace(*line) && **line != '$' && **line != '\''
 		&& **line != '\"')
 	{
-		current_length = strlen(result);
+		current_length = ft_strlen(result);
 		result = ft_realloc(result, current_length + 2);
 		ft_strncat(result, *line, 1);
 		(*line)++;

@@ -1,1 +1,2 @@
-
+My name is gyong-si
+My pwd is /home/gyong-si/Documents/42/minishell

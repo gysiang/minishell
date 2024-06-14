@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:48:39 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/13 11:55:49 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/14 12:51:58 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,13 @@ int	redirect_input(t_shell *minishell, t_token *curr)
 
 	fd = -1;
 	type = curr->type;
-	printf("inside redirect input\n");
 	file_name = curr->next->token;
-	printf("filename: %s\n", file_name);
-	printf("type: %d\n", type);
 	if (type == T_LESSER_THAN)
 		fd = open_input(file_name);
 	else if (type == T_LEFT_SHIFT)
 	{
-		printf("before heredoc\n");
 		fd = here_doc(minishell, file_name);
 	}
-	if (fd > 0)
-		minishell->input_fd = fd;
 	return (fd);
 }
 

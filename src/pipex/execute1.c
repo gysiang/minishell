@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:10:53 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/15 13:06:57 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/15 15:29:25 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 t_token	*get_redir_token(t_token *curr, t_shell *minishell)
 {
-	t_token *redir_token;
+	t_token	*redir_token;
 
 	redir_token = NULL;
-	if (curr->next && curr->next->next &&
-			check_redirection_type(curr->next->next->next))
+	if (curr->next && curr->next->next
+		&& check_redirection_type(curr->next->next->next))
 	{
 		minishell->flag = 1;
 		redir_token = curr->next->next->next;
@@ -56,7 +56,7 @@ void	execute_command_with_redir(t_token *curr, t_shell *minishell)
 {
 	int			pid;
 	int			pipe_fd[2];
-	t_token *	redir_token;
+	t_token		*redir_token;
 
 	redir_token = get_redir_token(curr, minishell);
 	if (pipe(pipe_fd) == -1)

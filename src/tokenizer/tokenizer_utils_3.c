@@ -65,3 +65,20 @@ void	handle_backslash(char **line, t_token **token_lst)
 		token_add_back(token_lst, escaped, T_IDENTIFIER);
 	(*line)++;
 }
+
+void	add_quoted_content_to_token_list(char *start, char **line,
+		t_token **token_lst)
+{
+	int		length;
+	char	*quoted_content;
+
+	length = *line - start;
+	quoted_content = (char *)malloc(length + 1);
+	if (quoted_content)
+	{
+		ft_strncpy(quoted_content, start, length);
+		quoted_content[length] = '\0';
+		token_add_back(token_lst, quoted_content, T_IDENTIFIER);
+		free(quoted_content);
+	}
+}

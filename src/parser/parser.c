@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/15 13:05:26 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/15 15:32:52 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	set_token_pointers(t_token *tokens)
 		prev_token->next = NULL;
 }
 
-static void parse_unclosed(t_token *token, t_shell *minishell)
+static void	parse_unclosed(t_token *token, t_shell *minishell)
 {
 	char	*input;
 	char	*command;
@@ -78,14 +78,15 @@ static void parse_unclosed(t_token *token, t_shell *minishell)
 	free(trimmed_command);
 }
 
-static int check_unclosed(t_token *token)
+static int	check_unclosed(t_token *token)
 {
-	char *str;
-	int len;
-	int i;
-	int inside_quote = 0;
+	char	*str;
+	int		len;
+	int		i;
+	int		inside_quote;
 
 	i = 0;
+	inside_quote = 0;
 	str = token->token;
 	len = ft_strlen(str);
 	while (i < len)

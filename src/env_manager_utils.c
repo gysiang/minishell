@@ -6,13 +6,12 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/15 12:56:39 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/15 15:40:51 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// If return (strdup == "", it will output echo $TEST as empty string but further issues at the back)
 char	*get_env_value(t_shell *minishell, const char *var)
 {
 	int		i;
@@ -29,11 +28,11 @@ char	*get_env_value(t_shell *minishell, const char *var)
 		}
 		i++;
 	}
-	// Return an empty string if the environment variable is not found
 	return (ft_strdup(""));
 }
 
-// If return NULL, it will output echo $ as $ but will also output echo $TEST as $TEST
+// If return NULL, it will output echo $ as $ but will also output echo $TEST
+// as $TEST
 /*char	*get_env_value(t_shell *minishell, const char *var)
 {
 	int		i;

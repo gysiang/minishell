@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_heredoc1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:16:05 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/14 15:59:16 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/12 20:38:11 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,13 @@ char	*expand_env_variable(char *str, t_shell *minishell)
 	return (result);
 }
 
-int	read_input(char **str, char *delimiter, int i, t_shell *minishell)
+int	read_input(char **str, char *delimiter)
 {
 	*str = readline("> ");
 	if (!*str)
 	{
-		if (i == 1)
-			printf("End of file reached\n");
-		minishell->signal_received = 1;
-		error_eof(delimiter, i);
+		printf("End of file reached\n");
+		error_eof(delimiter);
 		return (0);
 	}
 	return (1);

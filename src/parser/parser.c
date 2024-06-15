@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/14 15:52:36 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/14 12:24:01 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,29 +39,26 @@ static void parse_unclosed(t_token *token, t_shell *minishell)
 	int		len;
 	int		i;
 	char	*trimmed_command;
-	char 	*delimiter;
 
 	i = 0;
 	input = token->token;
 	len = ft_strlen(input);
 	command = ft_strdup("");
 	inside_quote = 0;
-	minishell->flag = 0;
+	minishell->flag = 1;
 	while (i < len || inside_quote)
 	{
-		if (i < len)
+        if (i < len)
 		{
-			if (input[i] == '"')
-			{
-				inside_quote = !inside_quote;
-				command = ft_realloc(command, ft_strlen(command) + 2);
-				ft_strncat(command, &input[i], 1);
-			}
-		}
-		if (inside_quote && i == len - 1)
+            if (input[i] == '"')
+                inside_quote = !inside_quote;
+            command = ft_realloc(command, ft_strlen(command) + 2);
+            ft_strncat(command, &input[i], 1);
+        }
+        if (inside_quote && i == len - 1)
 		{
-			delimiter = "\"";
-			if (here_doc(minishell, delimiter, 2) == -1)
+            char *delimiter = "\"";
+            if (here_doc(minishell, delimiter) == -1)
 			{
 				fprintf(stderr, "Error in here_doc\n");
 				free(command);

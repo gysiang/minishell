@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/14 15:52:36 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/15 07:59:52 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,38 +77,6 @@ static void parse_unclosed(t_token *token, t_shell *minishell)
 	token->token = ft_strdup(trimmed_command);
 	free(trimmed_command);
 }
-
-/** *
-static void	parse_unclosed_quote(t_token *token, t_shell *minishell)
-{
-	char	opening_quote;
-	char	ending_quote;
-	int		flag;
-	char	*str;
-	char buffer[1024];
-	ssize_t bytes_read;
-
-	str = token->token;
-	flag = 0;
-	opening_quote = str[0];
-	ending_quote = str[ft_strlen(str) - 1];
-	if (opening_quote != ending_quote)
-		flag = 1;
-	if (flag)
-	{
-		if (here_doc(minishell, &opening_quote) == -1)
-		{
-			ft_putstr_fd("Error in here_doc\n", 2);
-			return ;
-		}
-		while ((bytes_read = read(minishell->input_fd, buffer, sizeof(buffer) - 1)) > 0)
-		{
-			buffer[bytes_read] = '\0';
-			command = ft_realloc(command, ft_strlen(command), ft_strlen(command) + bytes_read + 1);
-			ft_strcat(command, buffer);
-		}
-	}
-} **/
 
 static int check_unclosed(t_token *token)
 {

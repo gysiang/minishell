@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/14 16:01:33 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/15 10:04:34 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,18 @@ static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 	first = 1;
 	while (current != NULL)
 	{
-		if (current->type == T_IDENTIFIER)
+		if (current->type == T_IDENTIFIER && ft_strcmp(current->token, "") != 0)
 		{
+			if (current->prev && current->prev->type == T_IDENTIFIER
+				&& ft_strcmp(current->prev->token, "") == 0)
+				first = 1;
 			if (!first)
 				printf(" ");
 			printf("%s", current->token);
 			first = 0;
 		}
-		else
-			break;
+		//else
+		//	break;
 		current = current->next;
 	}
 	if (minishell->flag)

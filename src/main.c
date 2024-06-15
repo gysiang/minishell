@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/15 10:52:00 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/15 12:58:16 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	process_command_line(t_shell *minishell, char *line)
 	reset_minishell(minishell);
 	restore_fds(saved_stdin, saved_stdout);
 }
-
 
 void	main_loop(t_shell *g_shell)
 {

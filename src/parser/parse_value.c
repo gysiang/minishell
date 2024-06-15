@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:54:35 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/15 07:47:59 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/15 12:54:00 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ void	handle_env_variable(t_token *curr, t_shell *minishell)
 	if (!result)
 		return;
 	result[0] = '\0';
+
+	// Skip the '$' character
+	token++;
+
+	// Extract the variable name
 	var_name = ft_strdup(token);
 	env_value = get_env_value(minishell, var_name);
 	if (!env_value)

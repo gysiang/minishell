@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 21:03:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/14 16:07:25 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/14 11:17:48 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ static void	write_to_pipe(int fd, const char *str)
 	write(fd, "\n", 1);
 }
 
-static void	here_doc_read(t_shell *minishell, int *pipe_fds,
-		char *delimiter, int i)
+static void	here_doc_read(t_shell *minishell, int *pipe_fds, char *delimiter)
 {
 	char	*str;
 	char	*expanded_str;
@@ -40,7 +39,7 @@ static void	here_doc_read(t_shell *minishell, int *pipe_fds,
 	signal(SIGINT, signal_exit);
 	while (1)
 	{
-		if (!read_input(&str, delimiter, i, minishell))
+		if (!read_input(&str, delimiter))
 			break ;
 		if (is_delimiter(str, delimiter))
 			break ;
@@ -71,7 +70,7 @@ int	execute_parent(int pid, int *pipe_des)
 	return (pipe_des[0]);
 }
 
-int	here_doc(t_shell *minishell, char *delimiter, int i)
+int	here_doc(t_shell *minishell, char *delimiter)
 {
 	int	pipe_des[2];
 	int	pid;
@@ -84,7 +83,8 @@ int	here_doc(t_shell *minishell, char *delimiter, int i)
 		return (-1);
 	if (pid == 0)
 	{
-		here_doc_read(minishell, pipe_des, delimiter, i);
+		printf("in heredoc\n");
+		here_doc_read(minishell, pipe_des, delimiter);
 		exit(0);
 	}
 	else

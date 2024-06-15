@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/14 13:09:26 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/15 13:02:02 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_shell
 	int				prev_fd;
 	pid_t			process_ids[100];
 	int				process_count;
-	int last_return ;
+	int				last_return ;
 	int				flag;
 	int				signal_received;
 	bool			end;
@@ -340,14 +340,14 @@ void				main_loop(t_shell *g_shell);
 // redirect utils
 char				*join_and_free(char *s1, const char *s2);
 char				*expand_env_variable(char *str, t_shell *minishell);
-int					read_input(char **str, char *delimiter);
+int					read_input(char **str, char *delimiter, int i, t_shell *minishell);
 int					is_delimiter(const char *str, const char *delimiter);
 void				signal_exit(int signal_number);
-void				error_eof(char *end_of_file);
+void				error_eof(char *end_of_file, int i);
 
 // redirect
 int					execute_parent(int pid, int *pipe_des);
-int					here_doc(t_shell *minishell, char *delimiter);
+int					here_doc(t_shell *minishell, char *delimiter, int i);
 int					redirect_input(t_shell *minishell, t_token *curr);
 int					redirect_output(t_shell *minishell, t_token *curr);
 

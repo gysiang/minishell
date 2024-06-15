@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/14 12:58:12 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/15 13:06:43 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 	t_token	*head;
 	t_token	*curr;
 
-	printf("execute with redirection\n");
 	if (!ft_strncmp(minishell->cmd_list->token, "echo", 4))
 		head = minishell->cmd_list;
 	else

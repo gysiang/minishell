@@ -6,28 +6,11 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:12:11 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/12 14:19:46 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/15 15:31:02 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	add_quoted_content_to_token_list(char *start, char **line,
-		t_token **token_lst)
-{
-	int		length;
-	char	*quoted_content;
-
-	length = *line - start;
-	quoted_content = (char *)malloc(length + 1);
-	if (quoted_content)
-	{
-		ft_strncpy(quoted_content, start, length);
-		quoted_content[length] = '\0';
-		token_add_back(token_lst, quoted_content, T_IDENTIFIER);
-		free(quoted_content);
-	}
-}
 
 static void	add_unclosed_quote_to_token_list(char *start, char **line,
 		t_token **token_lst)

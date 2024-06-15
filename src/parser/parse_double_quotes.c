@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_double_quotes.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 11:00:03 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/13 11:38:28 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/15 12:54:23 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,17 @@ void	parse_double_quotes(t_token *token, t_shell *minishell)
 	if (result == NULL)
 		return ;
 	result[0] = '\0';
-	while (str[minishell->i] != '\0')
-		process_character(str, &result, minishell);
-	free(token->token);
+	if (str[minishell->i] == '\0')
+	{
+		free(token->token);
+		result = "";
+	}
+	else
+	{
+		while (str[minishell->i] != '\0')
+			process_character(str, &result, minishell);
+		free(token->token);
+	}
 	token->token = ft_strdup(result);
-	token->is_single_quoted = 0;
 	free(result);
 }

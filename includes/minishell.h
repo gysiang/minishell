@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/14 13:09:26 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/15 15:31:46 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_shell
 	int				prev_fd;
 	pid_t			process_ids[100];
 	int				process_count;
-	int last_return ;
+	int				last_return ;
 	int				flag;
 	int				signal_received;
 	bool			end;
@@ -284,6 +284,8 @@ void				handle_environment_variable(char **line,
 // tokenizer (tokenizer_utils_3)
 void				handle_remaining_text(char **line, t_token **token_lst);
 void				handle_backslash(char **line, t_token **token_lst);
+void				add_quoted_content_to_token_list(char *start, char **line,
+						t_token **token_lst);
 
 // tokenizer (tokenizer_utils_4)
 int					ft_iswhitespace(char *line);
@@ -293,8 +295,6 @@ char				*ft_copy(char *dest, const char *src, size_t n);
 char				*ft_strcat(char *dest, const char *src);
 
 // tokenizer
-void				add_quoted_content_to_token_list(char *start, char **line,
-						t_token **token_lst);
 void				add_literal_quote_to_token_list(char quote_type,
 						t_token **token_lst);
 void				handle_quotes(char **line, t_token **token_lst);
@@ -340,14 +340,14 @@ void				main_loop(t_shell *g_shell);
 // redirect utils
 char				*join_and_free(char *s1, const char *s2);
 char				*expand_env_variable(char *str, t_shell *minishell);
-int					read_input(char **str, char *delimiter);
+int					read_input(char **str, char *delimiter, int i, t_shell *minishell);
 int					is_delimiter(const char *str, const char *delimiter);
 void				signal_exit(int signal_number);
-void				error_eof(char *end_of_file);
+void				error_eof(char *end_of_file, int i);
 
 // redirect
 int					execute_parent(int pid, int *pipe_des);
-int					here_doc(t_shell *minishell, char *delimiter);
+int					here_doc(t_shell *minishell, char *delimiter, int i);
 int					redirect_input(t_shell *minishell, t_token *curr);
 int					redirect_output(t_shell *minishell, t_token *curr);
 

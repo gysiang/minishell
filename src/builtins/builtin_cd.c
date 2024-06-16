@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:46:40 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 10:47:07 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/16 11:18:43 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*get_home_directory(t_shell *minishell, const char *token)
 	home_dir = NULL;
 	if (token == NULL || ft_strcmp(token, "~") == 0)
 	{
-		home_dir = get_env_value(minishell, "HOME");
+		home_dir = get_env_value(minishell, "HOME", 0);
 		if (home_dir == NULL)
 			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 	}

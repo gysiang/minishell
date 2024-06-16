@@ -51,7 +51,7 @@ void	handle_regular_env_variable(char *str, char *result, t_shell *minishell)
 	i = 0;
 	j = 0;
 	extract_variable_name(str, &var_name, &var_len);
-	expanded = get_env_value(minishell, var_name);
+	expanded = get_env_value(minishell, var_name, 1);
 	if (expanded)
 	{
 		ft_strcpy(&result[j], expanded);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/15 15:31:46 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/16 11:19:55 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_shell
 	int				prev_fd;
 	pid_t			process_ids[100];
 	int				process_count;
-	int				last_return ;
+	int last_return ;
 	int				flag;
 	int				signal_received;
 	bool			end;
@@ -236,11 +236,12 @@ void				execute_builtin_or_exec_exit(t_token *curr,
 void				execute_builtin_or_exec(t_token *curr, t_shell *minishell);
 
 // pipex (execute1)
-void				execute_command_with_redir(t_token *curr, t_shell *minishell);
-void				handle_redir_child_process(t_token *curr, t_shell *minishell, t_token *redir_token);
+void				execute_command_with_redir(t_token *curr,
+						t_shell *minishell);
+void				handle_redir_child_process(t_token *curr,
+						t_shell *minishell, t_token *redir_token);
 void				handle_redir_parent_process(t_shell *minishell, int pid);
 t_token				*get_redir_token(t_token *curr, t_shell *minishell);
-
 
 // pipex (utils)
 void				exit_handler(int exit_code);
@@ -301,7 +302,8 @@ void				handle_quotes(char **line, t_token **token_lst);
 t_token				*token_processor(char *line, t_shell *minishell);
 
 // env_manager (utils)
-char				*get_env_value(t_shell *minishell, const char *var);
+char				*get_env_value(t_shell *minishell, const char *var,
+						int return_empty);
 int					env_len(t_shell *minishell);
 int					search_env_by_var(t_shell *minishell, const char *var);
 
@@ -340,7 +342,8 @@ void				main_loop(t_shell *g_shell);
 // redirect utils
 char				*join_and_free(char *s1, const char *s2);
 char				*expand_env_variable(char *str, t_shell *minishell);
-int					read_input(char **str, char *delimiter, int i, t_shell *minishell);
+int					read_input(char **str, char *delimiter, int i,
+						t_shell *minishell);
 int					is_delimiter(const char *str, const char *delimiter);
 void				signal_exit(int signal_number);
 void				error_eof(char *end_of_file, int i);

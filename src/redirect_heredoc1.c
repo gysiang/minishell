@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_heredoc1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:16:05 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/15 13:03:37 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/16 11:19:53 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*replace_env_value(char *start, char *end, t_shell *minishell)
 	char	*env_value;
 
 	var_name = ft_substr(start, 1, end - start - 1);
-	env_value = get_env_value(minishell, var_name);
+	env_value = get_env_value(minishell, var_name, 1);
 	free(var_name);
 	if (!env_value)
 		env_value = ft_strdup("");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/15 15:36:26 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/17 01:10:07 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,31 @@ void	free_shell(t_shell *minishell)
 {
 	int	i;
 
+	if (minishell == NULL)
+		return ;
+	if (minishell->env)
+	{
+		i = 0;
+		while (minishell->env[i])
+		{
+			free(minishell->env[i]);
+			i++;
+		}
+		free(minishell->env);
+	}
+	if (minishell->cmd_list)
+		free_tokenlst(minishell->cmd_list);
+	if (minishell->input_fd != -1)
+		close(minishell->input_fd);
+	if (minishell->output_fd != -1)
+		close(minishell->output_fd);
+	free(minishell);
+}
+
+/*void	free_shell(t_shell *minishell)
+{
+	int	i;
+
 	i = 0;
 	if (minishell == NULL)
 		return ;
@@ -65,8 +90,7 @@ void	free_shell(t_shell *minishell)
 	close(minishell->output_fd);
 	free(minishell->env);
 	free(minishell);
-}
-
+}*/
 void	initialize_shell(t_shell **minishell, char **envp)
 {
 	*minishell = init_shell();

@@ -3,16 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   parse_value.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:54:35 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/15 15:35:02 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/16 11:21:39 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_env_variable(t_token *curr, t_shell *minishell)
+void handle_env_variable(t_token *curr, t_shell *minishell)
+{
+    char *result;
+    char *env_value;
+    char *token;
+    char *var_name;
+
+    printf("handle env value\n");
+    token = curr->token;
+    result = malloc(1);
+    if (!result)
+        return;
+    result[0] = '\0';
+
+    // Skip the '$' character
+    token++;
+    if (ft_strcmp(token, "") == 0) {
+        append_to_result(&result, minishell, "$");
+    } else {
+        var_name = ft_strdup(token);
+        env_value = get_env_value(minishell, var_name, 1); // Pass 1 to return an empty string if not found
+        if (!env_value)
+            env_value = ft_strdup("");
+        append_to_result(&result, minishell, env_value);
+        free(env_value);
+        free(var_name);
+    }
+    free(curr->token);
+    curr->token = result;
+}
+
+/*void	handle_env_variable(t_token *curr, t_shell *minishell)
 {
 	char	*result;
 	char	*env_value;
@@ -29,7 +60,7 @@ void	handle_env_variable(t_token *curr, t_shell *minishell)
 	// Skip the '$' character
 	token++;
 	var_name = ft_strdup(token);
-	env_value = get_env_value(minishell, var_name);
+	env_value = get_env_value(minishell, var_name, 1);
 	if (!env_value)
 		env_value = ft_strdup("");
 	append_to_result(&result, minishell, env_value);
@@ -37,7 +68,7 @@ void	handle_env_variable(t_token *curr, t_shell *minishell)
 	free(curr->token);
 	curr->token = result;
 	free(var_name);
-}
+}*/
 
 void	handle_exit_status(t_token *curr, t_shell *minishell)
 {

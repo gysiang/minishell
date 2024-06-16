@@ -6,13 +6,43 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:54:35 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/16 11:21:39 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/16 21:40:16 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void handle_env_variable(t_token *curr, t_shell *minishell)
+void	handle_env_variable(t_token *curr, t_shell *minishell)
+{
+	char	*result;
+	char	*env_value;
+	char	*token;
+	char	*var_name;
+
+	token = curr->token;
+	result = malloc(1);
+	if (!result)
+		return;
+	result[0] = '\0';
+
+	// Skip the '$' character
+	token++;
+	while (*token)
+	{
+		var_name = ft_strdup(token);
+		env_value = get_env_value(minishell, var_name, 1); // Pass 1 to return an empty string if not found
+		if (!env_value)
+			env_value = ft_strdup("");
+		append_to_result(&result, minishell, env_value);
+		free(env_value);
+		free(var_name);
+		token++;
+	}
+	free(curr->token);
+	curr->token = result;
+}
+
+/*void handle_env_variable(t_token *curr, t_shell *minishell)
 {
     char *result;
     char *env_value;
@@ -41,7 +71,7 @@ void handle_env_variable(t_token *curr, t_shell *minishell)
     }
     free(curr->token);
     curr->token = result;
-}
+}*/
 
 /*void	handle_env_variable(t_token *curr, t_shell *minishell)
 {
@@ -175,3 +205,4 @@ void	parse_value(t_token *token_lst, t_shell *minishell)
 	else
 		handle_env_variable(curr, minishell);
 }*/
+

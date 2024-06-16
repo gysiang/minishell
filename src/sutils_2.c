@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   sutils_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 15:36:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/15 15:36:53 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/16 21:56:09 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 size_t	ft_get_size(char **array)
 {
@@ -20,9 +21,23 @@ size_t	ft_get_size(char **array)
 	if (array == NULL)
 		return (0);
 	while (array[size] != NULL)
+	{
 		size++;
+	}
 	return (size);
 }
+
+/*size_t	ft_get_size(char **array)
+{
+	size_t	size;
+
+	size = 0;
+	if (array == NULL)
+		return (0);
+	while (array[size] != NULL)
+		size++;
+	return (size);
+}*/
 
 /*static size_t	ft_get_size(void *ptr)
 {

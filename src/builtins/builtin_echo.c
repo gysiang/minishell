@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/16 20:32:05 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/16 22:16:12 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	print_input_fd(t_shell *minishell)
 	}
 }
 
+// Everything resolved but echo $TEST$TEST=lol$TEST""lol breaks
 static void	handle_token_print(t_token *current, int *first)
 {
 	if (current->prev && current->prev->type == T_IDENTIFIER
@@ -39,6 +40,19 @@ static void	handle_token_print(t_token *current, int *first)
 		printf(" ");
 	*first = 0;
 }
+
+//echo $TEST$TEST=lol$TEST""lol resiolved but everything break
+/*static void	handle_token_print(t_token *current, int *first)
+{
+	if (current->prev && current->prev->type == T_IDENTIFIER
+		&& ft_strcmp(current->prev->token, "") == 0)
+		*first = 1;
+	if (!(*first) && ft_strcmp(current->token, "") != 0)
+		printf(" ");
+	if (ft_strcmp(current->token, "") != 0)
+		printf("%s", current->token);
+	*first = 0;
+}*/
 
 static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 {
@@ -68,7 +82,6 @@ static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 		printf("\n");
 }
 
-
 void	minishell_echo(t_shell *minishell)
 {
 	int		newline;
@@ -87,3 +100,4 @@ void	minishell_echo(t_shell *minishell)
 	}
 	print_tokens(current, minishell, newline);
 }
+

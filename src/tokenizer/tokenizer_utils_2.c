@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:13:57 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/16 11:23:44 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/16 22:12:29 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,34 @@ void	print_tokenlst(t_token *token_lst)
 static void	append_rest_of_line(char **line, char *result, t_token **token_lst)
 {
 	size_t	current_length;
+	size_t	new_size;
+	char	*new_result;
+
+	while (**line && !ft_iswhitespace(*line) && **line != '$' && **line != '\''
+		&& **line != '\"')
+	{
+		current_length = ft_strlen(result);
+		new_size = current_length + 2;
+		new_result = malloc(new_size);
+		if (new_result == NULL)
+		{
+			free(result);
+			return;
+		}
+		ft_memcpy(new_result, result, current_length);
+		new_result[current_length] = **line;
+		new_result[current_length + 1] = '\0';
+		free(result);
+		result = new_result;
+		(*line)++;
+	}
+	token_add_back(token_lst, result, T_IDENTIFIER);
+	free(result);
+}
+
+/*static void	append_rest_of_line(char **line, char *result, t_token **token_lst)
+{
+	size_t	current_length;
 
 	while (**line && !ft_iswhitespace(*line) && **line != '$' && **line != '\''
 		&& **line != '\"')
@@ -40,7 +68,7 @@ static void	append_rest_of_line(char **line, char *result, t_token **token_lst)
 	}
 	token_add_back(token_lst, result, T_IDENTIFIER);
 	free(result);
-}
+}*/
 
 static void	handle_special_case(char **line, t_token **token_lst,
 		t_shell *minishell)

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:16:55 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/14 12:59:26 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/16 22:11:23 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,32 @@ char	*prepend_dollar(const char *var_name)
 void	append_to_result(char **result, t_shell *minishell, const char *str)
 {
 	size_t	str_len;
+	size_t	new_size;
+	char	*new_result;
+
+	str_len = ft_strlen(str);
+	if (minishell->j + str_len + 1 > minishell->allocated_size)
+	{
+		new_size = minishell->j + str_len + 1;
+		new_result = malloc(new_size);
+		if (new_result == NULL)
+		{
+			free(*result);
+			*result = NULL;
+			return ;
+		}
+		ft_memcpy(new_result, *result, minishell->j);
+		free(*result);
+		*result = new_result;
+		minishell->allocated_size = new_size;
+	}
+	ft_strcpy(&(*result)[minishell->j], str);
+	minishell->j += str_len;
+}
+
+/*void	append_to_result(char **result, t_shell *minishell, const char *str)
+{
+	size_t	str_len;
 
 	str_len = ft_strlen(str);
 	if (minishell->j + str_len + 1 > minishell->allocated_size)
@@ -38,15 +64,14 @@ void	append_to_result(char **result, t_shell *minishell, const char *str)
 	}
 	ft_strcpy(&(*result)[minishell->j], str);
 	minishell->j += str_len;
-}
-
+}*/
 void	handle_variable_value(char **result, t_shell *minishell,
 		char *var_value)
 {
 	if (var_value)
 	{
 		append_to_result(result, minishell, var_value);
-		//minishell->flag = 1;
+		// minishell->flag = 1;
 		free(var_value);
 	}
 }
@@ -54,7 +79,6 @@ void	handle_variable_value(char **result, t_shell *minishell,
 void	handle_variable_not_found(char **result, t_shell *minishell,
 		const char *var_name)
 {
-
 	(void)var_name;
 	append_to_result(result, minishell, "");
 }

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/17 15:22:53 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/17 17:55:27 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,4 +104,6 @@ void	cleanup(t_shell *g_shell)
 {
 	free_shell(g_shell);
 	rl_clear_history();
+	close(g_shell->input_fd);
+	close(g_shell->output_fd);
 }

@@ -134,7 +134,7 @@ norm:
 leaks: $(NAME)
 	valgrind -s --leak-check=full --show-reachable=yes \
 	--show-leak-kinds=all --trace-children=yes --track-fds=yes \
-	--suppressions=readline.supp \
+	--suppressions=./readline.supp \
 	--track-origins=yes \
 	./minishell
 

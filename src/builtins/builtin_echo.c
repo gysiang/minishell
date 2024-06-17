@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/17 11:48:05 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/17 14:42:20 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@ static void	print_input_fd(t_shell *minishell)
 	ssize_t	bytes_read;
 
 	printf("\n");
-	while ((bytes_read = read(minishell->input_fd, buffer, sizeof(buffer)
-				- 1)) > 0)
+	bytes_read = read(minishell->input_fd, buffer, sizeof(buffer) - 1);
+	while (bytes_read > 0)
 	{
 		buffer[bytes_read] = '\0';
 		printf("%s", buffer);
+		bytes_read = read(minishell->input_fd, buffer, sizeof(buffer) - 1);
 	}
 }
 
@@ -41,9 +42,12 @@ static void	handle_token_print(t_token *current, int *first)
 	*first = 0;
 }
 
-//echo $TEST$TEST=lol$TEST""lol resiolved but everything break
+// echo $TEST$TEST=lol$TEST""lol resiolved but everything break
 /*static void	handle_token_print(t_token *current, int *first)
 {
+	int	first;
+	int	first;
+
 	if (current->prev && current->prev->type == T_IDENTIFIER
 		&& ft_strcmp(current->prev->token, "") == 0)
 		*first = 1;
@@ -53,7 +57,6 @@ static void	handle_token_print(t_token *current, int *first)
 		printf("%s", current->token);
 	*first = 0;
 }*/
-
 static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 {
 	int	first;
@@ -100,4 +103,3 @@ void	minishell_echo(t_shell *minishell)
 	}
 	print_tokens(current, minishell, newline);
 }
-

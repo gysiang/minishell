@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/17 11:53:15 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/17 15:22:53 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@ void	reset_process_ids(t_shell *minishell)
 	minishell->process_count = 0;
 }
 
-void	free_shell(t_shell *minishell)
+/*void	free_shell(t_shell *minishell)
 {
+	int	i;
 	int	i;
 
 	if (minishell == NULL)
@@ -76,12 +77,9 @@ void	free_shell(t_shell *minishell)
 	if (minishell->output_fd != -1)
 		close(minishell->output_fd);
 	free(minishell);
-}
-
+}*/
 /*void	free_shell(t_shell *minishell)
 {
-	int	i;
-
 	i = 0;
 	if (minishell == NULL)
 		return ;

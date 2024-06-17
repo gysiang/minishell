@@ -6,12 +6,11 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 15:36:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/16 21:56:09 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/17 14:26:36 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 size_t	ft_get_size(char **array)
 {

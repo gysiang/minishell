@@ -1,84 +1,116 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*   tokenizer_utils_3.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>               +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/19 12:16:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/23 02:08:53 by axlee            ###   ########.fr       */
+/*   Created: 2024/06/17 17:11:15 by axlee             #+#    #+#             */
+/*   Updated: 2024/06/17 17:26:59 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_remaining_text(char **line, t_token **token_lst)
+char	*allocate_and_copy_result(const char *source)
 {
-	char	*start;
-	char	*text;
+	char	*result;
 
-	while (ft_iswhitespace(*line))
-		(*line)++;
-	if (**line != '\0')
+	result = malloc(strlen(source) + 1);
+	if (result)
 	{
-		start = *line;
-		while (**line && !ft_iswhitespace(*line))
-			(*line)++;
-		text = ft_strndup(start, *line - start);
-		token_add_back(token_lst, text, T_IDENTIFIER);
-		free(text);
+		ft_strcpy(result, source);
+	}
+	return (result);
+}
+
+void	handle_expansion(char **line, char *expanded, t_token **token_lst)
+{
+	char	*result;
+
+	result = allocate_and_copy_result(expanded);
+	if (result)
+	{
+		free(expanded);
+		append_rest_of_line(line, result, token_lst);
 	}
 }
 
-static void	handle_quoted_escape(char **line, t_token **token_lst)
+void	handle_variable_expansion(char **line, char *start,
+		t_token **token_lst, t_shell *minishell)
+{
+	char	*var_name;
+	char	*expanded;
+	char	*result;
+	int		var_len;
+
+	var_len = *line - start;
+	var_name = ft_strndup(start, var_len);
+	if (var_len == 1 && var_name[0] == '$')
+	{
+		result = ft_strdup("$");
+		token_add_back(token_lst, result, T_IDENTIFIER);
+		free(result);
+		free(var_name);
+		return ;
+	}
+	expanded = get_env_value(minishell, var_name, 1);
+	free(var_name);
+	if (expanded)
+		handle_expansion(line, expanded, token_lst);
+	else
+	{
+		result = ft_strndup(start - 1, var_len + 1);
+		token_add_back(token_lst, result, T_IDENTIFIER);
+		free(result);
+	}
+}
+
+/*static void	handle_variable_expansion(char **line, char *start,
+		t_token **token_lst, t_shell *minishell)
+{
+	char	*var_name;
+	char	*expanded;
+	char	*result;
+	int		var_len;
+	char	*start;
+
+	var_len = *line - start;
+	var_name = ft_strndup(start, var_len);
+	expanded = get_env_value(minishell, var_name, 1);
+	free(var_name);
+	if (expanded)
+	{
+		result = malloc(strlen(expanded) + 1);
+		if (result)
+		{
+			ft_strcpy(result, expanded);
+			free(expanded);
+			append_rest_of_line(line, result, token_lst);
+		}
+	}
+	else
+	{
+		result = ft_strndup(start - 1, var_len + 1);
+		token_add_back(token_lst, result, T_IDENTIFIER);
+		free(result);
+	}
+}*/
+
+void	handle_environment_variable(char **line, t_token **token_lst,
+		t_shell *minishell)
 {
 	char	*start;
-	int		length;
-	char	*escaped_token;
 
 	start = *line;
 	(*line)++;
-	while (**line && !ft_iswhitespace(*line) && **line != '|' && **line != '<'
-		&& **line != '>')
+	start = *line;
+	if (**line == '?')
+	{
+		handle_special_case(line, token_lst, minishell);
+		return ;
+	}
+	while (**line && (ft_isalnum(**line) || **line == '_'))
 		(*line)++;
-	length = *line - start;
-	escaped_token = (char *)malloc(length + 1);
-	if (escaped_token)
-	{
-		ft_strncpy(escaped_token, start, length);
-		escaped_token[length] = '\0';
-		token_add_back(token_lst, escaped_token, T_IDENTIFIER);
-		free(escaped_token);
-	}
-}
-
-void	handle_backslash(char **line, t_token **token_lst)
-{
-	char	escaped[2];
-
-	(*line)++;
-	escaped[0] = **line;
-	escaped[1] = '\0';
-	if (**line == '\"' || **line == '\'')
-		handle_quoted_escape(line, token_lst);
-	else
-		token_add_back(token_lst, escaped, T_IDENTIFIER);
-	(*line)++;
-}
-
-void	add_quoted_content_to_token_list(char *start, char **line,
-		t_token **token_lst)
-{
-	int		length;
-	char	*quoted_content;
-
-	length = *line - start;
-	quoted_content = (char *)malloc(length + 1);
-	if (quoted_content)
-	{
-		ft_strncpy(quoted_content, start, length);
-		quoted_content[length] = '\0';
-		token_add_back(token_lst, quoted_content, T_IDENTIFIER);
-		free(quoted_content);
-	}
+	handle_variable_expansion(line, start, token_lst, minishell);
 }

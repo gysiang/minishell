@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:34:27 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/16 22:25:48 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/17 17:34:45 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,37 +38,42 @@ void	remove_trailing_double_quote(char **result, t_shell *minishell)
 
 /*void	remove_trailing_double_quote(char **result, t_shell *minishell)
 {
+	char	var_name[256];
+	char	*var_value;
+	int		var_len;
+
 	if ((*result)[minishell->j - 1] == '"')
 	{
 		(*result)[minishell->j - 1] = '\0';
 		minishell->j--;
 	}
 }*/
-
-void handle_env_variable_expansion(char *str, char **result, t_shell *minishell)
+void	handle_env_variable_expansion(char *str, char **result,
+		t_shell *minishell)
 {
-    char var_name[256];
-    char *var_value;
-    int var_len;
+	char	var_name[256];
+	char	*var_value;
+	int		var_len;
 
-    var_len = 0;
-    minishell->i++;
-    if (str[minishell->i] == '\0') {
-        append_to_result(result, minishell, "$");
-        return;
-    }
-    if (!isdigit(str[minishell->i]))
-    {
-        extract_var_name(str, minishell, var_name, &var_len);
-        var_value = get_env_value(minishell, var_name, 1); // Pass 1 to return an empty string if not found
-        if (var_value)
-            handle_variable_value(result, minishell, var_value);
-        else
-            handle_variable_not_found(result, minishell, var_name);
-    }
-    else
-        handle_digit_case(str, result, minishell);
-    remove_trailing_double_quote(result, minishell);
+	var_len = 0;
+	minishell->i++;
+	if (str[minishell->i] == '\0')
+	{
+		append_to_result(result, minishell, "$");
+		return ;
+	}
+	if (!isdigit(str[minishell->i]))
+	{
+		extract_var_name(str, minishell, var_name, &var_len);
+		var_value = get_env_value(minishell, var_name, 1);
+		if (var_value)
+			handle_variable_value(result, minishell, var_value);
+		else
+			handle_variable_not_found(result, minishell, var_name);
+	}
+	else
+		handle_digit_case(str, result, minishell);
+	remove_trailing_double_quote(result, minishell);
 }
 
 /*void	handle_env_variable_expansion(char *str, char **result,

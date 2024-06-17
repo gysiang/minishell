@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/17 01:10:07 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/17 11:53:15 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,10 @@ void	free_shell(t_shell *minishell)
 		free(minishell->env);
 	}
 	if (minishell->cmd_list)
+	{
 		free_tokenlst(minishell->cmd_list);
+		minishell->cmd_list = NULL;
+	}
 	if (minishell->input_fd != -1)
 		close(minishell->input_fd);
 	if (minishell->output_fd != -1)

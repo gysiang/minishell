@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 11:06:17 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 10:52:56 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/17 11:55:19 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,11 @@ void	minishell_exit(t_shell *minishell)
 		waitpid(minishell->process_ids[i], NULL, WNOHANG);
 		i++;
 	}
-	free_tokenlst(minishell->cmd_list);
+	if (minishell->cmd_list != NULL)
+	{
+		free_tokenlst(minishell->cmd_list);
+		minishell->cmd_list = NULL; // Avoid double-free
+	}
 	free_shell(minishell);
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	exit(0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 15:22:18 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/17 15:30:21 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/18 12:14:51 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,6 @@ void	free_shell(t_shell *minishell)
 	if (minishell == NULL)
 		return ;
 	free_env(minishell->env);
-	if (minishell->cmd_list)
-	{
-		free_tokenlst(minishell->cmd_list);
-		minishell->cmd_list = NULL;
-	}
 	if (minishell->input_fd != -1)
 		close(minishell->input_fd);
 	if (minishell->output_fd != -1)

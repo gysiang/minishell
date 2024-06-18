@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/16 11:19:55 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/17 17:29:22 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,12 +191,23 @@ void				handle_env_variable(t_token *curr, t_shell *minishell);
 void				handle_exit_status(t_token *curr, t_shell *minishell);
 void				handle_exit_status_with_suffix(t_token *curr,
 						t_shell *minishell, const char *suffix);
+void				process_token(t_token *curr, t_shell *minishell);
 void				parse_value(t_token *token_lst, t_shell *minishell);
+
+// parser_utils
+void				handle_character(char **command, char *input,
+						int *inside_quote, int i);
+int					handle_unclosed_quote(t_shell *minishell, char **command,
+						int *inside_quote);
+void				process_input(char **command, char *input,
+						int *inside_quote, t_shell *minishell);
+void				finalize_command(t_token *token, char *command);
+void				parse_unclosed(t_token *token, t_shell *minishell);
 
 // parser
 void				set_token_pointers(t_token *tokens);
-void				handle_token_parsing(t_token *token, t_shell *minishell,
-						char *str, int len);
+void				handle_token_parsing(t_token *token, t_shell *minishell);
+int					check_unclosed(t_token *token);
 void				parse_token(t_token *token, t_shell *minishell);
 t_token				*token_parser(t_token *token_lst, t_shell *minishell);
 
@@ -243,22 +254,25 @@ void				handle_redir_child_process(t_token *curr,
 void				handle_redir_parent_process(t_shell *minishell, int pid);
 t_token				*get_redir_token(t_token *curr, t_shell *minishell);
 
-// pipex (utils)
-void				exit_handler(int exit_code);
-void				ft_free_tab(char **tab);
-void				restore_fds(int input_fd, int output_fd);
-int					open_file(const char *file, int mode);
-char				*get_path(char *cmd, t_shell *minishell);
-
-// pipex (utils1)
+// pipex (utils_1)
 int					num_of_commands(t_shell *minishell);
 int					num_of_pipes(t_shell *minishell);
 int					num_of_arguments(t_shell *minishell);
 t_token				*move_lst_by_index(t_token *curr, int index);
 
-// pipex (utils2)
+// pipex (utils_2)
 int					check_redirection_type(t_token *curr);
 int					check_for_redirections(t_shell *minishell);
+
+// pipex (utils_3)
+void				ft_free_tab(char **tab);
+void	ft_free_two_tabs(char **tab1, char **tab2);
+char				*get_path(char *cmd, t_shell *minishell);
+
+// pipex (utils_4)
+void				exit_handler(int exit_code);
+int					open_file(const char *file, int mode);
+void				restore_fds(int input_fd, int output_fd);
 
 // pipex
 int					handle_redirection(t_shell *minishell, t_token *curr);
@@ -275,20 +289,33 @@ void				free_tokenlst(t_token *head);
 size_t				ft_wordlen(const char *s, char c);
 int					add_symbol_lst(char **line, t_token_type type,
 						t_token **token_lst);
+void	handle_special_case(char **line, t_token **token_lst,
+		t_shell *minishell);
 int					add_command_lst(char **line, t_token **token_lst);
 
 // tokenizer (tokenizer_utils_2)
-void				print_tokenlst(t_token *token_lst);
-void				handle_environment_variable(char **line,
-						t_token **token_lst, t_shell *minishell);
+void	print_tokenlst(t_token *token_lst);
+void	append_rest_of_line(char **line, char *result, t_token **token_lst);
+void	handle_special_case(char **line, t_token **token_lst,
+		t_shell *minishell);
 
 // tokenizer (tokenizer_utils_3)
+char	*allocate_and_copy_result(const char *source);
+void	handle_expansion(char **line, char *expanded, t_token **token_lst);
+void	handle_variable_expansion(char **line, char *start,
+		t_token **token_lst, t_shell *minishell);
+void	handle_environment_variable(char **line, t_token **token_lst,
+		t_shell *minishell);
+
+// tokenizer (tokenizer_utils_4)
 void				handle_remaining_text(char **line, t_token **token_lst);
 void				handle_backslash(char **line, t_token **token_lst);
 void				add_quoted_content_to_token_list(char *start, char **line,
 						t_token **token_lst);
+					void	handle_variable_expansion(char **line, char *start,
+		t_token **token_lst, t_shell *minishell);
 
-// tokenizer (tokenizer_utils_4)
+// tokenizer (tokenizer_utils_5)
 int					ft_iswhitespace(char *line);
 int					ft_isbackslash(char *line);
 int					ft_issemicolon(char *line);
@@ -328,6 +355,10 @@ int					count_tokens(t_shell *minishell);
 int					execute_builtin_1(t_token *curr, t_shell *minishell);
 int					execute_builtin_2(t_token *curr, t_shell *minishell);
 int					other_cmds(t_token *curr, t_shell *minishell);
+
+// free_shell
+void				free_env(char **env);
+void				free_shell(t_shell *minishell);
 
 // history
 void				prompt(void);

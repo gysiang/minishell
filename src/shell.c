@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/15 15:36:26 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/17 17:55:27 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,36 @@ void	reset_process_ids(t_shell *minishell)
 	minishell->process_count = 0;
 }
 
-void	free_shell(t_shell *minishell)
+/*void	free_shell(t_shell *minishell)
 {
 	int	i;
+	int	i;
 
+	if (minishell == NULL)
+		return ;
+	if (minishell->env)
+	{
+		i = 0;
+		while (minishell->env[i])
+		{
+			free(minishell->env[i]);
+			i++;
+		}
+		free(minishell->env);
+	}
+	if (minishell->cmd_list)
+	{
+		free_tokenlst(minishell->cmd_list);
+		minishell->cmd_list = NULL;
+	}
+	if (minishell->input_fd != -1)
+		close(minishell->input_fd);
+	if (minishell->output_fd != -1)
+		close(minishell->output_fd);
+	free(minishell);
+}*/
+/*void	free_shell(t_shell *minishell)
+{
 	i = 0;
 	if (minishell == NULL)
 		return ;
@@ -65,8 +91,7 @@ void	free_shell(t_shell *minishell)
 	close(minishell->output_fd);
 	free(minishell->env);
 	free(minishell);
-}
-
+}*/
 void	initialize_shell(t_shell **minishell, char **envp)
 {
 	*minishell = init_shell();
@@ -79,4 +104,6 @@ void	cleanup(t_shell *g_shell)
 {
 	free_shell(g_shell);
 	rl_clear_history();
+	close(g_shell->input_fd);
+	close(g_shell->output_fd);
 }

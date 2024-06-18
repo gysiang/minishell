@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/15 13:09:46 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/17 14:26:52 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ static int	wait_for_all_commands(t_shell *minishell)
 	num_of_process = minishell->process_count;
 	while (i < num_of_process)
 	{
-		//printf("Waiting for process: %d\n", minishell->process_ids[i]);
 		waitpid(minishell->process_ids[i], &status, 0);
 		if (WIFEXITED(status))
 			minishell->last_return = WEXITSTATUS(status);
@@ -91,7 +90,6 @@ void	pipex(t_shell *minishell)
 	curr = minishell->cmd_list;
 	while (curr != NULL)
 	{
-		//printf("current token in process: %s\n", curr->token);
 		if (curr->type == T_IDENTIFIER && (!curr->next)
 			&& (!check_builtin(curr->token)))
 			execute_single_command(curr, minishell);
@@ -109,5 +107,4 @@ void	pipex(t_shell *minishell)
 		curr = curr->next;
 	}
 	wait_for_all_commands(minishell);
-	//load_previous_fd_to_stdout(minishell);
 }

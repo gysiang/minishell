@@ -28,6 +28,7 @@ SRC_FILES := main.c \
                 env_manager.c \
 				error_msg_utils.c \
                 error_msg.c \
+				free_shell.c \
                 history.c \
                 execute_commands.c \
                 redirect_heredoc.c \
@@ -47,9 +48,10 @@ SRC_FILES := main.c \
                 builtins/builtin_exit.c \
                 builtins/builtin_pwd.c \
                 builtins/builtin_unset.c \
-                pipex/pipex_utils.c \
-				pipex/pipex_utils1.c \
-				pipex/pipex_utils2.c \
+				pipex/pipex_utils_1.c \
+				pipex/pipex_utils_2.c \
+				pipex/pipex_utils_3.c \
+				pipex/pipex_utils_4.c \
                 pipex/execute.c \
 				pipex/execute1.c \
 				pipex/execute_utils.c \
@@ -60,6 +62,7 @@ SRC_FILES := main.c \
 				tokenizer/tokenizer_utils_2.c \
 				tokenizer/tokenizer_utils_3.c \
 				tokenizer/tokenizer_utils_4.c \
+				tokenizer/tokenizer_utils_5.c \
                 tokenizer/tokenizer.c \
                 parser/join_tokens.c \
 				parser/parse_double_quotes_utils_1.c \
@@ -70,6 +73,7 @@ SRC_FILES := main.c \
 				parser/parse_double_quotes.c \
 				parser/parse_semicolon.c \
 				parser/parse_single_quotes.c \
+				parser/parser_utils.c \
 				parser/parse_value.c \
 				parser/remove_embedded_quotes_utils.c \
 				parser/remove_embedded_quotes.c \
@@ -130,7 +134,8 @@ norm:
 leaks: $(NAME)
 	valgrind -s --leak-check=full --show-reachable=yes \
 	--show-leak-kinds=all --trace-children=yes --track-fds=yes \
-	--suppressions=suppression/readline.supp \
+	--suppressions=./readline.supp \
+	--track-origins=yes \
 	./minishell
 
 .PHONY: leaks

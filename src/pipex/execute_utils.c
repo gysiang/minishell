@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/17 15:41:55 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/19 17:49:22 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	check_command(char *cmd, t_shell *minishell)
 	}
 	if (ft_strncmp(cmd, "$?", 2) == 0)
 	{
-		printf("Handling special case for last return status\n");
+		printf("Handling special case for last return (status\n");
 		printf("%d\n", minishell->last_return);
 		minishell->last_return = 0;
 		exit(1);
@@ -48,8 +48,34 @@ char	**get_command_array(char *cmd, t_shell *minishell)
 
 char	*get_command_path(char **s_cmd, t_shell *minishell)
 {
+	char		*path;
+	struct stat	statbuf;
+
+	if (s_cmd[0][0] == '/' || s_cmd[0][0] == '.')
+		path = s_cmd[0];
+	else
+		path = get_path(s_cmd[0], minishell);
+	if (!path)
+	{
+		minishell->last_return = minishell_error_msg(s_cmd[0], 42);
+		return (NULL);
+	}
+	if (stat(path, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
+	{
+		minishell->last_return = minishell_error_msg(s_cmd[0], EISDIR);
+		return (NULL);
+	}
+	return (path);
+}
+
+/*char	*get_command_path(char **s_cmd, t_shell *minishell)
+{
 	int		return_code;
 	char	*path;
+	char	**s_cmd;
+	char	*path;
+	int		return_code;
+	int		return_code;
 
 	return_code = 0;
 	if (s_cmd[0][0] == '/' || s_cmd[0][0] == '.')
@@ -59,13 +85,53 @@ char	*get_command_path(char **s_cmd, t_shell *minishell)
 	if (!path)
 	{
 		return_code = minishell_error_msg(s_cmd[0], 42);
-		minishell->last_return = return_code;
-		exit(1);
+		minishell->last_return (= return_code);
+		return (NULL);
 	}
 	return (path);
+}*/
+static int	handle_exec_error(char *cmd, int error_no, t_shell *minishell)
+{
+	int	return_code;
+
+	return_code = 0;
+	if (error_no == EISDIR)
+		return_code = minishell_error_msg(cmd, EISDIR);
+	else if (error_no == EACCES)
+		return_code = minishell_error_msg(cmd, EACCES);
+	else if (error_no == ENOENT)
+		return_code = minishell_error_msg(cmd, ENOENT);
+	else
+		return_code = minishell_error_msg(cmd, error_no);
+	minishell->last_return = return_code;
+	return (return_code);
 }
 
 void	exec_cmd(t_token *curr, t_shell *minishell)
+{
+	char	**s_cmd;
+	char	*path;
+
+	check_command(curr->token, minishell);
+	s_cmd = get_command_array(curr->token, minishell);
+	if (s_cmd[0] == NULL || ft_strlen(s_cmd[0]) == 0)
+	{
+		minishell->last_return = 0;
+		ft_free_tab(s_cmd);
+		return ;
+	}
+	path = get_command_path(s_cmd, minishell);
+	if (path == NULL)
+	{
+		ft_free_tab(s_cmd);
+		return ;
+	}
+	if (execve(path, s_cmd, minishell->env) == -1)
+		handle_exec_error(s_cmd[0], errno, minishell);
+	ft_free_tab(s_cmd);
+}
+
+/*void	exec_cmd(t_token *curr, t_shell *minishell)
 {
 	char	**s_cmd;
 	char	*path;
@@ -78,7 +144,7 @@ void	exec_cmd(t_token *curr, t_shell *minishell)
 	{
 		printf("execve failed: %s\n", strerror(errno));
 		return_code = minishell_error_msg(s_cmd[0], errno);
-		minishell->last_return = return_code;
+		minishell->last_return (= return_code);
 	}
 	ft_free_tab(s_cmd);
-}
+}*/

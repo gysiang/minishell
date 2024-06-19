@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/19 15:03:00 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/19 16:21:58 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,19 @@ static void	print_input_fd(t_shell *minishell)
 		bytes_read = read(minishell->input_fd, buffer, sizeof(buffer) - 1);
 	}
 }
+
+/*static void	handle_token_print(t_token *current, int *first)
+{
+    if (ft_strcmp(current->token, "") != 0)
+    {
+        if (!(*first))
+        {
+            printf(" ");
+        }
+        printf("%s", current->token);
+        *first = 0;
+    }
+}*/
 
 // Everything resolved but echo $TEST$TEST=lol$TEST""lol breaks
 static void	handle_token_print(t_token *current, int *first)

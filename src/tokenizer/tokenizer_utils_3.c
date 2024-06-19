@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:11:15 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/17 17:26:59 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/19 16:01:00 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,29 @@ void	handle_variable_expansion(char **line, char *start,
 	}
 }*/
 
-void	handle_environment_variable(char **line, t_token **token_lst,
+void	handle_environment_variable(char **line, t_token **token_lst, t_shell *minishell)
+{
+    char	*start;
+    char	*var_name;
+    char	*var_value;
+
+    start = *line;
+    (*line)++;
+    if (**line == '?')
+    {
+        handle_special_case(line, token_lst, minishell);
+        return ;
+    }
+    while (**line && (ft_isalnum(**line) || **line == '_'))
+        (*line)++;
+    var_name = ft_strndup(start + 1, *line - start - 1);
+    var_value = get_env_value(minishell, var_name, 1);
+    if (!var_value)
+        var_value = ft_strdup("");
+    handle_expansion(line, var_value, token_lst);
+}
+
+/*void	handle_environment_variable(char **line, t_token **token_lst,
 		t_shell *minishell)
 {
 	char	*start;
@@ -113,4 +135,4 @@ void	handle_environment_variable(char **line, t_token **token_lst,
 	while (**line && (ft_isalnum(**line) || **line == '_'))
 		(*line)++;
 	handle_variable_expansion(line, start, token_lst, minishell);
-}
+}*/

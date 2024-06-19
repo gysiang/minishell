@@ -3,42 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/09 16:36:35 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/19 13:00:58 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	check_builtin(char *s)
-{
-	if (!ft_strncmp(s, "cd", 2) || !ft_strcmp(s, "echo")
-		|| !ft_strncmp(s, "env", 3) || !ft_strcmp(s, "pwd")
-		|| !ft_strncmp(s, "export", 6) || !ft_strncmp(s, "unset", 5)
-		|| !ft_strcmp(s, "history") || !ft_strcmp(s, "history -c")
-		|| !ft_strcmp(s, "exit"))
-	{
-		return (1);
-	}
-	return (0);
-}
-
-int	count_tokens(t_shell *minishell)
-{
-	int		count;
-	t_token	*token;
-
-	count = 0;
-	token = minishell->cmd_list;
-	while (token != NULL)
-	{
-		count++;
-		token = token->next;
-	}
-	return (count);
-}
 
 int	execute_builtin_1(t_token *curr, t_shell *minishell)
 {
@@ -63,17 +35,9 @@ int	execute_builtin_1(t_token *curr, t_shell *minishell)
 
 int	execute_builtin_2(t_token *curr, t_shell *minishell)
 {
-	int	count;
-
-	count = count_tokens(minishell);
 	if (ft_strncmp(curr->token, "exit", 4) == 0)
 	{
-		if (count > 2)
-		{
-			minishell_error_msg("exit", 43);
-			return (1);
-		}
-		minishell_exit(minishell);
+		handle_exit_command(curr, minishell);
 		return (1);
 	}
 	if (ft_strncmp(curr->token, "export", 6) == 0)

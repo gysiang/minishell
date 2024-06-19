@@ -31,6 +31,7 @@ SRC_FILES := main.c \
 				free_shell.c \
                 history.c \
                 execute_commands.c \
+				execute_commands_utils.c \
                 redirect_heredoc.c \
 				redirect_heredoc1.c \
 				redirect_heredoc2.c \

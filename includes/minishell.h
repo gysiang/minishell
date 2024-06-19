@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/17 17:29:22 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/19 13:00:54 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void				minishell_echo(t_shell *minishell);
 int					minishell_env(t_shell *minishell);
 
 // builtin_exit
-void				minishell_exit(t_shell *minishell);
+void				minishell_exit(t_shell *minishell, int exit_code);
 
 // builtin_export_utils_1
 void				env_realloc(t_shell *minishell);
@@ -266,7 +266,7 @@ int					check_for_redirections(t_shell *minishell);
 
 // pipex (utils_3)
 void				ft_free_tab(char **tab);
-void	ft_free_two_tabs(char **tab1, char **tab2);
+void				ft_free_two_tabs(char **tab1, char **tab2);
 char				*get_path(char *cmd, t_shell *minishell);
 
 // pipex (utils_4)
@@ -289,31 +289,33 @@ void				free_tokenlst(t_token *head);
 size_t				ft_wordlen(const char *s, char c);
 int					add_symbol_lst(char **line, t_token_type type,
 						t_token **token_lst);
-void	handle_special_case(char **line, t_token **token_lst,
-		t_shell *minishell);
+void				handle_special_case(char **line, t_token **token_lst,
+						t_shell *minishell);
 int					add_command_lst(char **line, t_token **token_lst);
 
 // tokenizer (tokenizer_utils_2)
-void	print_tokenlst(t_token *token_lst);
-void	append_rest_of_line(char **line, char *result, t_token **token_lst);
-void	handle_special_case(char **line, t_token **token_lst,
-		t_shell *minishell);
+void				print_tokenlst(t_token *token_lst);
+void				append_rest_of_line(char **line, char *result,
+						t_token **token_lst);
+void				handle_special_case(char **line, t_token **token_lst,
+						t_shell *minishell);
 
 // tokenizer (tokenizer_utils_3)
-char	*allocate_and_copy_result(const char *source);
-void	handle_expansion(char **line, char *expanded, t_token **token_lst);
-void	handle_variable_expansion(char **line, char *start,
-		t_token **token_lst, t_shell *minishell);
-void	handle_environment_variable(char **line, t_token **token_lst,
-		t_shell *minishell);
+char				*allocate_and_copy_result(const char *source);
+void				handle_expansion(char **line, char *expanded,
+						t_token **token_lst);
+void				handle_variable_expansion(char **line, char *start,
+						t_token **token_lst, t_shell *minishell);
+void				handle_environment_variable(char **line,
+						t_token **token_lst, t_shell *minishell);
 
 // tokenizer (tokenizer_utils_4)
 void				handle_remaining_text(char **line, t_token **token_lst);
 void				handle_backslash(char **line, t_token **token_lst);
 void				add_quoted_content_to_token_list(char *start, char **line,
 						t_token **token_lst);
-					void	handle_variable_expansion(char **line, char *start,
-		t_token **token_lst, t_shell *minishell);
+void				handle_variable_expansion(char **line, char *start,
+						t_token **token_lst, t_shell *minishell);
 
 // tokenizer (tokenizer_utils_5)
 int					ft_iswhitespace(char *line);
@@ -349,9 +351,12 @@ void				free_and_exit(t_shell *minishell, int return_value);
 // error_msg
 int					minishell_error_msg(char *cmd, int error_no);
 
-// execute_commands.c
+// execute_commands_utiils.c
 int					check_builtin(char *s);
 int					count_tokens(t_shell *minishell);
+void				handle_exit_command(t_token *curr, t_shell *minishell);
+
+// execute_commands.c
 int					execute_builtin_1(t_token *curr, t_shell *minishell);
 int					execute_builtin_2(t_token *curr, t_shell *minishell);
 int					other_cmds(t_token *curr, t_shell *minishell);

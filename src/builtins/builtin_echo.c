@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/17 14:42:20 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/19 10:16:11 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	handle_token_print(t_token *current, int *first)
 	if (current->prev && current->prev->type == T_IDENTIFIER
 		&& ft_strcmp(current->prev->token, "") == 0)
 		*first = 1;
-	if (!(*first))
+	if (!(*first) && ft_strcmp(current->token, "") != 0)
 		printf(" ");
 	if (ft_strcmp(current->token, "") != 0)
 		printf("%s", current->token);
@@ -103,3 +103,5 @@ void	minishell_echo(t_shell *minishell)
 	}
 	print_tokens(current, minishell, newline);
 }
+
+

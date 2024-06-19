@@ -6,13 +6,13 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 11:06:17 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 10:52:52 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/19 18:08:33 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	minishell_env(t_shell *minishell)
+/*int	minishell_env(t_shell *minishell)
 {
 	int	i;
 
@@ -23,6 +23,7 @@ int	minishell_env(t_shell *minishell)
 		printf("No environment variables to print\n");
 		return (0);
 	}
+	sort_env(minishell);
 	env_len(minishell);
 	while (minishell->env[i])
 	{
@@ -31,5 +32,24 @@ int	minishell_env(t_shell *minishell)
 		i++;
 	}
 	printf("Exiting minishell_env function\n");
+	return (0);
+}*/
+
+int	minishell_env(t_shell *minishell)
+{
+	int i;
+
+	i = 0;
+	if (!minishell->env || !minishell->env[0])
+	{
+		printf("No environment variables to print\n");
+		return (0);
+	}
+	sort_env(minishell); // Sort environment variables
+	while (minishell->env[i])
+	{
+		printf("%s\n", minishell->env[i]);
+		i++;
+	}
 	return (0);
 }

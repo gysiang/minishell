@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:35:43 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/10 20:01:32 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/19 14:58:28 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static char	*generate_error_message(int error_no)
 		error_msg = ft_strdup("command not found");
 	else if (error_no == 43)
 		error_msg = ft_strdup("too many arguments");
+	else if (error_no == 44)
+		error_msg = ft_strdup("numeric argument required");
 	else if (error_no == EISDIR)
 		error_msg = ft_strdup("Is a directory");
 	else if (error_no == ENOENT)
@@ -37,6 +39,8 @@ static int	map_error_to_exit_code(int error_no)
 
 	if (error_no == 42 || error_no == ENOENT)
 		return_no = 127;
+	else if (error_no == 44)
+		return_no = 2;
 	else if (error_no == EISDIR || error_no == EACCES)
 		return_no = 126;
 	else

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/19 10:16:11 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/19 15:03:00 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,3 @@ void	minishell_echo(t_shell *minishell)
 	}
 	print_tokens(current, minishell, newline);
 }
-
-

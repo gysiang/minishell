@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/19 13:00:54 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/19 15:06:41 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,9 @@ char				*get_var_name(const char *content);
 int					is_valid_identifier(const char *str);
 void				create_env_entry(char *dest, const char *var_name,
 						const char *var_value);
+
+//builtin_export_utils_3
+int					save_var(t_shell *minishell, char *content);
 
 // builtin_export
 int					minishell_export(t_shell *minishell);

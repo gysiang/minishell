@@ -45,6 +45,7 @@ SRC_FILES := main.c \
                 builtins/builtin_env.c \
                 builtins/builtin_export_utils_1.c \
                 builtins/builtin_export_utils_2.c \
+				builtins/builtin_export_utils_3.c \
                 builtins/builtin_export.c \
                 builtins/builtin_exit.c \
                 builtins/builtin_pwd.c \
@@ -106,7 +107,7 @@ $(LIBFT):
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES)
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
+	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
 .PHONY: all bonus
 

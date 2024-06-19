@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 12:58:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/19 13:01:55 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/19 13:18:36 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	handle_exit_command(t_token *curr, t_shell *minishell)
 	if (count > 2)
 	{
 		minishell_error_msg("exit", 43);
+        minishell->last_return = 1;
 		return ;
 	}
 	exit_code = 0;

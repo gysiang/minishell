@@ -6,13 +6,13 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 11:06:17 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/17 15:37:30 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/19 13:09:16 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	minishell_exit(t_shell *minishell)
+void	minishell_exit(t_shell *minishell, int exit_code)
 {
 	int	i;
 
@@ -30,5 +30,5 @@ void	minishell_exit(t_shell *minishell)
 	}
 	free_shell(minishell);
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
-	exit(0);
+	exit(exit_code);
 }

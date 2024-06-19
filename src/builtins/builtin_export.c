@@ -65,12 +65,18 @@ static int	save_var(t_shell *minishell, char *content)
 	if (ft_strchr(content, '=') == NULL)
 	{
 		if (!is_valid_identifier(content))
-			return (print_invalid_identifier(content));
+		{
+			minishell->last_return = print_invalid_identifier(content);
+			return (1);
+		}
 		return (0);
 	}
 	var_name = get_var_name(content);
 	if (!var_name || !is_valid_identifier(var_name))
-		return (print_invalid_identifier(content));
+	{
+		minishell->last_return = print_invalid_identifier(content);
+		return (1);
+	}
 	var_value = ft_strchr(content, '=') + 1;
 	printf("Extracted variable value: %s\n", var_value);
 	if (*var_value == '\"' || *var_value == '\'')

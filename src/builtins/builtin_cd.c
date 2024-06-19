@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:46:40 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/16 11:18:43 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/19 13:46:29 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ static int	change_directory(t_shell *minishell, const char *dir)
 	{
 		perror("minishell: cd");
 		free(old_pwd);
+		minishell->last_return = 1;
 		return (1);
 	}
 	new_pwd = getcwd(NULL, 0);
@@ -84,6 +85,7 @@ static int	change_directory(t_shell *minishell, const char *dir)
 	{
 		free(old_pwd);
 		free(new_pwd);
+		minishell->last_return = 1;
 		return (1);
 	}
 	free(old_pwd);
@@ -100,15 +102,20 @@ int	minishell_cd(t_shell *minishell)
 	if (!cmd_token)
 	{
 		ft_putstr_fd("minishell: cd: too few arguments\n", 2);
+		minishell->last_return = 1;
 		return (1);
 	}
 	if (ft_strncmp(cmd_token->token, "cd", 2) != 0)
 	{
 		minishell_error_msg("cd", 42);
+		minishell->last_return = 1;
 		return (1);
 	}
 	dir = resolve_directory(minishell, cmd_token);
 	if (!dir)
+	{
+		minishell->last_return = 1;
 		return (1);
+	}
 	return (change_directory(minishell, dir));
 }

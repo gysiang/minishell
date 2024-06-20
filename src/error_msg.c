@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:35:43 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/20 10:49:12 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/20 14:04:53 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,23 @@ static char	*generate_error_message(int error_no)
 	return (error_msg);
 }
 
-static int map_error_to_exit_code(int error_no)
+static int	map_error_to_exit_code(int error_no)
 {
-    int return_no;
+	int	return_no;
 
-    if (error_no == 42) // Command not found
-        return_no = 127;
-    else if (error_no == 44) // Numeric argument required
-        return_no = 2;
-    else if (error_no == EISDIR) // Is a directory
-        return_no = 126;
-    else if (error_no == EACCES) // Permission denied
-        return_no = 126;
-    else if (error_no == ENOENT) // No such file or directory
-        return_no = 127;
-    else
-        return_no = 1;
-    return return_no;
+	if (error_no == 42) // Command not found
+		return_no = 127;
+	else if (error_no == 44) // Numeric argument required
+		return_no = 2;
+	else if (error_no == EISDIR) // Is a directory
+		return_no = 126;
+	else if (error_no == EACCES) // Permission denied
+		return_no = 126;
+	else if (error_no == ENOENT) // No such file or directory
+		return_no = 127;
+	else
+		return_no = 1;
+	return (return_no);
 }
 
 int	minishell_error_msg(char *cmd, int error_no)
@@ -69,7 +69,6 @@ int	minishell_error_msg(char *cmd, int error_no)
 	return_no = map_error_to_exit_code(error_no);
 	return (return_no);
 }
-
 
 /*int	minishell_error_msg(char *cmd, int error_no)
 {

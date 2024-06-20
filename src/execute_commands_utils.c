@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 12:58:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/20 10:48:28 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/20 14:18:28 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,29 +55,28 @@ static int	is_numeric(const char *str)
 	return (1);
 }
 
-void handle_exit_command(t_token *curr, t_shell *minishell)
+void	handle_exit_command(t_token *curr, t_shell *minishell)
 {
-    int count;
-    int exit_code;
+	int	count;
+	int	exit_code;
 
-    count = count_tokens(minishell);
-    if (count > 2)
-    {
-        minishell_error_msg("exit", 43);
-        minishell->last_return = 1;
-        return;
-    }
-    exit_code = 0;
-    if (curr->next && curr->next->token)
-    {
-        if (!is_numeric(curr->next->token))
-        {
-            minishell_error_msg("exit", 44);
-            minishell->last_return = 2;
-            return;
-        }
-        exit_code = ft_atoi(curr->next->token);
-    }
-    minishell_exit(minishell, exit_code);
+	count = count_tokens(minishell);
+	if (count > 2)
+	{
+		minishell_error_msg("exit", 43);
+		minishell->last_return = 1;
+		return ;
+	}
+	exit_code = 0;
+	if (curr->next && curr->next->token)
+	{
+		if (!is_numeric(curr->next->token))
+		{
+			minishell_error_msg("exit", 44);
+			minishell->last_return = 2;
+			return ;
+		}
+		exit_code = ft_atoi(curr->next->token);
+	}
+	minishell_exit(minishell, exit_code);
 }
-

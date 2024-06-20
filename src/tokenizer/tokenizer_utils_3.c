@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:11:15 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/19 16:01:00 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/20 14:21:05 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	handle_expansion(char **line, char *expanded, t_token **token_lst)
 	}
 }
 
-void	handle_variable_expansion(char **line, char *start,
-		t_token **token_lst, t_shell *minishell)
+void	handle_variable_expansion(char **line, char *start, t_token **token_lst,
+		t_shell *minishell)
 {
 	char	*var_name;
 	char	*expanded;
@@ -74,6 +74,9 @@ void	handle_variable_expansion(char **line, char *start,
 	char	*result;
 	int		var_len;
 	char	*start;
+	char	*start;
+	char	*var_name;
+	char	*var_value;
 
 	var_len = *line - start;
 	var_name = ft_strndup(start, var_len);
@@ -96,27 +99,27 @@ void	handle_variable_expansion(char **line, char *start,
 		free(result);
 	}
 }*/
-
-void	handle_environment_variable(char **line, t_token **token_lst, t_shell *minishell)
+void	handle_environment_variable(char **line, t_token **token_lst,
+		t_shell *minishell)
 {
-    char	*start;
-    char	*var_name;
-    char	*var_value;
+	char	*start;
+	char	*var_name;
+	char	*var_value;
 
-    start = *line;
-    (*line)++;
-    if (**line == '?')
-    {
-        handle_special_case(line, token_lst, minishell);
-        return ;
-    }
-    while (**line && (ft_isalnum(**line) || **line == '_'))
-        (*line)++;
-    var_name = ft_strndup(start + 1, *line - start - 1);
-    var_value = get_env_value(minishell, var_name, 1);
-    if (!var_value)
-        var_value = ft_strdup("");
-    handle_expansion(line, var_value, token_lst);
+	start = *line;
+	(*line)++;
+	if (**line == '?')
+	{
+		handle_special_case(line, token_lst, minishell);
+		return ;
+	}
+	while (**line && (ft_isalnum(**line) || **line == '_'))
+		(*line)++;
+	var_name = ft_strndup(start + 1, *line - start - 1);
+	var_value = get_env_value(minishell, var_name, 1);
+	if (!var_value)
+		var_value = ft_strdup("");
+	handle_expansion(line, var_value, token_lst);
 }
 
 /*void	handle_environment_variable(char **line, t_token **token_lst,

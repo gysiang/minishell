@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:35:43 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/19 17:27:03 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/20 10:49:12 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,3 +69,22 @@ int	minishell_error_msg(char *cmd, int error_no)
 	return_no = map_error_to_exit_code(error_no);
 	return (return_no);
 }
+
+
+/*int	minishell_error_msg(char *cmd, int error_no)
+{
+	char	*error;
+	char	*error_msg;
+	int		return_no;
+
+	error = ft_strdup("minishell: ");
+	error = ft_strjoin_free(&error, cmd);
+	error = ft_strjoin_free(&error, ": ");
+	error_msg = generate_error_message(error_no);
+	error = ft_strjoin_free(&error, error_msg);
+	free(error_msg);
+	ft_putendl_fd(error, 2);
+	free(error);
+	return_no = map_error_to_exit_code(error_no);
+	return (return_no);
+}*/

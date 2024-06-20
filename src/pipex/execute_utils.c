@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/19 18:23:47 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/20 11:06:05 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,24 +90,9 @@ char	*get_command_path(char **s_cmd, t_shell *minishell)
 	}
 	return (path);
 }*/
-static int	handle_exec_error(char *cmd, int error_no, t_shell *minishell)
-{
-	int	return_code;
 
-	return_code = 0;
-	if (error_no == EISDIR)
-		return_code = minishell_error_msg(cmd, EISDIR);
-	else if (error_no == EACCES)
-		return_code = minishell_error_msg(cmd, EACCES);
-	else if (error_no == ENOENT)
-		return_code = minishell_error_msg(cmd, ENOENT);
-	else
-		return_code = minishell_error_msg(cmd, error_no);
-	minishell->last_return = return_code;
-	return (return_code);
-}
-
-void	exec_cmd(t_token *curr, t_shell *minishell)
+// Resolves bonus but loses cat -e 
+/*void	exec_cmd(t_token *curr, t_shell *minishell)
 {
 	char	**s_cmd;
 	char	*path;
@@ -129,9 +114,10 @@ void	exec_cmd(t_token *curr, t_shell *minishell)
 	if (execve(path, s_cmd, minishell->env) == -1)
 		handle_exec_error(s_cmd[0], errno, minishell);
 	ft_free_tab(s_cmd);
-}
+}*/
 
-/*void	exec_cmd(t_token *curr, t_shell *minishell)
+// cat-e works here
+void	exec_cmd(t_token *curr, t_shell *minishell)
 {
 	char	**s_cmd;
 	char	*path;
@@ -144,7 +130,7 @@ void	exec_cmd(t_token *curr, t_shell *minishell)
 	{
 		printf("execve failed: %s\n", strerror(errno));
 		return_code = minishell_error_msg(s_cmd[0], errno);
-		minishell->last_return (= return_code);
+		minishell->last_return = return_code;
 	}
 	ft_free_tab(s_cmd);
-}*/
+}

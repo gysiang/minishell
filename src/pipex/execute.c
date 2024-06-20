@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/20 17:12:45 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/20 20:56:15 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	execute_single_command(t_token *curr, t_shell *minishell)
 		minishell->process_ids[minishell->process_count++] = pid;
 		if (minishell->prev_fd != -1)
 			close(minishell->prev_fd);
+		//waitpid(pid, NULL, 0);
 	}
 }
 

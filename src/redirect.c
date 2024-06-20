@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:48:39 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/20 10:48:09 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/20 21:08:23 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,39 @@ int	redirect_input(t_shell *minishell, t_token *curr)
 	{
 		fd = here_doc(minishell, file_name, 1);
 	}
+	if (fd == -1) // Handle error
+	{
+		minishell->last_return = 1; // Set exit code to 1
+		return (-1);
+	}
+	dup2(fd, STDIN_FILENO);
+	close(fd);
 	return (fd);
 }
 
-static int	open_output(char *file_name, int type)
+/*int	redirect_input(t_shell *minishell, t_token *curr)
 {
+	int			fd;
+	int			type;
+	char		*file_name;
 	struct stat	buffer;
 	int			fd;
+
+	fd = -1;
+	type = curr->type;
+	file_name = curr->next->token;
+	if (type == T_LESSER_THAN)
+		fd = open_input(file_name);
+	else if (type == T_LEFT_SHIFT)
+	{
+		fd = here_doc(minishell, file_name, 1);
+	}
+	return (fd);
+}*/
+static int	open_output(char *file_name, int type)
+{
+	int			fd;
+	struct stat	buffer;
 
 	fd = -1;
 	if (access(file_name, F_OK) == 0)

@@ -15,11 +15,9 @@
 static int	print_invalid_identifier(char *content)
 {
 	(void) content;
-	/** *
 	ft_putstr_fd("minishell: export: `", 2);
 	ft_putstr_fd(content, 2);
 	ft_putstr_fd("': not a valid identifier\n", 2);
-	**/
 	return (1);
 }
 

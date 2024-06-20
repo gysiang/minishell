@@ -1,1 +1,4 @@
-hello gyong-si
+hi
+hello
+world
+42

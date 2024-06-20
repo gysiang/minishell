@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:10:53 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/15 15:29:25 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/20 20:56:14 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,8 @@ void	execute_command_with_redir(t_token *curr, t_shell *minishell)
 	if (pid == 0)
 		handle_redir_child_process(curr, minishell, redir_token);
 	else
+	{
 		handle_redir_parent_process(minishell, pid);
+		//waitpid(pid, NULL, 0);
+	}
 }

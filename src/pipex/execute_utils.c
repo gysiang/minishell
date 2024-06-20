@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/20 12:22:33 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/20 12:29:03 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static void handle_execve_failure(char **s_cmd, t_shell *minishell, int error_co
 {
     int return_code;
 
-    printf("execve failed: %s\n", strerror(error_code));
+    //printf("execve failed: %s\n", strerror(error_code));
     return_code = minishell_error_msg(s_cmd[0], error_code);
     minishell->last_return = return_code;
     ft_free_tab(s_cmd);

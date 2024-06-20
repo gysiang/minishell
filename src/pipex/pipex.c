@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/19 17:52:50 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/20 12:58:45 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,12 @@ void	pipex(t_shell *minishell)
 		if (curr->type == T_IDENTIFIER && (!curr->next)
 			&& (!check_builtin(curr->token)))
 			execute_single_command(curr, minishell);
-		if ((curr->type == T_IDENTIFIER) && (curr->next)
+		else if ((curr->type == T_IDENTIFIER) && (curr->next)
 			&& (curr->next->type == T_PIPE))
 			execute_pipeline(curr, minishell);
-		if (curr->type == T_IDENTIFIER && (check_builtin(curr->token) == 1))
+		else if (curr->type == T_IDENTIFIER && (check_builtin(curr->token) == 1))
 			curr = handle_builtins(curr, minishell);
-		if ((curr->type == T_IDENTIFIER) && (!check_builtin(curr->token))
+		else if ((curr->type == T_IDENTIFIER) && (!check_builtin(curr->token))
 			&& (curr->next) && (check_redirection_type(curr->next)))
 		{
 			execute_command_with_redir(curr, minishell);
@@ -134,5 +134,6 @@ void	pipex(t_shell *minishell)
 	}
 	wait_for_all_commands(minishell);
 }*/
+
 
 

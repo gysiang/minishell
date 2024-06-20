@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/20 14:20:54 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/20 17:12:59 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ static int	wait_for_all_commands(t_shell *minishell)
 		if (WIFEXITED(status))
 			minishell->last_return = WEXITSTATUS(status);
 		else
+		{
 			minishell->last_return = 1;
+			minishell->end = TRUE;
+		}
 		i++;
 	}
 	signal(SIGINT, sigint_handler);
@@ -89,7 +92,7 @@ void	pipex(t_shell *minishell)
 	t_token	*curr;
 
 	curr = minishell->cmd_list;
-	while (curr != NULL)
+	while (curr != NULL && !minishell->end)
 	{
 		if (curr->type == T_IDENTIFIER && (!curr->next)
 			&& (!check_builtin(curr->token)))

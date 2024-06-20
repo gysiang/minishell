@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/19 10:16:11 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/20 11:11:39 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,21 @@ static void	print_input_fd(t_shell *minishell)
 	}
 }
 
+/*static void	handle_token_print(t_token *current, int *first)
+{
+    if (ft_strcmp(current->token, "") != 0)
+    {
+        if (!(*first))
+        {
+            printf(" ");
+        }
+        printf("%s", current->token);
+        *first = 0;
+    }
+}*/
+
 // Everything resolved but echo $TEST$TEST=lol$TEST""lol breaks
-static void	handle_token_print(t_token *current, int *first)
+/*static void	handle_token_print(t_token *current, int *first)
 {
 	if (current->prev && current->prev->type == T_IDENTIFIER
 		&& ft_strcmp(current->prev->token, "") == 0)
@@ -40,14 +53,11 @@ static void	handle_token_print(t_token *current, int *first)
 	else
 		printf(" ");
 	*first = 0;
-}
+}*/
 
 // echo $TEST$TEST=lol$TEST""lol resiolved but everything break
-/*static void	handle_token_print(t_token *current, int *first)
+static void	handle_token_print(t_token *current, int *first)
 {
-	int	first;
-	int	first;
-
 	if (current->prev && current->prev->type == T_IDENTIFIER
 		&& ft_strcmp(current->prev->token, "") == 0)
 		*first = 1;
@@ -56,7 +66,8 @@ static void	handle_token_print(t_token *current, int *first)
 	if (ft_strcmp(current->token, "") != 0)
 		printf("%s", current->token);
 	*first = 0;
-}*/
+}
+
 static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 {
 	int	first;
@@ -103,5 +114,3 @@ void	minishell_echo(t_shell *minishell)
 	}
 	print_tokens(current, minishell, newline);
 }
-
-

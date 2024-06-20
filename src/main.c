@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/17 17:54:49 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/19 17:01:08 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	process_command_line(t_shell *minishell, char *line)
 	token_lst = token_processor(line, minishell);
 	if (token_lst != NULL)
 		minishell->cmd_list = token_lst;
-	pipex(minishell);
+	if (line && ft_strlen(line) > 0)
+		pipex(minishell);
 	free_tokenlst(token_lst);
 	token_lst = NULL;
 	reset_minishell(minishell);

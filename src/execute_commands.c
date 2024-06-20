@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/19 13:00:58 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/19 18:10:18 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	execute_builtin_1(t_token *curr, t_shell *minishell)
 	}
 	if (ft_strncmp(curr->token, "env", 3) == 0)
 	{
-		printf("before minishell env\n");
 		minishell_env(minishell);
 		return (1);
 	}

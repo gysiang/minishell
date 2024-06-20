@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/20 11:18:46 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/20 12:22:33 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,11 @@ char	*get_command_path(char **s_cmd, t_shell *minishell)
 	char	*path;
 	int		return_code;
 	int		return_code;
+	char	**s_cmd;
+	char	*path;
+	char	**s_cmd;
+	char	*path;
+	int		return_code;
 
 	return_code = 0;
 	if (s_cmd[0][0] == '/' || s_cmd[0][0] == '.')
@@ -91,52 +96,41 @@ char	*get_command_path(char **s_cmd, t_shell *minishell)
 	return (path);
 }*/
 
-// Resolves bonus but loses cat -e 
-/*void	exec_cmd(t_token *curr, t_shell *minishell)
+static void handle_execve_failure(char **s_cmd, t_shell *minishell, int error_code)
 {
-	char	**s_cmd;
-	char	*path;
+    int return_code;
 
-	check_command(curr->token, minishell);
-	s_cmd = get_command_array(curr->token, minishell);
-	if (s_cmd[0] == NULL || ft_strlen(s_cmd[0]) == 0)
-	{
-		minishell->last_return = 0;
-		ft_free_tab(s_cmd);
-		return ;
-	}
-	path = get_command_path(s_cmd, minishell);
-	if (path == NULL)
-	{
-		ft_free_tab(s_cmd);
-		return ;
-	}
-	if (execve(path, s_cmd, minishell->env) == -1)
-		handle_exec_error(s_cmd[0], errno, minishell);
-	ft_free_tab(s_cmd);
-}*/
+    printf("execve failed: %s\n", strerror(error_code));
+    return_code = minishell_error_msg(s_cmd[0], error_code);
+    minishell->last_return = return_code;
+    ft_free_tab(s_cmd);
+    exit(return_code);
+}
 
 // cat-e works here
 void	exec_cmd(t_token *curr, t_shell *minishell)
 {
-	char	**s_cmd;
-	char	*path;
-	int		return_code;
+    char	**s_cmd;
+    char	*path;
 
-	check_command(curr->token, minishell);
-	s_cmd = get_command_array(curr->token, minishell);
-	path = get_command_path(s_cmd, minishell);
-	if (!path)
-	{
-		ft_free_tab(s_cmd);
-		minishell->last_return = 127; // Command not found
-		return;
-	}
-	if (execve(path, s_cmd, minishell->env) == -1)
-	{
-		printf("execve failed: %s\n", strerror(errno));
-		return_code = minishell_error_msg(s_cmd[0], errno);
-		minishell->last_return = return_code;
-	}
-	ft_free_tab(s_cmd);
+    check_command(curr->token, minishell);
+    s_cmd = get_command_array(curr->token, minishell);
+    if (s_cmd[0] == NULL || ft_strlen(s_cmd[0]) == 0)
+    {
+        minishell->last_return = 0;
+        ft_free_tab(s_cmd);
+        return;
+    }
+    path = get_command_path(s_cmd, minishell);
+    if (!path)
+    {
+        ft_free_tab(s_cmd);
+        return;
+    }
+    if (execve(path, s_cmd, minishell->env) == -1)
+    {
+        handle_execve_failure(s_cmd, minishell, errno);
+    }
+    ft_free_tab(s_cmd);
 }
+

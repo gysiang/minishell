@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 08:32:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/21 11:23:22 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/21 21:31:43 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,23 @@ int	num_of_pipes(t_shell *minishell)
 	while (curr_token != NULL)
 	{
 		if (curr_token->type == T_PIPE)
+			i++;
+		curr_token = curr_token->next;
+	}
+	return (i);
+}
+
+int	num_of_redirections(t_shell *minishell)
+{
+	int		i;
+	t_token	*curr_token;
+
+	i = 0;
+	curr_token = minishell->cmd_list;
+	i = 0;
+	while (curr_token != NULL)
+	{
+		if (check_redirection_type(curr_token))
 			i++;
 		curr_token = curr_token->next;
 	}

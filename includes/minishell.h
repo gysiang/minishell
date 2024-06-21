@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/20 10:48:33 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/21 12:22:41 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef enum s_token_type
 	T_SINGLEQUOTE,
 	T_DOUBLEQUOTE,
 	T_ENV_ASSIGNMENT,
+	T_FILE
 }					t_token_type;
 
 // token structure

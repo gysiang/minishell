@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/20 11:11:39 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/21 12:28:46 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 				"") == 0)
 		{
 			current = current->next;
+			continue ;
+		}
+		else if (check_redirection_type(current))
+		{
+			current = current->next->next;
 			continue ;
 		}
 		else

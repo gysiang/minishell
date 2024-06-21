@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join_tokens.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 15:31:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/09 11:39:55 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/21 12:22:47 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,12 @@ void	join_identifier_tokens(t_token *lst)
 		curr = lst;
 		while (curr != NULL && curr->next != NULL)
 		{
+			if (check_redirection_type(curr))
+			{
+				curr->next->type = T_FILE;
+				curr = curr->next->next;
+				continue ;
+			}
 			if (curr->type == T_IDENTIFIER && curr->next->type == T_IDENTIFIER
 				&& !is_command(curr->token) && !is_command(curr->next->token)
 				&& !is_part_of_command_arguments(curr->next))

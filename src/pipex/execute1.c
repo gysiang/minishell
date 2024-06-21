@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:10:53 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/21 00:51:11 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/21 11:22:53 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	handle_redir_child_process(t_token *curr, t_shell *minishell,
 	{
 		if (minishell->output_fd != -1)
 		{
-			printf("here\n");
 			dup2(minishell->output_fd, STDOUT_FILENO);
 			close(minishell->output_fd);
 		}

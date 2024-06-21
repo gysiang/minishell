@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:10:53 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/20 20:56:14 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/21 00:51:11 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	handle_redir_child_process(t_token *curr, t_shell *minishell,
 	{
 		if (minishell->output_fd != -1)
 		{
+			printf("here\n");
 			dup2(minishell->output_fd, STDOUT_FILENO);
 			close(minishell->output_fd);
 		}
@@ -55,18 +56,13 @@ void	handle_redir_parent_process(t_shell *minishell, int pid)
 void	execute_command_with_redir(t_token *curr, t_shell *minishell)
 {
 	int			pid;
-	int			pipe_fd[2];
 	t_token		*redir_token;
 
 	redir_token = get_redir_token(curr, minishell);
-	if (pipe(pipe_fd) == -1)
-		exit(EXIT_FAILURE);
+
 	pid = fork();
 	if (pid == 0)
 		handle_redir_child_process(curr, minishell, redir_token);
 	else
-	{
 		handle_redir_parent_process(minishell, pid);
-		//waitpid(pid, NULL, 0);
-	}
 }

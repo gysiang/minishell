@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:48:39 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/20 21:08:23 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/21 01:04:22 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ int	redirect_input(t_shell *minishell, t_token *curr)
 	{
 		fd = here_doc(minishell, file_name, 1);
 	}
-	if (fd == -1) // Handle error
+	if (fd == -1)
 	{
-		minishell->last_return = 1; // Set exit code to 1
+		minishell->last_return = 1;
 		return (-1);
 	}
-	dup2(fd, STDIN_FILENO);
-	close(fd);
+	if (fd > 0)
+		minishell->input_fd = fd;
 	return (fd);
 }
 

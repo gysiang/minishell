@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sutils_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 15:36:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/17 14:26:36 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/21 00:46:35 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,7 @@ void	reset_minishell(t_shell *minishell)
 	minishell->process_count = 0;
 	reset_process_ids(minishell);
 	minishell->signal_received = 0;
+	minishell->input_fd = -1;
+	minishell->output_fd = -1;
 	minishell->flag = 0;
 }

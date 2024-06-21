@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/17 17:55:27 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/21 00:45:48 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ t_shell	*init_shell(void)
 	shell->prompt = PROMPT;
 	shell->cmd_list = NULL;
 	shell->last_return = 0;
-	shell->input_fd = dup(STDIN_FILENO);
-	shell->output_fd = dup(STDOUT_FILENO);
+	shell->input_fd = -1;
+	shell->output_fd = -1;
 	shell->prev_fd = -1;
 	shell->process_count = 0;
 	shell->signal_received = 0;

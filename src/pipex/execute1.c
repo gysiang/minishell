@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:10:53 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/21 11:22:53 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/21 15:17:18 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	execute_command_with_redir(t_token *curr, t_shell *minishell)
 	t_token		*redir_token;
 
 	redir_token = get_redir_token(curr, minishell);
-
 	pid = fork();
 	if (pid == 0)
 		handle_redir_child_process(curr, minishell, redir_token);

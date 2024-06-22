@@ -1,1 +1,14 @@
-Hi
+hello world
+includes
+input.txt
+libft
+Makefile
+minishell
+minishell.pdf
+minishell_tester
+obj
+output.txt
+readline.supp
+README.md
+src
+hi

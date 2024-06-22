@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:48:39 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/21 15:18:18 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/22 12:59:23 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ int	redirect_input(t_shell *minishell, t_token *curr)
 	fd = -1;
 	type = curr->type;
 	file_name = curr->next->token;
+	if (curr->next && curr->next->next && curr->next->type == T_FILE
+		&& curr->next->next->type == T_IDENTIFIER)
+		file_name = curr->next->next->token;
 	if (type == T_LESSER_THAN)
 	{
 		fd = open_input(file_name);
@@ -55,9 +58,7 @@ int	redirect_input(t_shell *minishell, t_token *curr)
 		}
 	}
 	else if (type == T_LEFT_SHIFT)
-	{
 		fd = here_doc(minishell, file_name, 1);
-	}
 	if (fd == -1)
 	{
 		minishell->last_return = 1;
@@ -102,7 +103,7 @@ static int	open_output(char *file_name, int type)
 		}
 		if (access(file_name, W_OK) == -1)
 		{
-			minishell_error_msg(file_name, 3);
+			minishell_error_msg(file_name, EACCES);
 			return (-1);
 		}
 	}
@@ -124,7 +125,13 @@ int	redirect_output(t_shell *minishell, t_token *curr)
 	file_name = curr->next->token;
 	type = curr->type;
 	fd = open_output(file_name, type);
-	if (fd > 0)
+	if (fd == -1)
+	{
+		minishell->last_return = 1;
+		exit(1);
+		return (-1);
+	}
+	else if (fd > 0)
 		minishell->output_fd = fd;
 	return (fd);
 }

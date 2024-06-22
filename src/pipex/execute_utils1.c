@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 00:41:23 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/22 00:16:28 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/22 10:36:23 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,19 @@ void	load_previous_fd_to_stdout(t_shell *minishell)
 	}
 }
 
-void	update_curr_pointer(t_token **curr, int flag)
+t_token	*update_curr_pointer(t_token *curr, int flag, int i)
 {
+	int	num;
+
+	num = 0;
 	if (!flag)
-		*curr = (*curr)->next->next;
+		num = i + 1;
 	else
-		*curr = (*curr)->next->next->next->next;
+		num = 4;
+	while (curr != NULL && num > 0)
+	{
+		curr = curr->next;
+		num--;
+	}
+	return (curr);
 }

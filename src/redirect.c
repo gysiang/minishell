@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:48:39 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/22 12:59:23 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/22 15:44:27 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	redirect_input(t_shell *minishell, t_token *curr)
 	if (fd == -1)
 	{
 		minishell->last_return = 1;
+		exit(1);
 		return (-1);
 	}
 	if (fd > 0)

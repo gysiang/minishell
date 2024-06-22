@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/22 12:48:09 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/22 15:39:53 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ int	handle_redirection(t_shell *minishell, t_token *curr)
 			close(minishell->output_fd);
 			return (1);
 		}
-		//else
-		//	return (-1);
 	}
 	return (-1);
 }

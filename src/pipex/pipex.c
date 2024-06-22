@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/21 01:04:27 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/22 01:40:39 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	pipex(t_shell *minishell)
 		else if ((curr->type == T_IDENTIFIER) && (!check_builtin(curr->token))
 			&& (curr->next) && (check_redirection_type(curr->next)))
 		{
-			execute_command_with_redir(curr, minishell);
+			execute_with_redir(curr, minishell);
 			update_curr_pointer(&curr, minishell->flag);
 		}
 		curr = curr->next;

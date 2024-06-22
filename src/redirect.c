@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:48:39 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/21 01:04:22 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/21 15:18:18 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,14 @@ int	redirect_input(t_shell *minishell, t_token *curr)
 	type = curr->type;
 	file_name = curr->next->token;
 	if (type == T_LESSER_THAN)
+	{
 		fd = open_input(file_name);
+		if (minishell->input_fd != -1)
+		{
+			dup2(minishell->input_fd, fd);
+			close(minishell->input_fd);
+		}
+	}
 	else if (type == T_LEFT_SHIFT)
 	{
 		fd = here_doc(minishell, file_name, 1);

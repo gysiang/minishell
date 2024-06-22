@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/20 10:48:33 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/22 00:18:30 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef enum s_token_type
 	T_SINGLEQUOTE,
 	T_DOUBLEQUOTE,
 	T_ENV_ASSIGNMENT,
+	T_FILE
 }					t_token_type;
 
 // token structure
@@ -256,11 +257,14 @@ void				handle_redir_child_process(t_token *curr,
 						t_shell *minishell, t_token *redir_token);
 void				handle_redir_parent_process(t_shell *minishell, int pid);
 t_token				*get_redir_token(t_token *curr, t_shell *minishell);
+void 				execute_with_redir(t_token *curr, t_shell *minishell);
+void				execute_redir_with_pipe(t_token *curr, t_shell *minishell);
 
 // pipex (utils_1)
 int					num_of_commands(t_shell *minishell);
 int					num_of_pipes(t_shell *minishell);
 int					num_of_arguments(t_shell *minishell);
+int					num_of_redirections(t_shell *minishell);
 t_token				*move_lst_by_index(t_token *curr, int index);
 
 // pipex (utils_2)

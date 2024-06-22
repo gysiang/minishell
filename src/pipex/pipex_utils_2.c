@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_utils2.c                                     :+:      :+:    :+:   */
+/*   pipex_utils_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 09:26:05 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/03 13:11:09 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/22 10:53:21 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,22 @@ int	check_for_redirections(t_shell *minishell)
 		i++;
 	}
 	return (0);
+}
+
+int	num_of_args(t_shell *minishell)
+{
+	int		i;
+	t_token	*curr;
+
+	i = -1;
+	curr = minishell->cmd_list;
+	while (curr)
+	{
+		if (curr->type == T_IDENTIFIER)
+		{
+			i++;
+		}
+		curr = curr->next;
+	}
+	return (i);
 }

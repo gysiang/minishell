@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:10:53 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/22 01:42:38 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/22 13:00:02 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	handle_redir_child_process(t_token *curr, t_shell *minishell,
 	load_previous_fd_to_stdin(minishell);
 	if (redir_token)
 		handle_redirection(minishell, redir_token);
-	if (handle_redirection(minishell, curr->next))
+	if (handle_redirection(minishell, curr->next) != -1)
 	{
 		if (minishell->output_fd != -1)
 		{
@@ -52,17 +52,23 @@ void	handle_redir_parent_process(t_shell *minishell, int pid)
 		close(minishell->prev_fd);
 }
 
-void execute_with_redir(t_token *curr, t_shell *minishell)
+t_token	*execute_with_redir(t_token *curr, t_shell *minishell)
 {
 	int	num_of_pipe;
 	int	num_of_redir;
+	int	i;
 
 	num_of_pipe = num_of_pipes(minishell);
 	num_of_redir = num_of_redirections(minishell);
+	i = num_of_args_or_file(minishell);
+	//printf("num of arg %d\n", num_of_arg);
 	if (num_of_pipe == 0 && num_of_redir <= 2)
 		execute_command_with_redir(curr, minishell);
 	else
 		execute_redir_with_pipe(curr, minishell);
+	curr = update_curr_pointer(curr, minishell->flag, i);
+	//printf("curr: %s\n", curr->token);
+	return (curr);
 }
 
 void	execute_redir_with_pipe(t_token *curr, t_shell *minishell)

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/22 16:41:41 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/22 18:29:49 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,6 @@ void	exec_cmd(t_token *curr, t_shell *minishell)
 	char	**s_cmd;
 	char	*path;
 
-	// printf("Executing command: %s\n", curr->token); // Debug statement
 	check_command(curr->token, minishell);
 	s_cmd = get_command_array(curr->token, minishell);
 	if (s_cmd[0] == NULL || ft_strlen(s_cmd[0]) == 0)

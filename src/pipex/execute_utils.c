@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/22 16:19:57 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/22 16:41:41 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	check_command(char *cmd, t_shell *minishell)
 }
 
 // This code resolves cat minishell.h | grep ");"$ and the pipes but will KO others. Putting it in here first
-char	**get_command_array(char *cmd, t_shell *minishell)
+/*char	**get_command_array(char *cmd, t_shell *minishell)
 {
 	char	**s_cmd;
 	int		arg_count;
@@ -103,24 +103,22 @@ char	**get_command_array(char *cmd, t_shell *minishell)
 	}
 	s_cmd[arg_index] = NULL;
 	return (s_cmd);
-}
+}*/
 
-/*char	**get_command_array(char *cmd, t_shell *minishell)
+char	**get_command_array(char *cmd, t_shell *minishell)
 {
-	char		**s_cmd;
-	char		*path;
-	struct stat	statbuf;
+	char	**s_cmd;
 
 	s_cmd = ft_split(cmd, ' ');
 	if (!s_cmd)
 	{
 		printf("Failed to split command string\n");
 		ft_putstr_fd("Failed to split command\n", STDERR_FILENO);
-		minishell->last_return (= 1);
+		minishell->last_return = 1;
 		exit(1);
 	}
 	return (s_cmd);
-}*/
+}
 
 char	*get_command_path(char **s_cmd, t_shell *minishell)
 {

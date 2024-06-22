@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:48:39 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/22 15:44:27 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/22 18:40:22 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ static int	open_output(char *file_name, int type)
 		fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	else if (type == T_RIGHT_SHIFT)
 		fd = open(file_name, O_CREAT | O_WRONLY | O_APPEND, 0644);
+	if (fd == -1)
+		perror("open");
 	return (fd);
 }
 

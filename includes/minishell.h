@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/22 15:43:50 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/23 10:13:03 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,9 +254,9 @@ void				execute_builtin_or_exec(t_token *curr, t_shell *minishell);
 void				execute_command_with_redir(t_token *curr,
 						t_shell *minishell);
 void				handle_redir_child_process(t_token *curr,
-						t_shell *minishell, t_token *redir_token);
+						t_shell *minishell);
 void				handle_redir_parent_process(t_shell *minishell, int pid);
-t_token				*get_redir_token(t_token *curr, t_shell *minishell);
+t_token				*get_redir_token(t_token *curr);
 t_token 			*execute_with_redir(t_token *curr, t_shell *minishell);
 void				execute_redir_with_pipe(t_token *curr, t_shell *minishell);
 

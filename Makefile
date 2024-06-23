@@ -50,14 +50,15 @@ SRC_FILES := main.c \
                 builtins/builtin_exit.c \
                 builtins/builtin_pwd.c \
                 builtins/builtin_unset.c \
+				pipex/execute_1.c \
+				pipex/execute_2.c \
+				pipex/execute_utils_1.c \
+				pipex/execute_utils_2.c \
+				pipex/get_command_array.c \
 				pipex/pipex_utils_1.c \
 				pipex/pipex_utils_2.c \
 				pipex/pipex_utils_3.c \
 				pipex/pipex_utils_4.c \
-                pipex/execute.c \
-				pipex/execute1.c \
-				pipex/execute_utils.c \
-				pipex/execute_utils1.c \
                 pipex/pipex.c \
                 tokenizer/create_token.c \
                 tokenizer/tokenizer_utils_1.c \

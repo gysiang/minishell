@@ -50,7 +50,6 @@ static void	create_and_set_env_entry(t_shell *minishell, char *var_name,
 	ft_strcat(new_entry, "=");
 	ft_strcat(new_entry, var_value);
 	create_env_entry(new_entry, var_name, var_value);
-	//printf("Setting environment variable: %s\n", new_entry);
 	set_env_entry(minishell, new_entry, var_index);
 	free(var_name);
 }
@@ -61,9 +60,7 @@ static int	validate_and_extract_var(char *content, char **var_name,
 	if (ft_strchr(content, '=') == NULL)
 	{
 		if (!is_valid_identifier(content))
-		{
 			return (print_invalid_identifier(content));
-		}
 		return (0);
 	}
 	*var_name = get_var_name(content);
@@ -86,14 +83,12 @@ int	save_var(t_shell *minishell, char *content)
 	int		var_index;
 	int		result;
 
-	//printf("Processing content: %s\n", content);
 	result = validate_and_extract_var(content, &var_name, &var_value);
 	if (result != -1)
 	{
 		minishell->last_return = result;
 		return (1);
 	}
-	//printf("Processed variable value: %s\n", var_value);
 	var_index = search_env(minishell, var_name);
 	if (var_index == -1)
 		var_index = env_len(minishell);

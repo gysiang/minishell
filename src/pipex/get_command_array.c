@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 13:52:34 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/23 13:52:45 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/23 14:53:04 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,3 +92,4 @@ char	**get_command_array(char *cmd, t_shell *minishell)
     s_cmd[arg_count] = NULL;
     return (s_cmd);
 }
+

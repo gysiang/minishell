@@ -6,34 +6,35 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 22:04:45 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/23 19:53:17 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/24 03:10:00 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_redirection(t_shell *minishell, t_token *curr)
+int handle_redirection(t_shell *minishell, t_token *curr)
 {
-	if (curr && (curr->type == T_LESSER_THAN || curr->type == T_LEFT_SHIFT))
-	{
-		if (redirect_input(minishell, curr) != -1)
-		{
-			dup2(minishell->input_fd, STDIN_FILENO);
-			close(minishell->input_fd);
-			return (1);
-		}
-	}
-	else if (curr && (curr->type == T_GREATER_THAN
-			|| curr->type == T_RIGHT_SHIFT))
-	{
-		if (redirect_output(minishell, curr) != -1 && !minishell->flag)
-		{
-			dup2(minishell->output_fd, STDOUT_FILENO);
-			close(minishell->output_fd);
-			return (1);
-		}
-	}
-	return (-1);
+    while (curr && check_redirection_type(curr))
+    {
+        if (curr->type == T_LESSER_THAN || curr->type == T_LEFT_SHIFT)
+        {
+            if (redirect_input(minishell, curr) == -1)
+            {
+                minishell_error_msg(curr->next->token, errno);
+                return (0);
+            }
+        }
+        else if (curr->type == T_GREATER_THAN || curr->type == T_RIGHT_SHIFT)
+        {
+            if (redirect_output(minishell, curr) == -1)
+            {
+                minishell_error_msg(curr->next->token, errno);
+                return (0);
+            }
+        }
+        curr = curr->next->next;
+    }
+    return (1);
 }
 /** *
 cat <missing >test.txt

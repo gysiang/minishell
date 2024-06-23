@@ -6,13 +6,13 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/23 19:40:22 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/24 02:47:07 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_input_fd(t_shell *minishell)
+/*static void	print_input_fd(t_shell *minishell)
 {
 	char	buffer[1024];
 	ssize_t	bytes_read;
@@ -25,15 +25,14 @@ static void	print_input_fd(t_shell *minishell)
 		printf("%s", buffer);
 		bytes_read = read(minishell->input_fd, buffer, sizeof(buffer) - 1);
 	}
-}
-
-static void	handle_identifier_token(t_token *current, int *first)
+}*/
+static void	handle_identifier_token(t_token *current, int *first, int fd)
 {
 	if (ft_strcmp(current->token, "") != 0)
 	{
 		if (!(*first))
-			printf(" ");
-		printf("%s", current->token);
+			write(fd, " ", 1);
+		write(fd, current->token, ft_strlen(current->token));
 		*first = 0;
 	}
 }
@@ -59,15 +58,18 @@ static int	handle_redirection_echo(t_token **current, t_shell *minishell)
 	return (0);
 }
 
-static void	print_tokens(t_token *current, t_shell *minishell, int newline)
+static void	print_tokens(t_token *current, t_shell *minishell, int newline,
+		int fd)
 {
-	int	first;
+	int		first;
+	char	buffer[1024];
+	ssize_t	bytes_read;
 
 	first = 1;
 	while (current != NULL)
 	{
 		if (current->type == T_IDENTIFIER)
-			handle_identifier_token(current, &first);
+			handle_identifier_token(current, &first, fd);
 		else if (check_redirection_type(current))
 		{
 			if (handle_redirection_echo(&current, minishell))
@@ -79,23 +81,26 @@ static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 	}
 	if (minishell->flag)
 	{
-		print_input_fd(minishell);
-		close(minishell->input_fd);
+		while ((bytes_read = read(fd, buffer, sizeof(buffer) - 1)) > 0)
+		{
+			buffer[bytes_read] = '\0';
+			write(STDOUT_FILENO, buffer, bytes_read);
+		}
+		close(fd);
 	}
 	if (newline)
-		printf("\n");
+		write(STDOUT_FILENO, "\n", 1);
 }
 
 void	minishell_echo(t_shell *minishell)
 {
 	t_token	*current;
 	int		newline;
+	int		fd;
 
 	newline = 1;
 	if (minishell->cmd_list == NULL)
 		return ;
-	if (minishell->signal_received)
-		exit(1);
 	current = minishell->cmd_list;
 	while (current && (current->type != T_IDENTIFIER
 			|| ft_strcmp(current->token, "") == 0))
@@ -107,5 +112,10 @@ void	minishell_echo(t_shell *minishell)
 		newline = 0;
 		current = current->next;
 	}
-	print_tokens(current, minishell, newline);
+	fd = STDOUT_FILENO;
+	if (minishell->input_fd != -1)
+	{
+		fd = minishell->input_fd;
+	}
+	print_tokens(current, minishell, newline, fd);
 }

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/22 18:29:49 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/23 11:45:20 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,14 @@ char	**get_command_array(char *cmd, t_shell *minishell)
 {
 	char	**s_cmd;
 
+	if (!cmd || *cmd == '\0')
+	{
+		minishell->last_return = 0;
+		return (NULL);
+	}
 	s_cmd = ft_split(cmd, ' ');
 	if (!s_cmd)
 	{
-		printf("Failed to split command string\n");
 		ft_putstr_fd("Failed to split command\n", STDERR_FILENO);
 		minishell->last_return = 1;
 		exit(1);
@@ -171,6 +175,7 @@ char	*get_command_path(char **s_cmd, t_shell *minishell)
 	}
 	return (path);
 }*/
+
 static void	handle_execve_failure(char **s_cmd, t_shell *minishell,
 		int error_code)
 {
@@ -190,10 +195,11 @@ void	exec_cmd(t_token *curr, t_shell *minishell)
 
 	check_command(curr->token, minishell);
 	s_cmd = get_command_array(curr->token, minishell);
-	if (s_cmd[0] == NULL || ft_strlen(s_cmd[0]) == 0)
+	if (!s_cmd || !s_cmd[0] || ft_strlen(s_cmd[0]) == 0)
 	{
 		minishell->last_return = 0;
-		ft_free_tab(s_cmd);
+		if (s_cmd)
+			ft_free_tab(s_cmd);
 		return ;
 	}
 	path = get_command_path(s_cmd, minishell);
@@ -203,9 +209,6 @@ void	exec_cmd(t_token *curr, t_shell *minishell)
 		return ;
 	}
 	if (execve(path, s_cmd, minishell->env) == -1)
-	{
-		// perror("execve failed"); // Debug statement
 		handle_execve_failure(s_cmd, minishell, errno);
-	}
 	ft_free_tab(s_cmd);
 }

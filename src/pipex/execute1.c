@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:10:53 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/23 10:23:19 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/23 11:27:57 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,13 +112,16 @@ void	execute_redir_with_pipe(t_token *curr, t_shell *minishell)
 	{
 		signal(SIGINT, SIG_DFL);
 		load_previous_fd_to_stdin(minishell);
-		if (handle_redirection(minishell, curr->next) != -1)
+		if (handle_redirection(minishell, curr->next) == -1)
 		{
-			dup2(pipe_fd[1], STDOUT_FILENO);
-			close(pipe_fd[1]);
 			close(pipe_fd[0]);
-			exec_cmd(curr, minishell);
+			close(pipe_fd[1]);
+			exit(1);
 		}
+		dup2(pipe_fd[1], STDOUT_FILENO);
+		close(pipe_fd[1]);
+		close(pipe_fd[0]);
+		exec_cmd(curr, minishell);
 	}
 	else
 	{

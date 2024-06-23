@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/22 12:48:09 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/23 10:21:27 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,12 @@ int	handle_redirection(t_shell *minishell, t_token *curr)
 	else if (curr && (curr->type == T_GREATER_THAN
 			|| curr->type == T_RIGHT_SHIFT))
 	{
-		if (redirect_output(minishell, curr) != -1 && !minishell->flag)
+		if (redirect_output(minishell, curr) != -1)
 		{
 			dup2(minishell->output_fd, STDOUT_FILENO);
 			close(minishell->output_fd);
 			return (1);
 		}
-		//else
-		//	return (-1);
 	}
 	return (-1);
 }
@@ -104,10 +102,9 @@ void	pipex(t_shell *minishell)
 			curr = handle_builtins(curr, minishell);
 		else if ((curr->type == T_IDENTIFIER) && (!check_builtin(curr->token))
 			&& (curr->next) && (check_redirection_type(curr->next)))
-		{
 			curr = execute_with_redir(curr, minishell);
-		}
-		curr = curr->next;
+		if (curr != NULL)
+			curr = curr->next;
 	}
 	wait_for_all_commands(minishell);
 }

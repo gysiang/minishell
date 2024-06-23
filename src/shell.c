@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/22 15:43:39 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/23 15:45:07 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_shell	*init_shell(void)
 	shell->signal_received = 0;
 	shell->end = false;
 	shell->flag = 0;
+	shell->redir_no = 0;
 	ft_memset(shell->process_ids, 0, sizeof(shell->process_ids));
 	return (shell);
 }

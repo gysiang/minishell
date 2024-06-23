@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/23 10:21:27 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/23 15:44:52 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,32 @@
 
 int	handle_redirection(t_shell *minishell, t_token *curr)
 {
+	if (curr && (curr->type == T_LESSER_THAN || curr->type == T_LEFT_SHIFT))
+	{
+		if (redirect_input(minishell, curr) == -1)
+			return (-1);
+		dup2(minishell->input_fd, STDIN_FILENO);
+		close(minishell->input_fd);
+		return (1);
+	}
+	else if (curr && (curr->type == T_GREATER_THAN
+			|| curr->type == T_RIGHT_SHIFT))
+	{
+		if (redirect_output(minishell, curr) == -1)
+			return (-1);
+		dup2(minishell->output_fd, STDOUT_FILENO);
+		close(minishell->output_fd);
+		return (1);
+	}
+	return (-1);
+}
+
+/*int	handle_redirection(t_shell *minishell, t_token *curr)
+{
+	int	status;
+	int	i;
+	int	num_of_process;
+
 	if (curr && (curr->type == T_LESSER_THAN || curr->type == T_LEFT_SHIFT))
 	{
 		if (redirect_input(minishell, curr) != -1)
@@ -34,13 +60,12 @@ int	handle_redirection(t_shell *minishell, t_token *curr)
 		}
 	}
 	return (-1);
-}
-
+}*/
 static int	wait_for_all_commands(t_shell *minishell)
 {
-	int	status;
 	int	i;
 	int	num_of_process;
+	int	status;
 
 	i = 0;
 	num_of_process = minishell->process_count;

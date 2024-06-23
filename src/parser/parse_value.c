@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:54:35 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/17 14:29:34 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/23 16:02:51 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	handle_env_variable(t_token *curr, t_shell *minishell)
 	char	*var_name;
 	char	*exit_status_str;
 	int		exit_status;
+	char	*exit_status_str;
+	char	*exit_status_str;
 
 	printf("handle env value\n");
 	token = curr->token;
@@ -99,10 +101,8 @@ void	handle_env_variable(t_token *curr, t_shell *minishell)
 void	handle_exit_status(t_token *curr, t_shell *minishell)
 {
 	char	*exit_status_str;
-	int		exit_status;
 
-	exit_status = minishell->last_return ;
-	exit_status_str = ft_itoa(exit_status);
+	exit_status_str = ft_itoa(minishell->last_return);
 	free(curr->token);
 	curr->token = exit_status_str;
 }
@@ -111,15 +111,13 @@ void	handle_exit_status_with_suffix(t_token *curr, t_shell *minishell,
 		const char *suffix)
 {
 	char	*exit_status_str;
-	char	*new_token;
-	int		exit_status;
+	char	*result;
 
-	exit_status = minishell->last_return ;
-	exit_status_str = ft_itoa(exit_status);
-	new_token = ft_strjoin(exit_status_str, suffix);
-	free(curr->token);
-	curr->token = new_token;
+	exit_status_str = ft_itoa(minishell->last_return);
+	result = ft_strjoin(exit_status_str, suffix);
 	free(exit_status_str);
+	free(curr->token);
+	curr->token = result;
 }
 
 void	process_token(t_token *curr, t_shell *minishell)
@@ -132,17 +130,11 @@ void	process_token(t_token *curr, t_shell *minishell)
 	if (ft_strcmp(token, "$") == 0)
 		return ;
 	if (ft_strcmp(token, "$?") == 0)
-	{
 		handle_exit_status(curr, minishell);
-	}
 	else if (ft_strncmp(token, "$?", 2) == 0)
-	{
 		handle_exit_status_with_suffix(curr, minishell, token + 2);
-	}
 	else
-	{
 		handle_env_variable(curr, minishell);
-	}
 }
 
 void	parse_value(t_token *token_lst, t_shell *minishell)

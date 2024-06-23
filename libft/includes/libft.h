@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 17:22:12 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/17 15:10:02 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/23 16:07:18 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ char				*ft_strcpy(char *dst, const char *src);
 char				*ft_strncpy(char *dest, const char *src, size_t count);
 char				*ft_strchr(const char *s, int c);
 int					ft_isdigit(int c);
+int					ft_isnumeric(const char *str);
 void				*ft_calloc(size_t nmemb, size_t size);
 void				ft_strdel(char **str);
 void				ft_strswap(char **s1, char **s2);

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 15:36:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/22 15:44:52 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/23 14:39:45 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,5 @@ void	reset_minishell(t_shell *minishell)
 	minishell->input_fd = -1;
 	minishell->output_fd = -1;
 	minishell->flag = 0;
+	minishell->redir_no = 0;
 }

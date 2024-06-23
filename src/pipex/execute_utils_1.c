@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/23 15:37:15 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/23 15:57:36 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_command(char *cmd, t_shell *minishell)
 		minishell->last_return = 1;
 		exit(1);
 	}
-	if (ft_strcmp(cmd, "$") == 0 || ft_strcmp(cmd, "$?") == 0)
+	if (ft_strcmp(cmd, "$") == 0)
 	{
 		ft_putstr_fd(cmd, STDERR_FILENO);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);

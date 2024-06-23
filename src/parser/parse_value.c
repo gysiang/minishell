@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:54:35 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/23 14:07:24 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/23 16:02:51 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	handle_env_variable(t_token *curr, t_shell *minishell)
 	char	*var_name;
 	char	*exit_status_str;
 	int		exit_status;
+	char	*exit_status_str;
 	char	*exit_status_str;
 
 	printf("handle env value\n");
@@ -110,15 +111,13 @@ void	handle_exit_status_with_suffix(t_token *curr, t_shell *minishell,
 		const char *suffix)
 {
 	char	*exit_status_str;
-	char	*new_token;
-	int		exit_status;
+	char	*result;
 
-	exit_status = minishell->last_return ;
-	exit_status_str = ft_itoa(exit_status);
-	new_token = ft_strjoin(exit_status_str, suffix);
-	free(curr->token);
-	curr->token = new_token;
+	exit_status_str = ft_itoa(minishell->last_return);
+	result = ft_strjoin(exit_status_str, suffix);
 	free(exit_status_str);
+	free(curr->token);
+	curr->token = result;
 }
 
 void	process_token(t_token *curr, t_shell *minishell)

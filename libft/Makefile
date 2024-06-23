@@ -6,7 +6,7 @@
 #    By: axlee <axlee@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/13 15:19:53 by axlee             #+#    #+#              #
-#    Updated: 2024/06/13 12:30:47 by axlee            ###   ########.fr        #
+#    Updated: 2024/06/23 16:07:35 by axlee            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,6 +105,7 @@ OTHERS_FILES =	others/add_char.c \
 				others/ft_isalpha.c \
 				others/ft_isascii.c \
 				others/ft_isdigit.c \
+				others/ft_isnumeric.c \
 				others/ft_isprint.c \
 				others/ft_isspace.c
 

@@ -6,13 +6,42 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:48:39 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/22 18:40:22 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/23 11:12:34 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static int	open_input(char *file_name)
+{
+	int			fd;
+	struct stat	buffer;
+
+	if (stat(file_name, &buffer) == -1)
+	{
+		minishell_error_msg(file_name, ENOENT);
+		return (-1);
+	}
+	if (S_ISDIR(buffer.st_mode))
+	{
+		minishell_error_msg(file_name, EISDIR);
+		return (-1);
+	}
+	if (access(file_name, R_OK) == -1)
+	{
+		minishell_error_msg(file_name, EACCES);
+		return (-1);
+	}
+	fd = open(file_name, O_RDONLY);
+	if (fd == -1)
+	{
+		perror("open");
+		return (fd);
+	}
+	return (fd);
+}
+
+/*static int	open_input(char *file_name)
 {
 	int			fd;
 	struct stat	buffer;
@@ -34,7 +63,7 @@ static int	open_input(char *file_name)
 		return (fd);
 	}
 	return (fd);
-}
+}*/
 
 int	redirect_input(t_shell *minishell, t_token *curr)
 {
@@ -138,3 +167,4 @@ int	redirect_output(t_shell *minishell, t_token *curr)
 		minishell->output_fd = fd;
 	return (fd);
 }
+

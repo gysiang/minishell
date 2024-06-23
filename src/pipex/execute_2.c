@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:10:53 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/23 15:44:21 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/23 18:30:08 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,35 +24,14 @@ t_token	*get_redir_token(t_token *curr)
 	}
 	return (redir_token);
 }
-/** *
-static int	check_redir_token(t_token *curr)
-{
-	int	i;
-
-	i = 0;
-	if (curr->next && curr->next->next
-		&& check_redirection_type(curr->next->next->next))
-		i = 1;
-	return (i);
-} **/
 
 void	handle_redir_child_process(t_token *curr, t_shell *minishell)
 {
 	t_token *head;
-	//t_token *redir;
-	//t_token *redir1;
 
 	head = curr;
 	signal(SIGINT, SIG_DFL);
 	load_previous_fd_to_stdin(minishell);
-	/** *
-	handle_redirection(minishell, curr->next);
-	if (check_redir_token(curr))
-	{
-		minishell->flag = 1;
-		curr = move_lst_by_index(curr, 2);
-		handle_redirection(minishell, curr->next);
-	} **/
 	while (curr != NULL && curr->next != NULL
 			&& check_redirection_type(curr->next))
 	{
@@ -127,10 +106,8 @@ void	execute_redir_with_pipe(t_token *curr, t_shell *minishell)
 
 void	execute_command_with_redir(t_token *curr, t_shell *minishell)
 {
-	int			pid;
-	//t_token		*redir_token;
+	int	pid;
 
-	//redir_token = get_redir_token(curr, minishell);
 	//printf("execute_command_with_redir\n");
 	pid = fork();
 	if (!pid)

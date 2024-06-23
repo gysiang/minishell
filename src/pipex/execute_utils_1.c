@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/23 13:57:46 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/23 13:52:50 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,21 @@
 
 int	check_command(char *cmd, t_shell *minishell)
 {
-	if (!cmd || !minishell)
-	{
-		ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);
-		minishell->last_return = 1;
-		exit(1);
-	}
-	if (ft_strcmp(cmd, "$") == 0 || ft_strcmp(cmd, "$?") == 0)
-	{
-		minishell->last_return = minishell_error_msg(cmd, 42);
-		exit(minishell->last_return);
-	}
-	return (0);
+    if (!cmd || !minishell)
+    {
+        printf("Invalid command or shell context\n");
+        ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);
+        minishell->last_return = 1;
+        exit(1);
+    }
+    if (ft_strcmp(cmd, "$") == 0 || ft_strcmp(cmd, "$?") == 0)
+    {
+        ft_putstr_fd(cmd, STDERR_FILENO);
+        ft_putstr_fd(": command not found\n", STDERR_FILENO);
+        minishell->last_return = 127;
+        exit(127);
+    }
+    return (0);
 }
 
 /*char	**get_command_array(char *cmd, t_shell *minishell)

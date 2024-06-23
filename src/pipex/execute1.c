@@ -6,13 +6,13 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:10:53 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/22 15:45:21 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/23 10:23:19 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*get_redir_token(t_token *curr, t_shell *minishell)
+t_token	*get_redir_token(t_token *curr)
 {
 	t_token	*redir_token;
 
@@ -20,17 +20,48 @@ t_token	*get_redir_token(t_token *curr, t_shell *minishell)
 	if (curr->next && curr->next->next
 		&& check_redirection_type(curr->next->next->next))
 	{
-		minishell->flag = 1;
 		redir_token = curr->next->next->next;
 	}
 	return (redir_token);
 }
 
-void	handle_redir_child_process(t_token *curr, t_shell *minishell,
-		t_token *redir_token)
+static int	check_redir_token(t_token *curr)
 {
+	int	i;
+
+	i = 0;
+	if (curr->next && curr->next->next
+		&& check_redirection_type(curr->next->next->next))
+		i = 1;
+	return (i);
+}
+
+
+void	handle_redir_child_process(t_token *curr, t_shell *minishell)
+{
+	t_token *head;
+
+	head = curr;
 	signal(SIGINT, SIG_DFL);
 	load_previous_fd_to_stdin(minishell);
+	handle_redirection(minishell, curr->next);
+	//move token to the 2nd redir
+	if (check_redir_token(curr))
+	{
+		minishell->flag = 1;
+		curr = move_lst_by_index(curr, 2);
+		handle_redirection(minishell, curr->next);
+	}
+	//move token to the 3rd redir
+	if (check_redir_token(curr))
+	{
+		minishell->flag = 2;
+		curr = move_lst_by_index(curr, 2);
+		handle_redirection(minishell, curr->next);
+	}
+	// finally execute the token;
+	exec_cmd(head, minishell);
+	/** *
 	if (redir_token)
 		handle_redirection(minishell, redir_token);
 	if (handle_redirection(minishell, curr->next))
@@ -41,7 +72,7 @@ void	handle_redir_child_process(t_token *curr, t_shell *minishell,
 			close(minishell->output_fd);
 		}
 		exec_cmd(curr, minishell);
-	}
+	} */
 }
 
 void	handle_redir_parent_process(t_shell *minishell, int pid)
@@ -83,7 +114,6 @@ void	execute_redir_with_pipe(t_token *curr, t_shell *minishell)
 		load_previous_fd_to_stdin(minishell);
 		if (handle_redirection(minishell, curr->next) != -1)
 		{
-			//dup2(pipe_fd[0], STDIN_FILENO);
 			dup2(pipe_fd[1], STDOUT_FILENO);
 			close(pipe_fd[1]);
 			close(pipe_fd[0]);
@@ -104,12 +134,13 @@ void	execute_redir_with_pipe(t_token *curr, t_shell *minishell)
 void	execute_command_with_redir(t_token *curr, t_shell *minishell)
 {
 	int			pid;
-	t_token		*redir_token;
+	//t_token		*redir_token;
 
-	redir_token = get_redir_token(curr, minishell);
+	//redir_token = get_redir_token(curr, minishell);
+	//printf("execute_command_with_redir\n");
 	pid = fork();
 	if (!pid)
-		handle_redir_child_process(curr, minishell, redir_token);
+		handle_redir_child_process(curr, minishell);
 	else
 		handle_redir_parent_process(minishell, pid);
 }

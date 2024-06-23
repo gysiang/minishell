@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 00:41:23 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/22 10:36:23 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/23 10:09:39 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ t_token	*update_curr_pointer(t_token *curr, int flag, int i)
 	num = 0;
 	if (!flag)
 		num = i + 1;
-	else
+	else if (flag == 1)
 		num = 4;
+	else
+		num = 6;
 	while (curr != NULL && num > 0)
 	{
 		curr = curr->next;

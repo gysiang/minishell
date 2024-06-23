@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/23 11:43:50 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/23 15:44:52 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	handle_redirection(t_shell *minishell, t_token *curr)
 		close(minishell->input_fd);
 		return (1);
 	}
-	else if (curr && (curr->type == T_GREATER_THAN || curr->type == T_RIGHT_SHIFT))
+	else if (curr && (curr->type == T_GREATER_THAN
+			|| curr->type == T_RIGHT_SHIFT))
 	{
 		if (redirect_output(minishell, curr) == -1)
 			return (-1);
@@ -35,6 +36,10 @@ int	handle_redirection(t_shell *minishell, t_token *curr)
 
 /*int	handle_redirection(t_shell *minishell, t_token *curr)
 {
+	int	status;
+	int	i;
+	int	num_of_process;
+
 	if (curr && (curr->type == T_LESSER_THAN || curr->type == T_LEFT_SHIFT))
 	{
 		if (redirect_input(minishell, curr) != -1)
@@ -56,12 +61,11 @@ int	handle_redirection(t_shell *minishell, t_token *curr)
 	}
 	return (-1);
 }*/
-
 static int	wait_for_all_commands(t_shell *minishell)
 {
-	int	status;
 	int	i;
 	int	num_of_process;
+	int	status;
 
 	i = 0;
 	num_of_process = minishell->process_count;
@@ -155,4 +159,3 @@ void	pipex(t_shell *minishell)
 	}
 	wait_for_all_commands(minishell);
 }*/
-

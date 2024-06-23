@@ -1,1 +1,14 @@
-Hello World
+3rd redir
+includes
+input.txt
+libft
+Makefile
+minishell
+minishell.pdf
+minishell_tester
+no_permission.txt
+obj
+output.txt
+readline.supp
+README.md
+src

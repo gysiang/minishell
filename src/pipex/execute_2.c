@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:10:53 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/23 14:52:58 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/23 15:39:16 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@ t_token	*get_redir_token(t_token *curr)
 	}
 	return (redir_token);
 }
+
 /** *
 static int	check_redir_token(t_token *curr)
 {
-	int	i;
+	int		i;
+	t_token	*head;
 
 	i = 0;
 	if (curr->next && curr->next->next
@@ -38,10 +40,9 @@ static int	check_redir_token(t_token *curr)
 
 void	handle_redir_child_process(t_token *curr, t_shell *minishell)
 {
-	t_token *head;
-	//t_token *redir;
-	//t_token *redir1;
-
+	t_token	*head;
+	// t_token *redir;
+	// t_token *redir1;
 	head = curr;
 	signal(SIGINT, SIG_DFL);
 	load_previous_fd_to_stdin(minishell);
@@ -54,14 +55,14 @@ void	handle_redir_child_process(t_token *curr, t_shell *minishell)
 		handle_redirection(minishell, curr->next);
 	} **/
 	while (curr != NULL && curr->next != NULL
-			&& check_redirection_type(curr->next))
+		&& check_redirection_type(curr->next))
 	{
 		minishell->redir_no += 1;
 		handle_redirection(minishell, curr->next);
 		if (curr->next->next != NULL)
 			curr = curr->next->next;
 		else
-			break;
+			break ;
 	}
 	exec_cmd(head, minishell);
 }
@@ -94,7 +95,7 @@ t_token	*execute_with_redir(t_token *curr, t_shell *minishell)
 void	execute_redir_with_pipe(t_token *curr, t_shell *minishell)
 {
 	int	pid;
-	int pipe_fd[2];
+	int	pipe_fd[2];
 
 	if (pipe(pipe_fd) == -1)
 		exit(EXIT_FAILURE);
@@ -127,11 +128,10 @@ void	execute_redir_with_pipe(t_token *curr, t_shell *minishell)
 
 void	execute_command_with_redir(t_token *curr, t_shell *minishell)
 {
-	int			pid;
-	//t_token		*redir_token;
-
-	//redir_token = get_redir_token(curr, minishell);
-	//printf("execute_command_with_redir\n");
+	int	pid;
+	// t_token		*redir_token;
+	// redir_token = get_redir_token(curr, minishell);
+	// printf("execute_command_with_redir\n");
 	pid = fork();
 	if (!pid)
 		handle_redir_child_process(curr, minishell);

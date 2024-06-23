@@ -4,7 +4,7 @@ Objective: Create a simplified bash shell with specific functionalities.
 
 Functionalities: Command prompt display, command history, executables handling, quote recognition, redirections, pipes, environment variables, signal handling, and a set of built-in commands.
 
-## To see how commands are executed in bash
+#### To see how commands are executed in bash
 bash -x -c 'cat minishell.h | grep ");"$'
 
 #### Valgrind Supression Command

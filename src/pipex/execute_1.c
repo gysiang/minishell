@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/24 13:50:12 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:32:55 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,15 @@ void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 	head = token;
 	curr = head;
 	curr = move_lst_by_index(curr, index);
-	//printf("curr: %s\n", curr->token);
-	//printf("head: %s\n", head->token);
-	if (handle_redirection(minishell, curr) != -1)
+	while (curr != NULL && curr->next != NULL
+			&& check_redirection_type(curr))
 	{
-		//printf("redirect success\n");
-		execute_builtin_or_exec(head, minishell);
+		minishell->redir_no += 1;
+		handle_redirection(minishell, curr);
+		if (curr->next->next != NULL)
+			curr = curr->next->next;
+		else
+			break;
 	}
+	execute_builtin_or_exec(head, minishell);
 }

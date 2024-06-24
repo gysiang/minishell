@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/24 21:20:39 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/24 22:34:30 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,14 @@ int	handle_redirection(t_shell *minishell, t_token *curr)
 	{
 		if (redirect_input(minishell, curr) != -1)
 		{
-			dup2(minishell->input_fd, STDIN_FILENO);
-			close(minishell->input_fd);
-			return (1);
+			return (minishell->input_fd);
 		}
 	}
-	else if (curr && (curr->type == T_GREATER_THAN
-			|| curr->type == T_RIGHT_SHIFT))
+	else if (curr && (curr->type == T_GREATER_THAN || curr->type == T_RIGHT_SHIFT))
 	{
 		if (redirect_output(minishell, curr) != -1)
 		{
-			dup2(minishell->output_fd, STDOUT_FILENO);
-			close(minishell->output_fd);
-			return (1);
+			return (minishell->output_fd);
 		}
 	}
 	return (-1);
@@ -114,10 +109,14 @@ void	pipex(t_shell *minishell)
 	curr = minishell->cmd_list;
 	while (curr != NULL && !minishell->end)
 	{
-		//printf("curr token in process: %s\n", curr->token);
-		if (!ft_strcmp(curr->token, ""))
+		if (curr->type == T_LESSER_THAN || curr->type == T_LEFT_SHIFT)
 		{
-			curr = curr->next;
+			if (handle_redirection(minishell, curr) == -1)
+			{
+				minishell->end = 1;
+				break;
+			}
+			curr = curr->next->next;
 			continue;
 		}
 		else if (curr->type == T_IDENTIFIER && (!curr->next)

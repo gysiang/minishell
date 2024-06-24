@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/24 14:15:31 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/24 22:34:42 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,22 +124,27 @@ void	exec_cmd(t_token *curr, t_shell *minishell)
 	char	*path;
 
 	if (check_command(curr->token, minishell))
-		return ;
+		return;
 	s_cmd = get_command_array(curr->token, minishell);
 	if (!s_cmd || !s_cmd[0] || ft_strlen(s_cmd[0]) == 0)
 	{
 		minishell->last_return = 0;
 		if (s_cmd)
 			ft_free_tab(s_cmd);
-		return ;
+		return;
 	}
 	path = get_command_path(s_cmd, minishell);
 	if (!path)
 	{
 		ft_free_tab(s_cmd);
-		return ;
+		return;
 	}
 	if (execve(path, s_cmd, minishell->env) == -1)
+	{
 		handle_execve_failure(s_cmd, minishell, errno);
+	}
 	ft_free_tab(s_cmd);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
 }

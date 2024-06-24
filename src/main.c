@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/24 13:50:27 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/24 22:37:22 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,15 @@ void	main_loop(t_shell *g_shell)
 		if (line == NULL)
 		{
 			g_shell->end = 1;
-			break ;
+			break;
 		}
 		add_history(line);
 		process_command_line(g_shell, line);
 		free(line);
+		close(g_shell->input_fd);
+		close(g_shell->output_fd);
+		g_shell->input_fd = -1;
+		g_shell->output_fd = -1;
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/24 21:55:55 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/24 22:33:27 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,11 @@ void	execute_pipeline(t_token *curr, t_shell *minishell)
 	if (pid == 0)
 	{
 		load_previous_fd_to_stdin(minishell);
+		if (minishell->input_fd != -1)
+		{
+			dup2(minishell->input_fd, STDIN_FILENO);
+			close(minishell->input_fd);
+		}
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
 		close(pipe_fd[0]);

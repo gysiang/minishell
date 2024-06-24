@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:48:39 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/24 13:28:15 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:45:01 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,35 @@ int	redirect_input(t_shell *minishell, t_token *curr)
 	}
 	return (fd);
 }*/
+
+// Edit
 static int	open_output(char *file_name, int type)
+{
+	int			fd;
+	struct stat	buffer;
+
+	fd = -1;
+	if (access(file_name, F_OK) == 0)
+	{
+		if (stat(file_name, &buffer) == 0 && S_ISDIR(buffer.st_mode))
+		{
+			errno = EISDIR;
+			return (-1);
+		}
+		if (access(file_name, W_OK) == -1)
+		{
+			errno = EACCES;
+			return (-1);
+		}
+	}
+	if (type == T_GREATER_THAN)
+		fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	else if (type == T_RIGHT_SHIFT)
+		fd = open(file_name, O_CREAT | O_WRONLY | O_APPEND, 0644);
+	return (fd);
+}
+
+/*static int	open_output(char *file_name, int type)
 {
 	int			fd;
 	struct stat	buffer;
@@ -141,7 +169,7 @@ static int	open_output(char *file_name, int type)
 	if (fd == -1)
 		perror("open");
 	return (fd);
-}
+}*/
 
 int	redirect_output(t_shell *minishell, t_token *curr)
 {
@@ -156,7 +184,7 @@ int	redirect_output(t_shell *minishell, t_token *curr)
 	fd = open_output(file_name, type);
 	if (fd == -1)
 	{
-		minishell->last_return = 1;
+		minishell->last_return = minishell_error_msg(file_name, errno);
 		exit(1);
 		return (-1);
 	}

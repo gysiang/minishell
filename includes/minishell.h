@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/24 15:33:00 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/24 21:42:21 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,7 +263,7 @@ void				execute_redir_with_pipe(t_token *curr, t_shell *minishell);
 
 // pipex (utils_1)
 int					num_of_commands(t_shell *minishell);
-int					num_of_pipes(t_shell *minishell);
+int					pipe_found(t_token *curr);
 int					num_of_args_or_file(t_shell *minishell);
 int					num_of_redirections(t_shell *minishell);
 t_token				*move_lst_by_index(t_token *curr, int index);
@@ -411,6 +411,8 @@ void				sigint_handler(int signal);
 void				sigint_handler1(int signal);
 void				sigquit_handler(int signal);
 void				setup_signal_handler(void);
+void				sigpipe_handler(int signal);
+void				set_sigpipe(void);
 
 // sutils_1
 char				**ft_dqsplit(char const *s, char c);

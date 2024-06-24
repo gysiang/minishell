@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/23 17:59:40 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/24 13:49:26 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct s_shell
 int					minishell_cd(t_shell *minishell);
 
 // builtin_echo
-void				minishell_echo(t_shell *minishell);
+void				minishell_echo(t_token *curr, t_shell *minishell);
 
 // builtin_env
 int					minishell_env(t_shell *minishell);
@@ -271,7 +271,7 @@ t_token				*move_lst_by_index(t_token *curr, int index);
 // pipex (utils_2)
 int					check_redirection_type(t_token *curr);
 int					check_for_redirections(t_shell *minishell);
-int					num_of_args(t_shell *minishell);
+int					num_of_args(t_token *curr);
 
 // pipex (utils_3)
 void				ft_free_tab(char **tab);

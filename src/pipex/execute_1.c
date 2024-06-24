@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/24 03:09:41 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/24 13:50:12 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,14 +110,14 @@ void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 	t_token	*head;
 	t_token	*curr;
 
-	if (!ft_strncmp(minishell->cmd_list->token, "echo", 4))
-		head = minishell->cmd_list;
-	else
-		head = token;
+	head = token;
 	curr = head;
 	curr = move_lst_by_index(curr, index);
-	if (handle_redirection(minishell, curr))
+	//printf("curr: %s\n", curr->token);
+	//printf("head: %s\n", head->token);
+	if (handle_redirection(minishell, curr) != -1)
 	{
+		//printf("redirect success\n");
 		execute_builtin_or_exec(head, minishell);
 	}
 }

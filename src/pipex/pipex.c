@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/24 13:51:58 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:33:36 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,6 @@ t_token	*handle_builtins(t_token *curr, t_shell *minishell)
 	num = num_of_args(curr);
 	index = check_for_redirections(minishell);
 	num_of_pipe = num_of_pipes(minishell);
-	if (index > 0)
-		num += 2;
 	//printf("num: %d\n", num);
 	if (num_of_pipe == 0 && (index == 0))
 	{
@@ -103,6 +101,8 @@ t_token	*handle_builtins(t_token *curr, t_shell *minishell)
 			check_for_redirections(minishell));
 	else
 		execute_pipeline(curr, minishell);
+	if (minishell->redir_no > 0)
+		num += minishell->redir_no * 2;
 	curr = move_lst_by_index(curr, num);
 	return (curr);
 }

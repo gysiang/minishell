@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/19 18:10:18 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/24 11:54:33 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	execute_builtin_1(t_token *curr, t_shell *minishell)
 	}
 	if (ft_strncmp(curr->token, "echo", 4) == 0)
 	{
-		minishell_echo(minishell);
+		minishell_echo(curr, minishell);
 		return (1);
 	}
 	if (ft_strncmp(curr->token, "env", 3) == 0)

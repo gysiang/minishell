@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/24 02:57:05 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/24 13:51:58 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/** *
 int handle_redirection(t_shell *minishell, t_token *curr)
 {
     if (curr && (curr->type == T_LESSER_THAN || curr->type == T_LEFT_SHIFT))
@@ -32,14 +32,10 @@ int handle_redirection(t_shell *minishell, t_token *curr)
         return (1);
     }
     return (-1);
-}
+} **/
 
-/*int	handle_redirection(t_shell *minishell, t_token *curr)
+int	handle_redirection(t_shell *minishell, t_token *curr)
 {
-	int	status;
-	int	i;
-	int	num_of_process;
-
 	if (curr && (curr->type == T_LESSER_THAN || curr->type == T_LEFT_SHIFT))
 	{
 		if (redirect_input(minishell, curr) != -1)
@@ -60,7 +56,8 @@ int handle_redirection(t_shell *minishell, t_token *curr)
 		}
 	}
 	return (-1);
-}*/
+}
+
 static int	wait_for_all_commands(t_shell *minishell)
 {
 	int	i;
@@ -91,11 +88,12 @@ t_token	*handle_builtins(t_token *curr, t_shell *minishell)
 	int	index;
 	int	num_of_pipe;
 
-	num = num_of_args(minishell);
+	num = num_of_args(curr);
 	index = check_for_redirections(minishell);
 	num_of_pipe = num_of_pipes(minishell);
 	if (index > 0)
 		num += 2;
+	//printf("num: %d\n", num);
 	if (num_of_pipe == 0 && (index == 0))
 	{
 		execute_builtin_or_exec(curr, minishell);
@@ -116,7 +114,13 @@ void	pipex(t_shell *minishell)
 	curr = minishell->cmd_list;
 	while (curr != NULL && !minishell->end)
 	{
-		if (curr->type == T_IDENTIFIER && (!curr->next)
+		//printf("curr token in process: %s\n", curr->token);
+		if (!ft_strcmp(curr->token, ""))
+		{
+			curr = curr->next;
+			continue;
+		}
+		else if (curr->type == T_IDENTIFIER && (!curr->next)
 			&& (!check_builtin(curr->token)))
 			execute_single_command(curr, minishell);
 		else if ((curr->type == T_IDENTIFIER) && (curr->next)
@@ -128,8 +132,7 @@ void	pipex(t_shell *minishell)
 		else if ((curr->type == T_IDENTIFIER) && (!check_builtin(curr->token))
 			&& (curr->next) && (check_redirection_type(curr->next)))
 			curr = execute_with_redir(curr, minishell);
-		if (curr != NULL)
-			curr = curr->next;
+		curr = curr->next;
 	}
 	wait_for_all_commands(minishell);
 }

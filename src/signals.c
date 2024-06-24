@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:33:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/09 13:46:20 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/24 21:44:08 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,21 +50,9 @@ void	setup_signal_handler(void)
 	}
 }
 
-/*
-sh-5.2$ ./minishell
-minishell$ ./minishell
-minishell$ ^C
-minishell$
-minishell$
-minishell$ ^C
-minishell$ ^C
-minishell$
-minishell$
-^Cminishell$
-minishell$ ^C
-
-minishell$ minishell$ ^C
-
-minishell$ minishell$
-^Cminishell$ */
-// Most likely did not disable the previous signal and running signal at once
+void	sigpipe_handler(int signal)
+{
+	(void) signal;
+	ft_putstr_fd("Broken pipe", 2);
+	exit(1);
+}

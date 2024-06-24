@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/24 15:32:55 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/24 23:05:32 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void	execute_builtin_or_exec(t_token *curr, t_shell *minishell)
 {
 	int	builtin_type;
 
+	if (minishell->prev_fd != 1)
+		close(minishell->prev_fd);
 	builtin_type = check_builtin(curr->token);
 	if (builtin_type == 1)
 	{
@@ -75,8 +77,6 @@ void	execute_builtin_or_exec(t_token *curr, t_shell *minishell)
 		execute_builtin_2(curr, minishell);
 		other_cmds(curr, minishell);
 	}
-	else
-		execute_single_command(curr, minishell);
 }
 
 void	execute_pipeline(t_token *curr, t_shell *minishell)
@@ -84,6 +84,7 @@ void	execute_pipeline(t_token *curr, t_shell *minishell)
 	int	pipe_fd[2];
 	int	pid;
 
+	//printf("execute_pipeline\n");
 	if (pipe(pipe_fd) == -1)
 		exit(EXIT_FAILURE);
 	pid = fork();
@@ -110,6 +111,7 @@ void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 	t_token	*head;
 	t_token	*curr;
 
+	//printf("execute_with_redirection\n");
 	head = token;
 	curr = head;
 	curr = move_lst_by_index(curr, index);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:10:53 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/24 14:40:20 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/24 22:02:49 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,14 @@ void	handle_redir_parent_process(t_shell *minishell, int pid)
 
 t_token	*execute_with_redir(t_token *curr, t_shell *minishell)
 {
-	int	num_of_pipe;
+	int	pipe;
 	int	num_of_redir;
 	int	i;
 
-	num_of_pipe = num_of_pipes(minishell);
+	pipe = pipe_found(curr);
 	num_of_redir = num_of_redirections(minishell);
 	i = num_of_args_or_file(minishell);
-	if (num_of_pipe == 0 && num_of_redir <= 3)
+	if (pipe == 0 && num_of_redir <= 3)
 		execute_command_with_redir(curr, minishell);
 	else
 		execute_redir_with_pipe(curr, minishell);
@@ -81,6 +81,7 @@ void	execute_redir_with_pipe(t_token *curr, t_shell *minishell)
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
+		signal(SIGPIPE, SIG_IGN);
 		load_previous_fd_to_stdin(minishell);
 		if (handle_redirection(minishell, curr->next) == -1)
 		{

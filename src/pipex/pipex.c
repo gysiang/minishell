@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/24 15:33:36 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/24 23:05:44 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,9 @@ t_token	*handle_builtins(t_token *curr, t_shell *minishell)
 
 	num = num_of_args(curr);
 	index = check_for_redirections(minishell);
-	num_of_pipe = num_of_pipes(minishell);
-	//printf("num: %d\n", num);
+	num_of_pipe = pipe_found(curr);
+	//printf("curr: %s\n", curr->token);
+	//printf("num_of_pipe: %d\n", num_of_pipe);
 	if (num_of_pipe == 0 && (index == 0))
 	{
 		execute_builtin_or_exec(curr, minishell);

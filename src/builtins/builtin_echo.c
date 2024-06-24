@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/24 13:46:00 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:10:53 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,31 +37,10 @@ static void	handle_identifier_token(t_token *current, int *first)
 		*first = 0;
 	}
 }
-/** *
-static int	handle_redirection_echo(t_token **current, t_shell *minishell)
-{
-	int	fd;
-
-	if ((*current)->next != NULL && (*current)->next->type == T_FILE)
-	{
-		fd = open((*current)->next->token, O_RDONLY);
-		if (fd == -1)
-		{
-			perror("minishell");
-			minishell->last_return = 1;
-			return (0);
-		}
-		dup2(fd, STDIN_FILENO);
-		close(fd);
-		*current = (*current)->next->next;
-		return (1);
-	}
-	return (0);
-} **/
 
 static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 {
-	int		first;
+	int	first;
 
 	first = 1;
 	while (current != NULL)
@@ -90,15 +69,9 @@ void	minishell_echo(t_token *curr, t_shell *minishell)
 {
 	t_token	*current;
 	int		newline;
-	//int		fd;
 
 	newline = 1;
 	current = curr;
-	/** *
-	while (current && (current->type != T_IDENTIFIER
-			|| ft_strcmp(current->token, "") == 0))
-		current = current->next;
-	**/
 	if (current && ft_strcmp(current->token, "echo") == 0)
 		current = current->next;
 	if (current && ft_strcmp(current->token, "-n") == 0)

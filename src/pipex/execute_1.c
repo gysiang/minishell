@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/24 23:05:32 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/25 12:13:33 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,10 @@ void	execute_builtin_or_exec(t_token *curr, t_shell *minishell)
 
 void	execute_pipeline(t_token *curr, t_shell *minishell)
 {
-	int	pipe_fd[2];
-	int	pid;
+	int		pipe_fd[2];
+	int		pid;
+	t_token	*redir;
 
-	//printf("execute_pipeline\n");
 	if (pipe(pipe_fd) == -1)
 		exit(EXIT_FAILURE);
 	pid = fork();
@@ -94,6 +94,13 @@ void	execute_pipeline(t_token *curr, t_shell *minishell)
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
 		close(pipe_fd[0]);
+		redir = curr;
+		while (redir && redir->type != T_PIPE)
+		{
+			if (check_redirection_type(redir))
+				handle_redirection(minishell, redir);
+			redir = redir->next;
+		}
 		execute_builtin_or_exec_exit(curr, minishell);
 	}
 	else
@@ -111,19 +118,18 @@ void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 	t_token	*head;
 	t_token	*curr;
 
-	//printf("execute_with_redirection\n");
+	// printf("execute_with_redirection\n");
 	head = token;
 	curr = head;
 	curr = move_lst_by_index(curr, index);
-	while (curr != NULL && curr->next != NULL
-			&& check_redirection_type(curr))
+	while (curr != NULL && curr->next != NULL && check_redirection_type(curr))
 	{
 		minishell->redir_no += 1;
 		handle_redirection(minishell, curr);
 		if (curr->next->next != NULL)
 			curr = curr->next->next;
 		else
-			break;
+			break ;
 	}
 	execute_builtin_or_exec(head, minishell);
 }

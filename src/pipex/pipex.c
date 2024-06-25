@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/25 17:46:56 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/25 20:32:58 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int handle_redirection(t_shell *minishell, t_token *curr)
             dup2(minishell->output_fd, STDOUT_FILENO);
             close(minishell->output_fd);
         }
-
         if (curr->next && curr->next->next)
             curr = curr->next->next;
         else
@@ -104,8 +103,7 @@ t_token	*handle_builtins(t_token *curr, t_shell *minishell)
 		execute_builtin_or_exec(curr, minishell);
 	}
 	else if (num_of_pipe == 0 && (index > 0))
-		execute_with_redirection(curr, minishell,
-			check_for_redirections(minishell));
+		execute_with_redirection(curr, minishell, index);
 	else
 		execute_pipeline(curr, minishell);
 	//printf("redir no %d\n", minishell->redir_no);

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/25 17:46:42 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/25 20:32:50 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,17 @@ void	execute_pipeline(t_token *curr, t_shell *minishell)
 		close(pipe_fd[1]);
 	}
 }
+/** *
+	while (curr != NULL && curr->next != NULL && check_redirection_type(curr))
+	{
+		minishell->redir_no += 1;
+		handle_redirection(minishell, curr);
+		if (curr->next->next != NULL)
+			curr = curr->next->next;
+		else
+			break ;
+	}
+**/
 
 void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 {
@@ -124,18 +135,11 @@ void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 	head = token;
 	curr = head;
 	curr = move_lst_by_index(curr, index);
+	get_no_of_redir(curr, minishell);
 	pid = fork();
-	while (curr != NULL && curr->next != NULL && check_redirection_type(curr))
-	{
-		minishell->redir_no += 1;
-		handle_redirection(minishell, curr);
-		if (curr->next->next != NULL)
-			curr = curr->next->next;
-		else
-			break ;
-	}
 	if (pid == 0)
 	{
+		handle_redirection(minishell, curr);
 		execute_builtin_or_exec_exit(head, minishell);
 	}
 	else

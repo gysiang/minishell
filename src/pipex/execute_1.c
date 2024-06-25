@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/25 15:12:20 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/25 16:41:34 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,31 +24,33 @@ int	handle_numeric_command(t_token *curr, t_shell *minishell)
 	}
 	return (0);
 }
-void	execute_single_command(t_token *curr, t_shell *minishell)
+void execute_single_command(t_token *curr, t_shell *minishell)
 {
-	int	pid;
+    int pid;
 
-	if (handle_numeric_command(curr, minishell))
-		return ;
-	pid = fork();
-	if (!ft_strcmp(curr->token, "./minishell"))
-		minishell->signal_received = 1;
-	if (pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		load_previous_fd_to_stdin(minishell);
-		exec_cmd(curr, minishell);
-	}
-	else
-	{
-		if (minishell->signal_received == 1)
-			signal(SIGINT, SIG_IGN);
-		else
-			signal(SIGINT, sigint_handler1);
-		minishell->process_ids[minishell->process_count++] = pid;
-		if (minishell->prev_fd != -1)
-			close(minishell->prev_fd);
-	}
+    if (handle_numeric_command(curr, minishell))
+        return;
+    pid = fork();
+    if (!ft_strcmp(curr->token, "./minishell"))
+        minishell->signal_received = 1;
+    if (pid == 0)
+    {
+        signal(SIGINT, SIG_DFL);
+        load_previous_fd_to_stdin(minishell);
+        if (handle_redirection(minishell, curr->next) == -1)
+            exit(1);
+        exec_cmd(curr, minishell);
+    }
+    else
+    {
+        if (minishell->signal_received == 1)
+            signal(SIGINT, SIG_IGN);
+        else
+            signal(SIGINT, sigint_handler1);
+        minishell->process_ids[minishell->process_count++] = pid;
+        if (minishell->prev_fd != -1)
+            close(minishell->prev_fd);
+    }
 }
 
 void	execute_builtin_or_exec_exit(t_token *curr, t_shell *minishell)

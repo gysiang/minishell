@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/25 23:32:18 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/25 23:51:01 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,28 +66,33 @@ void	execute_builtin_or_exec_exit(t_token *curr, t_shell *minishell)
 		exec_cmd(curr, minishell);
 }
 
-void	execute_builtin_or_exec(t_token *curr, t_shell *minishell)
-{
-	pid_t	pid;
 
-	if (minishell->prev_fd != 1)
-		close(minishell->prev_fd);
-	if (ft_strncmp(curr->token, "echo", 4) == 0)
-	{
-		pid = fork();
-		if (pid == 0)
-		{
-			execute_builtin_1(curr, minishell);
-			exit(0);
-		}
-		else
-			minishell->process_ids[minishell->process_count++] = pid;
-	}
-	else
-	{
-		execute_builtin_2(curr, minishell);
-		other_cmds(curr, minishell);
-	}
+void execute_builtin_or_exec(t_token *curr, t_shell *minishell)
+{
+    pid_t pid;
+
+    if (minishell->prev_fd != 1)
+        close(minishell->prev_fd);
+    if (check_builtin(curr->token))
+    {
+        if (ft_strcmp(curr->token, "exit") == 0)
+        {
+            handle_exit_command(curr, minishell);
+            return;
+        }
+        pid = fork();
+        if (pid == 0)
+        {
+            execute_builtin_1(curr, minishell);
+            execute_builtin_2(curr, minishell);
+            other_cmds(curr, minishell);
+            exit(minishell->last_return);
+        }
+        else
+            minishell->process_ids[minishell->process_count++] = pid;
+    }
+    else
+        exec_cmd(curr, minishell);
 }
 
 void	execute_pipeline(t_token *curr, t_shell *minishell)

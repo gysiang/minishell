@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/25 16:41:34 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/25 17:46:42 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,17 +125,17 @@ void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 	curr = head;
 	curr = move_lst_by_index(curr, index);
 	pid = fork();
+	while (curr != NULL && curr->next != NULL && check_redirection_type(curr))
+	{
+		minishell->redir_no += 1;
+		handle_redirection(minishell, curr);
+		if (curr->next->next != NULL)
+			curr = curr->next->next;
+		else
+			break ;
+	}
 	if (pid == 0)
 	{
-		while (curr != NULL && curr->next != NULL && check_redirection_type(curr))
-		{
-			minishell->redir_no += 1;
-			handle_redirection(minishell, curr);
-			if (curr->next->next != NULL)
-				curr = curr->next->next;
-			else
-				break ;
-		}
 		execute_builtin_or_exec_exit(head, minishell);
 	}
 	else

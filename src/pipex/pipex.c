@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/25 16:40:49 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/25 17:46:56 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,6 @@ t_token	*handle_builtins(t_token *curr, t_shell *minishell)
 	num = num_of_args(curr);
 	index = check_for_redirections(minishell);
 	num_of_pipe = pipe_found(curr);
-	//printf("curr: %s\n", curr->token);
-	//printf("num_of_pipe: %d\n", num_of_pipe);
 	if (num_of_pipe == 0 && (index == 0))
 	{
 		execute_builtin_or_exec(curr, minishell);
@@ -110,6 +108,7 @@ t_token	*handle_builtins(t_token *curr, t_shell *minishell)
 			check_for_redirections(minishell));
 	else
 		execute_pipeline(curr, minishell);
+	//printf("redir no %d\n", minishell->redir_no);
 	if (minishell->redir_no > 0)
 		num += minishell->redir_no * 2;
 	curr = move_lst_by_index(curr, num);

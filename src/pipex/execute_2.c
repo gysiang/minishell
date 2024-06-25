@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:10:53 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/25 17:04:19 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/25 23:15:10 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,8 @@ void execute_redir_with_pipe(t_token *curr, t_shell *minishell)
     int pid;
     int pipe_fd[2];
 
-    if (pipe(pipe_fd) == -1)
-    {
-        perror("Pipe creation failed");
-        minishell->last_return = 1;
-        return;
-    }
+	if (pipe(pipe_fd) == -1)
+		exit(EXIT_FAILURE);
     pid = fork();
     if (pid == 0)
     {
@@ -113,7 +109,6 @@ void	execute_command_with_redir(t_token *curr, t_shell *minishell)
 {
 	int	pid;
 
-	//printf("execute_command_with_redir\n");
 	pid = fork();
 	if (!pid)
 		handle_redir_child_process(curr, minishell);

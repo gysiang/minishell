@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/25 16:56:05 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/25 21:17:50 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,8 +270,9 @@ t_token				*move_lst_by_index(t_token *curr, int index);
 
 // pipex (utils_2)
 int					check_redirection_type(t_token *curr);
-int					check_for_redirections(t_shell *minishell);
+int					check_for_redirections(t_token *curr);
 int					num_of_args(t_token *curr);
+void				get_no_of_redir(t_token *curr, t_shell *minishell);
 
 // pipex (utils_3)
 void				ft_free_tab(char **tab);

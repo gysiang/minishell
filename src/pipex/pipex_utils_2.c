@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 09:26:05 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/24 13:51:13 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/25 22:58:35 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,11 @@ int	check_redirection_type(t_token *curr)
 	return (0);
 }
 
-int	check_for_redirections(t_shell *minishell)
+int	check_for_redirections(t_token *curr)
 {
-	t_token	*curr;
 	int		i;
 
 	i = 0;
-	curr = minishell->cmd_list;
 	while (curr)
 	{
 		if (check_redirection_type(curr))
@@ -47,10 +45,42 @@ int	num_of_args(t_token *curr)
 	while (curr)
 	{
 		if (curr->type == T_IDENTIFIER)
-		{
 			i++;
+		else if (curr->type == T_FILE || check_redirection_type(curr))
+		{
+			curr = curr->next;
+			if (curr)
+				curr = curr->next;
+			continue;
 		}
+		else
+			break;
 		curr = curr->next;
 	}
 	return (i);
+}
+
+
+/** *
+	while (curr != NULL && curr->next != NULL && check_redirection_type(curr))
+	{
+		minishell->redir_no += 1;
+		handle_redirection(minishell, curr);
+		if (curr->next->next != NULL)
+			curr = curr->next->next;
+		else
+			break ;
+	}
+	**/
+
+void	get_no_of_redir(t_token *curr, t_shell *minishell)
+{
+	while (curr != NULL && curr->next != NULL && check_redirection_type(curr))
+	{
+		minishell->redir_no += 1;
+		if (curr->next->next != NULL)
+			curr = curr->next->next;
+		else
+			break ;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/25 17:46:56 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/25 23:08:42 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,11 @@ int handle_redirection(t_shell *minishell, t_token *curr)
             dup2(minishell->output_fd, STDOUT_FILENO);
             close(minishell->output_fd);
         }
-
         if (curr->next && curr->next->next)
             curr = curr->next->next;
         else
             break;
     }
-
     return (1);
 }
 
@@ -96,21 +94,21 @@ t_token	*handle_builtins(t_token *curr, t_shell *minishell)
 	int	index;
 	int	num_of_pipe;
 
+	//printf("handle builtins %s\n", curr->token);
 	num = num_of_args(curr);
-	index = check_for_redirections(minishell);
+	//printf("num of args and file %d\n", num);
+	index = check_for_redirections(curr);
 	num_of_pipe = pipe_found(curr);
 	if (num_of_pipe == 0 && (index == 0))
-	{
 		execute_builtin_or_exec(curr, minishell);
-	}
 	else if (num_of_pipe == 0 && (index > 0))
-		execute_with_redirection(curr, minishell,
-			check_for_redirections(minishell));
+		execute_with_redirection(curr, minishell, index);
 	else
 		execute_pipeline(curr, minishell);
 	//printf("redir no %d\n", minishell->redir_no);
 	if (minishell->redir_no > 0)
 		num += minishell->redir_no * 2;
+	//printf("num: %d\n", num);
 	curr = move_lst_by_index(curr, num);
 	return (curr);
 }
@@ -122,6 +120,7 @@ void	pipex(t_shell *minishell)
 	curr = minishell->cmd_list;
 	while (curr != NULL && !minishell->end)
 	{
+		//printf("current token in process %s\n", curr->token);
 		if (!ft_strcmp(curr->token, ""))
 		{
 			curr = curr->next;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/25 12:13:33 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/25 15:12:20 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,19 +117,29 @@ void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 {
 	t_token	*head;
 	t_token	*curr;
+	pid_t	pid;
 
-	// printf("execute_with_redirection\n");
 	head = token;
 	curr = head;
 	curr = move_lst_by_index(curr, index);
-	while (curr != NULL && curr->next != NULL && check_redirection_type(curr))
+	pid = fork();
+	if (pid == 0)
 	{
-		minishell->redir_no += 1;
-		handle_redirection(minishell, curr);
-		if (curr->next->next != NULL)
-			curr = curr->next->next;
-		else
-			break ;
+		while (curr != NULL && curr->next != NULL && check_redirection_type(curr))
+		{
+			minishell->redir_no += 1;
+			handle_redirection(minishell, curr);
+			if (curr->next->next != NULL)
+				curr = curr->next->next;
+			else
+				break ;
+		}
+		execute_builtin_or_exec_exit(head, minishell);
 	}
-	execute_builtin_or_exec(head, minishell);
+	else
+	{
+		minishell->process_ids[minishell->process_count++] = pid;
+		if (minishell->prev_fd != -1)
+			close(minishell->prev_fd);
+	}
 }

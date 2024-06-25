@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/25 20:32:50 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/25 23:32:18 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ void execute_single_command(t_token *curr, t_shell *minishell)
         minishell->signal_received = 1;
     if (pid == 0)
     {
+		signal(SIGPIPE, SIG_IGN);
         signal(SIGINT, SIG_DFL);
         load_previous_fd_to_stdin(minishell);
-        if (handle_redirection(minishell, curr->next) == -1)
-            exit(1);
+        handle_redirection(minishell, curr->next);
         exec_cmd(curr, minishell);
     }
     else
@@ -68,14 +68,23 @@ void	execute_builtin_or_exec_exit(t_token *curr, t_shell *minishell)
 
 void	execute_builtin_or_exec(t_token *curr, t_shell *minishell)
 {
-	int	builtin_type;
+	pid_t	pid;
 
 	if (minishell->prev_fd != 1)
 		close(minishell->prev_fd);
-	builtin_type = check_builtin(curr->token);
-	if (builtin_type == 1)
+	if (ft_strncmp(curr->token, "echo", 4) == 0)
 	{
-		execute_builtin_1(curr, minishell);
+		pid = fork();
+		if (pid == 0)
+		{
+			execute_builtin_1(curr, minishell);
+			exit(0);
+		}
+		else
+			minishell->process_ids[minishell->process_count++] = pid;
+	}
+	else
+	{
 		execute_builtin_2(curr, minishell);
 		other_cmds(curr, minishell);
 	}
@@ -87,11 +96,13 @@ void	execute_pipeline(t_token *curr, t_shell *minishell)
 	int		pid;
 	t_token	*redir;
 
+	//printf("execute_pipeline %s\n", curr->token);
 	if (pipe(pipe_fd) == -1)
 		exit(EXIT_FAILURE);
 	pid = fork();
 	if (pid == 0)
 	{
+		signal(SIGPIPE, SIG_IGN);
 		load_previous_fd_to_stdin(minishell);
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
@@ -114,6 +125,7 @@ void	execute_pipeline(t_token *curr, t_shell *minishell)
 		close(pipe_fd[1]);
 	}
 }
+
 /** *
 	while (curr != NULL && curr->next != NULL && check_redirection_type(curr))
 	{
@@ -134,8 +146,12 @@ void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 
 	head = token;
 	curr = head;
+	//printf("index: %d\n", index);
 	curr = move_lst_by_index(curr, index);
+	//printf("execute_with_redirection\n");
 	get_no_of_redir(curr, minishell);
+	//printf("execute_with_redirection %s\n", token->token);
+
 	pid = fork();
 	if (pid == 0)
 	{

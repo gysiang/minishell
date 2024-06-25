@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:10:53 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/25 16:18:03 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/25 17:04:19 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_token	*execute_with_redir(t_token *curr, t_shell *minishell)
 
 	pipe = pipe_found(curr);
 	num_of_redir = num_of_redirections(minishell);
-	i = num_of_args_or_file(minishell);
+	i = num_of_args_or_file(curr);
 	if (pipe == 0 && num_of_redir <= 3)
 		execute_command_with_redir(curr, minishell);
 	else

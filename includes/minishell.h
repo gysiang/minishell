@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/25 21:17:50 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/26 10:44:30 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,7 +265,7 @@ void				execute_redir_with_pipe(t_token *curr, t_shell *minishell);
 int					num_of_commands(t_shell *minishell);
 int					pipe_found(t_token *curr);
 int					num_of_args_or_file(t_token *curr);
-int					num_of_redirections(t_shell *minishell);
+int					num_of_redirections(t_token *curr);
 t_token				*move_lst_by_index(t_token *curr, int index);
 
 // pipex (utils_2)
@@ -399,6 +399,7 @@ int					execute_parent(int pid, int *pipe_des);
 int					here_doc(t_shell *minishell, char *delimiter, int i);
 int					redirect_input(t_shell *minishell, t_token *curr);
 int					redirect_output(t_shell *minishell, t_token *curr);
+int					check_redirect_file(t_token *curr);
 
 // shell
 t_shell				*init_shell(void);

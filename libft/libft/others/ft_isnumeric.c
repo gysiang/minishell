@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 16:06:09 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/23 16:06:37 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 19:58:57 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_isnumeric(const char *str)
 {
-	int i;
+	int	i;
 
 	if (str == NULL || *str == '\0')
 		return (0);

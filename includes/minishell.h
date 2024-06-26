@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/26 17:34:26 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 20:00:26 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ typedef struct s_shell
 	int				prev_fd;
 	pid_t			process_ids[100];
 	int				process_count;
-	int last_return ;
+	int				last_return ;
 	int				flag;
 	int				redir_no;
 	int				signal_received;
@@ -259,7 +259,7 @@ void				load_previous_fd_to_stdin(t_shell *minishell);
 void				load_previous_fd_to_stdout(t_shell *minishell);
 t_token				*update_curr_pointer(t_token *curr, int flag, int i);
 
-// pipex (execute)
+// pipex (execute_1)
 void				execute_single_command(t_token *curr, t_shell *minishell);
 void				execute_pipeline(t_token *curr, t_shell *minishell);
 void				execute_with_redirection(t_token *token, t_shell *minishell,
@@ -268,7 +268,31 @@ void				execute_builtin_or_exec_exit(t_token *curr,
 						t_shell *minishell);
 void				execute_builtin_or_exec(t_token *curr, t_shell *minishell);
 
-// pipex (execute1)
+// pipex (execute_2)
+void				setup_child_process(int *pipe_fd, t_shell *minishell);
+void				handle_redirections(t_token *curr, t_shell *minishell);
+void				child_process(t_token *curr, int *pipe_fd,
+						t_shell *minishell);
+void				parent_process(int pid, int *pipe_fd, t_shell *minishell);
+void				execute_pipeline(t_token *curr, t_shell *minishell);
+
+// pipex (execute_3)
+int					handle_numeric_command(t_token *curr, t_shell *minishell);
+void				execute_single_command(t_token *curr, t_shell *minishell);
+
+// pipex (execute_4)
+void				setup_child_for_redirection(int *pipe_fd,
+						t_shell *minishell);
+int					handle_child_redirection_process(t_token *curr,
+						int *pipe_fd, t_shell *minishell);
+void				child_process_for_redirection(t_token *curr, int *pipe_fd,
+						t_shell *minishell);
+void				parent_process_for_redirection(int pid, int *pipe_fd,
+						t_shell *minishell);
+void				execute_redirection_with_pipe(t_token *curr,
+						t_shell *minishell);
+
+// pipex (execute_5)
 void				execute_command_with_redir(t_token *curr,
 						t_shell *minishell);
 void				handle_redir_child_process(t_token *curr,
@@ -276,7 +300,6 @@ void				handle_redir_child_process(t_token *curr,
 void				handle_redir_parent_process(t_shell *minishell, int pid);
 t_token				*get_redir_token(t_token *curr);
 t_token				*execute_with_redir(t_token *curr, t_shell *minishell);
-void				execute_redir_with_pipe(t_token *curr, t_shell *minishell);
 
 // pipex (utils_1)
 int					num_of_commands(t_shell *minishell);

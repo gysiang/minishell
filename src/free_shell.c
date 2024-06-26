@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 15:22:18 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/27 01:34:49 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 03:27:32 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	free_shell(t_shell *minishell)
 	if (minishell == NULL)
 		return ;
 	free_env(minishell->env);
+	ft_free_history(minishell);
 	safe_close(&minishell->input_fd);
 	safe_close(&minishell->output_fd);
 	if (minishell->prompt && ft_strcmp(minishell->prompt, PROMPT) != 0)

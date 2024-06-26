@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/27 01:42:57 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 03:27:28 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,32 +51,14 @@ void	reset_process_ids(t_shell *minishell)
 	minishell->process_count = 0;
 }
 
-void	ft_using_history(t_shell *minishell)
-{
-	t_history	*history;
-
-	history = (t_history *)malloc(sizeof(t_history));
-	if (!history)
-	{
-		perror("malloc");
-		return ;
-	}
-	history->capacity = 100;
-	history->entries = (char **)malloc(sizeof(char *) * history->capacity);
-	if (!history->entries)
-	{
-		perror("malloc");
-		free(history);
-		return ;
-	}
-	history->count = 0;
-	history->current_index = 0;
-	minishell->history = history;
-}
-
 void	initialize_shell(t_shell **minishell, char **envp)
 {
 	*minishell = init_shell();
+	if (*minishell == NULL)
+	{
+		perror("Failed to initialize shell");
+		exit(1);
+	}
 	init_env(*minishell, envp);
 	ft_using_history(*minishell);
 	setup_signal_handler();
@@ -84,6 +66,7 @@ void	initialize_shell(t_shell **minishell, char **envp)
 
 void	cleanup(t_shell *g_shell)
 {
+	ft_free_history(g_shell);
 	free_shell(g_shell);
 	rl_clear_history();
 }

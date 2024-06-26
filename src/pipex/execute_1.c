@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/26 16:54:51 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 17:17:57 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	handle_numeric_command(t_token *curr, t_shell *minishell)
 	}
 	return (0);
 }
+
 void	execute_single_command(t_token *curr, t_shell *minishell)
 {
 	int	pid;
@@ -144,7 +145,6 @@ void	execute_pipeline(t_token *curr, t_shell *minishell)
 		close(pipe_fd[1]);
 	}
 }
-
 
 void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 {

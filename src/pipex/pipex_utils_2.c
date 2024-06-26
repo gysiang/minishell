@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 09:26:05 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/25 22:58:35 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/26 17:15:54 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,27 +51,14 @@ int	num_of_args(t_token *curr)
 			curr = curr->next;
 			if (curr)
 				curr = curr->next;
-			continue;
+			continue ;
 		}
 		else
-			break;
+			break ;
 		curr = curr->next;
 	}
 	return (i);
 }
-
-
-/** *
-	while (curr != NULL && curr->next != NULL && check_redirection_type(curr))
-	{
-		minishell->redir_no += 1;
-		handle_redirection(minishell, curr);
-		if (curr->next->next != NULL)
-			curr = curr->next->next;
-		else
-			break ;
-	}
-	**/
 
 void	get_no_of_redir(t_token *curr, t_shell *minishell)
 {

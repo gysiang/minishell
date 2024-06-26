@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:48:39 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/26 11:14:12 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/26 17:11:46 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,12 @@ static int	open_input(char *file_name)
 	}
 	return (fd);
 }*/
-
 int	check_redirect_file(t_token *curr)
 {
-	if (!ft_strcmp(curr->token, "cat") &&
-		curr->next && curr->next->next && curr->next->next->next
-		&& check_redirection_type(curr->next)
-		&& curr->next->next->type == T_FILE && curr->next->next->next->type == T_IDENTIFIER
+	if (!ft_strcmp(curr->token, "cat") && curr->next && curr->next->next
+		&& curr->next->next->next && check_redirection_type(curr->next)
+		&& curr->next->next->type == T_FILE
+		&& curr->next->next->next->type == T_IDENTIFIER
 		&& !curr->next->next->next->next)
 	{
 		return (1);
@@ -111,6 +110,8 @@ int	redirect_input(t_shell *minishell, t_token *curr)
 	char		*file_name;
 	struct stat	buffer;
 	int			fd;
+	int			fd;
+	struct stat	buffer;
 
 	fd = -1;
 	type = curr->type;
@@ -123,7 +124,6 @@ int	redirect_input(t_shell *minishell, t_token *curr)
 	}
 	return (fd);
 }*/
-
 // Edit
 static int	open_output(char *file_name, int type)
 {
@@ -155,6 +155,9 @@ static int	open_output(char *file_name, int type)
 {
 	int			fd;
 	struct stat	buffer;
+	int			fd;
+	int			type;
+	char		*file_name;
 
 	fd = -1;
 	if (access(file_name, F_OK) == 0)
@@ -178,12 +181,11 @@ static int	open_output(char *file_name, int type)
 		perror("open");echo
 	return (fd);
 }*/
-
 int	redirect_output(t_shell *minishell, t_token *curr)
 {
-	int		fd;
-	int		type;
-	char	*file_name;
+	int			fd;
+	int			type;
+	char		*file_name;
 
 	if (!curr || !curr->next)
 		return (-1);

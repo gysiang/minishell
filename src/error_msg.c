@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:35:43 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/23 13:59:43 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 17:14:27 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,15 @@ static int	map_error_to_exit_code(int error_no)
 {
 	int	return_no;
 
-	if (error_no == 42) // Command not found
+	if (error_no == 42)
 		return_no = 127;
-	else if (error_no == 44) // Numeric argument required
+	else if (error_no == 44)
 		return_no = 2;
-	else if (error_no == EISDIR) // Is a directory
+	else if (error_no == EISDIR)
 		return_no = 126;
-	else if (error_no == EACCES) // Permission denied
+	else if (error_no == EACCES)
 		return_no = 126;
-	else if (error_no == ENOENT) // No such file or directory
+	else if (error_no == ENOENT)
 		return_no = 127;
 	else
 		return_no = 1;
@@ -69,21 +69,3 @@ int	minishell_error_msg(char *cmd, int error_no)
 	return_no = map_error_to_exit_code(error_no);
 	return (return_no);
 }
-
-/*int	minishell_error_msg(char *cmd, int error_no)
-{
-	char	*error;
-	char	*error_msg;
-	int		return_no;
-
-	error = ft_strdup("minishell: ");
-	error = ft_strjoin_free(&error, cmd);
-	error = ft_strjoin_free(&error, ": ");
-	error_msg = generate_error_message(error_no);
-	error = ft_strjoin_free(&error, error_msg);
-	free(error_msg);
-	ft_putendl_fd(error, 2);
-	free(error);
-	return_no = map_error_to_exit_code(error_no);
-	return (return_no);
-}*/

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/26 14:52:56 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 17:08:08 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	main_loop(t_shell *g_shell)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell *g_shell;
+	t_shell	*g_shell;
 
 	(void)argc;
 	(void)argv;

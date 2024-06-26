@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 19:36:29 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/20 14:21:56 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 17:13:12 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	set_env_entry(t_shell *minishell, char *new_entry, int idx)
 		minishell->env[current_length] = new_entry;
 		minishell->env[current_length + 1] = NULL;
 	}
-	//printf("Updated environment entry: %s\n", new_entry);
 }
 
 void	set_env(t_shell *minishell, const char *var, const char *value)

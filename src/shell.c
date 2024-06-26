@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/23 15:45:07 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 13:09:09 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,9 @@ void	reset_process_ids(t_shell *minishell)
 
 /*void	free_shell(t_shell *minishell)
 {
-	int	i;
-	int	i;
+	int			i;
+	int			i;
+	t_history	*history;
 
 	if (minishell == NULL)
 		return ;
@@ -93,11 +94,34 @@ void	reset_process_ids(t_shell *minishell)
 	free(minishell->env);
 	free(minishell);
 }*/
+void	ft_using_history(t_shell *minishell)
+{
+	t_history *history;
+	
+	history = (t_history *)malloc(sizeof(t_history));
+	if (!history)
+	{
+		perror("malloc");
+		return ;
+	}
+	history->capacity = 100; // Initial capacity
+	history->entries = (char **)malloc(sizeof(char *) * history->capacity);
+	if (!history->entries)
+	{
+		perror("malloc");
+		free(history);
+		return ;
+	}
+	history->count = 0;
+	history->current_index = 0;
+	minishell->history = history;
+}
+
 void	initialize_shell(t_shell **minishell, char **envp)
 {
 	*minishell = init_shell();
 	init_env(*minishell, envp);
-	using_history();
+	ft_using_history(*minishell);
 	setup_signal_handler();
 }
 

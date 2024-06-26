@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/26 22:35:22 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/27 01:35:25 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ void	process_command_line(t_shell *minishell, char *line)
 	token_lst = NULL;
 	reset_minishell(minishell);
 	restore_fds(saved_stdin, saved_stdout);
-	close(saved_stdin);
-	close(saved_stdout);
 }
 
 void	add_to_history(t_shell *minishell, const char *line)
@@ -75,7 +73,7 @@ void	add_to_history(t_shell *minishell, const char *line)
 			return ;
 		}
 	}
-	minishell->history->entries[minishell->history->count] = strdup(line);
+	minishell->history->entries[minishell->history->count] = ft_strdup(line);
 	minishell->history->count++;
 }
 

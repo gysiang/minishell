@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils_4.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:23:30 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/17 17:05:34 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/27 01:28:58 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,16 @@ void	restore_fds(int input_fd, int output_fd)
 		dup2(input_fd, STDIN_FILENO);
 		close(input_fd);
 	}
+}
+
+void	safe_close(int *fd)
+{
+	if (*fd != -1)
+	{
+		if (close(*fd) == -1)
+		{
+			perror("close");
+		}
+	}
+	*fd = -1;
 }

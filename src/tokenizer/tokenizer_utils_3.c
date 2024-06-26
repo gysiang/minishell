@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:11:15 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/23 12:12:36 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 13:26:45 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*allocate_and_copy_result(const char *source)
 {
 	char	*result;
 
-	result = malloc(strlen(source) + 1);
+	result = malloc(ft_strlen(source) + 1);
 	if (result)
 	{
 		ft_strcpy(result, source);
@@ -66,39 +66,6 @@ void	handle_variable_expansion(char **line, char *start, t_token **token_lst,
 	}
 }
 
-/*static void	handle_variable_expansion(char **line, char *start,
-		t_token **token_lst, t_shell *minishell)
-{
-	char	*var_name;
-	char	*expanded;
-	char	*result;
-	int		var_len;
-	char	*start;
-	char	*start;
-	char	*var_name;
-	char	*var_value;
-
-	var_len = *line - start;
-	var_name = ft_strndup(start, var_len);
-	expanded = get_env_value(minishell, var_name, 1);
-	free(var_name);
-	if (expanded)
-	{
-		result = malloc(strlen(expanded) + 1);
-		if (result)
-		{
-			ft_strcpy(result, expanded);
-			free(expanded);
-			append_rest_of_line(line, result, token_lst);
-		}
-	}
-	else
-	{
-		result = ft_strndup(start - 1, var_len + 1);
-		token_add_back(token_lst, result, T_IDENTIFIER);
-		free(result);
-	}
-}*/
 void    handle_environment_variable(char **line, t_token **token_lst,
         t_shell *minishell)
 {

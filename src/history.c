@@ -3,19 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:49:27 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/05/17 23:32:51 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/26 13:54:08 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	ft_fflush(void)
+{
+	char	buffer[1];
+
+	buffer[0] = '\0';
+	write(STDOUT_FILENO, buffer, 1);
+}
+
 void	prompt(void)
 {
 	printf("minishell$");
-	usleep(5000);
+	ft_fflush();
 }
 
 int	print_history(void)

@@ -6,53 +6,11 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/26 17:17:57 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 19:46:21 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	handle_numeric_command(t_token *curr, t_shell *minishell)
-{
-	if (curr->token && ft_isnumeric(curr->token))
-	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(curr->token, STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		minishell->last_return = 127;
-		return (1);
-	}
-	return (0);
-}
-
-void	execute_single_command(t_token *curr, t_shell *minishell)
-{
-	int	pid;
-
-	if (handle_numeric_command(curr, minishell))
-		return ;
-	pid = fork();
-	if (!ft_strcmp(curr->token, "./minishell"))
-		minishell->signal_received = 1;
-	if (pid == 0)
-	{
-		signal(SIGPIPE, SIG_IGN);
-		signal(SIGINT, SIG_DFL);
-		load_previous_fd_to_stdin(minishell);
-		handle_redirection(minishell, curr->next);
-		exec_cmd(curr, minishell);
-	}
-	else
-	{
-		if (minishell->signal_received == 1)
-			signal(SIGINT, SIG_IGN);
-		else
-			signal(SIGINT, sigint_handler1);
-		minishell->process_ids[minishell->process_count++] = pid;
-		if (minishell->prev_fd != -1)
-			close(minishell->prev_fd);
-	}
-}
 
 void	execute_builtin_or_exec_exit(t_token *curr, t_shell *minishell)
 {
@@ -109,41 +67,6 @@ void	execute_builtin_or_exec(t_token *curr, t_shell *minishell)
 	}
 	else
 		exec_cmd(curr, minishell);
-}
-
-void	execute_pipeline(t_token *curr, t_shell *minishell)
-{
-	int		pipe_fd[2];
-	int		pid;
-	t_token	*redir;
-
-	if (pipe(pipe_fd) == -1)
-		exit(EXIT_FAILURE);
-	pid = fork();
-	if (pid == 0)
-	{
-		signal(SIGPIPE, SIG_IGN);
-		load_previous_fd_to_stdin(minishell);
-		dup2(pipe_fd[1], STDOUT_FILENO);
-		close(pipe_fd[1]);
-		close(pipe_fd[0]);
-		redir = curr;
-		while (redir && redir->type != T_PIPE)
-		{
-			if (check_redirection_type(redir))
-				handle_redirection(minishell, redir);
-			redir = redir->next;
-		}
-		execute_builtin_or_exec_exit(curr, minishell);
-	}
-	else
-	{
-		minishell->process_ids[minishell->process_count++] = pid;
-		if (minishell->prev_fd != -1)
-			close(minishell->prev_fd);
-		minishell->prev_fd = pipe_fd[0];
-		close(pipe_fd[1]);
-	}
 }
 
 void	execute_with_redirection(t_token *token, t_shell *minishell, int index)

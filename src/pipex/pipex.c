@@ -6,35 +6,45 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/26 17:19:02 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 17:46:09 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_redirection(t_shell *minishell, t_token *curr)
+static int	handle_single_redirection(t_shell *minishell, t_token *curr)
 {
 	int	result;
 
 	result = 0;
+	if (curr->type == T_LESSER_THAN || curr->type == T_LEFT_SHIFT)
+	{
+		result = redirect_input(minishell, curr);
+		if (result == -1)
+			return (-1);
+		dup2(minishell->input_fd, STDIN_FILENO);
+		close(minishell->input_fd);
+	}
+	else if (curr->type == T_GREATER_THAN || curr->type == T_RIGHT_SHIFT)
+	{
+		result = redirect_output(minishell, curr);
+		if (result == -1)
+			return (-1);
+		dup2(minishell->output_fd, STDOUT_FILENO);
+		close(minishell->output_fd);
+	}
+	return (1);
+}
+
+int	handle_redirection(t_shell *minishell, t_token *curr)
+{
+	int	result;
+
 	while (curr && check_redirection_type(curr))
 	{
-		if (curr->type == T_LESSER_THAN || curr->type == T_LEFT_SHIFT)
-		{
-			result = redirect_input(minishell, curr);
-			if (result == -1)
-				return (-1);
-			dup2(minishell->input_fd, STDIN_FILENO);
-			close(minishell->input_fd);
-		}
-		else if (curr->type == T_GREATER_THAN || curr->type == T_RIGHT_SHIFT)
-		{
-			result = redirect_output(minishell, curr);
-			if (result == -1)
-				return (-1);
-			dup2(minishell->output_fd, STDOUT_FILENO);
-			close(minishell->output_fd);
-		}
+		result = handle_single_redirection(minishell, curr);
+		if (result == -1)
+			return (-1);
 		if (curr->next && curr->next->next)
 			curr = curr->next->next;
 		else

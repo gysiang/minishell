@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/26 10:44:30 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/26 13:07:28 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,14 @@ typedef enum s_token_type
 	T_FILE
 }					t_token_type;
 
+// history structure
+typedef struct s_history {
+    char **entries;
+    int capacity;
+    int count;
+    int current_index;
+} t_history;
+
 // token structure
 typedef struct s_token
 {
@@ -92,6 +100,7 @@ typedef struct s_shell
 	int				redir_no;
 	int				signal_received;
 	bool			end;
+	t_history		*history;
 }					t_shell;
 
 // builtin_cd

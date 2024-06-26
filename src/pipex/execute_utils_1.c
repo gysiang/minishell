@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils_1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/24 22:51:24 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/26 17:37:11 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,6 @@ int	check_command(char *cmd, t_shell *minishell)
 	return (0);
 }
 
-/*char	**get_command_array(char *cmd, t_shell *minishell)
-{
-	char		**s_cmd;
-	char		*path;
-	struct stat	statbuf;
-	char		*path;
-	struct stat	statbuf;
-
-	if (!cmd || *cmd == '\0')
-	{
-		minishell->last_return (= 0);
-		return (NULL);
-	}
-	s_cmd = ft_split(cmd, ' ');
-	if (!s_cmd)
-	{
-		ft_putstr_fd("Failed to split command\n", STDERR_FILENO);
-		minishell->last_return (= 1);
-		exit(1);
-	}
-	return (s_cmd);
-}*/
 char	*get_command_path(char **s_cmd, t_shell *minishell)
 {
 	char		*path;
@@ -75,37 +53,6 @@ char	*get_command_path(char **s_cmd, t_shell *minishell)
 	return (path);
 }
 
-/*char	*get_command_path(char **s_cmd, t_shell *minishell)
-{
-	int		return_code;
-	char	*path;
-	char	**s_cmd;
-	char	*path;
-	int		return_code;
-	int		return_code;
-	char	**s_cmd;
-	char	*path;
-	char	**s_cmd;
-	char	*path;
-	int		return_code;
-	int		return_code;
-	int		return_code;
-	int		return_code;
-	int		return_code;
-
-	return_code = 0;
-	if (s_cmd[0][0] == '/' || s_cmd[0][0] == '.')
-		path = s_cmd[0];
-	else
-		path = get_path(s_cmd[0], minishell);
-	if (!path)
-	{
-		return_code = minishell_error_msg(s_cmd[0], 42);
-		minishell->last_return (= return_code);
-		return (NULL);
-	}
-	return (path);
-}*/
 static void	handle_execve_failure(char **s_cmd, t_shell *minishell,
 		int error_code)
 {
@@ -117,7 +64,6 @@ static void	handle_execve_failure(char **s_cmd, t_shell *minishell,
 	exit(return_code);
 }
 
-// cat-e works here
 void	exec_cmd(t_token *curr, t_shell *minishell)
 {
 	char	**s_cmd;

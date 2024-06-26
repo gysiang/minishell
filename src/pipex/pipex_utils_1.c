@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 08:32:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/25 21:25:11 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/26 10:44:24 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,16 @@ int	pipe_found(t_token *curr)
 	return (0);
 }
 
-int	num_of_redirections(t_shell *minishell)
+int	num_of_redirections(t_token *curr)
 {
 	int		i;
-	t_token	*curr_token;
 
 	i = 0;
-	curr_token = minishell->cmd_list;
-	while (curr_token != NULL)
+	while (curr != NULL)
 	{
-		if (check_redirection_type(curr_token))
+		if (check_redirection_type(curr))
 			i++;
-		curr_token = curr_token->next;
+		curr = curr->next;
 	}
 	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:10:53 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/25 23:15:10 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/26 10:46:01 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	handle_redir_parent_process(t_shell *minishell, int pid)
 		close(minishell->prev_fd);
 }
 
+
 t_token	*execute_with_redir(t_token *curr, t_shell *minishell)
 {
 	int	pipe;
@@ -60,8 +61,8 @@ t_token	*execute_with_redir(t_token *curr, t_shell *minishell)
 	int	i;
 
 	pipe = pipe_found(curr);
-	num_of_redir = num_of_redirections(minishell);
-	i = num_of_args_or_file(curr);
+	num_of_redir = num_of_redirections(curr);
+	i = num_of_args(curr);
 	if (pipe == 0 && num_of_redir <= 3)
 		execute_command_with_redir(curr, minishell);
 	else
@@ -96,10 +97,7 @@ void execute_redir_with_pipe(t_token *curr, t_shell *minishell)
     }
     else
     {
-        signal(SIGINT, sigint_handler1);
-        minishell->process_ids[minishell->process_count++] = pid;
-        if (minishell->prev_fd != -1)
-            close(minishell->prev_fd);
+		handle_redir_parent_process(minishell, pid);
         minishell->prev_fd = pipe_fd[0];
         close(pipe_fd[1]);
     }

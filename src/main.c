@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/25 17:01:10 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:05:57 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,22 @@ char	*read_input_line(t_shell *g_shell)
 	char	*line;
 	char	*trimmed_line;
 
-	line = NULL;
-	rl_bind_key('\t', rl_insert);
-	while (line == NULL)
+	while (1)
 	{
 		line = readline(PROMPT);
 		if (line == NULL)
 		{
 			printf("exit\n");
 			g_shell->end = 1;
-			break ;
+			return (NULL);
 		}
 		trimmed_line = line;
 		while (*trimmed_line == ' ' || *trimmed_line == '\t')
 			trimmed_line++;
-		if (*trimmed_line == '\0')
-		{
-			free(line);
-			line = NULL;
-		}
+		if (*trimmed_line != '\0')
+			return (line);
+		free(line);
 	}
-	return (line);
 }
 
 void	process_command_line(t_shell *minishell, char *line)
@@ -49,7 +44,7 @@ void	process_command_line(t_shell *minishell, char *line)
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	token_lst = token_processor(line, minishell);
-	//print_tokenlst(token_lst);
+	// print_tokenlst(token_lst);
 	if (token_lst != NULL)
 		minishell->cmd_list = token_lst;
 	if (line && ft_strlen(line) > 0)

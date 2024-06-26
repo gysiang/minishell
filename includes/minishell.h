@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/26 14:50:52 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 17:34:26 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,13 @@ typedef enum s_token_type
 }					t_token_type;
 
 // history structure
-typedef struct s_history {
-    char **entries;
-    int capacity;
-    int count;
-    int current_index;
-} t_history;
+typedef struct s_history
+{
+	char			**entries;
+	int				capacity;
+	int				count;
+	int				current_index;
+}					t_history;
 
 // token structure
 typedef struct s_token
@@ -95,7 +96,7 @@ typedef struct s_shell
 	int				prev_fd;
 	pid_t			process_ids[100];
 	int				process_count;
-	int				last_return ;
+	int last_return ;
 	int				flag;
 	int				redir_no;
 	int				signal_received;
@@ -128,7 +129,7 @@ int					is_valid_identifier(const char *str);
 void				create_env_entry(char *dest, const char *var_name,
 						const char *var_value);
 
-//builtin_export_utils_3
+// builtin_export_utils_3
 int					save_var(t_shell *minishell, char *content);
 
 // builtin_export
@@ -142,7 +143,14 @@ int					search_env(t_shell *minishell, char *var);
 int					minishell_unset(t_shell *minishell);
 
 // parser(join_tokens)
+char				*concat_token(const char *token1, const char *token2);
+void				merge_identifier_tokens(t_token *curr);
+void				process_current_token(t_token **curr, int *merged);
 void				join_identifier_tokens(t_token *lst);
+
+// parser(join_tokens_utils)
+bool				is_command(char *token);
+bool				is_part_of_command_arguments(t_token *token);
 
 // parser(parse_single_quotes)
 void				parse_single_quotes(t_token *token);
@@ -267,7 +275,7 @@ void				handle_redir_child_process(t_token *curr,
 						t_shell *minishell);
 void				handle_redir_parent_process(t_shell *minishell, int pid);
 t_token				*get_redir_token(t_token *curr);
-t_token 			*execute_with_redir(t_token *curr, t_shell *minishell);
+t_token				*execute_with_redir(t_token *curr, t_shell *minishell);
 void				execute_redir_with_pipe(t_token *curr, t_shell *minishell);
 
 // pipex (utils_1)
@@ -386,8 +394,8 @@ void				free_shell(t_shell *minishell);
 
 // history
 void				prompt(void);
-int	ft_print_history(t_shell *minishell);
-void ft_clear_history(t_shell *minishell);
+int					ft_print_history(t_shell *minishell);
+void				ft_clear_history(t_shell *minishell);
 int					hist_feature(const char *s, t_shell *minishell);
 
 // main.c

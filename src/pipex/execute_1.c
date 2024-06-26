@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/26 19:46:21 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 22:15:40 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	execute_builtin_or_exec_exit(t_token *curr, t_shell *minishell)
 
 static void	execute_builtin_directly(t_token *curr, t_shell *minishell)
 {
-	execute_builtin_1(curr, minishell);
 	execute_builtin_2(curr, minishell);
 	other_cmds(curr, minishell);
 }
@@ -39,8 +38,8 @@ static void	execute_builtin_in_child(t_token *curr, t_shell *minishell)
 	pid = fork();
 	if (pid == 0)
 	{
-		execute_builtin_directly(curr, minishell);
-		exit(minishell->last_return);
+		execute_builtin_1(curr, minishell);
+		exit(0);
 	}
 	else if (pid > 0)
 		minishell->process_ids[minishell->process_count++] = pid;

@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/26 17:08:08 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 22:07:02 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_sig_received =  0;
 
 char	*read_input_line(t_shell *g_shell)
 {
@@ -90,6 +92,11 @@ void	main_loop(t_shell *g_shell)
 			break ;
 		}
 		add_to_history(g_shell, line);
+		if (g_sig_received == 1)
+		{
+			g_shell->last_return = 130;
+			g_sig_received = 0;
+		}
 		process_command_line(g_shell, line);
 		free(line);
 	}

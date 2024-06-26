@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/26 13:07:28 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 14:50:52 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -386,8 +386,9 @@ void				free_shell(t_shell *minishell);
 
 // history
 void				prompt(void);
-int					print_history(void);
-int					hist_feature(const char *s);
+int	ft_print_history(t_shell *minishell);
+void ft_clear_history(t_shell *minishell);
+int					hist_feature(const char *s, t_shell *minishell);
 
 // main.c
 char				*read_input_line(t_shell *g_shell);

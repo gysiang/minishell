@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:49:27 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/26 13:54:08 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 14:52:09 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,36 +26,48 @@ void	prompt(void)
 	ft_fflush();
 }
 
-int	print_history(void)
+void	ft_clear_history(t_shell *minishell)
 {
-	HIST_ENTRY	**mylist;
-	int			i;
+	int	i;
 
-	mylist = history_list();
 	i = 0;
-	if (!mylist)
+	while (i < minishell->history->count)
+	{
+		free(minishell->history->entries[i]);
+		i++;
+	}
+	minishell->history->count = 0;
+	minishell->history->current_index = 0;
+}
+
+int	ft_print_history(t_shell *minishell)
+{
+	int	i;
+
+	if (!minishell->history || !minishell->history->entries)
 	{
 		printf("Error getting history list\n");
 		return (0);
 	}
-	while (mylist[i] != NULL)
+	i = 0;
+	while (i < minishell->history->count)
 	{
-		printf("%d: %s\n", i + 1, mylist[i]->line);
+		printf("%d: %s\n", i + 1, minishell->history->entries[i]);
 		i++;
 	}
 	return (0);
 }
 
-int	hist_feature(const char *s)
+int	hist_feature(const char *s, t_shell *minishell)
 {
 	if (ft_strcmp(s, "history") == 0)
 	{
-		print_history();
+		ft_print_history(minishell);
 		return (1);
 	}
 	if (ft_strcmp(s, "history -c") == 0)
 	{
-		clear_history();
+		ft_clear_history(minishell);
 		return (1);
 	}
 	return (0);

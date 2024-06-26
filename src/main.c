@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/26 14:05:57 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 14:52:56 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,13 @@ void	process_command_line(t_shell *minishell, char *line)
 	int		saved_stdin;
 	int		saved_stdout;
 
+	if (hist_feature(line, minishell))
+	{
+		return ;
+	}
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	token_lst = token_processor(line, minishell);
-	// print_tokenlst(token_lst);
 	if (token_lst != NULL)
 		minishell->cmd_list = token_lst;
 	if (line && ft_strlen(line) > 0)
@@ -55,6 +58,23 @@ void	process_command_line(t_shell *minishell, char *line)
 	restore_fds(saved_stdin, saved_stdout);
 	close(saved_stdin);
 	close(saved_stdout);
+}
+
+void	add_to_history(t_shell *minishell, const char *line)
+{
+	if (minishell->history->count >= minishell->history->capacity)
+	{
+		minishell->history->capacity *= 2;
+		minishell->history->entries = realloc(minishell->history->entries,
+				sizeof(char *) * minishell->history->capacity);
+		if (!minishell->history->entries)
+		{
+			perror("realloc");
+			return ;
+		}
+	}
+	minishell->history->entries[minishell->history->count] = strdup(line);
+	minishell->history->count++;
 }
 
 void	main_loop(t_shell *g_shell)
@@ -69,7 +89,7 @@ void	main_loop(t_shell *g_shell)
 			g_shell->end = 1;
 			break ;
 		}
-		add_history(line);
+		add_to_history(g_shell, line);
 		process_command_line(g_shell, line);
 		free(line);
 	}
@@ -77,7 +97,7 @@ void	main_loop(t_shell *g_shell)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell	*g_shell;
+	t_shell *g_shell;
 
 	(void)argc;
 	(void)argv;

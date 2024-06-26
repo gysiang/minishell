@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/27 01:29:16 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 01:47:51 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -451,9 +451,6 @@ void				reset_process_ids(t_shell *minishell);
 void				free_shell(t_shell *minishell);
 void				initialize_shell(t_shell **minishell, char **envp);
 void				cleanup(t_shell *g_shell);
-
-// shell1
-void				ft_free_history(t_shell *minishell);
 
 // signals
 void				sigint_handler(int signal);

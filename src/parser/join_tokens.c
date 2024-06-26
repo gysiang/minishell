@@ -6,13 +6,13 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 15:31:06 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/23 14:07:39 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 17:34:30 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*concat_token(const char *token1, const char *token2)
+char	*concat_token(const char *token1, const char *token2)
 {
 	size_t	len1;
 	size_t	len2;
@@ -31,7 +31,7 @@ static char	*concat_token(const char *token1, const char *token2)
 	return (joined_str);
 }
 
-static void	merge_identifier_tokens(t_token *curr)
+void	merge_identifier_tokens(t_token *curr)
 {
 	char	*joined;
 	t_token	*next;
@@ -50,34 +50,23 @@ static void	merge_identifier_tokens(t_token *curr)
 	}
 }
 
-static bool	is_command(char *token)
+void	process_current_token(t_token **curr, int *merged)
 {
-	int					i;
-	static const char	*commands[] = {"cd", "echo", "exit", "unset", "pwd",
-		"env", "export", NULL};
-
-	i = 0;
-	while (commands[i])
+	if (check_redirection_type(*curr))
 	{
-		if (ft_strcmp(token, commands[i]) == 0)
-			return (true);
-		i++;
+		(*curr)->next->type = T_FILE;
+		*curr = (*curr)->next->next;
 	}
-	return (false);
-}
-
-static bool	is_part_of_command_arguments(t_token *token)
-{
-	t_token	*prev;
-
-	prev = token;
-	while (prev != NULL && prev->type == T_IDENTIFIER)
+	else if ((*curr)->type == T_IDENTIFIER
+		&& (*curr)->next->type == T_IDENTIFIER && !is_command((*curr)->token)
+		&& !is_command((*curr)->next->token)
+		&& !is_part_of_command_arguments((*curr)->next))
 	{
-		if (is_command(prev->token))
-			return (true);
-		prev = prev->prev;
+		merge_identifier_tokens(*curr);
+		*merged = 1;
 	}
-	return (false);
+	else
+		*curr = (*curr)->next;
 }
 
 void	join_identifier_tokens(t_token *lst)
@@ -92,21 +81,9 @@ void	join_identifier_tokens(t_token *lst)
 		curr = lst;
 		while (curr != NULL && curr->next != NULL)
 		{
-			if (check_redirection_type(curr))
-			{
-				curr->next->type = T_FILE;
-				curr = curr->next->next;
-				continue ;
-			}
-			if (curr->type == T_IDENTIFIER && curr->next->type == T_IDENTIFIER
-				&& !is_command(curr->token) && !is_command(curr->next->token)
-				&& !is_part_of_command_arguments(curr->next))
-			{
-				merge_identifier_tokens(curr);
-				merged = 1;
+			process_current_token(&curr, &merged);
+			if (merged)
 				break ;
-			}
-			curr = curr->next;
 		}
 	}
 }

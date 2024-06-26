@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/26 14:51:32 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/26 16:47:20 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	other_cmds(t_token *curr, t_shell *minishell)
 	}
 	if (ft_strcmp(curr->token, "history -c") == 0)
 	{
-		clear_history();
+		ft_clear_history(minishell);
 		return (1);
 	}
 	return (0);

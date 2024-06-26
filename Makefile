@@ -68,6 +68,7 @@ SRC_FILES := main.c \
 				tokenizer/tokenizer_utils_5.c \
                 tokenizer/tokenizer.c \
                 parser/join_tokens.c \
+				parser/join_tokens_utils.c \
 				parser/parse_double_quotes_utils_1.c \
 				parser/parse_double_quotes_utils_2.c \
 				parser/parse_double_quotes_utils_3.c \

@@ -9,8 +9,7 @@ bash -x -c 'cat minishell.h | grep ");"$'
 
 #### Valgrind Supression Command
 
-valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp ./minishell
-
+valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=readline.supp ./minishell
 
 ## Pseudo Code Structure
 ### Initialization
@@ -22,7 +21,7 @@ valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp ./
 - [x] Read input from the user.
 - [x] If input is empty or only spaces, continue to the next iteration.
 - [x] Add input to history.
-- [ ] Check and handle input errors.
+- [x] Check and handle input errors.
 - [x] Parse and route the command.
 - [x]Clear up command list for next input.
 - [x] Repeat unless an exit condition is met (e.g., "exit" command or ctrl-D).
@@ -30,7 +29,7 @@ valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp ./
 ### Command Parsing and Execution
 
 - [x] Lexer (Tokenizer): Breaks down input into tokens (words or symbols).
-- [] Parser: Groups tokens into commands and their arguments, identifying redirections, pipes, and built-in commands.
+- [x] Parser: Groups tokens into commands and their arguments, identifying redirections, pipes, and built-in commands.
 - [x] Executor: Executes the commands based on parsed data.
 - [x]For built-in commands (like cd, exit), execute directly in the shell.
 - [x] For external commands, find the executable and run it, handling input/output redirection and piping as needed.
@@ -46,8 +45,8 @@ If so, execute the corresponding function directly within the shell.
 
 ### Environment Variables and Exit Status
 
-- [ ] Replace $VARIABLE with its value.
-- [ ] Replace $? with the last command's exit status.
+- [x] Replace $VARIABLE with its value.
+- [x] Replace $? with the last command's exit status.
 - [x] Signal Handling
 
 - [x] Ensure ctrl-C, ctrl-D, and ctrl-\ are handled similarly to bash.

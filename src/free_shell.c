@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 15:22:18 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/27 12:26:29 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 13:01:16 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,18 @@ void	free_shell(t_shell *minishell)
 	safe_close(&minishell->prev_fd);
 	safe_close(&minishell->saved_stdin);
 	safe_close(&minishell->saved_stdout);
+	/***
 	if (minishell->prompt && ft_strcmp(minishell->prompt, PROMPT) != 0)
 		free(minishell->prompt);
+	**/
 	free(minishell);
+}
+
+void	free_child_processes(t_token *curr, t_shell *minishell, int exit_code)
+{
+	if (curr != NULL)
+		free_tokenlst(curr);
+	curr = NULL;
+	free_shell(minishell);
+	exit(exit_code);
 }

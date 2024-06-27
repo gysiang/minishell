@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_msg_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:54:08 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/20 12:44:41 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/27 12:50:05 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,6 @@ void	free_and_exit(t_shell *minishell, int return_value)
 	rl_clear_history();
 	ft_split_free(&minishell->env);
 	ft_lstclear((t_list **)&(minishell->cmd_list), delete_command);
-	free(minishell->prompt);
+	//free(minishell->prompt);
 	exit(return_value);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/27 10:32:29 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 13:02:16 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	execute_builtin_in_child(t_token *curr, t_shell *minishell)
 	if (pid == 0)
 	{
 		execute_builtin_1(curr, minishell);
-		exit(0);
+		free_child_processes(curr, minishell, 0);
 	}
 	else if (pid > 0)
 		minishell->process_ids[minishell->process_count++] = pid;

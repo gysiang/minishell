@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/27 01:35:25 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 03:27:34 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_sig_received = 0;
+int		g_sig_received = 0;
 
 char	*read_input_line(t_shell *g_shell)
 {
@@ -58,23 +58,6 @@ void	process_command_line(t_shell *minishell, char *line)
 	token_lst = NULL;
 	reset_minishell(minishell);
 	restore_fds(saved_stdin, saved_stdout);
-}
-
-void	add_to_history(t_shell *minishell, const char *line)
-{
-	if (minishell->history->count >= minishell->history->capacity)
-	{
-		minishell->history->capacity *= 2;
-		minishell->history->entries = realloc(minishell->history->entries,
-				sizeof(char *) * minishell->history->capacity);
-		if (!minishell->history->entries)
-		{
-			perror("realloc");
-			return ;
-		}
-	}
-	minishell->history->entries[minishell->history->count] = ft_strdup(line);
-	minishell->history->count++;
 }
 
 void	main_loop(t_shell *g_shell)

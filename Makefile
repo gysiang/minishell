@@ -29,6 +29,7 @@ SRC_FILES := main.c \
 				error_msg_utils.c \
                 error_msg.c \
 				free_shell.c \
+				history_free.c \
                 history.c \
                 execute_commands.c \
 				execute_commands_utils.c \

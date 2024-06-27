@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 21:03:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/27 22:29:41 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 23:04:23 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,20 @@ static void	here_doc_read(t_shell *minishell, int *pipe_fds,
 int	execute_parent(int pid, int *pipe_des)
 {
 	int	status;
+	int	fd;
 
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, WUNTRACED);
 	if (WEXITSTATUS(status) == SIGINT)
 	{
-		close(pipe_des[0]);
-		close(pipe_des[1]);
+		safe_close(&pipe_des[0]);
+		safe_close(&pipe_des[1]);
 		return (-1);
 	}
-	close(pipe_des[1]);
-	return (pipe_des[0]);
+	fd = dup(pipe_des[0]);
+	safe_close(&pipe_des[0]);
+	safe_close(&pipe_des[1]);
+	return (fd);
 }
 
 int	here_doc(t_token *curr, t_shell *minishell, char *delimiter, int i)
@@ -91,8 +94,7 @@ int	here_doc(t_token *curr, t_shell *minishell, char *delimiter, int i)
 		input_fd = execute_parent(pid, pipe_des);
 		if (input_fd == -1)
 			return (-1);
-		minishell->input_fd = dup(input_fd);
-		safe_close(&input_fd);
+		return (input_fd);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 15:36:40 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/27 01:31:08 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 23:15:35 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	*ft_realloc(void *ptr, size_t new_size)
 
 void	reset_minishell(t_shell *minishell)
 {
-	minishell->prev_fd = -1;
 	minishell->process_count = 0;
 	reset_process_ids(minishell);
 	minishell->signal_received = 0;

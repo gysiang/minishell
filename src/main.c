@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/27 22:21:10 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 23:15:12 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,6 @@ void	process_command_line(t_shell *minishell, char *line)
 {
 	t_token	*token_lst;
 
-	if (hist_feature(line, minishell))
-	{
-		return ;
-	}
 	minishell->saved_stdin = dup(STDIN_FILENO);
 	minishell->saved_stdout = dup(STDOUT_FILENO);
 	token_lst = token_processor(line, minishell);

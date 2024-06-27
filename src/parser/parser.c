@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/22 01:50:19 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 22:21:51 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ void	parse_token(t_token *token, t_shell *minishell)
 	}
 	if (len > 1)
 		handle_token_parsing(token, minishell);
-	str = token->token;
-	len = ft_strlen(str);
 	if (minishell->flag)
 	{
 		if (ft_strchr(token->token, '$') && !token->is_single_quoted)

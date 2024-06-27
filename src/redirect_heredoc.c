@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 21:03:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/27 14:17:15 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 22:29:41 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	execute_parent(int pid, int *pipe_des)
 	return (pipe_des[0]);
 }
 
-int	here_doc(t_shell *minishell, char *delimiter, int i)
+int	here_doc(t_token *curr, t_shell *minishell, char *delimiter, int i)
 {
 	int	pipe_des[2];
 	int	pid;
@@ -81,20 +81,18 @@ int	here_doc(t_shell *minishell, char *delimiter, int i)
 	if (pipe(pipe_des) == -1)
 		exit(EXIT_FAILURE);
 	pid = fork();
-	if (pid == -1)
-		return (-1);
 	if (pid == 0)
 	{
 		here_doc_read(minishell, pipe_des, delimiter, i);
-		free_shell(minishell);
-		exit(0);
+		free_child_processes(curr, minishell, 0);
 	}
 	else
 	{
 		input_fd = execute_parent(pid, pipe_des);
 		if (input_fd == -1)
 			return (-1);
-		minishell->input_fd = input_fd;
+		minishell->input_fd = dup(input_fd);
+		safe_close(&input_fd);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:48:39 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/27 22:20:24 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 23:52:07 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,7 @@ int	redirect_output(t_shell *minishell, t_token *curr)
 	if (fd == -1)
 	{
 		minishell->last_return = minishell_error_msg(file_name, errno);
-		exit(1);
+		free_child_processes(minishell->cmd_list, minishell, 1);
 		return (-1);
 	}
 	else if (fd > 0)

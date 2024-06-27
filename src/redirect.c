@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 07:48:39 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/26 17:11:46 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/27 09:40:37 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,11 @@ int	redirect_input(t_shell *minishell, t_token *curr)
 		return (-1);
 	}
 	if (fd > 0)
-		minishell->input_fd = fd;
-	return (fd);
+	{
+		minishell->input_fd = dup(fd);
+		safe_close(&fd);
+	}
+	return (1);
 }
 
 /*int	redirect_input(t_shell *minishell, t_token *curr)
@@ -199,6 +202,9 @@ int	redirect_output(t_shell *minishell, t_token *curr)
 		return (-1);
 	}
 	else if (fd > 0)
-		minishell->output_fd = fd;
-	return (fd);
+	{
+		minishell->output_fd = dup(fd);
+		safe_close(&fd);
+	}
+	return (1);
 }

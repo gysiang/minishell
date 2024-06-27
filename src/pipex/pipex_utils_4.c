@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:23:30 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/27 01:28:58 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 09:46:51 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,23 @@ int	open_file(const char *file, int mode)
 	return (return_fd);
 }
 
-void	restore_fds(int input_fd, int output_fd)
+void	restore_fds(int *input_fd, int *output_fd)
 {
-	if (output_fd != STDOUT_FILENO)
+	if (*output_fd != STDOUT_FILENO)
 	{
-		dup2(output_fd, STDOUT_FILENO);
-		close(output_fd);
+		if (dup2(*output_fd, STDOUT_FILENO) == -1)
+		{
+			perror("dup2 (restore STDOUT)");
+		}
+		safe_close(output_fd);
 	}
-	if (input_fd != STDIN_FILENO)
+	if (*input_fd != STDIN_FILENO)
 	{
-		dup2(input_fd, STDIN_FILENO);
-		close(input_fd);
+		if (dup2(*input_fd, STDIN_FILENO) == -1)
+		{
+			perror("dup2 (restore STDIN)");
+		}
+		safe_close(input_fd);
 	}
 }
 

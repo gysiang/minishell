@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/27 03:20:23 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/27 09:45:30 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,7 +324,7 @@ char				*get_path(char *cmd, t_shell *minishell);
 // pipex (utils_4)
 void				exit_handler(int exit_code);
 int					open_file(const char *file, int mode);
-void				restore_fds(int input_fd, int output_fd);
+void				restore_fds(int *input_fd, int *output_fd);
 void				safe_close(int *fd);
 
 // pipex

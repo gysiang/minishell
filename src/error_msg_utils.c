@@ -46,6 +46,5 @@ void	free_and_exit(t_shell *minishell, int return_value)
 	rl_clear_history();
 	ft_split_free(&minishell->env);
 	ft_lstclear((t_list **)&(minishell->cmd_list), delete_command);
-	//free(minishell->prompt);
 	exit(return_value);
 }

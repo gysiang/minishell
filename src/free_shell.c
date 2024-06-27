@@ -39,10 +39,6 @@ void	free_shell(t_shell *minishell)
 	safe_close(&minishell->prev_fd);
 	safe_close(&minishell->saved_stdin);
 	safe_close(&minishell->saved_stdout);
-	/***
-	if (minishell->prompt && ft_strcmp(minishell->prompt, PROMPT) != 0)
-		free(minishell->prompt);
-	**/
 	free(minishell);
 }
 

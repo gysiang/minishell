@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/27 09:45:30 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 10:17:43 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ typedef struct s_shell
 	char			**env;
 	char			*prompt;
 	t_token			*cmd_list;
+	int				saved_stdin;
+	int				saved_stdout;
 	int				input_fd;
 	int				output_fd;
 	int				prev_fd;

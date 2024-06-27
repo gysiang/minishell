@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/27 09:58:37 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 10:19:25 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,13 @@ char	*read_input_line(t_shell *g_shell)
 void	process_command_line(t_shell *minishell, char *line)
 {
 	t_token	*token_lst;
-	int		saved_stdin;
-	int		saved_stdout;
 
 	if (hist_feature(line, minishell))
 	{
 		return ;
 	}
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
+	minishell->saved_stdin = dup(STDIN_FILENO);
+	minishell->saved_stdout = dup(STDOUT_FILENO);
 	token_lst = token_processor(line, minishell);
 	if (token_lst != NULL)
 		minishell->cmd_list = token_lst;
@@ -57,7 +55,7 @@ void	process_command_line(t_shell *minishell, char *line)
 	free_tokenlst(token_lst);
 	token_lst = NULL;
 	reset_minishell(minishell);
-	restore_fds(&saved_stdin, &saved_stdout);
+	restore_fds(&minishell->saved_stdin, &minishell->saved_stdout);
 }
 
 void	main_loop(t_shell *g_shell)

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 11:06:17 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/27 01:13:47 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 10:18:47 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	minishell_exit(t_shell *minishell, int exit_code)
 		minishell->cmd_list = NULL;
 	}
 	free_shell(minishell);
+	restore_fds(&minishell->saved_stdin, &minishell->saved_stdout);
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	exit(exit_code);
 }

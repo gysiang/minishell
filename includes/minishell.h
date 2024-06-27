@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/27 10:17:43 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 13:00:38 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -419,6 +419,7 @@ int					other_cmds(t_token *curr, t_shell *minishell);
 // free_shell
 void				free_env(char **env);
 void				free_shell(t_shell *minishell);
+void				free_child_processes(t_token *lst, t_shell *minishell, int exit_code);
 
 // history_free
 void				ft_free_history(t_shell *minishell);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_embedded_quotes.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 11:26:28 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/16 22:58:54 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/27 14:04:07 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	process_quote_removal(char *str, int len, t_token *token)
 	int		found_in_between;
 	char	*new_str;
 
-	printf("in emb q\n");
 	first_quote_index = find_first_quote(str, len);
 	if (first_quote_index != -1)
 	{
@@ -67,4 +66,5 @@ void	remove_embedded_quotes(t_token *token)
 	}
 	new_str[j] = '\0';
 	update_token_if_needed(token, new_str);
+	//free(new_str);
 }

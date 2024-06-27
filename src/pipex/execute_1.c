@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/26 22:15:40 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 10:32:29 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	execute_builtin_in_child(t_token *curr, t_shell *minishell)
 void	execute_builtin_or_exec(t_token *curr, t_shell *minishell)
 {
 	if (minishell->prev_fd != 1)
-		close(minishell->prev_fd);
+		safe_close(&minishell->prev_fd);
 	if (check_builtin(curr->token))
 	{
 		if (ft_strcmp(curr->token, "exit") == 0)
@@ -88,6 +88,6 @@ void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 	{
 		minishell->process_ids[minishell->process_count++] = pid;
 		if (minishell->prev_fd != -1)
-			close(minishell->prev_fd);
+			safe_close(&minishell->prev_fd);
 	}
 }

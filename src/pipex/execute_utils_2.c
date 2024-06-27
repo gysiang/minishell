@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 00:41:23 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/26 17:15:13 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/27 10:33:35 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	load_previous_fd_to_stdin(t_shell *minishell)
 	if (minishell->prev_fd != -1)
 	{
 		dup2(minishell->prev_fd, STDIN_FILENO);
-		close(minishell->prev_fd);
+		safe_close(&minishell->prev_fd);
 	}
 }
 
@@ -26,7 +26,7 @@ void	load_previous_fd_to_stdout(t_shell *minishell)
 	if (minishell->prev_fd != -1)
 	{
 		dup2(minishell->prev_fd, STDOUT_FILENO);
-		close(minishell->prev_fd);
+		safe_close(&minishell->prev_fd);
 	}
 }
 

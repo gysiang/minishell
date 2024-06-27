@@ -100,7 +100,7 @@ typedef struct s_shell
 	int				prev_fd;
 	pid_t			process_ids[100];
 	int				process_count;
-	int last_return ;
+	int				last_return ;
 	int				flag;
 	int				redir_no;
 	int				signal_received;
@@ -419,7 +419,8 @@ int					other_cmds(t_token *curr, t_shell *minishell);
 // free_shell
 void				free_env(char **env);
 void				free_shell(t_shell *minishell);
-void				free_child_processes(t_token *lst, t_shell *minishell, int exit_code);
+void				free_child_processes(t_token *lst, t_shell *minishell,
+						int exit_code);
 
 // history_free
 void				ft_free_history(t_shell *minishell);

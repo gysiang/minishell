@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/26 17:46:09 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/27 10:30:26 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	handle_single_redirection(t_shell *minishell, t_token *curr)
 		if (result == -1)
 			return (-1);
 		dup2(minishell->input_fd, STDIN_FILENO);
-		close(minishell->input_fd);
+		safe_close(&minishell->input_fd);
 	}
 	else if (curr->type == T_GREATER_THAN || curr->type == T_RIGHT_SHIFT)
 	{
@@ -31,7 +31,7 @@ static int	handle_single_redirection(t_shell *minishell, t_token *curr)
 		if (result == -1)
 			return (-1);
 		dup2(minishell->output_fd, STDOUT_FILENO);
-		close(minishell->output_fd);
+		safe_close(&minishell->output_fd);
 	}
 	return (1);
 }

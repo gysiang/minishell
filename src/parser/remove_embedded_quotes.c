@@ -3,23 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   remove_embedded_quotes.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 11:26:28 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/27 14:04:07 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 22:21:47 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	update_token_if_needed(t_token *token, char *new_str)
+void update_token_if_needed(t_token *token, char *new_str)
 {
-	if (new_str != NULL)
-	{
+	if (token->token)
 		free(token->token);
-		token->token = NULL;
-		token->token = new_str;
-	}
+	token->token = new_str;
 }
 
 void	process_quote_removal(char *str, int len, t_token *token)
@@ -50,21 +47,24 @@ void	process_quote_removal(char *str, int len, t_token *token)
 void	remove_embedded_quotes(t_token *token)
 {
 	char	*new_str;
+	char	*line;
 	int		i;
 	int		j;
 
-	new_str = malloc(ft_strlen(token->token) + 1);
-	if (!new_str)
-		return ;
 	i = 0;
 	j = 0;
-	while (token->token[i])
+	line = token->token;
+	new_str = malloc(ft_strlen(line) + 1);
+	while (line[i])
 	{
-		if (token->token[i] != '\'' && token->token[i] != '\"')
-			new_str[j++] = token->token[i];
+		if (line[i] != '\'' && line[i] != '\"')
+			new_str[j++] = line[i];
 		i++;
 	}
 	new_str[j] = '\0';
-	update_token_if_needed(token, new_str);
-	//free(new_str);
+	if (token->token)
+	{
+		free(token->token);
+	}
+	token->token = new_str;
 }

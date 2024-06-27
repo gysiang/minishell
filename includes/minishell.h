@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/27 13:00:38 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 21:38:47 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_shell
 	pid_t			process_ids[100];
 	int				process_count;
 	int				last_return ;
+	int				inside_quote;
 	int				flag;
 	int				redir_no;
 	int				signal_received;
@@ -223,10 +224,10 @@ void				parse_value(t_token *token_lst, t_shell *minishell);
 // parser_utils
 void				handle_character(char **command, char *input,
 						int *inside_quote, int i);
-int					handle_unclosed_quote(t_shell *minishell, char **command,
-						int *inside_quote);
-void				process_input(char **command, char *input,
-						int *inside_quote, t_shell *minishell);
+int					handle_unclosed_quote(t_token *curr, t_shell *minishell,
+						char **command);
+void				process_input(t_token *curr, char **command, char *input,
+						t_shell *minishell);
 void				finalize_command(t_token *token, char *command);
 void				parse_unclosed(t_token *token, t_shell *minishell);
 
@@ -449,7 +450,7 @@ void				error_eof(char *end_of_file, int i);
 
 // redirect
 int					execute_parent(int pid, int *pipe_des);
-int					here_doc(t_shell *minishell, char *delimiter, int i);
+int					here_doc(t_token *curr, t_shell *minishell, char *delimiter, int i);
 int					redirect_input(t_shell *minishell, t_token *curr);
 int					redirect_output(t_shell *minishell, t_token *curr);
 int					check_redirect_file(t_token *curr);

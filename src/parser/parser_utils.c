@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:33:08 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/17 14:40:38 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/27 22:21:56 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,22 @@ void	handle_character(char **command, char *input, int *inside_quote, int i)
 	ft_strncat(*command, &input[i], 1);
 }
 
-int	handle_unclosed_quote(t_shell *minishell, char **command, int *inside_quote)
+int	handle_unclosed_quote(t_token *curr, t_shell *minishell, char **command)
 {
 	char	*delimiter;
 
 	delimiter = "\"";
-	if (here_doc(minishell, delimiter, 2) == -1)
+	if (here_doc(curr, minishell, delimiter, 2) == -1)
 	{
 		ft_putstr_fd("Error in here_doc\n", STDERR_FILENO);
 		free(*command);
 		return (-1);
 	}
-	*inside_quote = 0;
+	minishell->inside_quote = 0;
 	return (0);
 }
 
-void	process_input(char **command, char *input, int *inside_quote,
+void	process_input(t_token *curr, char **command, char *input,
 		t_shell *minishell)
 {
 	int	len;
@@ -45,15 +45,15 @@ void	process_input(char **command, char *input, int *inside_quote,
 
 	len = ft_strlen(input);
 	i = 0;
-	while (i < len || *inside_quote)
+	while (i < len || minishell->inside_quote)
 	{
 		if (i < len)
 		{
-			handle_character(command, input, inside_quote, i);
+			handle_character(command, input, &minishell->inside_quote, i);
 		}
-		if (*inside_quote && i == len - 1)
+		if (minishell->inside_quote && i == len - 1)
 		{
-			if (handle_unclosed_quote(minishell, command, inside_quote) == -1)
+			if (handle_unclosed_quote(curr, minishell, command) == -1)
 				return ;
 		}
 		i++;
@@ -74,12 +74,11 @@ void	finalize_command(t_token *token, char *command)
 void	parse_unclosed(t_token *token, t_shell *minishell)
 {
 	char	*command;
-	int		inside_quote;
 
 	command = ft_strdup("");
-	inside_quote = 0;
+	minishell->inside_quote = 0;
 	minishell->flag = 0;
-	process_input(&command, token->token, &inside_quote, minishell);
+	process_input(token, &command, token->token, minishell);
 	finalize_command(token, command);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 15:22:18 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/27 09:40:09 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/27 12:26:29 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	free_shell(t_shell *minishell)
 	safe_close(&minishell->input_fd);
 	safe_close(&minishell->output_fd);
 	safe_close(&minishell->prev_fd);
+	safe_close(&minishell->saved_stdin);
+	safe_close(&minishell->saved_stdout);
 	if (minishell->prompt && ft_strcmp(minishell->prompt, PROMPT) != 0)
 		free(minishell->prompt);
 	free(minishell);

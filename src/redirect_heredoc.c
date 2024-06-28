@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 21:03:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/15 13:03:52 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:32:47 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ static void	here_doc_read(t_shell *minishell, int *pipe_fds,
 		}
 	}
 	free(str);
-	close(pipe_fds[1]);
+	safe_close(&pipe_fds[0]);
+	safe_close(&pipe_fds[1]);
 }
 
 int	execute_parent(int pid, int *pipe_des)
@@ -85,14 +86,15 @@ int	here_doc(t_shell *minishell, char *delimiter, int i)
 	if (pid == 0)
 	{
 		here_doc_read(minishell, pipe_des, delimiter, i);
-		exit(0);
+		free_child_processes(minishell->cmd_list, minishell, 0);
 	}
 	else
 	{
 		input_fd = execute_parent(pid, pipe_des);
 		if (input_fd == -1)
 			return (-1);
-		minishell->input_fd = input_fd;
+		minishell->input_fd = dup(input_fd);
+		safe_close(&input_fd);
 	}
 	return (0);
 }

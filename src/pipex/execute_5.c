@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_5.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:10:53 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/26 19:57:07 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/28 23:54:43 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	handle_redir_child_process(t_token *curr, t_shell *minishell)
 		&& check_redirection_type(curr->next))
 	{
 		minishell->redir_no += 1;
-		handle_redirection(minishell, curr->next);
+		handle_single_redirection(minishell, curr->next);
 		if (curr->next->next != NULL)
 			curr = curr->next->next;
 		else
@@ -65,7 +65,7 @@ t_token	*execute_with_redir(t_token *curr, t_shell *minishell)
 	if (pipe == 0 && num_of_redir <= 3)
 		execute_command_with_redir(curr, minishell);
 	else
-		execute_redirection_with_pipe(curr, minishell);
+		execute_pipeline(curr, minishell);
 	curr = update_curr_pointer(curr, minishell->redir_no, i);
 	return (curr);
 }

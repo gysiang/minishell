@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 19:45:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/26 19:46:30 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/28 22:38:37 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	execute_single_command(t_token *curr, t_shell *minishell)
 		load_previous_fd_to_stdin(minishell);
 		handle_redirection(minishell, curr->next);
 		exec_cmd(curr, minishell);
+		//free_child_processes(minishell->cmd_list, minishell, minishell->last_return);
 	}
 	else
 	{

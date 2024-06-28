@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/27 03:27:28 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/28 16:18:01 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	initialize_shell(t_shell **minishell, char **envp)
 
 void	cleanup(t_shell *g_shell)
 {
-	ft_free_history(g_shell);
-	free_shell(g_shell);
 	rl_clear_history();
+	free_shell(g_shell);
 }

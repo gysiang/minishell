@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 19:30:03 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/26 19:46:18 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/28 23:19:59 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ void	setup_child_process(int *pipe_fd, t_shell *minishell)
 	signal(SIGPIPE, SIG_IGN);
 	load_previous_fd_to_stdin(minishell);
 	dup2(pipe_fd[1], STDOUT_FILENO);
-	close(pipe_fd[1]);
-	close(pipe_fd[0]);
+	safe_close(&pipe_fd[1]);
+	safe_close(&pipe_fd[0]);
 }
 
 void	handle_redirections(t_token *curr, t_shell *minishell)
@@ -45,9 +45,9 @@ void	parent_process(int pid, int *pipe_fd, t_shell *minishell)
 {
 	minishell->process_ids[minishell->process_count++] = pid;
 	if (minishell->prev_fd != -1)
-		close(minishell->prev_fd);
+		safe_close(&minishell->prev_fd);
 	minishell->prev_fd = pipe_fd[0];
-	close(pipe_fd[1]);
+	safe_close(&pipe_fd[1]);
 }
 
 void	execute_pipeline(t_token *curr, t_shell *minishell)
@@ -55,11 +55,26 @@ void	execute_pipeline(t_token *curr, t_shell *minishell)
 	int	pipe_fd[2];
 	int	pid;
 
+	//printf("execute_pipeline\n");
 	if (pipe(pipe_fd) == -1)
 		exit(EXIT_FAILURE);
 	pid = fork();
 	if (pid == 0)
-		child_process(curr, pipe_fd, minishell);
+	{
+		signal(SIGPIPE, SIG_IGN);
+		load_previous_fd_to_stdin(minishell);
+		dup2(pipe_fd[1], STDOUT_FILENO);
+		safe_close(&pipe_fd[1]);
+		safe_close(&pipe_fd[0]);
+		handle_redirections(curr, minishell);
+		execute_builtin_or_exec_exit(curr, minishell);
+	}
 	else
-		parent_process(pid, pipe_fd, minishell);
+	{
+		minishell->process_ids[minishell->process_count++] = pid;
+		if (minishell->prev_fd != -1)
+			safe_close(&minishell->prev_fd);
+		minishell->prev_fd = pipe_fd[0];
+		safe_close(&pipe_fd[1]);
+	}
 }

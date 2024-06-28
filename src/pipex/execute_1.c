@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/28 22:46:02 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/28 23:22:10 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	execute_builtin_or_exec_exit(t_token *curr, t_shell *minishell)
 		execute_builtin_1(curr, minishell);
 		execute_builtin_2(curr, minishell);
 		other_cmds(curr, minishell);
-		//exit(0);
 		free_child_processes(minishell->cmd_list, minishell, 0);
 	}
 	else
@@ -40,7 +39,7 @@ static void	execute_builtin_in_child(t_token *curr, t_shell *minishell)
 	if (pid == 0)
 	{
 		execute_builtin_1(curr, minishell);
-		exit(0);
+		free_child_processes(minishell->cmd_list, minishell, 0);
 	}
 	else if (pid > 0)
 		minishell->process_ids[minishell->process_count++] = pid;
@@ -55,6 +54,7 @@ void	execute_builtin_or_exec(t_token *curr, t_shell *minishell)
 {
 	if (minishell->prev_fd != 1)
 		safe_close(&minishell->prev_fd);
+	//printf("execute_builtin_or_exec\n");
 	if (check_builtin(curr->token))
 	{
 		if (ft_strcmp(curr->token, "exit") == 0)

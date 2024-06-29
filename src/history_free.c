@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 02:53:36 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/27 03:27:33 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/29 10:18:18 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,5 @@ void	add_to_history(t_shell *minishell, const char *line)
 		return ;
 	}
 	minishell->history->count++;
+	add_history(line);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/28 23:22:10 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/29 11:32:11 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	execute_builtin_or_exec(t_token *curr, t_shell *minishell)
 {
 	if (minishell->prev_fd != 1)
 		safe_close(&minishell->prev_fd);
-	//printf("execute_builtin_or_exec\n");
 	if (check_builtin(curr->token))
 	{
 		if (ft_strcmp(curr->token, "exit") == 0)

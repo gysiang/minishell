@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/27 10:33:59 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/29 11:24:37 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	minishell_echo(t_token *curr, t_shell *minishell)
 	current = curr;
 	if (current && ft_strcmp(current->token, "echo") == 0)
 		current = current->next;
-	if (current && ft_strcmp(current->token, "-n") == 0)
+	while (current && ft_strcmp(current->token, "-n") == 0)
 	{
 		newline = 0;
 		current = current->next;

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:10:31 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/29 17:41:39 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/29 17:48:30 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,22 @@ void	env_realloc(t_shell *minishell)
 
 void	print_vars(t_shell *minishell)
 {
-	int	i;
+	int		i;
+	char	*eq_sign;
 
 	i = 0;
 	sort_env(minishell);
 	while (i < env_len(minishell))
 	{
-		printf("declare -x %s\n",  minishell->env[i]);
+		eq_sign = ft_strchr(minishell->env[i], '=');
+		if (eq_sign)
+		{
+			*eq_sign = '\0';
+			printf("declare -x %s=\"%s\"\n", minishell->env[i], eq_sign + 1);
+			*eq_sign = '=';
+		}
+		else
+			printf("declare -x %s\n", minishell->env[i]);
 		i++;
 	}
 }

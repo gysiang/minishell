@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_4.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 19:50:26 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/28 23:47:45 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/29 11:32:31 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ void	child_process_for_redirection(t_token *curr, int *pipe_fd,
 		t_shell *minishell)
 {
 	setup_child_for_redirection(pipe_fd, minishell);
-	//if (handle_child_redirection_process(curr, pipe_fd, minishell) == -1)
-	//	exit(minishell->last_return);
 	handle_redirections(curr, minishell);
 	execute_builtin_or_exec_exit(curr, minishell);
 }

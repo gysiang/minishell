@@ -36,7 +36,8 @@ SRC_FILES := main.c \
                 redirect_heredoc.c \
 				redirect_heredoc1.c \
 				redirect_heredoc2.c \
-                redirect.c \
+                redirect_input.c \
+				redirect_output.c \
                 shell.c \
                 signals.c \
                 sutils_1.c \

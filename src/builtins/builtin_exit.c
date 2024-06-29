@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyongsi@student.42.fr>           +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 11:06:17 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/27 12:26:06 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/29 11:40:56 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	minishell_exit(t_shell *minishell, int exit_code)
 		free_tokenlst(minishell->cmd_list);
 		minishell->cmd_list = NULL;
 	}
+	safe_close(&minishell->saved_stdin);
+	safe_close(&minishell->saved_stdout);
 	free_shell(minishell);
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	exit(exit_code);

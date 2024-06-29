@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/28 23:56:02 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/29 11:40:58 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
-# include <stdio.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/stat.h>
@@ -330,7 +330,8 @@ void				restore_fds(int *input_fd, int *output_fd);
 void				safe_close(int *fd);
 
 // pipex
-int					handle_single_redirection(t_shell *minishell, t_token *curr);
+int					handle_single_redirection(t_shell *minishell,
+						t_token *curr);
 int					handle_redirection(t_shell *minishell, t_token *curr);
 t_token				*handle_builtins(t_token *curr, t_shell *minishell);
 void				pipex(t_shell *minishell);
@@ -451,9 +452,18 @@ void				error_eof(char *end_of_file, int i);
 // redirect
 int					execute_parent(int pid, int *pipe_des);
 int					here_doc(t_shell *minishell, char *delimiter, int i);
-int					redirect_input(t_shell *minishell, t_token *curr);
-int					redirect_output(t_shell *minishell, t_token *curr);
 int					check_redirect_file(t_token *curr);
+
+// redirect_input
+int					open_input(char *file_name);
+int					check_redirect_file(t_token *curr);
+int					handle_input_redirection(t_shell *minishell, int type,
+						char *file_name);
+int					redirect_input(t_shell *minishell, t_token *curr);
+
+// redirect_output
+int					open_output(char *file_name, int type);
+int					redirect_output(t_shell *minishell, t_token *curr);
 
 // shell
 t_shell				*init_shell(void);

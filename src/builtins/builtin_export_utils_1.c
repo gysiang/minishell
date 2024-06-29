@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 12:10:31 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/13 12:40:14 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/29 17:41:39 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,10 @@ void	print_vars(t_shell *minishell)
 	int	i;
 
 	i = 0;
+	sort_env(minishell);
 	while (i < env_len(minishell))
 	{
-		printf("Variable %d: %s\n", i, minishell->env[i]);
+		printf("declare -x %s\n",  minishell->env[i]);
 		i++;
 	}
 }

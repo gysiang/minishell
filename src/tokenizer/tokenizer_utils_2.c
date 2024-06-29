@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:13:57 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/17 17:26:42 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/29 18:43:45 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,26 +52,6 @@ void	append_rest_of_line(char **line, char *result, t_token **token_lst)
 	token_add_back(token_lst, result, T_IDENTIFIER);
 	free(result);
 }
-
-/*static void	append_rest_of_line(char **line, char *result,
-		t_token **token_lst)
-{
-	size_t	current_length;
-	char	*expanded;
-	char	*result;
-	int		var_len;
-
-	while (**line && !ft_iswhitespace(*line) && **line != '$' && **line != '\''
-		&& **line != '\"')
-	{
-		current_length = ft_strlen(result);
-		result = ft_realloc(result, current_length + 2);
-		ft_strncat(result, *line, 1);
-		(*line)++;
-	}
-	token_add_back(token_lst, result, T_IDENTIFIER);
-	free(result);
-}*/
 
 void	handle_special_case(char **line, t_token **token_lst,
 		t_shell *minishell)

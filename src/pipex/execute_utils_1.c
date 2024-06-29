@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/26 17:37:11 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/29 19:37:49 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,13 @@ void	exec_cmd(t_token *curr, t_shell *minishell)
 		ft_free_tab(s_cmd);
 		return ;
 	}
-	if (execve(path, s_cmd, minishell->env) == -1)
+	 if (ft_strncmp(curr->token, "expr ", 5) == 0)
+    {
+        char **args = ft_split(curr->token, ' ');
+        execve("/usr/bin/expr", args, minishell->env);
+        ft_free_tab(args);
+    }
+    else if (execve(path, s_cmd, minishell->env) == -1)
 		handle_execve_failure(s_cmd, minishell, errno);
 	ft_free_tab(s_cmd);
 }

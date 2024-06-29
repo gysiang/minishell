@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:54:35 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/23 16:02:51 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/29 19:32:18 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,19 @@ void	parse_value(t_token *token_lst, t_shell *minishell)
 	}
 }
 
+void handle_expr_exit_status_token(t_token *curr, t_shell *minishell)
+{
+    char *expanded_expr = ft_strdup("expr ");
+    char *exit_status_str = ft_itoa(minishell->last_return);
+    
+    expanded_expr = ft_strjoin_free(&expanded_expr, exit_status_str);
+    expanded_expr = ft_strjoin_free(&expanded_expr, " + ");
+    expanded_expr = ft_strjoin_free(&expanded_expr, exit_status_str);
+    
+    free(curr->token);
+    curr->token = expanded_expr;
+    free(exit_status_str);
+}
 /*void	parse_value(t_token *token_lst, t_shell *minishell)
 {
 	t_token	*curr;

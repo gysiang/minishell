@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:02:34 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/17 17:04:01 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/29 21:28:18 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	*get_path(char *cmd, t_shell *minishell)
 
 	(void)minishell;
 	i = -1;
-	all_path = ft_split(getenv("PATH"), ':');
+	all_path = ft_split(get_env_value(minishell, "PATH", 0), ':');
 	s_cmd = ft_split(cmd, ' ');
 	while (all_path[++i])
 	{

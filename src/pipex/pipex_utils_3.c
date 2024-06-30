@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:02:34 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/29 23:02:23 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/30 15:08:56 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,13 @@ char	*get_path(char *cmd, t_shell *minishell)
 	char	*path_part;
 	char	**all_path;
 	char	**s_cmd;
+	char	*env_val;
 
 	(void)minishell;
 	i = -1;
-	all_path = ft_split(get_env_value(minishell, "PATH", 1), ':');
-	i = -1;
+	env_val = get_env_value(minishell, "PATH", 1);
+	all_path = ft_split(env_val, ':');
+	free(env_val);
 	s_cmd = ft_split(cmd, ' ');
 	while (all_path[++i])
 	{

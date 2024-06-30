@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/29 16:31:59 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/30 14:53:52 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ char	*read_input_line(t_shell *g_shell)
 		if (*trimmed_line != '\0')
 			return (line);
 		free(line);
-		rl_replace_line("", 0);
-		rl_on_new_line();
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:09:33 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/16 11:31:52 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/30 20:25:24 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,42 +35,6 @@ char	*get_env_value(t_shell *minishell, const char *var, int return_empty)
 	return (NULL);
 }
 
-/*char	*get_env_value(t_shell *minishell, const char *var)
-{
-	int		i;
-	size_t	var_len;
-	int		i;
-	size_t	var_len;
-	int		i;
-
-	var_len = ft_strlen(var);
-	i = 0;
-	while (minishell->env[i])
-	{
-		if (ft_strncmp(minishell->env[i], var, var_len) == 0
-			&& minishell->env[i][var_len] == '=')
-		{
-			return (ft_strdup(&minishell->env[i][var_len + 1]));
-		}
-		i++;
-	}
-	return (ft_strdup(""));
-}*/
-// If return NULL, it will output echo $ as $ but will also output echo $TEST
-// as $TEST
-/*char	*get_env_value(t_shell *minishell, const char *var)
-{
-	var_len = ft_strlen(var);
-	i = 0;
-	while (minishell->env[i])
-	{
-		if (ft_strncmp(minishell->env[i], var, var_len) == 0
-			&& minishell->env[i][var_len] == '=')
-			return (ft_strdup(&minishell->env[i][var_len + 1]));
-		i++;
-	}
-	return (NULL);
-}*/
 int	env_len(t_shell *minishell)
 {
 	int	i;

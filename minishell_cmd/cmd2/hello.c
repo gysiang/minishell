@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   hello.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 20:54:24 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/29 20:54:25 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/30 20:10:36 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 
-int main()
+int	main(void)
 {
 	printf("hello from cmd2\n");
 	return (0);

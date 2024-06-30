@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:33:08 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/17 14:40:38 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/30 20:25:25 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,50 +82,3 @@ void	parse_unclosed(t_token *token, t_shell *minishell)
 	process_input(&command, token->token, &inside_quote, minishell);
 	finalize_command(token, command);
 }
-
-/*static void	parse_unclosed(t_token *token, t_shell *minishell)
-{
-	char	*input;
-	char	*command;
-	int		inside_quote;
-	int		len;
-	int		i;
-	char	*trimmed_command;
-	char 	*delimiter;
-
-	i = 0;
-	input = token->token;
-	len = ft_strlen(input);
-	command = ft_strdup("");
-	inside_quote = 0;
-	minishell->flag = 0;
-	while (i < len || inside_quote)
-	{
-		if (i < len)
-		{
-			if (input[i] == '"')
-			{
-				inside_quote = !inside_quote;
-				command = ft_realloc(command, ft_strlen(command) + 2);
-				ft_strncat(command, &input[i], 1);
-			}
-		}
-		if (inside_quote && i == len - 1)
-		{
-			delimiter = "\"";
-			if (here_doc(minishell, delimiter, 2) == -1)
-			{
-				fprintf(stderr, "Error in here_doc\n");
-				free(command);
-				return ;
-			}
-			inside_quote = 0;
-		}
-		i++;
-	}
-	trimmed_command = ft_strtrim(command, "\"");
-	free(command);
-	free(token->token);
-	token->token = ft_strdup(trimmed_command);
-	free(trimmed_command);
-}*/

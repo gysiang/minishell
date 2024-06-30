@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/29 21:28:16 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/30 20:16:58 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,10 @@ void				minishell_pwd(void);
 // builtin_unset
 int					search_env(t_shell *minishell, char *var);
 int					minishell_unset(t_shell *minishell);
+
+// parser(handle_expr)
+void				handle_expr_exit_status_token(t_token *curr,
+						t_shell *minishell);
 
 // parser(join_tokens)
 char				*concat_token(const char *token1, const char *token2);
@@ -380,6 +384,10 @@ int					ft_isbackslash(char *line);
 int					ft_issemicolon(char *line);
 char				*ft_copy(char *dest, const char *src, size_t n);
 char				*ft_strcat(char *dest, const char *src);
+
+// tokenizer (tokenizer_utils_6)
+int					is_expr_exit_status(const char *str);
+void				handle_expr_exit_status(char **line, t_token **token_lst);
 
 // tokenizer
 void				add_literal_quote_to_token_list(char quote_type,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 19:45:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/29 16:26:02 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/06/30 20:19:25 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,27 @@ int	handle_numeric_command(t_token *curr, t_shell *minishell)
 	return (0);
 }
 
+static void	handle_child_process(t_token *curr, t_shell *minishell)
+{
+	signal(SIGPIPE, SIG_IGN);
+	signal(SIGINT, SIG_DFL);
+	load_previous_fd_to_stdin(minishell);
+	exec_cmd(curr, minishell);
+	free_child_processes(minishell->cmd_list, minishell,
+		minishell->last_return);
+}
+
+static void	handle_parent_process(t_shell *minishell, int pid)
+{
+	if (minishell->signal_received == 1)
+		signal(SIGINT, SIG_IGN);
+	else
+		signal(SIGINT, sigint_handler1);
+	minishell->process_ids[minishell->process_count++] = pid;
+	if (minishell->prev_fd != -1)
+		close(minishell->prev_fd);
+}
+
 void	execute_single_command(t_token *curr, t_shell *minishell)
 {
 	int	pid;
@@ -35,22 +56,7 @@ void	execute_single_command(t_token *curr, t_shell *minishell)
 	if (!ft_strcmp(curr->token, "./minishell"))
 		minishell->signal_received = 1;
 	if (pid == 0)
-	{
-		signal(SIGPIPE, SIG_IGN);
-		signal(SIGINT, SIG_DFL);
-		load_previous_fd_to_stdin(minishell);
-		exec_cmd(curr, minishell);
-		free_child_processes(minishell->cmd_list, minishell,
-			minishell->last_return);
-	}
+		handle_child_process(curr, minishell);
 	else
-	{
-		if (minishell->signal_received == 1)
-			signal(SIGINT, SIG_IGN);
-		else
-			signal(SIGINT, sigint_handler1);
-		minishell->process_ids[minishell->process_count++] = pid;
-		if (minishell->prev_fd != -1)
-			close(minishell->prev_fd);
-	}
+		handle_parent_process(minishell, pid);
 }

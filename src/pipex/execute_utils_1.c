@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/29 21:28:24 by axlee            ###   ########.fr       */
+/*   Updated: 2024/06/30 20:14:30 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,19 @@ static void	handle_execve_failure(char **s_cmd, t_shell *minishell,
 	exit(return_code);
 }
 
-// NEED TO TRIM DOWN
+static void	handle_expr_command(t_token *curr, t_shell *minishell)
+{
+	char	**args;
+
+	args = ft_split(curr->token, ' ');
+	execve("/usr/bin/expr", args, minishell->env);
+	ft_free_tab(args);
+}
+
 void	exec_cmd(t_token *curr, t_shell *minishell)
 {
 	char	**s_cmd;
 	char	*path;
-	char	**args;
 
 	if (check_command(curr->token, minishell))
 		return ;
@@ -88,11 +95,7 @@ void	exec_cmd(t_token *curr, t_shell *minishell)
 		return ;
 	}
 	if (ft_strncmp(curr->token, "expr ", 5) == 0)
-	{
-		args = ft_split(curr->token, ' ');
-		execve("/usr/bin/expr", args, minishell->env);
-		ft_free_tab(args);
-	}
+		handle_expr_command(curr, minishell);
 	else if (execve(path, s_cmd, minishell->env) == -1)
 		handle_execve_failure(s_cmd, minishell, errno);
 	ft_free_tab(s_cmd);

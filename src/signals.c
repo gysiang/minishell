@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:33:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/01 21:44:22 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/01 21:56:03 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,7 @@ void	sigint_handler1(int signal)
 
 void	sigquit_handler(int signal)
 {
-	if (signal == SIGQUIT)
-	{
-		ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-	}
+	(void)signal;
 }
 
 void	setup_signal_handler(void)
@@ -54,7 +49,7 @@ void	setup_signal_handler(void)
 
 void	sigpipe_handler(int signal)
 {
-	(void) signal;
+	(void)signal;
 	ft_putstr_fd("Broken pipe", 2);
 	exit(1);
 }

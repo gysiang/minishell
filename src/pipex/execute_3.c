@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 19:45:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/01 21:46:12 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/01 21:56:43 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	execute_single_command(t_token *curr, t_shell *minishell)
 	}
 	else if (pid > 0)
 	{
-		signal(SIGQUIT, sigquit_handler);
+		signal(SIGQUIT, SIG_IGN);
 		handle_parent_process(minishell, pid);
 	}
 	else

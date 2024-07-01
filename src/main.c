@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/30 14:53:52 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/01 21:57:07 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	main_loop(t_shell *g_shell)
 
 	while (!g_shell->end)
 	{
+		signal(SIGQUIT, SIG_IGN);
 		line = read_input_line(g_shell);
 		if (line == NULL)
 		{

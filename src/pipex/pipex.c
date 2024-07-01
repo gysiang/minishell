@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/01 14:17:36 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/01 21:57:38 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,16 @@ static int	wait_for_all_commands(t_shell *minishell)
 		waitpid(minishell->process_ids[i], &status, 0);
 		if (WIFEXITED(status))
 			minishell->last_return = WEXITSTATUS(status);
-		else
+		else if (WIFSIGNALED(status))
 		{
-			minishell->last_return = 1;
-			minishell->end = TRUE;
+			if (WTERMSIG(status) == SIGQUIT)
+				ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+			minishell->last_return = 128 + WTERMSIG(status);
 		}
 		i++;
 	}
 	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigquit_handler);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 15:05:01 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/01 13:46:50 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/01 14:53:17 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,21 @@ static int	process_export_tokens(t_token *current, t_shell *minishell)
 
 static void	execute_export_to_file(t_shell *minishell, const char *filename)
 {
-	int tmp_file;
-	int saved_stdout;
+	int	tmp_file;
+	int	saved_stdout;
 
 	saved_stdout = dup(STDOUT_FILENO);
 	tmp_file = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0600);
 	if (tmp_file == -1)
 	{
 		perror("open");
-		return;
+		return ;
 	}
 	if (dup2(tmp_file, STDOUT_FILENO) == -1)
 	{
 		perror("dup2");
 		close(tmp_file);
-		return;
+		return ;
 	}
 	print_vars(minishell);
 	if (dup2(saved_stdout, STDOUT_FILENO) == -1)
@@ -59,7 +59,7 @@ static void	execute_export_to_file(t_shell *minishell, const char *filename)
 
 int	minishell_export(t_shell *minishell)
 {
-	t_token *current;
+	t_token	*current;
 
 	if (!minishell || !minishell->cmd_list)
 	{

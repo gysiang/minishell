@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 19:30:03 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/30 20:09:45 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/01 12:37:02 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	execute_pipeline(t_token *curr, t_shell *minishell)
 	int	pipe_fd[2];
 	int	pid;
 
+	printf("execute_pipeline\n");
 	if (pipe(pipe_fd) == -1)
 		exit(EXIT_FAILURE);
 	pid = fork();

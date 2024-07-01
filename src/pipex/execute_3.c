@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 19:45:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/01 21:56:43 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/01 22:11:14 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	execute_single_command(t_token *curr, t_shell *minishell)
 	if (handle_numeric_command(curr, minishell))
 		return ;
 	pid = fork();
+	if (!ft_strcmp(curr->token, "./minishell"))
+		minishell->signal_received = 1;
 	if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);

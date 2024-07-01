@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/01 13:47:30 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/01 14:17:36 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ t_token	*handle_builtins(t_token *curr, t_shell *minishell)
 		execute_builtin_or_exec(curr, minishell);
 	else if (num_of_pipe == 0 && (index > 0))
 		execute_with_redirection(curr, minishell, index);
-	else if (num_of_pipe == 1 && !ft_strcmp(curr->token, "export"))
+	else if (!ft_strcmp(curr->token, "export") && curr->next->type == T_PIPE)
 		execute_builtin_or_exec(curr, minishell);
 	else
 		execute_pipeline(curr, minishell);

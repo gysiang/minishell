@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:33:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/26 22:07:00 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/01 21:44:22 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ void	sigquit_handler(int signal)
 {
 	if (signal == SIGQUIT)
 	{
-		(void)signal;
+		ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 		rl_on_new_line();
+		rl_replace_line("", 0);
 	}
 }
 
@@ -41,12 +42,12 @@ void	setup_signal_handler(void)
 {
 	if (signal(SIGINT, sigint_handler) == SIG_ERR)
 	{
-		ft_putstr_fd("signal", 2);
+		ft_putstr_fd("Failed to set SIGINT handler\n", STDERR_FILENO);
 		exit(1);
 	}
-	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+	if (signal(SIGQUIT, sigquit_handler) == SIG_ERR)
 	{
-		ft_putstr_fd("signal", 2);
+		ft_putstr_fd("Failed to set SIGQUIT handler\n", STDERR_FILENO);
 		exit(1);
 	}
 }

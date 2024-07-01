@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/01 14:17:36 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/01 21:44:31 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static int	wait_for_all_commands(t_shell *minishell)
 		i++;
 	}
 	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigquit_handler);
 	return (1);
 }
 

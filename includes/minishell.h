@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/30 20:16:58 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/03 00:17:36 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,7 +260,7 @@ void				free_and_replace_token(t_token *token, char *new_str);
 int					check_command(char *cmd, t_shell *minishell);
 char				**get_command_array(char *cmd, t_shell *minishell);
 char				*get_command_path(char **s_cmd, t_shell *minishell);
-void				exec_cmd(t_token *curr, t_shell *minishell);
+int					exec_cmd(t_token *curr, t_shell *minishell);
 
 // pipex (execute_utils1)
 void				load_previous_fd_to_stdin(t_shell *minishell);
@@ -272,8 +272,7 @@ void				execute_single_command(t_token *curr, t_shell *minishell);
 void				execute_pipeline(t_token *curr, t_shell *minishell);
 void				execute_with_redirection(t_token *token, t_shell *minishell,
 						int index);
-void				execute_builtin_or_exec_exit(t_token *curr,
-						t_shell *minishell);
+int					execute_builtin_or_exec_exit(t_token *curr, t_shell *minishell);
 void				execute_builtin_or_exec(t_token *curr, t_shell *minishell);
 
 // pipex (execute_2)

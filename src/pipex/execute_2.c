@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 19:30:03 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/01 14:14:54 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/03 00:53:25 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,11 @@ void	parent_process(int pid, int *pipe_fd, t_shell *minishell)
 void	execute_pipeline(t_token *curr, t_shell *minishell)
 {
 	int	pipe_fd[2];
+	int	status_pipe[2];
 	int	pid;
+	int	exec_status;
 
-	if (pipe(pipe_fd) == -1)
+	if (pipe(pipe_fd) == -1 || pipe(status_pipe) == -1)
 		exit(EXIT_FAILURE);
 	pid = fork();
 	if (pid == 0)
@@ -65,14 +67,21 @@ void	execute_pipeline(t_token *curr, t_shell *minishell)
 		safe_close(&pipe_fd[1]);
 		safe_close(&pipe_fd[0]);
 		handle_redirections(curr, minishell);
-		execute_builtin_or_exec_exit(curr, minishell);
+		exec_status = execute_builtin_or_exec_exit(curr, minishell);
+		if (exec_status)
+			minishell->flag = 1;
 	}
 	else
 	{
-		minishell->process_ids[minishell->process_count++] = pid;
-		if (minishell->prev_fd != -1)
-			safe_close(&minishell->prev_fd);
-		minishell->prev_fd = pipe_fd[0];
+		minishell->process_ids[minishell->process_count++] = pid;		safe_close(&pipe_fd[1]);
 		safe_close(&pipe_fd[1]);
+		if (minishell->flag)
+			safe_close(&pipe_fd[0]);
+		else
+		{
+			if (minishell->prev_fd != -1)
+				safe_close(&minishell->prev_fd);
+			minishell->prev_fd = pipe_fd[0];
+		}
 	}
 }

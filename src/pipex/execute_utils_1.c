@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils_1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/30 20:14:30 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/03 00:28:52 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,30 +73,34 @@ static void	handle_expr_command(t_token *curr, t_shell *minishell)
 	ft_free_tab(args);
 }
 
-void	exec_cmd(t_token *curr, t_shell *minishell)
+int	exec_cmd(t_token *curr, t_shell *minishell)
 {
 	char	**s_cmd;
 	char	*path;
 
 	if (check_command(curr->token, minishell))
-		return ;
+		return (1);
 	s_cmd = get_command_array(curr->token, minishell);
 	if (!s_cmd || !s_cmd[0] || ft_strlen(s_cmd[0]) == 0)
 	{
 		minishell->last_return = 0;
 		if (s_cmd)
 			ft_free_tab(s_cmd);
-		return ;
+		return (1);
 	}
 	path = get_command_path(s_cmd, minishell);
 	if (!path)
 	{
 		ft_free_tab(s_cmd);
-		return ;
+		return (1);
 	}
 	if (ft_strncmp(curr->token, "expr ", 5) == 0)
 		handle_expr_command(curr, minishell);
 	else if (execve(path, s_cmd, minishell->env) == -1)
+	{
 		handle_execve_failure(s_cmd, minishell, errno);
+		return (1);
+	}
 	ft_free_tab(s_cmd);
+	return (0);
 }

@@ -3,26 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   execute_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/29 18:42:11 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/03 00:49:10 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_builtin_or_exec_exit(t_token *curr, t_shell *minishell)
+int	execute_builtin_or_exec_exit(t_token *curr, t_shell *minishell)
 {
+	int ret;
+
+	ret = 0;
 	if (check_builtin(curr->token))
 	{
 		execute_builtin_1(curr, minishell);
 		execute_builtin_2(curr, minishell);
 		other_cmds(curr, minishell);
-		free_child_processes(minishell->cmd_list, minishell, 0);
 	}
 	else
-		exec_cmd(curr, minishell);
+		ret = exec_cmd(curr, minishell);
+	free_child_processes(minishell->cmd_list, minishell, 0);
+	return (ret);
 }
 
 static void	execute_builtin_directly(t_token *curr, t_shell *minishell)

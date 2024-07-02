@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/01 21:57:07 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/02 13:01:13 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ void	process_command_line(t_shell *minishell, char *line)
 {
 	t_token	*token_lst;
 
+	if (hist_feature(line, minishell))
+	{
+		return ;
+	}
 	minishell->saved_stdin = dup(STDIN_FILENO);
 	minishell->saved_stdout = dup(STDOUT_FILENO);
 	token_lst = token_processor(line, minishell);

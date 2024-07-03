@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 19:45:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/01 22:11:14 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/02 22:19:34 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,5 @@ void	execute_single_command(t_token *curr, t_shell *minishell)
 		perror("fork");
 		minishell->last_return = 1;
 	}
+	return ;
 }

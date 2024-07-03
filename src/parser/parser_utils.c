@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:33:08 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/30 20:25:25 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/04 00:24:26 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	parse_unclosed(t_token *token, t_shell *minishell)
 
 	command = ft_strdup("");
 	inside_quote = 0;
-	minishell->flag = 0;
+	minishell->flag = 1;
 	process_input(&command, token->token, &inside_quote, minishell);
 	finalize_command(token, command);
 }

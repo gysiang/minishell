@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:15:14 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/02 22:25:16 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/03 19:44:18 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,11 @@ void	pipex(t_shell *minishell)
 {
 	t_token	*curr;
 
+	//printf("Debug: Entering command:\n");
 	curr = minishell->cmd_list;
 	while (curr != NULL && !minishell->end)
 	{
+		//printf("Debug: Executing command: %s\n", curr->token);
 		if (!ft_strcmp(curr->token, ""))
 		{
 			curr = curr->next;
@@ -128,5 +130,6 @@ void	pipex(t_shell *minishell)
 			curr = execute_with_redir(curr, minishell);
 		curr = curr->next;
 	}
+	//printf("Debug: Exiting command:\n");
 	wait_for_all_commands(minishell);
 }

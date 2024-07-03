@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_command_array.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 13:52:34 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/03 12:58:21 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/03 19:45:33 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static char	**initialize_command_array(char *cmd, t_shell *minishell)
 {
 	char	**s_cmd;
 
+    //printf("Debug: Initial command: %s\n", cmd);
 	if (!cmd || *cmd == '\0')
 	{
 		minishell->last_return = 0;
@@ -40,7 +41,7 @@ static void	handle_quote_cmd(char **cmd, char **start, int *in_quotes,
 	(*cmd)++;
 }
 
-static void	handle_non_quote_cmd(char **cmd, char **start, char **s_cmd,
+/*static void	handle_non_quote_cmd(char **cmd, char **start, char **s_cmd,
 		int *arg_count)
 {
 	int	len;
@@ -60,33 +61,52 @@ static void	handle_non_quote_cmd(char **cmd, char **start, char **s_cmd,
 	}
 	*start = *cmd + 1;
 	(*cmd)++;
-}
+}*/
 
-static void	parse_command(char *cmd, char **s_cmd, int *arg_count)
+static void parse_command(char *cmd, char **s_cmd, int *arg_count)
 {
-	int		in_quotes;
-	char	quote_char;
-	char	*start;
+    int     in_quotes;
+    char    quote_char;
+    char    *start;
+    int     is_last_arg;
 
-	in_quotes = 0;
-	quote_char = 0;
-	start = cmd;
-	while (*cmd)
-	{
-		if ((*cmd == '\'' || *cmd == '\"') && !in_quotes)
-			handle_quote_cmd(&cmd, &start, &in_quotes, &quote_char);
-		else if (in_quotes && *cmd == quote_char)
-		{
-			s_cmd[(*arg_count)++] = ft_strndup(start, cmd - start);
-			in_quotes = 0;
-			cmd++;
-		}
-		else if (!in_quotes && (*cmd == ' ' || *(cmd + 1) == '\0'))
-			handle_non_quote_cmd(&cmd, &start, s_cmd, arg_count);
-		else
-			cmd++;
-	}
-	s_cmd[*arg_count] = NULL;
+    in_quotes = 0;
+    quote_char = 0;
+    start = cmd;
+    is_last_arg = 0;
+
+    while (*cmd)
+    {
+        if ((*cmd == '\'' || *cmd == '\"') && !in_quotes)
+            handle_quote_cmd(&cmd, &start, &in_quotes, &quote_char);
+        else if (in_quotes && *cmd == quote_char)
+        {
+            s_cmd[(*arg_count)++] = ft_strndup(start, cmd - start);
+            in_quotes = 0;
+            cmd++;
+        }
+        else if (!in_quotes && *cmd == ' ' && !is_last_arg)
+        {
+            if (cmd != start)
+            {
+                s_cmd[(*arg_count)++] = ft_strndup(start, cmd - start);
+                start = cmd + 1;
+            }
+            cmd++;
+        }
+        else
+        {
+            if (!is_last_arg && (*arg_count > 0) && (ft_strchr(cmd, ';') || ft_strchr(cmd, '$')))
+            {
+                is_last_arg = 1;
+                start = cmd;
+            }
+            cmd++;
+        }
+    }
+    if (start < cmd)
+        s_cmd[(*arg_count)++] = ft_strndup(start, cmd - start);
+    s_cmd[*arg_count] = NULL;
 }
 
 char	**get_command_array(char *cmd, t_shell *minishell)
@@ -99,5 +119,8 @@ char	**get_command_array(char *cmd, t_shell *minishell)
 	if (!s_cmd)
 		return (NULL);
 	parse_command(cmd, s_cmd, &arg_count);
+	//printf("Debug: Final command array:\n");
+	//for (int i = 0; s_cmd[i] != NULL; i++)
+    	//printf("  [%d]: %s\n", i, s_cmd[i]);
 	return (s_cmd);
 }

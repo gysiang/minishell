@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_command_array.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 13:52:34 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/30 19:50:42 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/03 12:58:21 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ static void	handle_non_quote_cmd(char **cmd, char **start, char **s_cmd,
 	if (*start != *cmd)
 	{
 		s_cmd[*arg_count] = ft_strndup(*start, len);
+		(*arg_count)++;
+	}
+	else
+	{
+		s_cmd[*arg_count] = ft_strndup(*start, 1);
 		(*arg_count)++;
 	}
 	*start = *cmd + 1;

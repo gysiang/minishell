@@ -59,9 +59,10 @@ SRC_FILES := main.c \
 				pipex/execute_4.c \
 				pipex/execute_5.c \
 				pipex/execute_utils_1.c \
+				pipex/get_command_array_utils.c \
 				pipex/get_command_array.c \
-				pipex/get_command_path.c \
 				pipex/get_command_path_utils.c \
+				pipex/get_command_path.c \
 				pipex/pipex_utils_1.c \
 				pipex/pipex_utils_2.c \
 				pipex/pipex_utils_3.c \

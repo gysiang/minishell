@@ -6,18 +6,16 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 13:52:34 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/04 13:39:54 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/04 18:28:23 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// This code resolves cat minishell.h | grep ");"$
 static char	**initialize_command_array(char *cmd, t_shell *minishell)
 {
 	char	**s_cmd;
 
-	// printf("Debug: Initial command: %s\n", cmd);
 	if (!cmd || *cmd == '\0')
 	{
 		minishell->last_return = 0;
@@ -32,40 +30,6 @@ static char	**initialize_command_array(char *cmd, t_shell *minishell)
 	return (s_cmd);
 }
 
-static void	handle_quote_cmd(char **cmd, char **start, int *in_quotes,
-		char *quote_char)
-{
-	*in_quotes = 1;
-	*quote_char = **cmd;
-	*start = *cmd + 1;
-	(*cmd)++;
-}
-
-/*static void	handle_non_quote_cmd(char **cmd, char **start, char **s_cmd,
-		int *arg_count)
-{
-	int		len;
-	int		is_last;
-	int		in_quotes;
-	char	quote_char;
-	char	*start;
-	int		is_last_arg;
-
-	is_last = (*(*cmd + 1) == '\0');
-	len = *cmd - *start + is_last;
-	if (*start != *cmd)
-	{
-		s_cmd[*arg_count] = ft_strndup(*start, len);
-		(*arg_count)++;
-	}
-	else
-	{
-		s_cmd[*arg_count] = ft_strndup(*start, 1);
-		(*arg_count)++;
-	}
-	*start = *cmd + 1;
-	(*cmd)++;
-}*/
 static void	parse_command(char *cmd, char **s_cmd, int *arg_count)
 {
 	int		in_quotes;
@@ -83,33 +47,15 @@ static void	parse_command(char *cmd, char **s_cmd, int *arg_count)
 			handle_quote_cmd(&cmd, &start, &in_quotes, &quote_char);
 		else if (in_quotes && *cmd == quote_char)
 		{
-			s_cmd[(*arg_count)++] = ft_strndup(start, cmd - start);
+			handle_closing_quote(&cmd, &start, s_cmd, arg_count);
 			in_quotes = 0;
-			cmd++;
 		}
 		else if (!in_quotes && *cmd == ' ' && !is_last_arg)
-		{
-			if (cmd != start)
-			{
-				s_cmd[(*arg_count)++] = ft_strndup(start, cmd - start);
-				start = cmd + 1;
-			}
-			cmd++;
-		}
+			handle_space(&cmd, &start, s_cmd, arg_count);
 		else
-		{
-			if (!is_last_arg && (*arg_count > 0) && (ft_strchr(cmd, ';')
-					|| ft_strchr(cmd, '$')))
-			{
-				is_last_arg = 1;
-				start = cmd;
-			}
-			cmd++;
-		}
+			handle_last_argument(&cmd, &start, &is_last_arg, arg_count);
 	}
-	if (start < cmd)
-		s_cmd[(*arg_count)++] = ft_strndup(start, cmd - start);
-	s_cmd[*arg_count] = NULL;
+	finalize_command_array(start, cmd, s_cmd, arg_count);
 }
 
 char	**get_command_array(char *cmd, t_shell *minishell)
@@ -122,8 +68,5 @@ char	**get_command_array(char *cmd, t_shell *minishell)
 	if (!s_cmd)
 		return (NULL);
 	parse_command(cmd, s_cmd, &arg_count);
-	// printf("Debug: Final command array:\n");
-	// for (int i = 0; s_cmd[i] != NULL; i++)
-	// printf("  [%d]: %s\n", i, s_cmd[i]);
 	return (s_cmd);
 }

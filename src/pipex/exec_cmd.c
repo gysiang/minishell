@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 12:59:49 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/04 13:39:57 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/04 18:34:21 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,15 @@ static void	handle_expr_command(t_token *curr, t_shell *minishell)
 	ft_free_tab(args);
 }
 
+static void	execute_command(t_token *curr, t_shell *minishell, char **s_cmd,
+		char *path)
+{
+	if (ft_strncmp(curr->token, "expr ", 5) == 0)
+		handle_expr_command(curr, minishell);
+	else if (execve(path, s_cmd, minishell->env) == -1)
+		handle_execve_failure(s_cmd, minishell, errno);
+}
+
 void	exec_cmd(t_token *curr, t_shell *minishell)
 {
 	char	**s_cmd;
@@ -50,15 +59,12 @@ void	exec_cmd(t_token *curr, t_shell *minishell)
 	path = get_command_path(s_cmd, minishell);
 	if (!path)
 	{
-		if (minishell->last_return != 126) // If it's not a directory error
+		if (minishell->last_return != 126)
 			minishell->last_return = minishell_error_msg(curr->token, 42);
 		ft_free_tab(s_cmd);
 		return ;
 	}
-	if (ft_strncmp(curr->token, "expr ", 5) == 0)
-		handle_expr_command(curr, minishell);
-	else if (execve(path, s_cmd, minishell->env) == -1)
-		handle_execve_failure(s_cmd, minishell, errno);
+	execute_command(curr, minishell, s_cmd, path);
 	ft_free_tab(s_cmd);
 	free(path);
 }

@@ -6,48 +6,11 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/04 13:51:35 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/04 16:45:01 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	handle_quotes_for_trim(const char *str, int *in_quotes,
-		char *quote_char, int i)
-{
-	if ((str[i] == '"' || str[i] == '\'') && !(*in_quotes))
-	{
-		*in_quotes = 1;
-		*quote_char = str[i];
-	}
-	else if (str[i] == *quote_char && *in_quotes)
-		*in_quotes = 0;
-}
-
-char	*ft_strtrim_preserve_quotes(char *str, char *set)
-{
-	int		start;
-	int		end;
-	int		in_quotes;
-	char	quote_char;
-	int		i;
-
-	start = 0;
-	end = ft_strlen(str) - 1;
-	in_quotes = 0;
-	quote_char = 0;
-	while (str[start] && ft_strchr(set, str[start]))
-		start++;
-	while (end > start && ft_strchr(set, str[end]))
-		end--;
-	i = start;
-	while (i <= end)
-	{
-		handle_quotes_for_trim(str, &in_quotes, &quote_char, i);
-		i++;
-	}
-	return (ft_substr(str, start, end - start + 1));
-}
 
 static char	*process_initial_command(char *s_cmd)
 {
@@ -58,7 +21,7 @@ static char	*process_initial_command(char *s_cmd)
 	if (trimmed_cmd == NULL)
 		return (NULL);
 	if ((trimmed_cmd[0] == '"' && trimmed_cmd[ft_strlen(trimmed_cmd)
-			- 1] == '"') || (trimmed_cmd[0] == '\''
+				- 1] == '"') || (trimmed_cmd[0] == '\''
 			&& trimmed_cmd[ft_strlen(trimmed_cmd) - 1] == '\''))
 	{
 		cmd_to_execute = ft_substr(trimmed_cmd, 1, ft_strlen(trimmed_cmd) - 2);
@@ -79,13 +42,12 @@ static char	*get_path_by_command_type(char *cmd, t_shell *minishell)
 		return (get_path(cmd, minishell));
 }
 
-char	*get_command_path(char **s_cmd, t_shell *minishell)
+static char	*process_command(char *cmd, t_shell *minishell)
 {
-	char		*path;
-	struct stat	statbuf;
-	char		*cmd_to_execute;
+	char	*cmd_to_execute;
+	char	*path;
 
-	cmd_to_execute = process_initial_command(s_cmd[0]);
+	cmd_to_execute = process_initial_command(cmd);
 	if (cmd_to_execute == NULL || *cmd_to_execute == '\0')
 	{
 		free(cmd_to_execute);
@@ -97,6 +59,18 @@ char	*get_command_path(char **s_cmd, t_shell *minishell)
 		free(cmd_to_execute);
 		return (path);
 	}
+	return (cmd_to_execute);
+}
+
+char	*get_command_path(char **s_cmd, t_shell *minishell)
+{
+	char		*cmd_to_execute;
+	char		*path;
+	struct stat	statbuf;
+
+	cmd_to_execute = process_command(s_cmd[0], minishell);
+	if (!cmd_to_execute)
+		return (NULL);
 	path = get_path_by_command_type(cmd_to_execute, minishell);
 	if (!path)
 	{

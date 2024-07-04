@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/04 13:39:56 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/04 18:29:03 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,10 +307,23 @@ void				handle_redir_parent_process(t_shell *minishell, int pid);
 t_token				*get_redir_token(t_token *curr);
 t_token				*execute_with_redir(t_token *curr, t_shell *minishell);
 
+// pipex (get_command_array_utils)
+void	handle_quote_cmd(char **cmd, char **start, int *in_quotes,
+		char *quote_char);
+void	handle_closing_quote(char **cmd, char **start, char **s_cmd,
+		int *arg_count);
+void	handle_space(char **cmd, char **start, char **s_cmd, int *arg_count);
+
+void	handle_last_argument(char **cmd, char **start, int *is_last_arg,
+		int *arg_count);
+void	finalize_command_array(char *start, char *cmd, char **s_cmd,
+		int *arg_count);
+
 // pipex (get_command_array)
 char				**get_command_array(char *cmd, t_shell *minishell);
 
 // get_command_path
+char	*ft_strtrim_preserve_quotes(char *str, char *set);
 char				*get_command_path(char **s_cmd, t_shell *minishell);
 
 // pipex (utils_1)

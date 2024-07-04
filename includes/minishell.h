@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/30 20:16:58 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/04 13:39:56 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,13 +256,11 @@ char				*remove_quotes(char *str, int first_quote_index,
 void				update_token_if_needed(t_token *token, char *new_str);
 void				free_and_replace_token(t_token *token, char *new_str);
 
-// pipex (execute_utils)
-int					check_command(char *cmd, t_shell *minishell);
-char				**get_command_array(char *cmd, t_shell *minishell);
-char				*get_command_path(char **s_cmd, t_shell *minishell);
+// pipex (exec_cmd)
 void				exec_cmd(t_token *curr, t_shell *minishell);
 
-// pipex (execute_utils1)
+// pipex (execute_utils_1)
+int					check_command(char *cmd, t_shell *minishell);
 void				load_previous_fd_to_stdin(t_shell *minishell);
 void				load_previous_fd_to_stdout(t_shell *minishell);
 t_token				*update_curr_pointer(t_token *curr, int flag, int i);
@@ -308,6 +306,12 @@ void				handle_redir_child_process(t_token *curr,
 void				handle_redir_parent_process(t_shell *minishell, int pid);
 t_token				*get_redir_token(t_token *curr);
 t_token				*execute_with_redir(t_token *curr, t_shell *minishell);
+
+// pipex (get_command_array)
+char				**get_command_array(char *cmd, t_shell *minishell);
+
+// get_command_path
+char				*get_command_path(char **s_cmd, t_shell *minishell);
 
 // pipex (utils_1)
 int					num_of_commands(t_shell *minishell);

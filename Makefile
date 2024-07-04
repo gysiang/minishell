@@ -52,14 +52,15 @@ SRC_FILES := main.c \
                 builtins/builtin_exit.c \
                 builtins/builtin_pwd.c \
                 builtins/builtin_unset.c \
+				pipex/exec_cmd.c \
 				pipex/execute_1.c \
 				pipex/execute_2.c \
 				pipex/execute_3.c \
 				pipex/execute_4.c \
 				pipex/execute_5.c \
 				pipex/execute_utils_1.c \
-				pipex/execute_utils_2.c \
 				pipex/get_command_array.c \
+				pipex/get_command_path.c \
 				pipex/pipex_utils_1.c \
 				pipex/pipex_utils_2.c \
 				pipex/pipex_utils_3.c \

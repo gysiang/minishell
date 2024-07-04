@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_utils_1.c                                  :+:      :+:    :+:   */
+/*   execute_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/03 17:18:44 by axlee            ###   ########.fr       */
+/*   Created: 2024/06/14 00:41:23 by gyong-si          #+#    #+#             */
+/*   Updated: 2024/07/04 12:57:38 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,87 +16,53 @@ int	check_command(char *cmd, t_shell *minishell)
 {
 	if (!cmd || !minishell)
 	{
-		printf("Invalid command or shell context\n");
-		ft_putstr_fd("Not enough arguments to exec_cmd\n", STDERR_FILENO);
+		ft_putstr_fd("Invalid command or shell context\n", STDERR_FILENO);
 		minishell->last_return = 1;
-		exit(1);
+		return (1);
 	}
 	if (ft_strcmp(cmd, "$") == 0)
 	{
-		ft_putstr_fd(cmd, STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		minishell->last_return = 127;
-		exit(127);
+		minishell->last_return = minishell_error_msg(cmd, 42);
+		return (1);
 	}
 	return (0);
 }
 
-char	*get_command_path(char **s_cmd, t_shell *minishell)
+void	load_previous_fd_to_stdin(t_shell *minishell)
 {
-	char		*path;
-	struct stat	statbuf;
+	if (minishell->prev_fd != -1)
+	{
+		dup2(minishell->prev_fd, STDIN_FILENO);
+		safe_close(&minishell->prev_fd);
+	}
+}
 
-	if (s_cmd[0][0] == '/' || s_cmd[0][0] == '.')
-		path = s_cmd[0];
+void	load_previous_fd_to_stdout(t_shell *minishell)
+{
+	if (minishell->prev_fd != -1)
+	{
+		dup2(minishell->prev_fd, STDOUT_FILENO);
+		safe_close(&minishell->prev_fd);
+	}
+}
+
+t_token	*update_curr_pointer(t_token *curr, int flag, int i)
+{
+	int	num;
+
+	num = 0;
+	if (flag <= 1)
+		num = i + 1;
+	else if (flag == 2)
+		num = 4;
 	else
-		path = get_path(s_cmd[0], minishell);
-	if (!path)
+		num = 6;
+	if (check_redirect_file(curr))
+		num += 1;
+	while (curr != NULL && num > 0)
 	{
-		minishell->last_return = minishell_error_msg(s_cmd[0], 42);
-		return (NULL);
+		curr = curr->next;
+		num--;
 	}
-	if (stat(path, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
-	{
-		minishell->last_return = minishell_error_msg(s_cmd[0], EISDIR);
-		return (NULL);
-	}
-	return (path);
-}
-
-static void	handle_execve_failure(char **s_cmd, t_shell *minishell,
-		int error_code)
-{
-	int	return_code;
-
-	return_code = minishell_error_msg(s_cmd[0], error_code);
-	minishell->last_return = return_code;
-	ft_free_tab(s_cmd);
-	exit(return_code);
-}
-
-static void	handle_expr_command(t_token *curr, t_shell *minishell)
-{
-	char	**args;
-
-	args = ft_split(curr->token, ' ');
-	execve("/usr/bin/expr", args, minishell->env);
-	ft_free_tab(args);
-}
-
-void	exec_cmd(t_token *curr, t_shell *minishell)
-{
-	char	**s_cmd;
-	char	*path;
-
-	if (check_command(curr->token, minishell))
-		return ;
-	s_cmd = get_command_array(curr->token, minishell);
-	if (!s_cmd || !s_cmd[0] || ft_strlen(s_cmd[0]) == 0)
-	{
-		minishell->last_return = 0;
-		if (s_cmd)
-			ft_free_tab(s_cmd);
-		return ;
-	}
-	path = get_command_path(s_cmd, minishell);
-	if (!path)
-	{
-		ft_free_tab(s_cmd);
-		return ;
-	}
-	if (ft_strncmp(curr->token, "expr ", 5) == 0)
-		handle_expr_command(curr, minishell);
-	else if (execve(path, s_cmd, minishell->env) == -1)
-		handle_execve_failure(s_cmd, minishell, errno);
-	ft_free_tab(s_cmd);
+	return (curr);
 }

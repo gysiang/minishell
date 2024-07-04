@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:10:53 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/01 13:51:17 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/03 17:13:35 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,19 @@ void	handle_redir_parent_process(t_shell *minishell, int pid)
 t_token	*execute_with_redir(t_token *curr, t_shell *minishell)
 {
 	int	pipe;
-	int	num_of_redir;
-	int	i;
+	int	index;
+	int	num;
 
 	pipe = pipe_found(curr);
-	num_of_redir = num_of_redirections(curr);
-	i = num_of_args(curr);
-	if (pipe == 0 && num_of_redir <= 3)
-		execute_command_with_redir(curr, minishell);
+	index = check_for_redirections(curr);
+	num = num_of_args(curr);
+	if (pipe == 0 && (index > 0))
+		execute_with_redirection(curr, minishell, index);
 	else
 		execute_pipeline(curr, minishell);
-	curr = update_curr_pointer(curr, minishell->redir_no, i);
+	if (minishell->redir_no > 0)
+		num += minishell->redir_no * 2;
+	curr = move_lst_by_index(curr, num);
 	return (curr);
 }
 
@@ -74,6 +76,7 @@ void	execute_command_with_redir(t_token *curr, t_shell *minishell)
 {
 	int	pid;
 
+	printf("execute_command_with_redir\n");
 	pid = fork();
 	if (!pid)
 		handle_redir_child_process(curr, minishell);

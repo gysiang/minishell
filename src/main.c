@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/03 12:59:11 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/04 20:17:39 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ char	*read_input_line(t_shell *g_shell)
 			trimmed_line++;
 		if (*trimmed_line != '\0')
 			return (line);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 		free(line);
 	}
 }

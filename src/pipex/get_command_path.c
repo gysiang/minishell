@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:21:39 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/04 13:41:44 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/04 13:51:35 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,18 @@ static char	*process_initial_command(char *s_cmd)
 	char	*trimmed_cmd;
 	char	*cmd_to_execute;
 
-	trimmed_cmd = ft_strtrim_preserve_quotes(s_cmd, " \t");
+	trimmed_cmd = ft_strtrim_preserve_quotes(s_cmd, "\t");
 	if (trimmed_cmd == NULL)
 		return (NULL);
-	cmd_to_execute = ft_strtrim(trimmed_cmd, "\"'");
-	free(trimmed_cmd);
+	if ((trimmed_cmd[0] == '"' && trimmed_cmd[ft_strlen(trimmed_cmd)
+			- 1] == '"') || (trimmed_cmd[0] == '\''
+			&& trimmed_cmd[ft_strlen(trimmed_cmd) - 1] == '\''))
+	{
+		cmd_to_execute = ft_substr(trimmed_cmd, 1, ft_strlen(trimmed_cmd) - 2);
+		free(trimmed_cmd);
+	}
+	else
+		cmd_to_execute = trimmed_cmd;
 	return (cmd_to_execute);
 }
 

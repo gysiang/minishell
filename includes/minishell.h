@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/04 13:39:56 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/04 16:42:36 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,6 +311,7 @@ t_token				*execute_with_redir(t_token *curr, t_shell *minishell);
 char				**get_command_array(char *cmd, t_shell *minishell);
 
 // get_command_path
+char	*ft_strtrim_preserve_quotes(char *str, char *set);
 char				*get_command_path(char **s_cmd, t_shell *minishell);
 
 // pipex (utils_1)

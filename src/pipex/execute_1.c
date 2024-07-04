@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/03 17:28:08 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/04 16:44:33 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,9 @@ void	execute_builtin_or_exec_exit(t_token *curr, t_shell *minishell)
 		other_cmds(curr, minishell);
 	}
 	else
-	{
 		exec_cmd(curr, minishell);
-	}
 	free_child_processes(minishell->cmd_list, minishell,
-			minishell->last_return);
+		minishell->last_return);
 }
 
 static void	execute_builtin_directly(t_token *curr, t_shell *minishell)

@@ -61,6 +61,7 @@ SRC_FILES := main.c \
 				pipex/execute_utils_1.c \
 				pipex/get_command_array.c \
 				pipex/get_command_path.c \
+				pipex/get_command_path_utils.c \
 				pipex/pipex_utils_1.c \
 				pipex/pipex_utils_2.c \
 				pipex/pipex_utils_3.c \

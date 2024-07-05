@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:13:57 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/03 14:53:55 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/06 00:30:14 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	add_symbol_lst(char **line, t_token_type type, t_token **token_lst)
 		return (0);
 	ft_copy(symbol, *line, word_len);
 	symbol[word_len] = '\0';
-	token_add_back(token_lst, symbol, type);
+	token_add_back(token_lst, symbol, type, 0);
 	free(symbol);
 	(*line) += word_len;
 	return (0);
@@ -71,7 +71,9 @@ int	add_command_lst(char **line, t_token **token_lst)
 {
 	char	*start;
 	char	*cmd;
+	int		i;
 
+	i = 0;
 	skip_whitespace_and_extract_command(line, &start);
 	if (**line == '\"' || **line == '\'')
 		skip_quotes(line);
@@ -80,7 +82,9 @@ int	add_command_lst(char **line, t_token **token_lst)
 	if (*line != start)
 	{
 		cmd = ft_strndup(start, *line - start);
-		token_add_back(token_lst, cmd, T_IDENTIFIER);
+		if (ft_iswhitespace(*line++))
+			i = 1;
+		token_add_back(token_lst, cmd, T_IDENTIFIER, i);
 		free(cmd);
 	}
 	return (0);

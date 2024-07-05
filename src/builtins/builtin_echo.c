@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/03 15:18:37 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/06 00:36:13 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,25 @@ static void	print_input_fd(t_shell *minishell)
 	}
 }
 
-static void	handle_identifier_token(t_token *current, int *first)
+static void	handle_identifier_token(t_token *current)
 {
 	if (ft_strcmp(current->token, "") != 0)
 	{
-		if (!(*first))
-			printf(" ");
 		printf("%s", current->token);
-		*first = 0;
+		if (current->space == 1)
+			printf(" ");
 	}
 }
 
 static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 {
-	int	first;
+	//int	first;
 
-	first = 1;
+	//first = 1;
 	while (current != NULL)
 	{
 		if (current->type == T_IDENTIFIER)
-			handle_identifier_token(current, &first);
+			handle_identifier_token(current);
 		else if (current->type == T_FILE || check_redirection_type(current))
 		{
 			current = current->next->next;
@@ -79,5 +78,6 @@ void	minishell_echo(t_token *curr, t_shell *minishell)
 		newline = 0;
 		current = current->next;
 	}
+
 	print_tokens(current, minishell, newline);
 }

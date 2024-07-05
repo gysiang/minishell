@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:12:11 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/29 21:28:26 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/06 00:16:15 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	add_unclosed_quote_to_token_list(char *start, char **line,
 	{
 		ft_strncpy(unclosed_quote, start, len);
 		unclosed_quote[len] = '\0';
-		token_add_back(token_lst, unclosed_quote, T_IDENTIFIER);
+		token_add_back(token_lst, unclosed_quote, T_IDENTIFIER, 0);
 		free(unclosed_quote);
 	}
 }
@@ -38,7 +38,7 @@ void	add_literal_quote_to_token_list(char quote_type, t_token **token_lst)
 	{
 		literal_quote[0] = quote_type;
 		literal_quote[1] = '\0';
-		token_add_back(token_lst, literal_quote, T_IDENTIFIER);
+		token_add_back(token_lst, literal_quote, T_IDENTIFIER, 0);
 		free(literal_quote);
 	}
 }

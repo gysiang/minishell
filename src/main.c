@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:37:14 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/04 20:17:39 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/06 00:36:48 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	process_command_line(t_shell *minishell, char *line)
 	minishell->saved_stdin = dup(STDIN_FILENO);
 	minishell->saved_stdout = dup(STDOUT_FILENO);
 	token_lst = token_processor(line, minishell);
+	//print_tokenlst(token_lst);
 	if (token_lst != NULL)
 		minishell->cmd_list = token_lst;
 	if (line && ft_strlen(line) > 0)

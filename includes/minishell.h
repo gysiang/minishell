@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/04 19:41:13 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/06 00:14:22 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct s_token
 	struct s_token	*next;
 	struct s_token	*prev;
 	int				is_single_quoted;
+	int				space;
 }					t_token;
 
 // Struct for commands
@@ -358,9 +359,9 @@ t_token				*handle_builtins(t_token *curr, t_shell *minishell);
 void				pipex(t_shell *minishell);
 
 // tokenizer (create_token)
-t_token				*create_token(char *token, t_token_type type);
+t_token				*create_token(char *token, t_token_type type, int space);
 void				token_add_back(t_token **head, char *token,
-						t_token_type type);
+						t_token_type type, int space);
 void				free_tokenlst(t_token *head);
 
 // tokenizer (tokenizer_utils_1)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/04 18:29:03 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/04 19:41:13 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -504,6 +504,7 @@ void				sigquit_handler(int signal);
 void				setup_signal_handler(void);
 void				sigpipe_handler(int signal);
 void				set_sigpipe(void);
+void				sigint_handler2(int signal);
 
 // sutils_1
 char				**ft_dqsplit(char const *s, char c);

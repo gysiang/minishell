@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:59:21 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/04 16:44:33 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/05 12:00:04 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	execute_with_redirection(t_token *token, t_shell *minishell, int index)
 	}
 	else
 	{
+		signal(SIGINT, SIG_IGN);
 		minishell->process_ids[minishell->process_count++] = pid;
 		if (minishell->prev_fd != -1)
 			safe_close(&minishell->prev_fd);

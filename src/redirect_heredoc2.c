@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 22:17:59 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/06/15 15:39:08 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/05 00:44:11 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 void	signal_exit(int signal_number)
 {
-	(void)signal_number;
-	exit(0);
+	if (signal_number == SIGINT)
+	{
+		g_sig_received = 1;
+		exit(130);
+	}
 }
 
 void	error_eof(char *end_of_file, int i)

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 21:03:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/04 16:29:33 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/05 11:29:31 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	here_doc_read(t_shell *minishell, int *pipe_fds,
 	char	*str;
 	char	*expanded_str;
 
-	//signal(SIGINT, signal_exit);
+	signal(SIGINT, signal_exit);
 	while (1)
 	{
 		if (!read_input(&str, delimiter, i, minishell))
@@ -55,17 +55,27 @@ static void	here_doc_read(t_shell *minishell, int *pipe_fds,
 	safe_close(&pipe_fds[0]);
 	safe_close(&pipe_fds[1]);
 }
+/** *
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	{
+		printf("triggered sigint\n");
+		close(pipe_des[0]);
+		close(pipe_des[1]);
+		return (-1);
+	}
+**/
 
 int	execute_parent(int pid, int *pipe_des)
 {
 	int	status;
 
-	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, sigint_handler2);
 	waitpid(pid, &status, WUNTRACED);
-	if (WEXITSTATUS(status) == SIGINT)
+	signal(SIGINT, SIG_IGN);
+	if (g_sig_received == 1)
 	{
-		close(pipe_des[0]);
-		close(pipe_des[1]);
+		safe_close(&pipe_des[0]);
+		safe_close(&pipe_des[1]);
 		return (-1);
 	}
 	close(pipe_des[1]);
@@ -85,14 +95,13 @@ int	here_doc(t_shell *minishell, char *delimiter, int i)
 		return (-1);
 	if (pid == 0)
 	{
-		signal(SIGINT, sigint_handler1);
 		here_doc_read(minishell, pipe_des, delimiter, i);
 		free_child_processes(minishell->cmd_list, minishell, 0);
 	}
 	else
 	{
-		signal(SIGINT, SIG_IGN);
 		input_fd = execute_parent(pid, pipe_des);
+		//printf("input_fd %d\n", input_fd);
 		if (input_fd == -1)
 			return (-1);
 		minishell->input_fd = dup(input_fd);

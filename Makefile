@@ -87,6 +87,7 @@ SRC_FILES := main.c \
 				parser/parse_semicolon.c \
 				parser/parse_single_quotes.c \
 				parser/parser_utils.c \
+				parser/parser_utils_2.c \
 				parser/parse_value.c \
 				parser/remove_embedded_quotes_utils.c \
 				parser/remove_embedded_quotes.c \

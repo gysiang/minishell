@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:12:11 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/06 11:32:13 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/06 22:07:00 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	handle_quotes(char **line, t_token **token_lst)
 
 static void	process_line(char **line, t_token **token_lst, t_shell *minishell)
 {
+	(void)minishell;
 	if (ft_iswhitespace(*line))
 		(*line)++;
 	else if (**line == '\\')

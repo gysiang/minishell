@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:35:24 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/05 23:52:26 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/06 22:57:48 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ t_token	*token_parser(t_token *token_lst, t_shell *minishell)
 		curr = curr->next;
 	}
 	set_token_pointers(token_lst);
+	set_spaces(token_lst);
 	join_identifier_tokens(token_lst);
 	return (token_lst);
 }

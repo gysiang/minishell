@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 21:03:37 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/05 11:29:31 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/06 11:08:06 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ int	here_doc(t_shell *minishell, char *delimiter, int i)
 	else
 	{
 		input_fd = execute_parent(pid, pipe_des);
-		//printf("input_fd %d\n", input_fd);
 		if (input_fd == -1)
 			return (-1);
 		minishell->input_fd = dup(input_fd);

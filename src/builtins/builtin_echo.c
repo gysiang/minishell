@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 09:53:07 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/06 00:36:13 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/06 11:07:22 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,6 @@ static void	handle_identifier_token(t_token *current)
 
 static void	print_tokens(t_token *current, t_shell *minishell, int newline)
 {
-	//int	first;
-
-	//first = 1;
 	while (current != NULL)
 	{
 		if (current->type == T_IDENTIFIER)
@@ -78,6 +75,5 @@ void	minishell_echo(t_token *curr, t_shell *minishell)
 		newline = 0;
 		current = current->next;
 	}
-
 	print_tokens(current, minishell, newline);
 }

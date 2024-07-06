@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 19:36:29 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/06 00:18:06 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/06 11:07:45 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ t_token	*create_token(char *token, t_token_type type, int space)
 	return (new_node);
 }
 
-void	token_add_back(t_token **head, char *token, t_token_type type, int space)
+void	token_add_back(t_token **head, char *token, t_token_type type,
+		int space)
 {
 	t_token	*new_node;
 	t_token	*current;

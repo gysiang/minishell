@@ -39,7 +39,8 @@ SRC_FILES := main.c \
                 redirect_input.c \
 				redirect_output.c \
                 shell.c \
-                signals.c \
+                signals_1.c \
+				signals_2.c \
                 sutils_1.c \
 				sutils_2.c \
                 builtins/builtin_cd.c \

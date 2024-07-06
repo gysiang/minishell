@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:13:57 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/06 00:21:39 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/06 12:45:07 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,30 +26,38 @@ void	print_tokenlst(t_token *token_lst)
 	}
 }
 
-void	append_rest_of_line(char **line, char *result, t_token **token_lst)
+static char	*append_char_to_result(char *result, char c)
 {
 	size_t	current_length;
 	size_t	new_size;
 	char	*new_result;
+
+	current_length = ft_strlen(result);
+	new_size = current_length + 2;
+	new_result = malloc(new_size);
+	if (new_result == NULL)
+	{
+		free(result);
+		return (NULL);
+	}
+	ft_memcpy(new_result, result, current_length);
+	new_result[current_length] = c;
+	new_result[current_length + 1] = '\0';
+	free(result);
+	return (new_result);
+}
+
+void	append_rest_of_line(char **line, char *result, t_token **token_lst)
+{
 	char	i;
 
 	i = 0;
 	if (**line && !ft_iswhitespace(*line) && **line != '$' && **line != '\''
 		&& **line != '\"')
 	{
-		current_length = ft_strlen(result);
-		new_size = current_length + 2;
-		new_result = malloc(new_size);
-		if (new_result == NULL)
-		{
-			free(result);
+		result = append_char_to_result(result, **line);
+		if (result == NULL)
 			return ;
-		}
-		ft_memcpy(new_result, result, current_length);
-		new_result[current_length] = **line;
-		new_result[current_length + 1] = '\0';
-		free(result);
-		result = new_result;
 		(*line)++;
 		if (ft_iswhitespace(*line))
 			i = 1;

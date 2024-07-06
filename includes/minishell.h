@@ -6,7 +6,7 @@
 /*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/06 10:59:22 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/06 12:49:21 by axlee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -502,14 +502,15 @@ void				free_shell(t_shell *minishell);
 void				initialize_shell(t_shell **minishell, char **envp);
 void				cleanup(t_shell *g_shell);
 
-// signals
+// signals_1
 void				sigint_handler(int signal);
 void				sigint_handler1(int signal);
 void				sigquit_handler(int signal);
+void				sigint_handler2(int signal);
+
+// signals_2
 void				setup_signal_handler(void);
 void				sigpipe_handler(int signal);
-void				set_sigpipe(void);
-void				sigint_handler2(int signal);
 
 // sutils_1
 char				**ft_dqsplit(char const *s, char c);

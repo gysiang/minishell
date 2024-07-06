@@ -25,7 +25,7 @@ void	handle_remaining_text(char **line, t_token **token_lst)
 		while (**line && !ft_iswhitespace(*line))
 			(*line)++;
 		text = ft_strndup(start, *line - start);
-		token_add_back(token_lst, text, T_IDENTIFIER);
+		token_add_back(token_lst, text, T_IDENTIFIER, 0);
 		free(text);
 	}
 }
@@ -47,7 +47,7 @@ static void	handle_quoted_escape(char **line, t_token **token_lst)
 	{
 		ft_strncpy(escaped_token, start, length);
 		escaped_token[length] = '\0';
-		token_add_back(token_lst, escaped_token, T_IDENTIFIER);
+		token_add_back(token_lst, escaped_token, T_IDENTIFIER, 0);
 		free(escaped_token);
 	}
 }
@@ -62,7 +62,7 @@ void	handle_backslash(char **line, t_token **token_lst)
 	if (**line == '\"' || **line == '\'')
 		handle_quoted_escape(line, token_lst);
 	else
-		token_add_back(token_lst, escaped, T_IDENTIFIER);
+		token_add_back(token_lst, escaped, T_IDENTIFIER, 0);
 	(*line)++;
 }
 
@@ -78,7 +78,7 @@ void	add_quoted_content_to_token_list(char *start, char **line,
 	{
 		ft_strncpy(quoted_content, start, length);
 		quoted_content[length] = '\0';
-		token_add_back(token_lst, quoted_content, T_IDENTIFIER);
+		token_add_back(token_lst, quoted_content, T_IDENTIFIER, 0);
 		free(quoted_content);
 	}
 }

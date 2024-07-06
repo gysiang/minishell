@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils_3.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:11:15 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/26 17:16:47 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/06 00:17:09 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	handle_variable_expansion(char **line, char *start, t_token **token_lst,
 	if (var_len == 1 && var_name[0] == '$')
 	{
 		result = ft_strdup("$");
-		token_add_back(token_lst, result, T_IDENTIFIER);
+		token_add_back(token_lst, result, T_IDENTIFIER, 0);
 		free(result);
 		free(var_name);
 		return ;
@@ -61,7 +61,7 @@ void	handle_variable_expansion(char **line, char *start, t_token **token_lst,
 	else
 	{
 		result = ft_strndup(start - 1, var_len + 1);
-		token_add_back(token_lst, result, T_IDENTIFIER);
+		token_add_back(token_lst, result, T_IDENTIFIER, 0);
 		free(result);
 	}
 }
@@ -91,7 +91,7 @@ void	handle_environment_variable(char **line, t_token **token_lst,
 		var_value = ft_strdup("");
 	if (var_value)
 	{
-		token_add_back(token_lst, var_value, T_IDENTIFIER);
+		token_add_back(token_lst, var_value, T_IDENTIFIER, 0);
 		free(var_value);
 	}
 }

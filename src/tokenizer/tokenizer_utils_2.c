@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:13:57 by axlee             #+#    #+#             */
-/*   Updated: 2024/06/29 18:43:45 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/06 00:21:39 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	print_tokenlst(t_token *token_lst)
 	{
 		printf("token: %s\n", curr->token);
 		printf("token type: %d\n", curr->type);
+		printf("token space: %d\n", curr->space);
 		curr = curr->next;
 	}
 }
@@ -30,8 +31,10 @@ void	append_rest_of_line(char **line, char *result, t_token **token_lst)
 	size_t	current_length;
 	size_t	new_size;
 	char	*new_result;
+	char	i;
 
-	while (**line && !ft_iswhitespace(*line) && **line != '$' && **line != '\''
+	i = 0;
+	if (**line && !ft_iswhitespace(*line) && **line != '$' && **line != '\''
 		&& **line != '\"')
 	{
 		current_length = ft_strlen(result);
@@ -48,8 +51,10 @@ void	append_rest_of_line(char **line, char *result, t_token **token_lst)
 		free(result);
 		result = new_result;
 		(*line)++;
+		if (ft_iswhitespace(*line))
+			i = 1;
 	}
-	token_add_back(token_lst, result, T_IDENTIFIER);
+	token_add_back(token_lst, result, T_IDENTIFIER, i);
 	free(result);
 }
 

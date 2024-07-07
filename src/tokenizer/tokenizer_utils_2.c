@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:13:57 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/06 00:21:39 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/07 08:32:44 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_tokenlst(t_token *token_lst)
 		curr = curr->next;
 	}
 }
-
+/** *
 void	append_rest_of_line(char **line, char *result, t_token **token_lst)
 {
 	size_t	current_length;
@@ -54,6 +54,43 @@ void	append_rest_of_line(char **line, char *result, t_token **token_lst)
 		if (ft_iswhitespace(*line))
 			i = 1;
 	}
+	token_add_back(token_lst, result, T_IDENTIFIER, i);
+	free(result);
+} **/
+
+static void	append_character(char **line, char **result)
+{
+	size_t	current_length;
+	size_t	new_size;
+	char	*new_result;
+
+	current_length = ft_strlen(*result);
+	new_size = current_length + 2;
+	new_result = malloc(new_size);
+	if (new_result == NULL)
+	{
+		free(*result);
+		*result = NULL;
+		return ;
+	}
+	ft_memcpy(new_result, *result, current_length);
+	new_result[current_length] = **line;
+	new_result[current_length + 1] = '\0';
+	free(*result);
+	*result = new_result;
+	(*line)++;
+}
+
+void	append_rest_of_line(char **line, char *result, t_token **token_lst)
+{
+	char	i;
+
+	i = 0;
+	if (**line && !ft_iswhitespace(*line) && **line != '$' && **line != '\''
+		&& **line != '\"')
+		append_character(line, &result);
+	if (ft_iswhitespace(*line))
+		i = 1;
 	token_add_back(token_lst, result, T_IDENTIFIER, i);
 	free(result);
 }

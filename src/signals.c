@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 19:33:11 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/05 11:26:46 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/07 08:33:31 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,4 @@ void	setup_signal_handler(void)
 		ft_putstr_fd("Failed to set SIGQUIT handler\n", STDERR_FILENO);
 		exit(1);
 	}
-}
-
-void	sigpipe_handler(int signal)
-{
-	(void)signal;
-	ft_putstr_fd("Broken pipe", 2);
-	exit(1);
 }

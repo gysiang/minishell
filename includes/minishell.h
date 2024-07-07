@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:39:49 by gyong-si          #+#    #+#             */
-/*   Updated: 2024/07/06 10:59:22 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/06 22:57:22 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,6 +237,7 @@ void				parse_unclosed(t_token *token, t_shell *minishell);
 
 // parser_utils_2
 int					check_for_unclosed_quotes(const char *str);
+void				set_spaces(t_token *token_lst);
 
 // parser
 void				set_token_pointers(t_token *tokens);

@@ -6,7 +6,7 @@
 /*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:13:57 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/06 11:35:40 by gyong-si         ###   ########.fr       */
+/*   Updated: 2024/07/06 22:39:33 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	skip_whitespace_and_extract_command(char **line, char **start)
 		(*line)++;
 	*start = *line;
 	while (**line && !ft_iswhitespace(*line) && **line != '|' && **line != '<'
-		&& **line != '>' && **line != '\'' && **line != '\"')
+		&& **line != '>' && **line != '\'' && **line != '\"' && **line != '$')
 		(*line)++;
 }
 
@@ -74,12 +74,9 @@ int	add_command_lst(char **line, t_token **token_lst)
 	int		i;
 
 	i = 0;
-	skip_whitespace_and_extract_command(line, &start);
 	if (**line == '\"' || **line == '\'')
 		skip_quotes(line);
-	while (**line && !ft_iswhitespace(*line) && **line != '|'
-		&& !(**line == '\"' || **line == '\''))
-		(*line)++;
+	skip_whitespace_and_extract_command(line, &start);
 	if (*line != start)
 	{
 		cmd = ft_strndup(start, *line - start);

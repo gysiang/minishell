@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: axlee <axlee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gyong-si <gyong-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 10:54:35 by axlee             #+#    #+#             */
-/*   Updated: 2024/07/06 11:06:54 by axlee            ###   ########.fr       */
+/*   Updated: 2024/07/06 23:00:01 by gyong-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,20 @@ int	check_for_unclosed_quotes(const char *str)
 		i++;
 	}
 	return (in_single_quote || in_double_quote);
+}
+
+void	set_spaces(t_token *token_lst)
+{
+	t_token	*curr;
+
+	curr = token_lst;
+	while (curr != NULL)
+	{
+		if (curr && curr->type == T_IDENTIFIER
+			&& curr->next != NULL && curr->next->type != T_IDENTIFIER)
+		{
+			curr->space = 0;
+		}
+		curr = curr->next;
+	}
 }
